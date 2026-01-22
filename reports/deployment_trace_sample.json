@@ -1,0 +1,87 @@
+{
+  "request": {
+    "feature_order": [
+      "url_length",
+      "domain_length",
+      "path_length",
+      "num_dots",
+      "num_hyphens",
+      "num_underscores",
+      "num_slashes",
+      "has_ip",
+      "is_https",
+      "has_port",
+      "num_params",
+      "is_ai_endpoint",
+      "prompt_tokens",
+      "completion_tokens",
+      "latency_ms"
+    ],
+    "features": [
+      45.0,
+      22.0,
+      15.0,
+      2.0,
+      1.0,
+      0.0,
+      4.0,
+      0.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "threshold": 0.03
+  },
+  "response": {
+    "probability": 0.2144899528018168,
+    "decision": 1
+  },
+  "latency_ms": 4.665916319936514,
+  "environment": "FastAPI TestClient (sandbox, ASGI)",
+  "http_rest_sample": {
+    "monitor_log": "{\"request_id\": \"1465c22766884bf096dfc359069edf2f\", \"timestamp\": \"2025-12-02T20:05:44Z\", \"decision\": 0, \"probability\": 5.4670597225944e-05, \"latency_ms\": 0.146334059553645706, \"owasp_category\": \"BENIGN\", \"atlas_tactic\": null, \"prompt_tokens\": 72.0, \"completion_tokens\": 172.0, \"model_version\": \"logistic_l1.pkl\", \"feature_version\": \"v2025.08.10\", \"record_id\": \"benign_20251123T012753\"}",
+    "request_id": "1465c22766884bf096dfc359069edf2f",
+    "timestamp": "2025-12-02T20:05:44Z",
+    "decision": 0,
+    "probability": 5.4670597225944e-05,
+    "latency_ms": 0.146334059553645706,
+    "owasp_category": "BENIGN",
+    "atlas_tactic": null,
+    "prompt_tokens": 72.0,
+    "completion_tokens": 172.0,
+    "model_version": "logistic_l1.pkl",
+    "feature_version": "v2025.08.10",
+    "record_id": "benign_20251123T012753",
+    "http_status": 200,
+    "response_body": {
+      "probability": 5.4670597225944e-05,
+      "decision": 0
+    },
+    "note": "Captured during uvicorn HTTP replay (concurrency=64, total=1023)."
+  },
+  "http_rest_sample_secondary": {
+    "monitor_log": "{\"request_id\": \"334f697ef961433fb8105fc682ff96fc\", \"timestamp\": \"2025-12-02T20:05:44Z\", \"decision\": 1, \"probability\": 0.9988055993763808, \"latency_ms\": 0.11183414680240128, \"owasp_category\": \"LLM04\", \"atlas_tactic\": \"TA0042\", \"prompt_tokens\": 0.0, \"completion_tokens\": 0.0, \"model_version\": \"logistic_l1.pkl\", \"feature_version\": \"v2025.08.10\", \"record_id\": \"urlhaus_20251121T000000\"}",
+    "request_id": "334f697ef961433fb8105fc682ff96fc",
+    "timestamp": "2025-12-02T20:05:44Z",
+    "decision": 1,
+    "probability": 0.9988055993763808,
+    "latency_ms": 0.11183414680240128,
+    "owasp_category": "LLM04",
+    "atlas_tactic": "TA0042",
+    "prompt_tokens": 0.0,
+    "completion_tokens": 0.0,
+    "model_version": "logistic_l1.pkl",
+    "feature_version": "v2025.08.10",
+    "record_id": "urlhaus_20251121T000000",
+    "http_status": 200,
+    "response_body": {
+      "probability": 0.9988055993763808,
+      "decision": 1
+    },
+    "note": "Second REST sample from uvicorn HTTP replay (concurrency=64, total=1023)."
+  }
+}

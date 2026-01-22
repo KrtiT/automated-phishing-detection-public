@@ -1,0 +1,9 @@
+Dataset,Model,Scenario,Threshold,Accuracy,Precision,Recall,F1,ROC-AUC,Notes
+AI Snapshot (v2025.12.10),Logistic,Default,0.50,0.985200845665962,1.0,0.9421487603305785,0.9702127659574468,1.0,
+AI Snapshot (v2025.12.10),Random Forest,Default,0.50,1.0,1.0,1.0,1.0,1.0,
+AI Snapshot (v2025.12.10),Logistic,Calibrated,0.03,1.0,1.0,1.0,1.0,1.0,
+AI Snapshot (v2025.12.10),Random Forest,Calibrated,0.15,1.0,1.0,1.0,1.0,1.0,
+Public Millions (v2025.public_millions),Logistic,Default,0.50,0.9999194747861345,1.0,0.9984703976965988,0.9992346134798074,0.9998207074410652,"Trained on 200k downsample of 1.69M"
+Public Millions (v2025.public_millions),Random Forest,Default,0.50,0.999976316113569,1.0,0.999550116969588,0.9997750078747244,0.9998476495861076,"Trained on 200k downsample of 1.69M"
+Public Millions (v2025.public_millions),Logistic,Calibrated,0.10,0.9999573690044241,1.0,0.9991902105452583,0.9995949412664836,0.9998207074410652,"Threshold tuned on validation"
+Public Millions (v2025.public_millions),Random Forest,Calibrated,0.02,0.9999857896681413,1.0,0.9997300701817528,0.9998650168728909,0.9998476495861076,"Threshold tuned on validation"

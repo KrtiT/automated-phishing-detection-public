@@ -1,0 +1,21 @@
+record_id,primary_label,secondary_label,secondary_reviewer
+gpt4o_snapshot_20251012_03,phishing,phishing,Krti Tallam
+openphish_20251029_02,phishing,phishing,Krti Tallam
+openphish_20251015_07,phishing,phishing,Krti Tallam
+phishtank_20251020_11,phishing,phishing,Krti Tallam
+telemetry_20251014_req198,phishing,phishing,Krti Tallam
+telemetry_legit_20250918_02,benign,benign,Advisor Proxy
+telemetry_20251003_req120,benign,benign,Advisor Proxy
+gpt4_pilot_2025-09-02T01:50:00Z,benign,benign,Advisor Proxy
+benign_2025-09-29 14:26:43.098882201,benign,benign,Advisor Proxy
+benign_2025-09-06 22:08:33.773000859,benign,benign,Advisor Proxy
+urlhaus_20250901T000000,phishing,phishing,Advisor Proxy
+openphish_20250901T000000,phishing,phishing,Advisor Proxy
+phishtank_20250901T000000,phishing,phishing,Advisor Proxy
+jailbreakbench_20250901T000000,phishing,phishing,Advisor Proxy
+phishtank_20250901T000000,phishing,phishing,Advisor Proxy
+benign_20250901T000000,benign,benign,Krti Tallam
+gpt4_pilot_20250901T000000,benign,benign,Krti Tallam
+gpt4_pilot_20250901T001000,benign,benign,Krti Tallam
+gpt4_pilot_20250901T003000,benign,benign,Krti Tallam
+gpt4_pilot_20250901T004000,benign,benign,Krti Tallam

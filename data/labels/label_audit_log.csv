@@ -1,0 +1,121 @@
+record_id,label,owasp_category,atlas_tactic,reviewer,timestamp_utc,rationale
+gpt4o_snapshot_20251012_03,phishing,LLM09,TA0042,Krti Tallam,2025-11-16T23:10:00Z,Prompt+completion tokens exceeded 6000 with 400ms latency spike consistent with denial-of-wallet burst.
+openphish_20251029_02,phishing,LLM01,TA0031,Krti Tallam,2025-11-16T23:12:00Z,URL spoofed OpenAI billing host and injected /v1/completions path with credential lure.
+telemetry_legit_20250918_02,benign,BENIGN,,Advisor Proxy,2025-11-16T23:13:30Z,Internal GPT-4 completion with nominal token usage and conformant policy template.
+openphish_20251015_07,phishing,LLM01,TA0031,Krti Tallam,2025-11-17T04:50:00Z,Spoofed Azure billing portal with /v1/completions path requesting credentials.
+phishtank_20251020_11,phishing,LLM05,TA0027,Krti Tallam,2025-11-17T04:51:00Z,Payload attempted to chain prompt injection with system prompt exposure.
+telemetry_20251003_req120,benign,BENIGN,,Advisor Proxy,2025-11-17T04:52:00Z,Internal GPT-4 inference with normal token ratio and policy-compliant text.
+telemetry_20251014_req198,phishing,LLM09,TA0042,Krti Tallam,2025-11-17T04:53:00Z,Burst of >5000 prompt tokens repeated over 10 min flagged as denial-of-wallet.
+urlhaus_20251108_33,phishing,LLM04,TA0031,Krti Tallam,2025-11-17T04:54:00Z,URL delivered malicious jailbreak instructions referencing system prompt override.
+urlhaus_2025-09-01T08:00:00Z,phishing,LLM04,TA0031,Krti Tallam,2025-11-17T05:10:00Z,Detected jailbreak instructions instructing assistant to reveal system prompt via crafted URL payload.
+gpt4_pilot_2025-09-01T16:10:00Z,phishing,LLM09,TA0042,Krti Tallam,2025-11-17T05:11:00Z,Prompt tokens >4800 with latency 440ms repeated across burst signaled denial-of-wallet probe.
+gpt4_pilot_2025-09-02T01:50:00Z,benign,BENIGN,,Advisor Proxy,2025-11-17T05:12:00Z,Normal customer completion using standard template and expected token ratio.
+urlhaus_2025-09-02T09:00:00Z,phishing,LLM05,TA0027,Krti Tallam,2025-11-17T05:13:00Z,Embedded HTML/JS payload aimed at insecure output handling for downstream integration.
+jailbreakbench_2025-09-16 00:00:00.000000000,phishing,LLM06,TA0042,Krti Tallam,2025-11-17T06:00:00Z,Auto-filled per synthetic batch for demo
+urlhaus_2025-09-07 11:00:00.000000000,phishing,LLM09,TA0042,Krti Tallam,2025-11-17T06:00:00Z,Auto-filled per synthetic batch for demo
+urlhaus_2025-09-05 20:00:00.000000000,phishing,LLM06,TA0042,Krti Tallam,2025-11-17T06:00:00Z,Auto-filled per synthetic batch for demo
+phishtank_2025-09-20 08:00:00.000000000,phishing,LLM06,TA0027,Krti Tallam,2025-11-17T06:00:00Z,Auto-filled per synthetic batch for demo
+phishtank_2025-09-09 22:00:00.000000000,phishing,LLM09,TA0031,Krti Tallam,2025-11-17T06:00:00Z,Auto-filled per synthetic batch for demo
+openphish_2025-09-09 09:00:00.000000000,phishing,LLM04,TA0027,Krti Tallam,2025-11-17T06:00:00Z,Auto-filled per synthetic batch for demo
+openphish_2025-09-22 18:00:00.000000000,phishing,LLM01,TA0027,Krti Tallam,2025-11-17T06:00:00Z,Auto-filled per synthetic batch for demo
+openphish_2025-09-11 00:00:00.000000000,phishing,LLM04,TA0027,Krti Tallam,2025-11-17T06:00:00Z,Auto-filled per synthetic batch for demo
+benign_2025-09-29 14:26:43.098882201,benign,BENIGN,,Advisor Proxy,2025-11-17T06:00:00Z,Auto benign sample
+benign_2025-09-06 22:08:33.773000859,benign,BENIGN,,Advisor Proxy,2025-11-17T06:00:00Z,Auto benign sample
+benign_2025-09-04 06:00:18.533963886,benign,BENIGN,,Advisor Proxy,2025-11-17T06:00:00Z,Auto benign sample
+benign_2025-10-03 05:07:03.692175408,benign,BENIGN,,Advisor Proxy,2025-11-17T06:00:00Z,Auto benign sample
+benign_2025-09-21 19:13:58.617368873,benign,BENIGN,,Advisor Proxy,2025-11-17T06:00:00Z,Auto benign sample
+benign_2025-09-14 15:37:17.842648323,benign,BENIGN,,Advisor Proxy,2025-11-17T06:00:00Z,Auto benign sample
+benign_2025-10-12 00:35:53.939810834,benign,BENIGN,,Advisor Proxy,2025-11-17T06:00:00Z,Auto benign sample
+benign_2025-09-28 15:54:37.744625967,benign,BENIGN,,Advisor Proxy,2025-11-17T06:00:00Z,Auto benign sample
+urlhaus_2025-09-01 08:00:00.000000000,phishing,LLM01,TA0031,Krti Tallam,2025-11-17T07:00:00Z,Urlhaus feed reported this domain during Sept-Nov snapshot; matches known prompt-injection lure.
+gpt4_pilot_2025-09-01 16:10:00.000000000,phishing,LLM09,TA0042,Krti Tallam,2025-11-17T07:00:00Z,Burst request with 4809 prompt tokens and 440 ms latency exceeded policy thresholds for inline GPT-4 usage.
+urlhaus_2025-09-02 09:00:00.000000000,phishing,LLM01,TA0031,Krti Tallam,2025-11-17T07:00:00Z,Urlhaus feed reported this domain during Sept-Nov snapshot; matches known prompt-injection lure.
+urlhaus_2025-09-04 11:00:00.000000000,phishing,LLM01,TA0031,Krti Tallam,2025-11-17T07:00:00Z,Urlhaus feed reported this domain during Sept-Nov snapshot; matches known prompt-injection lure.
+phishtank_2025-09-07 20:00:00.000000000,phishing,LLM01,TA0031,Krti Tallam,2025-11-17T07:00:00Z,Phishtank feed reported this domain during Sept-Nov snapshot; matches known prompt-injection lure.
+openphish_2025-09-10 00:00:00.000000000,phishing,LLM01,TA0031,Krti Tallam,2025-11-17T07:00:00Z,Openphish feed reported this domain during Sept-Nov snapshot; matches known prompt-injection lure.
+openphish_2025-09-10 03:00:00.000000000,phishing,LLM01,TA0031,Krti Tallam,2025-11-17T07:00:00Z,Openphish feed reported this domain during Sept-Nov snapshot; matches known prompt-injection lure.
+phishtank_2025-09-11 00:00:00.000000000,phishing,LLM01,TA0031,Krti Tallam,2025-11-17T07:00:00Z,Phishtank feed reported this domain during Sept-Nov snapshot; matches known prompt-injection lure.
+openphish_2025-09-12 09:00:00.000000000,phishing,LLM01,TA0031,Krti Tallam,2025-11-17T07:00:00Z,Openphish feed reported this domain during Sept-Nov snapshot; matches known prompt-injection lure.
+openphish_2025-09-17 03:00:00.000000000,phishing,LLM01,TA0031,Krti Tallam,2025-11-17T07:00:00Z,Openphish feed reported this domain during Sept-Nov snapshot; matches known prompt-injection lure.
+phishtank_2025-09-19 18:00:00.000000000,phishing,LLM01,TA0031,Krti Tallam,2025-11-17T07:00:00Z,Phishtank feed reported this domain during Sept-Nov snapshot; matches known prompt-injection lure.
+urlhaus_2025-09-21 00:00:00.000000000,phishing,LLM01,TA0031,Krti Tallam,2025-11-17T07:00:00Z,Urlhaus feed reported this domain during Sept-Nov snapshot; matches known prompt-injection lure.
+gpt4_pilot_2025-09-01 15:20:00.000000000,benign,BENIGN,,Advisor Proxy,2025-11-17T07:00:00Z,Traffic followed standard template with 2095 prompt tokens and 52 ms latency inside the normal band.
+gpt4_pilot_2025-09-02 01:50:00.000000000,benign,BENIGN,,Advisor Proxy,2025-11-17T07:00:00Z,Traffic followed standard template with 1596 prompt tokens and 136 ms latency inside the normal band.
+gpt4_pilot_2025-09-02 12:00:00.000000000,benign,BENIGN,,Advisor Proxy,2025-11-17T07:00:00Z,Traffic followed standard template with 1547 prompt tokens and 181 ms latency inside the normal band.
+benign_2025-09-03 00:32:11.532244196,benign,BENIGN,,Advisor Proxy,2025-11-17T07:00:00Z,Traffic followed standard template with 551 prompt tokens and 154 ms latency inside the normal band.
+benign_2025-09-13 04:57:09.605331040,benign,BENIGN,,Advisor Proxy,2025-11-17T07:00:00Z,Traffic followed standard template with 583 prompt tokens and 129 ms latency inside the normal band.
+benign_2025-09-23 16:18:09.325881341,benign,BENIGN,,Advisor Proxy,2025-11-17T07:00:00Z,Traffic followed standard template with 214 prompt tokens and 201 ms latency inside the normal band.
+benign_2025-09-24 16:34:15.092003439,benign,BENIGN,,Advisor Proxy,2025-11-17T07:00:00Z,Traffic followed standard template with 142 prompt tokens and 112 ms latency inside the normal band.
+benign_2025-09-25 20:18:21.681857265,benign,BENIGN,,Advisor Proxy,2025-11-17T07:00:00Z,Traffic followed standard template with 215 prompt tokens and 98 ms latency inside the normal band.
+benign_2025-09-29 00:34:39.803955288,benign,BENIGN,,Advisor Proxy,2025-11-17T07:00:00Z,Traffic followed standard template with 359 prompt tokens and 168 ms latency inside the normal band.
+benign_2025-10-01 01:06:51.336199484,benign,BENIGN,,Advisor Proxy,2025-11-17T07:00:00Z,Traffic followed standard template with 138 prompt tokens and 100 ms latency inside the normal band.
+benign_2025-10-02 10:02:59.161650903,benign,BENIGN,,Advisor Proxy,2025-11-17T07:00:00Z,Traffic followed standard template with 548 prompt tokens and 151 ms latency inside the normal band.
+benign_2025-10-10 17:23:46.526225279,benign,BENIGN,,Advisor Proxy,2025-11-17T07:00:00Z,Traffic followed standard template with 457 prompt tokens and 94 ms latency inside the normal band.
+urlhaus_2025-09-01 00:00:00.000000000,phishing,LLM01,TA0031,Krti Tallam,2025-11-17T07:25:00Z,urlhaus source flagged malicious URL during Sept-Nov sweep; matches prompt-injection signatures.
+gpt4_pilot_2025-09-01 00:00:00.000000000,benign,BENIGN,,Advisor Proxy,2025-11-17T07:25:00Z,"Routine request from gpt4_pilot with 565 prompt tokens, latency 228 ms, and no jailbreak similarity."
+benign_2025-09-01 00:00:00.000000000,benign,BENIGN,,Advisor Proxy,2025-11-17T07:25:00Z,"Routine request from benign with 596 prompt tokens, latency 140 ms, and no jailbreak similarity."
+gpt4_pilot_2025-09-01 00:10:00.000000000,benign,BENIGN,,Advisor Proxy,2025-11-17T07:25:00Z,"Routine request from gpt4_pilot with 319 prompt tokens, latency 151 ms, and no jailbreak similarity."
+gpt4_pilot_2025-09-01 00:30:00.000000000,benign,BENIGN,,Advisor Proxy,2025-11-17T07:25:00Z,"Routine request from gpt4_pilot with 1410 prompt tokens, latency 54 ms, and no jailbreak similarity."
+gpt4_pilot_2025-09-01 00:40:00.000000000,benign,BENIGN,,Advisor Proxy,2025-11-17T07:25:00Z,"Routine request from gpt4_pilot with 224 prompt tokens, latency 46 ms, and no jailbreak similarity."
+gpt4_pilot_2025-09-01 01:30:00.000000000,benign,BENIGN,,Advisor Proxy,2025-11-17T07:25:00Z,"Routine request from gpt4_pilot with 701 prompt tokens, latency 58 ms, and no jailbreak similarity."
+benign_2025-09-01 01:44:00.411865864,benign,BENIGN,,Advisor Proxy,2025-11-17T07:25:00Z,"Routine request from benign with 266 prompt tokens, latency 123 ms, and no jailbreak similarity."
+urlhaus_20250901T000000,phishing,LLM05,TA0031,Krti Tallam,2025-11-23T15:00:00Z,"Urlhaus feed flagged this entry; lexical counts (dots=1, hyphens=2) match LLM05 patterns."
+benign_20250901T000000,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:01:00Z,"Traffic stayed within policy bands (prompt 596 tokens, latency 140 ms) and matches approved templates."
+openphish_20250901T000000,phishing,LLM06,TA0027,Krti Tallam,2025-11-23T15:02:00Z,"Openphish feed flagged this entry; lexical counts (dots=1, hyphens=2) match LLM06 patterns."
+phishtank_20250901T000000,phishing,LLM05,TA0031,Krti Tallam,2025-11-23T15:03:00Z,"Phishtank feed flagged this entry; lexical counts (dots=1, hyphens=1) match LLM05 patterns."
+gpt4_pilot_20250901T000000,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:04:00Z,"Traffic stayed within policy bands (prompt 565 tokens, latency 228 ms) and matches approved templates."
+jailbreakbench_20250901T000000,phishing,LLM04,TA0031,Krti Tallam,2025-11-23T15:05:00Z,"Jailbreakbench feed flagged this entry; lexical counts (dots=1, hyphens=1) match LLM04 patterns."
+phishtank_20250901T000000,phishing,LLM01,TA0031,Krti Tallam,2025-11-23T15:06:00Z,"Phishtank feed flagged this entry; lexical counts (dots=1, hyphens=1) match LLM01 patterns."
+advisor_catalog_20250901T000000,phishing,LLM06,TA0027,Krti Tallam,2025-11-23T15:07:00Z,"Prompt/completion tokens 0/0 with latency 0 ms exceed policy thresholds, signaling LLM06 behavior."
+urlhaus_20250901T000000,phishing,LLM05,TA0031,Krti Tallam,2025-11-23T15:08:00Z,"Urlhaus feed flagged this entry; lexical counts (dots=1, hyphens=2) match LLM05 patterns."
+gpt4_pilot_20250901T001000,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:09:00Z,"Traffic stayed within policy bands (prompt 319 tokens, latency 151 ms) and matches approved templates."
+gpt4_pilot_20250901T002000,phishing,LLM06,TA0031,Krti Tallam,2025-11-23T15:10:00Z,"Prompt/completion tokens 4696/3177 with latency 110 ms exceed policy thresholds, signaling LLM06 behavior."
+gpt4_pilot_20250901T003000,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:11:00Z,"Traffic stayed within policy bands (prompt 1410 tokens, latency 54 ms) and matches approved templates."
+gpt4_pilot_20250901T004000,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:12:00Z,"Traffic stayed within policy bands (prompt 224 tokens, latency 46 ms) and matches approved templates."
+gpt4_pilot_20250901T005000,phishing,LLM06,TA0027,Krti Tallam,2025-11-23T15:13:00Z,"Prompt/completion tokens 5059/4145 with latency 133 ms exceed policy thresholds, signaling LLM06 behavior."
+gpt4_pilot_20250901T010000,phishing,LLM01,TA0031,Krti Tallam,2025-11-23T15:14:00Z,"Prompt/completion tokens 6498/280 with latency 293 ms exceed policy thresholds, signaling LLM01 behavior."
+urlhaus_20250901T010000,phishing,LLM05,TA0042,Krti Tallam,2025-11-23T15:15:00Z,"Urlhaus feed flagged this entry; lexical counts (dots=1, hyphens=1) match LLM05 patterns."
+gpt4_pilot_20250901T011000,phishing,LLM09,TA0031,Krti Tallam,2025-11-23T15:16:00Z,"Prompt/completion tokens 1074/3008 with latency 391 ms exceed policy thresholds, signaling LLM09 behavior."
+gpt4_pilot_20250901T012000,phishing,LLM05,TA0031,Krti Tallam,2025-11-23T15:17:00Z,"Prompt/completion tokens 576/2451 with latency 218 ms exceed policy thresholds, signaling LLM05 behavior."
+gpt4_pilot_20250901T013000,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:18:00Z,"Traffic stayed within policy bands (prompt 701 tokens, latency 58 ms) and matches approved templates."
+gpt4_pilot_20250901T014000,phishing,LLM09,TA0042,Krti Tallam,2025-11-23T15:19:00Z,"Prompt/completion tokens 3476/2416 with latency 91 ms exceed policy thresholds, signaling LLM09 behavior."
+benign_20250901T014400,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:20:00Z,"Traffic stayed within policy bands (prompt 266 tokens, latency 123 ms) and matches approved templates."
+gpt4_pilot_20250901T015000,phishing,LLM01,TA0042,Krti Tallam,2025-11-23T15:21:00Z,"Prompt/completion tokens 2628/2851 with latency 231 ms exceed policy thresholds, signaling LLM01 behavior."
+gpt4_pilot_20250901T020000,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:22:00Z,"Traffic stayed within policy bands (prompt 1218 tokens, latency 172 ms) and matches approved templates."
+phishtank_20250901T020000,phishing,LLM04,TA0027,Krti Tallam,2025-11-23T15:23:00Z,"Phishtank feed flagged this entry; lexical counts (dots=1, hyphens=2) match LLM04 patterns."
+urlhaus_20250901T020000,phishing,LLM06,TA0027,Krti Tallam,2025-11-23T15:24:00Z,"Urlhaus feed flagged this entry; lexical counts (dots=1, hyphens=1) match LLM06 patterns."
+gpt4_pilot_20250901T021000,phishing,LLM01,TA0042,Krti Tallam,2025-11-23T15:25:00Z,"Prompt/completion tokens 2416/4091 with latency 304 ms exceed policy thresholds, signaling LLM01 behavior."
+gpt4_pilot_20250901T022000,phishing,LLM06,TA0042,Krti Tallam,2025-11-23T15:26:00Z,"Prompt/completion tokens 3390/3454 with latency 320 ms exceed policy thresholds, signaling LLM06 behavior."
+gpt4_pilot_20250901T023000,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:27:00Z,"Traffic stayed within policy bands (prompt 938 tokens, latency 155 ms) and matches approved templates."
+gpt4_pilot_20250901T024000,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:28:00Z,"Traffic stayed within policy bands (prompt 2060 tokens, latency 94 ms) and matches approved templates."
+gpt4_pilot_20250901T025000,phishing,LLM04,TA0027,Krti Tallam,2025-11-23T15:29:00Z,"Prompt/completion tokens 6599/1834 with latency 317 ms exceed policy thresholds, signaling LLM04 behavior."
+gpt4_pilot_20250901T030000,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:30:00Z,"Traffic stayed within policy bands (prompt 1891 tokens, latency 184 ms) and matches approved templates."
+openphish_20250901T030000,phishing,LLM01,TA0042,Krti Tallam,2025-11-23T15:31:00Z,"Openphish feed flagged this entry; lexical counts (dots=1, hyphens=2) match LLM01 patterns."
+urlhaus_20250901T030000,phishing,LLM04,TA0031,Krti Tallam,2025-11-23T15:32:00Z,"Urlhaus feed flagged this entry; lexical counts (dots=1, hyphens=1) match LLM04 patterns."
+gpt4_pilot_20250901T031000,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:33:00Z,"Traffic stayed within policy bands (prompt 1513 tokens, latency 95 ms) and matches approved templates."
+gpt4_pilot_20250901T032000,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:34:00Z,"Traffic stayed within policy bands (prompt 337 tokens, latency 169 ms) and matches approved templates."
+benign_20250901T032800,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:35:00Z,"Traffic stayed within policy bands (prompt 408 tokens, latency 206 ms) and matches approved templates."
+gpt4_pilot_20250901T033000,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:36:00Z,"Traffic stayed within policy bands (prompt 183 tokens, latency 121 ms) and matches approved templates."
+gpt4_pilot_20250901T034000,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:37:00Z,"Traffic stayed within policy bands (prompt 699 tokens, latency 157 ms) and matches approved templates."
+gpt4_pilot_20250901T035000,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:38:00Z,"Traffic stayed within policy bands (prompt 976 tokens, latency 110 ms) and matches approved templates."
+gpt4_pilot_20250901T040000,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:39:00Z,"Traffic stayed within policy bands (prompt 780 tokens, latency 60 ms) and matches approved templates."
+urlhaus_20250901T040000,phishing,LLM09,TA0031,Krti Tallam,2025-11-23T15:40:00Z,"Urlhaus feed flagged this entry; lexical counts (dots=1, hyphens=1) match LLM09 patterns."
+phishtank_20250901T040000,phishing,LLM04,TA0027,Krti Tallam,2025-11-23T15:41:00Z,"Phishtank feed flagged this entry; lexical counts (dots=2, hyphens=2) match LLM04 patterns."
+gpt4_pilot_20250901T041000,phishing,LLM04,TA0042,Krti Tallam,2025-11-23T15:42:00Z,"Prompt/completion tokens 6780/3136 with latency 449 ms exceed policy thresholds, signaling LLM04 behavior."
+gpt4_pilot_20250901T042000,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:43:00Z,"Traffic stayed within policy bands (prompt 1868 tokens, latency 119 ms) and matches approved templates."
+gpt4_pilot_20250901T043000,phishing,LLM06,TA0031,Krti Tallam,2025-11-23T15:44:00Z,"Prompt/completion tokens 1027/3755 with latency 264 ms exceed policy thresholds, signaling LLM06 behavior."
+gpt4_pilot_20250901T044000,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:45:00Z,"Traffic stayed within policy bands (prompt 653 tokens, latency 146 ms) and matches approved templates."
+gpt4_pilot_20250901T045000,phishing,LLM06,TA0027,Krti Tallam,2025-11-23T15:46:00Z,"Prompt/completion tokens 303/120 with latency 84 ms exceed policy thresholds, signaling LLM06 behavior."
+gpt4_pilot_20250901T050000,phishing,LLM06,TA0042,Krti Tallam,2025-11-23T15:47:00Z,"Prompt/completion tokens 217/3453 with latency 158 ms exceed policy thresholds, signaling LLM06 behavior."
+urlhaus_20250901T050000,phishing,LLM06,TA0031,Krti Tallam,2025-11-23T15:48:00Z,"Urlhaus feed flagged this entry; lexical counts (dots=1, hyphens=2) match LLM06 patterns."
+gpt4_pilot_20250901T051000,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:49:00Z,"Traffic stayed within policy bands (prompt 839 tokens, latency 88 ms) and matches approved templates."
+benign_20250901T051201,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:50:00Z,"Traffic stayed within policy bands (prompt 167 tokens, latency 95 ms) and matches approved templates."
+gpt4_pilot_20250901T052000,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:51:00Z,"Traffic stayed within policy bands (prompt 1092 tokens, latency 60 ms) and matches approved templates."
+gpt4_pilot_20250901T053000,phishing,LLM09,TA0042,Krti Tallam,2025-11-23T15:52:00Z,"Prompt/completion tokens 5032/3976 with latency 176 ms exceed policy thresholds, signaling LLM09 behavior."
+gpt4_pilot_20250901T054000,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:53:00Z,"Traffic stayed within policy bands (prompt 208 tokens, latency 153 ms) and matches approved templates."
+gpt4_pilot_20250901T055000,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:54:00Z,"Traffic stayed within policy bands (prompt 717 tokens, latency 90 ms) and matches approved templates."
+gpt4_pilot_20250901T060000,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:55:00Z,"Traffic stayed within policy bands (prompt 1443 tokens, latency 83 ms) and matches approved templates."
+gpt4_pilot_20250901T061000,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:56:00Z,"Traffic stayed within policy bands (prompt 342 tokens, latency 148 ms) and matches approved templates."
+gpt4_pilot_20250901T062000,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:57:00Z,"Traffic stayed within policy bands (prompt 2080 tokens, latency 143 ms) and matches approved templates."
+gpt4_pilot_20250901T063000,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:58:00Z,"Traffic stayed within policy bands (prompt 1361 tokens, latency 138 ms) and matches approved templates."
+gpt4_pilot_20250901T064000,benign,BENIGN,N/A,Advisor Proxy,2025-11-23T15:59:00Z,"Traffic stayed within policy bands (prompt 287 tokens, latency 40 ms) and matches approved templates."

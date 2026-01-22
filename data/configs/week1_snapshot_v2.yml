@@ -1,0 +1,60 @@
+snapshot_id: week1_2025_12_10
+freeze_date: "2025-12-10T23:59:00Z"
+window:
+  start: "2025-09-01T00:00:00Z"
+  end: "2025-11-23T23:59:59Z"
+splits:
+  train:
+    start: "2025-09-01T00:00:00Z"
+    end: "2025-10-12T23:59:59Z"
+  validation:
+    start: "2025-10-13T00:00:00Z"
+    end: "2025-11-02T23:59:59Z"
+  test:
+    start: "2025-11-03T00:00:00Z"
+    end: "2025-11-23T23:59:59Z"
+sources:
+  gpt4_pilot:
+    type: telemetry
+    description: "GPT-4/GPT-4o production inference logs (token counts, latency, auth context)"
+    snapshot_file: "data/raw/telemetry/gpt4o_snapshot.csv"
+  openphish:
+    type: feed
+    url: "https://openphish.com/feed.txt"
+    snapshot_file: "data/raw/openphish/openphish_2025-11-20.csv"
+  phishtank:
+    type: feed
+    url: "http://data.phishtank.com/data/online-valid.json"
+    snapshot_file: "data/raw/phishtank/phishtank_verified_2025-11-25.json"
+  urlhaus:
+    type: feed
+    url: "https://urlhaus.abuse.ch/downloads/csv_recent/"
+    snapshot_file: "data/raw/urlhaus/urlhaus_recent_2025-11-25.csv"
+  honeypot_batch2:
+    type: feed
+    description: "Internal honeypot-triggered phishing harvest (Sept–Nov 2025)"
+    snapshot_file: "data/raw/honeypot/honeypot_batch2.csv"
+  jailbreakbench:
+    type: jailbreak_reference
+    version: "0.4"
+    snapshot_file: "data/raw/jailbreak/jailbreakbench_v0.4_prompts.jsonl"
+  advisor_catalog:
+    type: adversarial_prompts
+    snapshot_file: "data/raw/redteam/advisor_redteam_batch3.jsonl"
+label_policy:
+  taxonomy:
+    owasp: "LLM01, LLM04, LLM05, LLM06, LLM09"
+    mitre_atlas: ["TA0042", "TA0031", "TA0027"]
+    nist_airmf: ["MAP", "MEASURE", "MANAGE", "GOVERN"]
+  annotation_log: "data/labels/label_audit_log.csv"
+  reviewers:
+    - name: "Krti Tallam"
+      role: "Primary annotator"
+    - name: "Advisor Proxy"
+      role: "Secondary QA"
+output:
+  processed_dir: "data/processed/v2025.12.10"
+  train_file: "train_data.csv"
+  val_file: "val_data.csv"
+  test_file: "test_data.csv"
+  stats_file: "data/processed/v2025.12.10/dataset_stats.json"

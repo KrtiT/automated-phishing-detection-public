@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+title: "Automated Phishing Detection for Frontier AI Inference"
+message: "If you use this software, please cite it as below."
+type: software
+authors:
+  - family-names: Tallam
+    given-names: Krti
+version: "v2026.05"
+date-released: 2026-05-01
+url: "https://github.com/KrtiT/automated-phishing-detection"
+license: MIT
+preferred-citation:
+  type: report
+  title: "Automated Phishing Detection for Frontier AI Inference"
+  authors:
+    - family-names: Tallam
+      given-names: Krti
+  year: 2026
+  url: "https://github.com/KrtiT/automated-phishing-detection"
+  version: "v2026.05"

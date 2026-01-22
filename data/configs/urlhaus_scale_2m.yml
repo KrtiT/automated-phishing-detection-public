@@ -1,0 +1,43 @@
+snapshot_id: urlhaus_scale_2m
+freeze_date: "2025-12-16T22:39:07Z"
+window:
+  start: "2018-01-01T00:00:00Z"
+  end: "2025-12-16T23:59:59Z"
+splits:
+  train:
+    start: "2018-01-01T00:00:00Z"
+    end: "2024-12-31T23:59:59Z"
+  validation:
+    start: "2025-01-01T00:00:00Z"
+    end: "2025-06-30T23:59:59Z"
+  test:
+    start: "2025-07-01T00:00:00Z"
+    end: "2025-12-16T23:59:59Z"
+sources:
+  urlhaus_full:
+    type: feed
+    description: "URLhaus full historical feed (public)"
+    snapshot_file: "data/raw/urlhaus/csv.txt"
+    streaming: true
+    chunk_size: 500000
+    column_names: ["id", "dateadded", "url", "url_status", "takedown_time", "threat", "malware_family", "urlhaus_link", "reporter"]
+label_policy:
+  taxonomy:
+    owasp: "LLM01, LLM04, LLM05, LLM06, LLM09"
+    mitre_atlas: ["TA0042", "TA0031", "TA0027"]
+output:
+  processed_dir: "data/processed/v2025.urlhaus_2m"
+  train_file: "train_data.csv"
+  val_file: "val_data.csv"
+  test_file: "test_data.csv"
+  stats_file: "data/processed/v2025.urlhaus_2m/dataset_stats.json"
+max_rows: 2000000
+benign_multiplier: 1.0
+label_provenance: "URLhaus feed labels preserved as published; no relabeling or manual overrides applied."
+feature_profile: url_only
+
+training:
+  use_smote: false
+  logistic_penalty: "l2"
+  logistic_max_iter: 2000
+  rf_max_train_rows: 200000

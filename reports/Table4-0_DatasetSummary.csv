@@ -1,0 +1,3 @@
+Dataset,Config,Train,Validation,Test,Total,Split Mode,Notes
+AI Snapshot (v2025.12.10),data/configs/week1_snapshot_v2.yml,1901,442,473,2816,time,"AI inference snapshot window; mixed telemetry + public feeds + honeypot"
+Public Millions (v2025.public_millions),data/configs/public_millions_urlhaus_umbrella_majestic.yml,1688906,211113,211114,2111133,random,"URLhaus (malicious) + Umbrella Top 1M + Majestic Million (benign); URL-only features"

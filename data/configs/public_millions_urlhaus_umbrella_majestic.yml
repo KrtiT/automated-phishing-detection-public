@@ -1,0 +1,68 @@
+snapshot_id: public_millions_urlhaus_umbrella_majestic
+freeze_date: "2025-12-16T22:39:07Z"
+window:
+  start: "2018-01-01T00:00:00Z"
+  end: "2025-12-16T23:59:59Z"
+splits:
+  train:
+    start: "2018-01-01T00:00:00Z"
+    end: "2025-06-30T23:59:59Z"
+  validation:
+    start: "2025-07-01T00:00:00Z"
+    end: "2025-09-30T23:59:59Z"
+  test:
+    start: "2025-10-01T00:00:00Z"
+    end: "2025-12-16T23:59:59Z"
+split_mode: random
+split_ratios:
+  train: 0.8
+  validation: 0.1
+  test: 0.1
+sources:
+  urlhaus_full:
+    type: feed
+    description: "URLhaus public malicious URL feed"
+    snapshot_file: "data/raw/urlhaus/csv.txt"
+    streaming: true
+    chunk_size: 500000
+    column_names: ["id", "dateadded", "url", "url_status", "takedown_time", "threat", "malware_family", "urlhaus_link", "reporter"]
+    default_label: 1
+    augment_ai_endpoints: true
+  umbrella_top1m:
+    type: feed
+    description: "Cisco Umbrella Top 1M domains (benign)"
+    snapshot_file: "data/raw/benign/top-1m.csv"
+    streaming: true
+    chunk_size: 500000
+    column_names: ["rank", "domain"]
+    domain_column: "domain"
+    url_template: "https://{domain}/"
+    default_label: 0
+    augment_ai_endpoints: false
+    fill_missing_timestamps: false
+  majestic_million:
+    type: feed
+    description: "Majestic Million domains (benign)"
+    snapshot_file: "data/raw/benign/majestic_million.csv"
+    domain_column: "domain"
+    url_template: "https://{domain}/"
+    default_label: 0
+    augment_ai_endpoints: false
+    fill_missing_timestamps: false
+output:
+  processed_dir: "data/processed/v2025.public_millions"
+  train_file: "train_data.csv"
+  val_file: "val_data.csv"
+  test_file: "test_data.csv"
+  stats_file: "data/processed/v2025.public_millions/dataset_stats.json"
+max_rows: null
+benign_multiplier: 0.0
+label_provenance: "URLhaus malicious labels and Umbrella/Majestic domain lists treated as benign; no relabeling applied."
+feature_profile: url_only
+
+training:
+  use_smote: false
+  logistic_penalty: "l2"
+  logistic_max_iter: 2000
+  logistic_max_train_rows: 200000
+  rf_max_train_rows: 200000

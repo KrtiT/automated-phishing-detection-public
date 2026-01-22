@@ -1,0 +1,25 @@
+.DS_Store
+__pycache__/
+.pytest_cache/
+*.pyc
+*.pkl
+*.joblib
+
+# Generated stats at repo root
+dataset_stats.json
+
+# Local / large raw datasets (re-downloadable)
+data/raw/*
+!data/raw/README.md
+
+# Large processed artifacts (regeneratable)
+data/processed/*
+!data/processed/README.md
+
+# Model artifacts
+code/models/
+code/*.pkl
+code/*.joblib
+
+# Manuscript drafts
+THESIS_DOCUMENTS/

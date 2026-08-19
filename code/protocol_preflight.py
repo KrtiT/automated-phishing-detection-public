@@ -7,6 +7,10 @@ class PreflightError(ValueError):
     pass
 
 
+REQUIRED_RECORD_FIELDS = frozenset({"record_id", "url", "label", "split"})
+VALID_SPLITS = ("train", "validation", "test")
+
+
 @dataclass(frozen=True)
 class SuffixRules:
     exact: frozenset[str]
@@ -126,3 +130,69 @@ def registrable_domain(hostname: str, rules: SuffixRules) -> str:
 
 def registrable_domain_for_url(url: str, rules: SuffixRules) -> str:
     return registrable_domain(normalize_hostname(url), rules)
+
+
+def _validated_record(record: object) -> tuple[str, str, int, str]:
+    if not isinstance(record, dict) or set(record) != REQUIRED_RECORD_FIELDS:
+        raise PreflightError("record fields must be exactly record_id, url, label, split")
+    record_id, url = record["record_id"], record["url"]
+    label, split = record["label"], record["split"]
+    if not isinstance(record_id, str) or not record_id:
+        raise PreflightError("record_id must be a nonempty string")
+    if not isinstance(url, str) or not url:
+        raise PreflightError("url must be a nonempty string")
+    if type(label) is not int or label not in (0, 1):
+        raise PreflightError("label must be integer 0 or 1")
+    if split not in VALID_SPLITS:
+        raise PreflightError("split must be train, validation, or test")
+    return record_id, url, label, split
+
+
+def _check_record_history(record_id, url, label, record_ids, url_labels):
+    if record_id in record_ids:
+        raise PreflightError("duplicate record_id")
+    record_ids.add(record_id)
+    if url in url_labels:
+        if url_labels[url] != label:
+            raise PreflightError("label conflict for url")
+        raise PreflightError("duplicate url")
+    url_labels[url] = label
+
+
+def _summary(record_count, domain_splits, split_records, split_domains):
+    return {
+        "status": "valid",
+        "record_count": record_count,
+        "registrable_domain_count": len(domain_splits),
+        "splits": {
+            split: {
+                "record_count": split_records[split],
+                "registrable_domain_count": len(split_domains[split]),
+            }
+            for split in VALID_SPLITS
+        },
+    }
+
+
+def validate_manifest(manifest: object, rules: SuffixRules) -> dict:
+    if not isinstance(manifest, dict):
+        raise PreflightError("manifest must be an object")
+    if type(manifest.get("schema_version")) is not int or manifest["schema_version"] != 1:
+        raise PreflightError("schema_version must be 1")
+    records = manifest.get("records")
+    if not isinstance(records, list):
+        raise PreflightError("records must be a list")
+
+    record_ids, url_labels, domain_splits = set(), {}, {}
+    split_records = {split: 0 for split in VALID_SPLITS}
+    split_domains = {split: set() for split in VALID_SPLITS}
+    for record in records:
+        record_id, url, label, split = _validated_record(record)
+        _check_record_history(record_id, url, label, record_ids, url_labels)
+        domain = registrable_domain_for_url(url, rules)
+        if domain in domain_splits and domain_splits[domain] != split:
+            raise PreflightError(f"domain {domain} appears in multiple splits")
+        domain_splits[domain] = split
+        split_records[split] += 1
+        split_domains[split].add(domain)
+    return _summary(len(records), domain_splits, split_records, split_domains)

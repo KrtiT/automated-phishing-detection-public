@@ -127,6 +127,7 @@ def test_rejects_ip_literal():
         pytest.param("https://127.1/", id="short-dotted-decimal"),
         pytest.param("https://0177.0.0.1/", id="leading-zero"),
         pytest.param("https://0x7f.1/", id="hexadecimal"),
+        pytest.param("https://0x.1/", id="empty-hexadecimal-number"),
     ],
 )
 def test_rejects_browser_style_ipv4_hostnames(url):

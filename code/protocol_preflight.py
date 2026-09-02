@@ -69,9 +69,7 @@ def _ascii_domain(hostname: str) -> str:
 def _is_browser_ipv4_number(part: str) -> bool:
     if part.startswith("0x"):
         digits = part[2:]
-        return bool(digits) and all(
-            character in HEXADECIMAL_CHARACTERS for character in digits
-        )
+        return all(character in HEXADECIMAL_CHARACTERS for character in digits)
     return part.isdigit()
 
 

@@ -11,8 +11,8 @@ The complete v2 snapshot is preserved by the local tag
 tracked data documentation, configuration, and labeling records, tests, and
 selected documents and reports now live under [`legacy/v2/`](legacy/v2/).
 The tag remains the complete v2 snapshot. The top-level `code/` and `tests/`
-contain prospective synthetic protocol preflight work, not confirmatory v3
-evidence.
+contain prospective synthetic protocol preflight and proposed label-contract
+checks, not confirmatory v3 evidence.
 
 The prospective scope and approval status are tracked in the
 [2026-08-16 realignment matrix](docs/advisor-approval/2026-08-16-realignment-matrix.md).

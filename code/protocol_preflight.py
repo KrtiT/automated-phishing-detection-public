@@ -15,6 +15,7 @@ class PreflightError(ValueError):
 REQUIRED_RECORD_FIELDS = frozenset({"record_id", "url", "label", "split"})
 VALID_SPLITS = ("train", "validation", "test")
 ASCII_LABEL_CHARACTERS = frozenset("abcdefghijklmnopqrstuvwxyz0123456789-")
+HEXADECIMAL_CHARACTERS = frozenset("0123456789abcdef")
 
 
 @dataclass(frozen=True)
@@ -65,10 +66,22 @@ def _ascii_domain(hostname: str) -> str:
     return domain
 
 
+def _is_browser_ipv4_number(part: str) -> bool:
+    if part.startswith("0x"):
+        digits = part[2:]
+        return bool(digits) and all(
+            character in HEXADECIMAL_CHARACTERS for character in digits
+        )
+    return part.isdigit()
+
+
 def _reject_ip_literal(domain: str) -> None:
     try:
         ipaddress.ip_address(domain)
     except ValueError:
+        parts = domain.split(".")
+        if len(parts) <= 4 and all(_is_browser_ipv4_number(part) for part in parts):
+            raise PreflightError("IP-literal hostnames are not supported")
         return
     raise PreflightError("IP-literal hostnames are not supported")
 
@@ -78,6 +91,8 @@ def normalize_hostname(url: str) -> str:
         raise PreflightError("URL must be a nonempty string")
     if any(character in "\t\r\n" for character in url):
         raise PreflightError("URL contains a prohibited control character")
+    if "\\" in url:
+        raise PreflightError("URL contains a prohibited backslash")
     try:
         parsed = urlsplit(url)
         hostname = parsed.hostname
@@ -228,6 +243,15 @@ def validate_manifest(manifest: object, rules: SuffixRules) -> dict:
     return _summary(len(records), domain_splits, split_records, split_domains)
 
 
+def _object_without_duplicate_keys(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise PreflightError("duplicate JSON key")
+        result[key] = value
+    return result
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="Validate a synthetic split manifest.")
     parser.add_argument("--manifest", required=True, type=Path)
@@ -237,7 +261,10 @@ def main(argv=None) -> int:
     try:
         manifest_bytes = args.manifest.read_bytes()
         suffix_rules_bytes = args.suffix_rules.read_bytes()
-        manifest = json.loads(manifest_bytes.decode("utf-8"))
+        manifest = json.loads(
+            manifest_bytes.decode("utf-8"),
+            object_pairs_hook=_object_without_duplicate_keys,
+        )
         rules = parse_suffix_rules(suffix_rules_bytes.decode("utf-8"))
         summary = validate_manifest(manifest, rules)
     except (OSError, UnicodeError, json.JSONDecodeError, PreflightError) as exc:

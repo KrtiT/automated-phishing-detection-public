@@ -151,6 +151,31 @@ def test_cli_reports_input_errors_on_one_stderr_line(
     assert error_fragment in completed.stderr
 
 
+@pytest.mark.parametrize(
+    "manifest_bytes",
+    [
+        pytest.param(
+            b'{"schema_version":1,"schema_version":1,"records":[]}',
+            id="top-level",
+        ),
+        pytest.param(
+            b'{"schema_version":1,"records":[{"record_id":"one",'
+            b'"url":"https://one.example.com","label":0,"label":0,'
+            b'"split":"train"}]}',
+            id="record",
+        ),
+    ],
+)
+def test_cli_rejects_duplicate_json_keys(tmp_path, manifest_bytes):
+    manifest_path, suffix_rules_path = _write_inputs(tmp_path, manifest_bytes)
+
+    completed = _run_preflight(tmp_path, manifest_path, suffix_rules_path)
+
+    assert completed.returncode == 2
+    assert completed.stdout == b""
+    assert b"duplicate JSON key" in completed.stderr
+
+
 def test_cli_creates_no_output_artifact(tmp_path):
     manifest_bytes = _valid_manifest_bytes()
     manifest_path, suffix_rules_path = _write_inputs(tmp_path, manifest_bytes)

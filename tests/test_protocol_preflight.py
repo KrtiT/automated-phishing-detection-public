@@ -79,6 +79,11 @@ def test_rejects_url_characters_stripped_by_urlsplit(url):
         normalize_hostname(url)
 
 
+def test_rejects_browser_significant_backslash():
+    with pytest.raises(PreflightError, match="backslash"):
+        normalize_hostname(r"https://victim.example\@attacker.example")
+
+
 def test_accepts_253_character_ascii_hostname():
     hostname = ".".join(("a" * 63, "b" * 63, "c" * 63, "d" * 61))
 
@@ -114,6 +119,19 @@ def test_rejects_relative_url():
 def test_rejects_ip_literal():
     with pytest.raises(PreflightError):
         registrable_domain_for_url("https://127.0.0.1/path", SUFFIX_RULES)
+
+
+@pytest.mark.parametrize(
+    "url",
+    [
+        pytest.param("https://127.1/", id="short-dotted-decimal"),
+        pytest.param("https://0177.0.0.1/", id="leading-zero"),
+        pytest.param("https://0x7f.1/", id="hexadecimal"),
+    ],
+)
+def test_rejects_browser_style_ipv4_hostnames(url):
+    with pytest.raises(PreflightError, match="IP-literal"):
+        normalize_hostname(url)
 
 
 def test_rejects_percent_encoded_hostname():

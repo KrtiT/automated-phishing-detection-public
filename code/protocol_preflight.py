@@ -1,5 +1,10 @@
+import argparse
 from dataclasses import dataclass
+import hashlib
 import ipaddress
+import json
+from pathlib import Path
+import sys
 from urllib.parse import urlsplit
 
 
@@ -9,6 +14,7 @@ class PreflightError(ValueError):
 
 REQUIRED_RECORD_FIELDS = frozenset({"record_id", "url", "label", "split"})
 VALID_SPLITS = ("train", "validation", "test")
+ASCII_LABEL_CHARACTERS = frozenset("abcdefghijklmnopqrstuvwxyz0123456789-")
 
 
 @dataclass(frozen=True)
@@ -16,6 +22,23 @@ class SuffixRules:
     exact: frozenset[str]
     wildcard: frozenset[str]
     exception: frozenset[str]
+
+
+def _validate_ascii_label(label: str) -> None:
+    if not 1 <= len(label) <= 63:
+        raise PreflightError("hostname label length is invalid")
+    if any(character not in ASCII_LABEL_CHARACTERS for character in label):
+        raise PreflightError("hostname label contains an invalid character")
+    if label.startswith("-") or label.endswith("-"):
+        raise PreflightError("hostname label starts or ends with a hyphen")
+    if label.startswith("xn--"):
+        try:
+            decoded = label.encode("ascii").decode("idna")
+            round_trip = decoded.encode("idna").decode("ascii").lower()
+        except UnicodeError as exc:
+            raise PreflightError("hostname A-label is not valid IDNA") from exc
+        if round_trip != label:
+            raise PreflightError("hostname A-label does not round-trip")
 
 
 def _ascii_domain(hostname: str) -> str:
@@ -32,8 +55,11 @@ def _ascii_domain(hostname: str) -> str:
         raise PreflightError("hostname is not valid IDNA") from exc
     if domain.endswith("."):
         domain = domain[:-1]
-    if not domain or any(not label for label in domain.split(".")):
+    labels = domain.split(".")
+    if not domain or any(not label for label in labels):
         raise PreflightError("hostname contains an empty label")
+    for label in labels:
+        _validate_ascii_label(label)
     return domain
 
 
@@ -196,3 +222,29 @@ def validate_manifest(manifest: object, rules: SuffixRules) -> dict:
         split_records[split] += 1
         split_domains[split].add(domain)
     return _summary(len(records), domain_splits, split_records, split_domains)
+
+
+def main(argv=None) -> int:
+    parser = argparse.ArgumentParser(description="Validate a synthetic split manifest.")
+    parser.add_argument("--manifest", required=True, type=Path)
+    parser.add_argument("--suffix-rules", required=True, type=Path)
+    args = parser.parse_args(argv)
+
+    try:
+        manifest_bytes = args.manifest.read_bytes()
+        suffix_rules_bytes = args.suffix_rules.read_bytes()
+        manifest = json.loads(manifest_bytes.decode("utf-8"))
+        rules = parse_suffix_rules(suffix_rules_bytes.decode("utf-8"))
+        summary = validate_manifest(manifest, rules)
+    except (OSError, UnicodeError, json.JSONDecodeError, PreflightError) as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+
+    summary["manifest_sha256"] = hashlib.sha256(manifest_bytes).hexdigest()
+    summary["suffix_rules_sha256"] = hashlib.sha256(suffix_rules_bytes).hexdigest()
+    print(json.dumps(summary, sort_keys=True))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

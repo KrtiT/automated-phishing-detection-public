@@ -52,6 +52,20 @@ def test_normalizes_idna_dot_separator():
     assert normalize_hostname("https://shop.example.com\u3002/") == "shop.example.com"
 
 
+@pytest.mark.parametrize(
+    "url",
+    [
+        pytest.param("https://bad_host.example/", id="underscore"),
+        pytest.param("https://-bad.example/", id="leading-hyphen"),
+        pytest.param("https://bad-.example/", id="trailing-hyphen"),
+        pytest.param("https://xn--abc.example/", id="malformed-a-label"),
+    ],
+)
+def test_rejects_invalid_ascii_hostname_labels(url):
+    with pytest.raises(PreflightError):
+        normalize_hostname(url)
+
+
 def test_applies_wildcard_suffix_rule():
     url = "https://shop.foo.ck"
 

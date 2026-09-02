@@ -1,7 +1,7 @@
 # v2 Legacy Preservation
 
-This directory preserves the documentary and reporting record from the
-`v2-clean` research phase.
+This directory preserves selected implementation, data, test, documentary,
+and reporting records from the `v2-clean` research phase.
 
 ## Provenance
 
@@ -13,12 +13,12 @@ This directory preserves the documentary and reporting record from the
 | Archive date | 2026-08-16 |
 | Status | Historical and exploratory; superseded for future hypothesis decisions |
 
-No file content or Git history was deleted during preservation. The 45 selected
-documents and reports in this directory retain their original bytes and
-filenames at corresponding paths under `legacy/v2/`; the tag and exact commit
-retain the complete v2 snapshot. Their former source-root paths do not exist on
-the v3 branch, so historical relative links should be read under `legacy/v2/`
-or against the tagged tree.
+No file content or Git history was deleted during preservation. The selected
+code, data, tests, documents, and reports relocated into this directory retain
+their original bytes and filenames at corresponding paths under `legacy/v2/`.
+The tag and exact commit retain the complete v2 snapshot, including files not
+relocated here. Historical relative links should be read under `legacy/v2/` or
+against the tagged tree.
 
 ## Basis for Supersession
 

@@ -7,11 +7,10 @@ approval. No confirmatory v3 results exist.
 
 The complete v2 snapshot is preserved by the local tag
 `legacy-v2-clean-2026-08-16` at commit
-`a5eceecf21ad5ce29c4ab8f8d4de0edc8b73b240`. Selected documentary and
-reporting records were relocated without content changes to
-[`legacy/v2/`](legacy/v2/). Existing `code/`, `data/`, and `tests/` remain
-legacy implementation inputs until replaced and must not be treated as
-confirmatory v3 evidence without revalidation.
+`a5eceecf21ad5ce29c4ab8f8d4de0edc8b73b240`. The legacy implementation,
+data, tests, and selected documentary and reporting records now live under
+[`legacy/v2/`](legacy/v2/). The top-level `code/` and `tests/` contain
+prospective synthetic protocol preflight work, not confirmatory v3 evidence.
 
 The prospective scope and approval status are tracked in the
 [2026-08-16 realignment matrix](docs/advisor-approval/2026-08-16-realignment-matrix.md).

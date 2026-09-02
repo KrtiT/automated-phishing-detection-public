@@ -55,6 +55,8 @@ def _ascii_domain(hostname: str) -> str:
         raise PreflightError("hostname is not valid IDNA") from exc
     if domain.endswith("."):
         domain = domain[:-1]
+    if len(domain) > 253:
+        raise PreflightError("hostname exceeds 253 characters")
     labels = domain.split(".")
     if not domain or any(not label for label in labels):
         raise PreflightError("hostname contains an empty label")
@@ -74,6 +76,8 @@ def _reject_ip_literal(domain: str) -> None:
 def normalize_hostname(url: str) -> str:
     if not isinstance(url, str) or not url:
         raise PreflightError("URL must be a nonempty string")
+    if any(character in "\t\r\n" for character in url):
+        raise PreflightError("URL contains a prohibited control character")
     try:
         parsed = urlsplit(url)
         hostname = parsed.hostname

@@ -66,6 +66,34 @@ def test_rejects_invalid_ascii_hostname_labels(url):
         normalize_hostname(url)
 
 
+@pytest.mark.parametrize(
+    "url",
+    [
+        pytest.param("https://exa\tmple.com/", id="tab"),
+        pytest.param("https://exa\rmple.com/", id="carriage-return"),
+        pytest.param("https://exa\nmple.com/", id="line-feed"),
+    ],
+)
+def test_rejects_url_characters_stripped_by_urlsplit(url):
+    with pytest.raises(PreflightError):
+        normalize_hostname(url)
+
+
+def test_accepts_253_character_ascii_hostname():
+    hostname = ".".join(("a" * 63, "b" * 63, "c" * 63, "d" * 61))
+
+    assert len(hostname) == 253
+    assert normalize_hostname(f"https://{hostname}/") == hostname
+
+
+def test_rejects_254_character_ascii_hostname():
+    hostname = ".".join(("a" * 63, "b" * 63, "c" * 63, "d" * 62))
+
+    assert len(hostname) == 254
+    with pytest.raises(PreflightError):
+        normalize_hostname(f"https://{hostname}/")
+
+
 def test_applies_wildcard_suffix_rule():
     url = "https://shop.foo.ck"
 

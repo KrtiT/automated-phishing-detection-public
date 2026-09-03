@@ -6,9 +6,9 @@ import pytest
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 CODE_DIR = BASE_DIR / "code"
-if str(CODE_DIR) not in sys.path:
-    sys.path.append(str(CODE_DIR))
+sys.path.insert(0, str(CODE_DIR))
 
+import proposed_routing_policy as routing_policy  # noqa: E402
 from proposed_routing_policy import (  # noqa: E402
     FIRST_WINDOW_END,
     ROUTING_HORIZON,
@@ -19,6 +19,12 @@ from proposed_routing_policy import (  # noqa: E402
 
 class IntSubclass(int):
     pass
+
+
+def test_imports_routing_policy_from_local_code_directory():
+    assert Path(routing_policy.__file__).resolve() == (
+        CODE_DIR / "proposed_routing_policy.py"
+    )
 
 
 def test_exposes_matrix_v1_1_window_constants():

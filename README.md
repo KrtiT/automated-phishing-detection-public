@@ -5,14 +5,16 @@
 Version 3 is a prospective research realignment awaiting written advisor
 approval. No confirmatory v3 results exist.
 
-The complete v2 snapshot is preserved by the local tag
+The complete v2 snapshot is preserved by the tag
 `legacy-v2-clean-2026-08-16` at commit
 `a5eceecf21ad5ce29c4ab8f8d4de0edc8b73b240`. The legacy implementation,
 tracked data documentation, configuration, and labeling records, tests, and
 selected documents and reports now live under [`legacy/v2/`](legacy/v2/).
 The tag remains the complete v2 snapshot. The top-level `code/` and `tests/`
-contain prospective synthetic protocol preflight and proposed label-contract
-checks, not confirmatory v3 evidence.
+contain prospective synthetic protocol preflight, proposed label-contract
+checks, and proposed routing-policy checks, not confirmatory v3 evidence. The
+proposed routing mechanics are protocol checks only; they are not H2 or H3
+evidence.
 
 The prospective scope and approval status are tracked in the
 [2026-08-16 realignment matrix](docs/advisor-approval/2026-08-16-realignment-matrix.md).

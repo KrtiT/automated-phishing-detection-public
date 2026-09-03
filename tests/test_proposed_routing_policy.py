@@ -1,15 +1,9 @@
 from pathlib import Path
-import sys
 
 import pytest
 
-
-BASE_DIR = Path(__file__).resolve().parents[1]
-CODE_DIR = BASE_DIR / "code"
-sys.path.insert(0, str(CODE_DIR))
-
-import proposed_routing_policy as routing_policy  # noqa: E402
-from proposed_routing_policy import (  # noqa: E402
+from automated_phishing_detection import proposed_routing_policy as routing_policy
+from automated_phishing_detection.proposed_routing_policy import (
     FIRST_WINDOW_END,
     ROUTING_HORIZON,
     WINDOW_STRIDE,
@@ -22,9 +16,10 @@ class IntSubclass(int):
 
 
 def test_imports_routing_policy_from_local_code_directory():
-    assert Path(routing_policy.__file__).resolve() == (
-        CODE_DIR / "proposed_routing_policy.py"
-    )
+    module_path = Path(routing_policy.__file__).resolve()
+
+    assert module_path.name == "proposed_routing_policy.py"
+    assert module_path.parent.name == "automated_phishing_detection"
 
 
 def test_exposes_matrix_v1_1_window_constants():

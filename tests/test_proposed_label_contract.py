@@ -1,17 +1,9 @@
-from dataclasses import FrozenInstanceError
 import inspect
-from pathlib import Path
-import sys
+from dataclasses import FrozenInstanceError
 
 import pytest
 
-
-BASE_DIR = Path(__file__).resolve().parents[1]
-CODE_DIR = BASE_DIR / "code"
-if str(CODE_DIR) not in sys.path:
-    sys.path.append(str(CODE_DIR))
-
-from proposed_label_contract import (  # noqa: E402
+from automated_phishing_detection.proposed_label_contract import (
     LabelDecision,
     evaluate_phishvn_policy,
     map_phiusiil_label,
@@ -23,21 +15,17 @@ from proposed_label_contract import (  # noqa: E402
     [
         pytest.param(
             0,
-            LabelDecision(
-                "include", 1, "development_internal", "phiusiil_native_zero"
-            ),
+            LabelDecision("include", 1, "development_internal", "phiusiil_native_zero"),
             id="native-zero-is-phishing",
         ),
         pytest.param(
             1,
-            LabelDecision(
-                "include", 0, "development_internal", "phiusiil_native_one"
-            ),
+            LabelDecision("include", 0, "development_internal", "phiusiil_native_one"),
             id="native-one-is-legitimate",
         ),
     ],
 )
-def test_maps_approved_phiusiil_native_labels(native_label, expected):
+def test_maps_defined_phiusiil_native_labels(native_label, expected):
     assert map_phiusiil_label(native_label) == expected
 
 
@@ -63,9 +51,7 @@ def test_quarantines_invalid_phiusiil_native_labels(native_label):
             "ncsc",
             "gold",
             "phishing",
-            LabelDecision(
-                "include", 1, "primary_external", "ncsc_gold_phishing"
-            ),
+            LabelDecision("include", 1, "primary_external", "ncsc_gold_phishing"),
             id="ncsc-gold-phishing",
         ),
         pytest.param(
@@ -118,12 +104,11 @@ def test_quarantines_invalid_phiusiil_native_labels(native_label):
         ),
     ],
 )
-def test_applies_approved_phishvn_policy_combinations(
+def test_applies_defined_phishvn_policy_combinations(
     source_group, confidence_tier, designation, expected
 ):
     assert (
-        evaluate_phishvn_policy(source_group, confidence_tier, designation)
-        == expected
+        evaluate_phishvn_policy(source_group, confidence_tier, designation) == expected
     )
 
 
@@ -143,9 +128,7 @@ def test_quarantines_missing_or_blank_phishvn_mapping_fields(
 ):
     assert evaluate_phishvn_policy(
         source_group, confidence_tier, designation
-    ) == LabelDecision(
-        "quarantine", None, None, "missing_phishvn_mapping_field"
-    )
+    ) == LabelDecision("quarantine", None, None, "missing_phishvn_mapping_field")
 
 
 @pytest.mark.parametrize(
@@ -165,12 +148,12 @@ def test_quarantines_missing_or_blank_phishvn_mapping_fields(
         pytest.param(" ncsc", "gold", "phishing", id="whitespace-varied-source"),
     ],
 )
-def test_quarantines_unapproved_exact_phishvn_combinations(
+def test_quarantines_undefined_exact_phishvn_combinations(
     source_group, confidence_tier, designation
 ):
     assert evaluate_phishvn_policy(
         source_group, confidence_tier, designation
-    ) == LabelDecision("quarantine", None, None, "unapproved_phishvn_mapping")
+    ) == LabelDecision("quarantine", None, None, "undefined_phishvn_mapping")
 
 
 def test_returns_deterministic_decisions_for_repeated_inputs():
@@ -184,7 +167,7 @@ def test_returns_deterministic_decisions_for_repeated_inputs():
 
 
 def test_label_decision_values_are_frozen():
-    decision = LabelDecision("include", 1, "primary_external", "approved")
+    decision = LabelDecision("include", 1, "primary_external", "defined_mapping")
 
     with pytest.raises(FrozenInstanceError):
         decision.disposition = "quarantine"

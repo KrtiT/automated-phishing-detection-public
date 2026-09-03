@@ -1,15 +1,11 @@
-from hashlib import sha256
 import json
 import os
-from pathlib import Path
 import subprocess
 import sys
+from hashlib import sha256
 
 import pytest
 
-
-BASE_DIR = Path(__file__).resolve().parents[1]
-SCRIPT_PATH = BASE_DIR / "code" / "protocol_preflight.py"
 SUFFIX_RULES_BYTES = b"// synthetic rules\ncom\nco.uk\n*.ck\n!www.ck\n"
 
 
@@ -33,16 +29,14 @@ def _valid_manifest_bytes(schema_version=1):
                 "record_id": "three",
                 "url": "https://shop.foo.ck",
                 "label": 1,
-                "split": "test",
+                "split": "group_test",
             },
         ],
     }
     return (json.dumps(manifest, indent=2) + "\n").encode("utf-8")
 
 
-def _write_inputs(
-    tmp_path, manifest_bytes=None, suffix_rules_bytes=SUFFIX_RULES_BYTES
-):
+def _write_inputs(tmp_path, manifest_bytes=None, suffix_rules_bytes=SUFFIX_RULES_BYTES):
     if manifest_bytes is None:
         manifest_bytes = _valid_manifest_bytes()
     manifest_path = tmp_path / "manifest.json"
@@ -58,7 +52,9 @@ def _run_preflight(tmp_path, manifest_path, suffix_rules_path):
     return subprocess.run(
         [
             sys.executable,
-            str(SCRIPT_PATH),
+            "-m",
+            "automated_phishing_detection.cli",
+            "validate-manifest",
             "--manifest",
             str(manifest_path),
             "--suffix-rules",
@@ -79,7 +75,7 @@ def _expected_stdout(manifest_bytes, suffix_rules_bytes=SUFFIX_RULES_BYTES):
         "splits": {
             "train": {"record_count": 1, "registrable_domain_count": 1},
             "validation": {"record_count": 1, "registrable_domain_count": 1},
-            "test": {"record_count": 1, "registrable_domain_count": 1},
+            "group_test": {"record_count": 1, "registrable_domain_count": 1},
         },
         "manifest_sha256": sha256(manifest_bytes).hexdigest(),
         "suffix_rules_sha256": sha256(suffix_rules_bytes).hexdigest(),

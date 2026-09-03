@@ -1,10 +1,10 @@
 import argparse
-from dataclasses import dataclass
 import hashlib
 import ipaddress
 import json
-from pathlib import Path
 import sys
+from dataclasses import dataclass
+from pathlib import Path
 from urllib.parse import urlsplit
 
 
@@ -13,7 +13,7 @@ class PreflightError(ValueError):
 
 
 REQUIRED_RECORD_FIELDS = frozenset({"record_id", "url", "label", "split"})
-VALID_SPLITS = ("train", "validation", "test")
+VALID_SPLITS = ("train", "validation", "group_test")
 ASCII_LABEL_CHARACTERS = frozenset("abcdefghijklmnopqrstuvwxyz0123456789-")
 HEXADECIMAL_CHARACTERS = frozenset("0123456789abcdef")
 
@@ -135,29 +135,21 @@ def parse_suffix_rules(text: str) -> SuffixRules:
     return SuffixRules(frozenset(exact), frozenset(wildcard), frozenset(exception))
 
 
-def _rule_matches(domain: str, rule: str) -> bool:
-    return domain == rule or domain.endswith(f".{rule}")
-
-
-def _longest_rule_length(domain: str, rules: frozenset[str]) -> int:
-    lengths = (
-        rule.count(".") + 1 for rule in rules if _rule_matches(domain, rule)
-    )
-    return max(lengths, default=0)
+def _longest_rule_length(labels: list[str], rules: frozenset[str]) -> int:
+    for index in range(len(labels)):
+        if ".".join(labels[index:]) in rules:
+            return len(labels) - index
+    return 0
 
 
 def _public_suffix_length(labels: list[str], rules: SuffixRules) -> int:
-    domain = ".".join(labels)
-    exception_length = _longest_rule_length(domain, rules.exception)
+    exception_length = _longest_rule_length(labels, rules.exception)
     if exception_length:
         return exception_length - 1
 
-    exact_length = _longest_rule_length(domain, rules.exact)
-    wildcard_length = 0
-    for rule in rules.wildcard:
-        base_length = rule.count(".") + 1
-        if len(labels) > base_length and _rule_matches(domain, rule):
-            wildcard_length = max(wildcard_length, base_length + 1)
+    exact_length = _longest_rule_length(labels, rules.exact)
+    wildcard_base_length = _longest_rule_length(labels[1:], rules.wildcard)
+    wildcard_length = wildcard_base_length + 1 if wildcard_base_length else 0
     return max(1, exact_length, wildcard_length)
 
 
@@ -177,7 +169,9 @@ def registrable_domain_for_url(url: str, rules: SuffixRules) -> str:
 
 def _validated_record(record: object) -> tuple[str, str, int, str]:
     if not isinstance(record, dict) or set(record) != REQUIRED_RECORD_FIELDS:
-        raise PreflightError("record fields must be exactly record_id, url, label, split")
+        raise PreflightError(
+            "record fields must be exactly record_id, url, label, split"
+        )
     record_id, url = record["record_id"], record["url"]
     label, split = record["label"], record["split"]
     if not isinstance(record_id, str) or not record_id:
@@ -187,7 +181,7 @@ def _validated_record(record: object) -> tuple[str, str, int, str]:
     if type(label) is not int or label not in (0, 1):
         raise PreflightError("label must be integer 0 or 1")
     if split not in VALID_SPLITS:
-        raise PreflightError("split must be train, validation, or test")
+        raise PreflightError("split must be train, validation, or group_test")
     return record_id, url, label, split
 
 
@@ -220,7 +214,10 @@ def _summary(record_count, domain_splits, split_records, split_domains):
 def validate_manifest(manifest: object, rules: SuffixRules) -> dict:
     if not isinstance(manifest, dict):
         raise PreflightError("manifest must be an object")
-    if type(manifest.get("schema_version")) is not int or manifest["schema_version"] != 1:
+    if (
+        type(manifest.get("schema_version")) is not int
+        or manifest["schema_version"] != 1
+    ):
         raise PreflightError("schema_version must be 1")
     records = manifest.get("records")
     if not isinstance(records, list):

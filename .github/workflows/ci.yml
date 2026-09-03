@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d
+        with:
+          version: 0.11.29
+          python-version: "3.10"
+          enable-cache: true
+
+      - name: Check dependency lock
+        run: uv lock --check
+
+      - name: Install project
+        run: uv sync --locked --python 3.10
+
+      - name: Check Python style
+        run: |
+          uv run --locked ruff check src tests
+          uv run --locked ruff format --check src tests
+
+      - name: Run tests
+        run: uv run --locked pytest -q
+
+      - name: Check command and package build
+        run: |
+          uv run --locked phishing-research --help
+          uv build

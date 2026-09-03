@@ -1,30 +1,17 @@
 .DS_Store
+/telemetry_queue.db
 __pycache__/
 .pytest_cache/
+.venv/
+.coverage
+dist/
 *.pyc
 *.pkl
 *.joblib
 
-# Generated stats at repo root
-dataset_stats.json
-
-# Local / large raw datasets (re-downloadable)
+# Licensed source files and row-level derived data remain local.
 data/raw/*
-!data/raw/README.md
-legacy/v2/data/raw/*
-!legacy/v2/data/raw/README.md
-
-# Large processed artifacts (regeneratable)
 data/processed/*
-!data/processed/README.md
-legacy/v2/data/processed/*
-!legacy/v2/data/processed/README.md
 
-# Model artifacts
-code/models/
-legacy/v2/code/models/
-code/*.pkl
-code/*.joblib
-
-# Manuscript drafts
+# The working manuscript is not part of the public research repository.
 THESIS_DOCUMENTS/

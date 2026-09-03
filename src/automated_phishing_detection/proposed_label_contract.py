@@ -20,17 +20,13 @@ _INVALID_PHIUSIIL_LABEL = LabelDecision(
 _MISSING_PHISHVN_FIELD = LabelDecision(
     "quarantine", None, None, "missing_phishvn_mapping_field"
 )
-_UNAPPROVED_PHISHVN_MAPPING = LabelDecision(
-    "quarantine", None, None, "unapproved_phishvn_mapping"
+_UNDEFINED_PHISHVN_MAPPING = LabelDecision(
+    "quarantine", None, None, "undefined_phishvn_mapping"
 )
 
 _PHIUSIIL_LABEL_DECISIONS = {
-    0: LabelDecision(
-        "include", 1, "development_internal", "phiusiil_native_zero"
-    ),
-    1: LabelDecision(
-        "include", 0, "development_internal", "phiusiil_native_one"
-    ),
+    0: LabelDecision("include", 1, "development_internal", "phiusiil_native_zero"),
+    1: LabelDecision("include", 0, "development_internal", "phiusiil_native_one"),
 }
 
 _PHISHVN_POLICY_DECISIONS = {
@@ -84,6 +80,4 @@ def evaluate_phishvn_policy(
         return _MISSING_PHISHVN_FIELD
 
     policy_key = (source_group, confidence_tier, designation)
-    return _PHISHVN_POLICY_DECISIONS.get(
-        policy_key, _UNAPPROVED_PHISHVN_MAPPING
-    )
+    return _PHISHVN_POLICY_DECISIONS.get(policy_key, _UNDEFINED_PHISHVN_MAPPING)

@@ -1,22 +1,13 @@
-from pathlib import Path
-import sys
-
 import pytest
 
-
-BASE_DIR = Path(__file__).resolve().parents[1]
-CODE_DIR = BASE_DIR / "code"
-if str(CODE_DIR) not in sys.path:
-    sys.path.append(str(CODE_DIR))
-
-from protocol_preflight import (  # noqa: E402
+from automated_phishing_detection.protocol_preflight import (
     PreflightError,
+    SuffixRules,
     normalize_hostname,
     parse_suffix_rules,
     registrable_domain_for_url,
     validate_manifest,
 )
-
 
 SUFFIX_RULES = parse_suffix_rules(
     """
@@ -165,6 +156,33 @@ def test_rejects_comment_only_suffix_rules():
         parse_suffix_rules("\n // first comment\n\n// second comment\n")
 
 
+class MembershipOnlyRules:
+    def __init__(self, values):
+        self.values = frozenset(values)
+        self.membership_checks = 0
+
+    def __contains__(self, value):
+        self.membership_checks += 1
+        return value in self.values
+
+    def __iter__(self):
+        raise AssertionError("PSL lookup must not scan the complete rule collection")
+
+
+def test_suffix_lookup_inspects_hostname_candidates_by_membership():
+    exact = MembershipOnlyRules({"com", "co.uk"})
+    wildcard = MembershipOnlyRules({"ck"})
+    exception = MembershipOnlyRules({"www.ck"})
+    rules = SuffixRules(exact, wildcard, exception)
+
+    assert registrable_domain_for_url("https://a.department.example.co.uk", rules) == (
+        "example.co.uk"
+    )
+    assert exact.membership_checks <= 5
+    assert wildcard.membership_checks <= 4
+    assert exception.membership_checks <= 5
+
+
 def _record(record_id, url, label=0, split="train"):
     return dict(record_id=record_id, url=url, label=label, split=split)
 
@@ -183,7 +201,7 @@ def test_validates_manifest_and_summarizes_every_split():
         _record("one", "https://login.example.com", split="train"),
         _record("two", "https://www.example.com", 1, "train"),
         _record("three", "https://sample.co.uk", split="validation"),
-        _record("four", "https://shop.foo.ck", 1, "test"),
+        _record("four", "https://shop.foo.ck", 1, "group_test"),
     )
 
     assert validate_manifest(manifest, SUFFIX_RULES) == {
@@ -193,7 +211,7 @@ def test_validates_manifest_and_summarizes_every_split():
         "splits": {
             "train": {"record_count": 2, "registrable_domain_count": 1},
             "validation": {"record_count": 1, "registrable_domain_count": 1},
-            "test": {"record_count": 1, "registrable_domain_count": 1},
+            "group_test": {"record_count": 1, "registrable_domain_count": 1},
         },
     }
 
@@ -221,7 +239,7 @@ def test_reports_label_conflict_before_duplicate_url():
 def test_rejects_registrable_domain_in_multiple_splits():
     manifest = _manifest(
         _record("one", "https://login.example.com", split="train"),
-        _record("two", "https://shop.example.com", split="test"),
+        _record("two", "https://shop.example.com", split="group_test"),
     )
 
     _assert_rejected(manifest, "appears in multiple splits")

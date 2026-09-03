@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "automated-phishing-detection"
+version = "0.1.0.dev0"
+description = "Deterministic protocol utilities for phishing-detection research"
+readme = "README.md"
+requires-python = ">=3.10,<3.11"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Krti Tallam" },
+]
+dependencies = []
+
+[project.scripts]
+phishing-research = "automated_phishing_detection.cli:main"
+
+[dependency-groups]
+dev = [
+  "pytest>=8.4,<9",
+  "ruff==0.16.6",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/automated_phishing_detection"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+norecursedirs = ["legacy"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "UP"]

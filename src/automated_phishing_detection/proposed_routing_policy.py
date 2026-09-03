@@ -1,7 +1,6 @@
-"""Apply the proposed matrix v1.1 future-only routing mechanics."""
+"""Apply the protocol's future-only routing mechanics."""
 
 from collections.abc import Iterable
-
 
 FIRST_WINDOW_END = 256
 WINDOW_STRIDE = 64
@@ -32,9 +31,7 @@ def drift_override_requests(
         seen.add(alert_window_end)
 
         if alert_window_end < FIRST_WINDOW_END:
-            raise ValueError(
-                f"alert window end must be at least {FIRST_WINDOW_END}"
-            )
+            raise ValueError(f"alert window end must be at least {FIRST_WINDOW_END}")
         if (alert_window_end - FIRST_WINDOW_END) % WINDOW_STRIDE:
             raise ValueError(
                 "alert window end must follow the "
@@ -43,11 +40,7 @@ def drift_override_requests(
         if alert_window_end > request_count:
             raise ValueError("alert window end must not exceed request_count")
 
-        last_routed_request = min(
-            alert_window_end + ROUTING_HORIZON, request_count
-        )
-        routed.update(
-            range(alert_window_end + 1, last_routed_request + 1)
-        )
+        last_routed_request = min(alert_window_end + ROUTING_HORIZON, request_count)
+        routed.update(range(alert_window_end + 1, last_routed_request + 1))
 
     return tuple(sorted(routed))

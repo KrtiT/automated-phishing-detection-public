@@ -1,0 +1,21 @@
+{
+  "contract_id": "phiusiil-development-v1",
+  "phiusiil": {
+    "archive_sha256": "0a639fd03aea6308c5b1c10c92aa23c2ce1505447a9137271865cd0badc9a59a",
+    "archive_url": "https://archive.ics.uci.edu/static/public/967/phiusiil%2Bphishing%2Burl%2Bdataset.zip",
+    "csv_filename": "PhiUSIIL_Phishing_URL_Dataset.csv",
+    "csv_sha256": "a236549cd369cd80bd478ff8e1779cbf44c58d5c3f79f7a51a1adbed7d06d1c6",
+    "license": "CC BY 4.0",
+    "page_url": "https://archive.ics.uci.edu/dataset/967/phiusiil+phishing+url+dataset",
+    "uci_dataset_id": 967
+  },
+  "public_suffix_list": {
+    "commit": "0f1fa47ec45056a19c2fdcd32a08442de9715d12",
+    "license": "MPL-2.0",
+    "sha256": "65365c4c9a4a6f746d53aadc758ab6b08aa10bb1379fea8ac353e381bca4b62e",
+    "upstream_url": "https://publicsuffix.org/list/public_suffix_list.dat",
+    "url": "https://raw.githubusercontent.com/publicsuffix/list/0f1fa47ec45056a19c2fdcd32a08442de9715d12/public_suffix_list.dat",
+    "version": "commit-pinned snapshot"
+  },
+  "schema_version": 1
+}

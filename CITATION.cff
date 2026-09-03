@@ -7,7 +7,7 @@ authors:
     given-names: Krti
 version: "v2026.05"
 date-released: 2026-05-01
-url: "https://github.com/KrtiT/automated-phishing-detection"
+url: "https://github.com/KrtiT/automated-phishing-detection-public"
 license: MIT
 preferred-citation:
   type: report
@@ -16,5 +16,5 @@ preferred-citation:
     - family-names: Tallam
       given-names: Krti
   year: 2026
-  url: "https://github.com/KrtiT/automated-phishing-detection"
+  url: "https://github.com/KrtiT/automated-phishing-detection-public"
   version: "v2026.05"

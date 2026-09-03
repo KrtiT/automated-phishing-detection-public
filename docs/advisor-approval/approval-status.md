@@ -1,32 +1,44 @@
-# Advisor Approval Status
+# Research Status
 
-**Status:** August 20 advisor direction received; formal v1.1 approval pending before protocol freeze.
+**Status:** Active implementation under the August 20 written direction. The
+PhiUSIIL development split and aggregate preparation record are complete; no
+confirmatory v3 result has been produced.
 
 | Field | Value |
 |---|---|
-| Matrix | `docs/advisor-approval/2026-08-16-realignment-matrix.md` |
-| Matrix version | `1.1` |
-| Matrix date | `2026-09-01` |
-| Matrix SHA-256 | `572bc24a4d2638966bfdc0db2c625610d0f718ca21b928314b985cc0e31de736` |
+| Protocol | `docs/advisor-approval/2026-08-16-realignment-matrix.md` |
+| Protocol version | `1.2` |
+| Protocol date | `2026-09-03` |
+| Protocol SHA-256 | `ee0bdc75a0367b4ad1f745b3575a9843373519f9920cae39d0a5808507be1cd7` |
 | Legacy base tag | `legacy-v2-clean-2026-08-16` |
 | Legacy base SHA | `a5eceecf21ad5ce29c4ab8f8d4de0edc8b73b240` |
-| Report date | `2026-08-20` |
-| Report SHA-256 | `c4be5b5d5c4eaf89a2494a521522d124aa45351ee8d08dda2f41b01b961a0b7a` |
-| Sent | |
-| Response | The August 20 written report gave conditional direction to proceed in the presented direction while requiring objective, reproducible criteria for the phishing and legitimate reference classifications rather than labels assigned or changed by an individual. |
-| Decision | Proceed in the presented direction with objective and reproducible label criteria. Formal written approval of v1.1 remains pending before protocol freeze. |
+| Advisor report date | `2026-08-20` |
+| Advisor report SHA-256 | `c4be5b5d5c4eaf89a2494a521522d124aa45351ee8d08dda2f41b01b961a0b7a` |
+| Direction | Proceed with the three-question design and make the outcome criteria objective and reproducible. |
 
-## Approval Gates
+## Current Controls
 
-- No access to any PhishVN v4 record before formal written approval of v1.1 and protocol freeze.
-- After formal written approval of v1.1 and protocol freeze, verify source schema, provenance, and label encoding before processing any record; freeze deterministic mapping and exclusion counts before examining model predictions or inferential results.
-- No confirmatory claim before the frozen external evaluation is complete.
-- No hypothesis-driven confirmatory experiment before formal written approval of v1.1 and protocol freeze.
+- PhiUSIIL is the only development source. Its native labels are mapped by an
+  exact rule, and no researcher assigns or changes a row's outcome.
+- Source bytes, the Public Suffix List, the preparation algorithm, and every
+  generated split are identified by SHA-256.
+- Registrable domains are assigned to one development split by the frozen,
+  label-blind rule in protocol v1.2.
+- The aggregate [preparation record](../../reports/phiusiil-preparation-summary.json)
+  reports source and output hashes, split counts, class counts, and every
+  quarantine reason without publishing row-level data.
+- PhishVN is reserved for one external evaluation after the protocol, data
+  pipeline, models, thresholds, and analysis code are frozen.
+- H1, H2, and H3 remain undecided until their stated evidence and gates have
+  been evaluated. Exploratory v2 results do not decide them.
 
-## Change Control
+## Change Record
 
-Every edit made after the matrix is sent must be recorded below and followed by a new matrix hash. A material change to a research question, hypothesis, method, evidence designation, or decision rule requires a version increment, renewed formal written advisor approval, and protocol re-freeze before test access. An editorial correction that does not alter interpretation does not reopen approval, but it still requires a dated entry and updated hash.
+| Date | Version | Change |
+|---|---|---|
+| 2026-09-01 | 1.1 | Defined dataset-specific label mappings, quarantine rules, PhishVN v4 evidence strata, the H3 request-error construct, future-only routing, and the bounded contribution. |
+| 2026-09-03 | 1.2 | Recorded active implementation under the August 20 direction and froze the PhiUSIIL canonicalization and label-blind domain-allocation algorithms before the development-data run. |
 
-| Change date | Matrix version | Material change | Formal approval status |
-|---|---|---|---|
-| 2026-09-01 | 1.1 | Material: defined dataset-scoped mechanical outcome mapping and quarantine rules; proposed PhishVN v4 and evidence strata; defined the H3 request-error construct; clarified target bases, observed certified-registry FPR and Tranco control alert-rate gates, future-only replay, and the bounded contribution. | Formal written approval pending |
+Any change to a research question, hypothesis, evidence designation, method,
+or decision rule increments the protocol version and records a new hash before
+the affected analysis runs.

@@ -1,0 +1,93 @@
+{
+  "algorithms": {
+    "allocation_basis": "unique_ascii_domain_groups",
+    "allocation_version": "hamilton-largest-remainder-v1",
+    "canonicalization_version": "canonical-url-v1",
+    "domain_split_version": "phiusiil-domain-split-v1",
+    "record_identifier_version": "phiusiil-row-v1",
+    "seed": "20260816",
+    "split_percentages": {
+      "group_test": 15,
+      "train": 70,
+      "validation": 15
+    }
+  },
+  "declared_sources": {
+    "contract_id": "phiusiil-development-v1",
+    "phiusiil": {
+      "archive_sha256": "0a639fd03aea6308c5b1c10c92aa23c2ce1505447a9137271865cd0badc9a59a",
+      "archive_url": "https://archive.ics.uci.edu/static/public/967/phiusiil%2Bphishing%2Burl%2Bdataset.zip",
+      "csv_filename": "PhiUSIIL_Phishing_URL_Dataset.csv",
+      "csv_sha256": "a236549cd369cd80bd478ff8e1779cbf44c58d5c3f79f7a51a1adbed7d06d1c6",
+      "license": "CC BY 4.0",
+      "page_url": "https://archive.ics.uci.edu/dataset/967/phiusiil+phishing+url+dataset",
+      "uci_dataset_id": 967
+    },
+    "public_suffix_list": {
+      "commit": "0f1fa47ec45056a19c2fdcd32a08442de9715d12",
+      "license": "MPL-2.0",
+      "sha256": "65365c4c9a4a6f746d53aadc758ab6b08aa10bb1379fea8ac353e381bca4b62e",
+      "upstream_url": "https://publicsuffix.org/list/public_suffix_list.dat",
+      "url": "https://raw.githubusercontent.com/publicsuffix/list/0f1fa47ec45056a19c2fdcd32a08442de9715d12/public_suffix_list.dat",
+      "version": "commit-pinned snapshot"
+    },
+    "schema_version": 1
+  },
+  "local_label_counts": {
+    "0": 134849,
+    "1": 98687
+  },
+  "native_label_counts": {
+    "0": 100945,
+    "1": 134850,
+    "invalid": 0
+  },
+  "output_hashes": {
+    "SHA256SUMS": "37343ad2909b5c7e23eb80ce1cbd578d4ff5fd95dc4ca13d3f6fbc889e4c6024",
+    "group_test.jsonl": "a8d0cb97616bf08c027ca9467a8c61c776727ebfbd2055fc09a3ae473daf5a24",
+    "quarantine.jsonl": "c75848bd2ee7847295fc419d6d891bb34278cbbca4d482e94c5962828e39330f",
+    "train.jsonl": "575f2fb13a0766020e29d78bf8e633a185b381abde7060bdd1ed04cc4a5e38a0",
+    "validation.jsonl": "970c6568a6400a1fc265b7809ef7bd9d1c297632799cbb88801313bc34ac415a"
+  },
+  "overall_counts": {
+    "canonicalized_url_groups": 233537,
+    "input_rows": 235795,
+    "quarantined_rows": 2259,
+    "retained_domains": 197105,
+    "retained_rows": 233536
+  },
+  "quarantine_reason_counts": {
+    "canonical_url_conflicting_mapping": 2,
+    "canonical_url_duplicate_same_mapping": 877,
+    "invalid_or_missing_url": 1380,
+    "invalid_phiusiil_native_label": 0
+  },
+  "schema_version": 1,
+  "source_spec_sha256": "e78db109cde7510411f2e22b85cd2b4e07cd41cdc56dfcf6eab73c8bc9f072e2",
+  "splits": {
+    "group_test": {
+      "class_counts": {
+        "0": 20267,
+        "1": 14326
+      },
+      "domain_count": 29566,
+      "row_count": 34593
+    },
+    "train": {
+      "class_counts": {
+        "0": 94373,
+        "1": 71875
+      },
+      "domain_count": 137973,
+      "row_count": 166248
+    },
+    "validation": {
+      "class_counts": {
+        "0": 20209,
+        "1": 12486
+      },
+      "domain_count": 29566,
+      "row_count": 32695
+    }
+  }
+}

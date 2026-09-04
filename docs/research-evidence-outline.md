@@ -15,12 +15,14 @@ manuscript prose and does not contain an interpretation of results.
 | Source-freeze release | [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1) |
 | Development preparation | `complete` |
 | Preparation record | `reports/phiusiil-preparation-summary.json` |
-| Current technical milestone | RQ1 baseline contract and pure feature extractor complete; training-only fitting and validation-only threshold selection are next. |
+| Current technical milestone | RQ1 baseline contract and pure feature extractor complete; training-only fitting and validation-only threshold selection are `in_progress`. |
 | External source | PhishVN v4, reserved for the frozen external evaluation |
 | Current hypothesis status | H1 `undecided`; H2 `undecided`; H3 `undecided` |
 
-An absent artifact or denominator leaves the related item `not_run` or
-`undecided`. It is not inferred from another experiment.
+An absent final artifact or denominator leaves the related item `not_run` or
+`undecided` unless an active execution is explicitly recorded as `in_progress`.
+An in-progress run is not completed evidence, and no result is inferred from
+another experiment.
 
 The [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1)
 GitHub Release is the source-freeze record for the completed preparation
@@ -51,6 +53,28 @@ phishing and 134,849 legitimate rows.
 
 These counts document preparation only. They do not test H1, H2, or H3.
 
+### Internal Holdout Access Note
+
+On 2026-09-03, after the RQ1 baseline contract and implementation had been
+frozen and committed, a broad local repository text search displayed row
+content from the ignored PhiUSIIL `group_test.jsonl` file. This was analyst
+access and is recorded as such. The `fit-baselines` command does not accept that
+file and did not read it: model fitting used the pinned training partition, and
+threshold selection used the pinned validation partition. No group-test
+prediction or metric was produced, and no contract, implementation, threshold
+rule, or hypothesis decision changed in response.
+
+When generated, `access.group_test_accessed=false` in a baseline artifact
+describes only the `fit-baselines` process input boundary. It does not negate
+the analyst access recorded here.
+
+The group-test file has not been used for fitting, selection, prediction,
+metric calculation, or method revision, but it will not be described as unseen
+by the analyst. Remaining transformer and cascade procedures will be frozen
+without reference to the displayed rows, and any later internal group-test
+result will disclose this exposure as a validity limitation. No PhishVN record
+was accessed.
+
 ## RQ1 and H1
 
 **Question:** What incremental value do structural URL features and
@@ -63,7 +87,9 @@ Required evidence:
   logistic configuration, partition use, and threshold-selection rule;
 - validation-locked thresholds for length-only, Logistic-L1, transformer-only,
   and cascade models;
-- paired predictions on the untouched PhiUSIIL group-test partition;
+- paired predictions on the unscored PhiUSIIL group-test partition, which
+  remains excluded from fitting and selection subject to the analyst-access
+  limitation recorded above;
 - one frozen pass over the primary PhishVN external strata;
 - observed FPR counts and the four prespecified recall differences with
   registrable-domain-clustered confidence intervals; and
@@ -71,7 +97,8 @@ Required evidence:
   secondary metric.
 
 Current status: baseline contract and feature extraction are `complete`;
-baseline fitting and threshold selection are `not_run`; H1 is `undecided`.
+baseline fitting and validation-only threshold selection are `in_progress`;
+H1 is `undecided`.
 
 ## RQ2 and H2
 

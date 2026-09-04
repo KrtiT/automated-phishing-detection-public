@@ -7,7 +7,8 @@ v1.4. The PhiUSIIL preparation milestone and aggregate record are complete.
 The [`rq1-baselines-v1`](data/rq1-baseline-contract.json) contract now freezes
 the 25 raw-URL features, the two logistic baselines, and validation threshold
 selection before model fitting. The pure feature extractor and baseline runner
-are implemented; the recorded development-data fit has not been run.
+are implemented; the prescribed training-only fit and validation-only threshold
+selection are in progress.
 
 PhiUSIIL is a published collection of URLs from UCI dataset 967. Research
 observations come only from the licensed source; the code does not assign

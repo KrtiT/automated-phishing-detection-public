@@ -4,10 +4,10 @@
 three-question design with objective, reproducible outcome criteria. The
 PhiUSIIL development split and aggregate preparation record are complete. The
 RQ1 baseline contract and pure raw-URL feature extractor are frozen and
-implemented. The next technical step fits the two logistic baselines on the
-training partition and selects their thresholds on validation. No confirmatory
-v3 result has been produced, H1, H2, and H3 remain undecided, and no PhishVN
-record has been accessed.
+implemented. The prescribed training-only fit of the two logistic baselines and
+validation-only threshold selection are in progress. No confirmatory v3 result
+has been produced, H1, H2, and H3 remain undecided, and no PhishVN record has
+been accessed.
 
 | Field | Value |
 |---|---|
@@ -21,7 +21,7 @@ record has been accessed.
 | Source-freeze release tag | `phiusiil-development-v1` |
 | Source-freeze release | [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1) |
 | Development preparation | `complete` |
-| Current technical milestone | RQ1 baseline contract and pure feature extractor complete; training-only fitting and validation-only threshold selection are next. |
+| Current technical milestone | RQ1 baseline contract and pure feature extractor complete; training-only fitting and validation-only threshold selection are `in_progress`. |
 | Current hypothesis status | H1 `undecided`; H2 `undecided`; H3 `undecided` |
 | Legacy base tag | `legacy-v2-clean-2026-08-16` |
 | Legacy base SHA | `a5eceecf21ad5ce29c4ab8f8d4de0edc8b73b240` |
@@ -52,6 +52,25 @@ record has been accessed.
   pipeline, models, thresholds, and analysis code are frozen.
 - H1, H2, and H3 remain undecided until their stated evidence and gates have
   been evaluated. Exploratory v2 results do not decide them.
+
+## Execution Audit
+
+On 2026-09-03, a broad local repository text search displayed row content from
+the ignored PhiUSIIL `group_test.jsonl` file. This is recorded as analyst
+access. The file was not accepted or read by the baseline command, no
+group-test prediction or metric was produced, and the exposure did not change
+the frozen contract, implementation, threshold rule, or hypothesis status. The
+detailed record and mitigation are in the
+[research evidence outline](../research-evidence-outline.md). No PhishVN record
+was accessed.
+
+When generated, `access.group_test_accessed=false` in a baseline artifact
+describes only the `fit-baselines` process input boundary. It does not negate
+the analyst access recorded here.
+
+The protocol matrix remains the byte-for-byte v1.4 freeze record. Its embedded
+status describes the state at freeze time; current execution status is
+maintained here and in the evidence outline.
 
 ## Change Record
 

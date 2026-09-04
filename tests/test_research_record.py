@@ -10,8 +10,9 @@ PROTOCOL = ROOT / "docs" / "advisor-approval" / "2026-08-16-realignment-matrix.m
 STATUS = ROOT / "docs" / "advisor-approval" / "approval-status.md"
 EVIDENCE_OUTLINE = ROOT / "docs" / "research-evidence-outline.md"
 README = ROOT / "README.md"
+SAGA_DIAGNOSTIC = ROOT / "scripts" / "rq1_saga_convergence_diagnostic.py"
 DECISION_MATRIX_SHA256 = (
-    "8f23af76f4cf5bfb508f99726eed35d1fec3d9b1c20bf03a8cf070fc3511d208"
+    "bb8350b12ba5f16737826d819b3bc8e2f6a1626851d1da0109828c8a52bed526"
 )
 
 
@@ -26,6 +27,10 @@ def _section(text: str, heading: str, level: int = 2) -> str:
     return match.group("body")
 
 
+def _compact(text: str) -> str:
+    return " ".join(text.lower().split())
+
+
 def test_recorded_protocol_hash_matches_current_protocol():
     expected = sha256(PROTOCOL.read_bytes()).hexdigest()
     pattern = re.compile(r"\| Protocol SHA-256 \| `([0-9a-f]{64})` \|")
@@ -38,24 +43,73 @@ def test_recorded_protocol_hash_matches_current_protocol():
         assert pattern.findall(text) == [expected]
 
 
-def test_protocol_v14_records_frozen_baseline_contract_and_next_step():
+def test_protocol_records_current_saga_diagnostic_hash():
+    protocol = PROTOCOL.read_text(encoding="utf-8")
+    expected = sha256(SAGA_DIAGNOSTIC.read_bytes()).hexdigest()
+    pattern = re.compile(
+        r"`scripts/rq1_saga_convergence_diagnostic\.py`, SHA-256 "
+        r"`([0-9a-f]{64})`"
+    )
+
+    assert pattern.findall(protocol) == [expected]
+
+
+def test_protocol_v15_records_current_convergence_work_without_a_result():
     protocol = PROTOCOL.read_text(encoding="utf-8")
     preamble = protocol.split("## Study Plan", maxsplit=1)[0]
+    contract = _section(protocol, "RQ1 baseline contract", level=3)
 
-    assert "**Version:** 1.4 | **Date:** 2026-09-03" in preamble
+    assert "**Version:** 1.5 | **Date:** 2026-09-04" in preamble
     assert "PhiUSIIL development-data preparation is complete." in preamble
-    assert "RQ1 baseline contract and pure raw-URL feature extractor" in preamble
-    assert "fit the two frozen logistic baselines" in preamble
-    assert "select their thresholds on validation" in preamble
+    assert "rq1-baselines-v1" in preamble
+    assert (
+        "contract `rq1-baselines-v1`, SHA-256 "
+        "`594a66769dee3bf23c4133020dcf9b7d57c105590e5007832ac4249def6a33d4`" in contract
+    )
+    assert "tolerance observation" in preamble
+    assert "provenance-incomplete" in preamble
+    assert "prospective SAGA convergence diagnostic is `not_run`" in preamble
+    assert (
+        "No baseline model, threshold, or validation result has been accepted"
+        in preamble
+    )
     assert "H1, H2, and H3 remain undecided" in preamble
     assert "No PhishVN record has been accessed" in preamble
 
 
-def test_live_records_report_stopped_v14_baseline_attempt():
-    for record in (STATUS, EVIDENCE_OUTLINE):
+def test_live_records_preserve_v14_failure_and_qualify_tolerance_observation():
+    audit_sections = (
+        (
+            STATUS,
+            "Execution Audit",
+            2,
+            "| RQ1 baseline contract | `rq1-baselines-v1` |",
+        ),
+        (
+            EVIDENCE_OUTLINE,
+            "RQ1 Baseline Execution Note",
+            3,
+            "| RQ1 baseline contract | `data/rq1-baseline-contract.json` "
+            "(`rq1-baselines-v1`) |",
+        ),
+    )
+    for record, heading, level, contract_row in audit_sections:
         text = record.read_text(encoding="utf-8")
-        assert "| Protocol version | `1.4` |" in text
-        assert "rq1-baselines-v1" in text
+        audit = _section(text, heading, level=level)
+
+        assert re.search(
+            r"(?:protocol[^.]*v1\.4|v1\.4[^.]*protocol)",
+            audit,
+            flags=re.IGNORECASE,
+        )
+        assert "`rq1-baselines-v1`" in audit
+        assert "| Protocol version | `1.5` |" in text
+        assert contract_row in text
+        assert (
+            "| RQ1 baseline contract SHA-256 | "
+            "`594a66769dee3bf23c4133020dcf9b7d57c105590e5007832ac4249def6a33d4` |"
+            in text
+        )
         assert "| Development source schema | `2` |" in text
         assert "| Source-freeze release tag | `phiusiil-development-v1` |" in text
         assert (
@@ -64,11 +118,141 @@ def test_live_records_report_stopped_v14_baseline_attempt():
         )
         assert "| Development preparation | `complete` |" in text
         assert "`stopped_nonconverged`" in text
-        assert "Atomic publication left no model" in text
-        assert "error: Logistic-L1 did not converge" in text
-        assert "e535586c6162a306a8dac7a5a6546f55dc09136f" in text
+        assert "`max_iter=5000`" in audit
+        assert "`tol=1e-8`" in audit
+        assert (
+            "2c2956e7cf958f9d2d948a2b1b665e214e12b175d84e4b73c766cc0a6e3be4de" in audit
+        )
+        assert (
+            "594a66769dee3bf23c4133020dcf9b7d57c105590e5007832ac4249def6a33d4" in audit
+        )
+        assert "c79e8aefb47560c6ae982dbd5848cf2b707c99a4" in audit
+        assert "error: Logistic-L1 did not converge" in audit
+        assert "Atomic publication left no model" in audit
+        assert "e535586c6162a306a8dac7a5a6546f55dc09136f" in audit
+        assert "67107874b9e46457ed710db42f050e35c1ca5ea2" in audit
+        tolerance_record = re.search(
+            r"A later exploratory local tolerance check.*?not research evidence\.",
+            audit,
+            flags=re.IGNORECASE | re.DOTALL,
+        )
+        assert tolerance_record is not None
+        compact_audit = _compact(tolerance_record.group())
+        for diagnostic_fact in (
+            "intended to use training data only",
+            "`tol=1e-4`",
+            "`n_iter=5000`",
+            "`convergencewarning=true`",
+            "`22,119.35` seconds",
+            "`elapsed_seconds=22119.348848833004`",
+            "exact command, executed code, environment, and raw console record were "
+            "not preserved",
+            "constructed the estimator from a hard-coded `tol=1e-8`",
+            "cannot verify that `tol=1e-4` reached the fitted estimator",
+            "cannot independently verify its input boundary",
+            "provenance-incomplete",
+            "does not establish that tolerance alone failed",
+            "not research evidence",
+        ):
+            assert diagnostic_fact in compact_audit
         assert "H1 `undecided`; H2 `undecided`; H3 `undecided`" in text
         assert "No PhishVN record" in text
+
+
+def test_next_saga_diagnostic_is_prospective_and_training_only():
+    protocol = PROTOCOL.read_text(encoding="utf-8")
+    diagnostic = _compact(
+        _section(protocol, "Prospective convergence diagnostic", level=3)
+    )
+    for rule in (
+        "one two-model saga diagnostic",
+        "executed twice in fresh processes",
+        "coordinator launches both fresh-process executions sequentially",
+        "reports the overall diagnostic as `passed` only after both runs pass",
+        "`length-only` uses only `raw_url_codepoint_length`",
+        "`logistic-l1` uses all 25 predictors",
+        '`solver="saga"`',
+        '`penalty="l1"`',
+        "`c=1.0`",
+        '`class_weight="balanced"`',
+        "`fit_intercept=true`",
+        "`max_iter=5000`",
+        "`tol=1e-4`",
+        "`random_state=42`",
+        "training data only",
+        "saga leaves its intercept unpenalized",
+        "individual coefficients and the selected sparsity pattern will not be "
+        "interpreted as feature importance",
+        "`raw_url_codepoint_length = raw_url_ascii_letter_count + "
+        "raw_url_ascii_digit_count + raw_url_other_codepoint_count`",
+        "no validation, group-test, or phishvn input",
+        "publishes no model or summary",
+        "both models in both runs must complete without a warning",
+        "report `classes_=[0, 1]`",
+        "`0 < n_iter < 5000`",
+        "parameter shapes matching their declared feature counts",
+        "produce only finite scaler values, fitted parameters, training decision "
+        "scores, and training probabilities",
+        "fresh-process repeat must reproduce each iteration count and fitted-state "
+        "sha-256",
+        "elapsed time and the nonzero-coefficient count are recorded but are not "
+        "selection criteria",
+        "coefficient values, signs, and sizes are not emitted or interpreted",
+        "`scripts/rq1_saga_convergence_diagnostic.py`",
+        "`575f2fb13a0766020e29d78bf8e633a185b381abde7060bdd1ed04cc4a5e38a0`",
+        "`1a85a7eecc0f5baa7c59e03a0cbde63fd4595409feb918dc5ff916ead7cd5c9e`",
+        "clean git head",
+        "`uv.lock` sha-256",
+        "fixed order: model name, ordered feature names, scaler configuration, "
+        "classifier configuration, input hashes, scaler `mean_`, `scale_`, `var_`, "
+        "and `n_samples_seen_`, then classifier `classes_`, `coef_`, `intercept_`, "
+        "and `n_iter_`",
+        "floating arrays are normalized to little-endian `float64` and integer "
+        "arrays to little-endian `int64`",
+        "compact utf-8 json with keys sorted and nonfinite values rejected",
+        'the canonical object is exactly `{"ordered_state":[...],"schema_version":1}`',
+        'each ordered-state entry is `{"name":<field name>,"value":<field value>}`',
+        "each normalized array value is "
+        '`{"dtype":"<f8" or "<i8","hex":<lowercase hex>,"shape":[...]}`',
+        "`json.dumps(allow_nan=false, ensure_ascii=false, "
+        'separators=(",", ":"), sort_keys=true)`',
+    ):
+        assert rule in diagnostic
+
+    for record in (STATUS, EVIDENCE_OUTLINE):
+        text = _compact(record.read_text(encoding="utf-8"))
+        assert "prospective saga convergence diagnostic is `not_run`" in text
+        assert "two-model saga diagnostic" in text
+        assert "both models in both fresh-process runs" in text
+        assert "fitted-state sha-256" in text
+        assert (
+            "no baseline model, threshold, or validation result has been accepted"
+            in text
+        )
+
+    readme = README.read_text(encoding="utf-8")
+    assert "uv run --locked python scripts/rq1_saga_convergence_diagnostic.py" in readme
+
+
+def test_live_records_preserve_group_test_analyst_access_caveat():
+    access_sections = (
+        _section(STATUS.read_text(encoding="utf-8"), "Execution Audit"),
+        _section(
+            EVIDENCE_OUTLINE.read_text(encoding="utf-8"),
+            "Internal Holdout Access Note",
+            level=3,
+        ),
+    )
+    for section in access_sections:
+        section = " ".join(section.lower().split())
+        for disclosure in (
+            "analyst access",
+            "no group-test prediction or metric was produced",
+            "`access.group_test_accessed=false`",
+            "describes only the `fit-baselines` process input boundary",
+            "does not negate the analyst access recorded here",
+        ):
+            assert disclosure in section
 
 
 def test_protocol_distinguishes_reference_classifications_from_ground_truth():
@@ -155,6 +339,9 @@ def test_rq_hypothesis_and_decision_gate_contracts_are_preserved():
         "At each alert, route only the next 256 future requests through the transformer.",
         "**RQ3:** What detection, escalation, throughput, and latency tradeoffs determine whether the fixed cascade is viable inline?",
         "**H3:** For each system, observed FPR on certified trusted-registry negatives is <= 1%, and the Tranco reference-negative alert rate is <= 1% as a mandatory secondary safeguard.",
+        "Paired predictions on the PhiUSIIL group test; NCSC `gold` positives for primary external recall and certified trusted-registry negatives for primary external FPR.",
+        "Window alerts plus paired fixed-cascade and prospective-policy predictions. Primary error inference uses NCSC `gold` positives and certified trusted-registry negatives.",
+        "Paired recall on NCSC `gold` positives; primary FPR on certified trusted-registry negatives; the deterministic reference invocation trace; and five measured HTTP runs.",
         "external-window detection is >= 80%",
         "independent reference false alerts are <= 5%",
         "must be >= `-0.02`",
@@ -172,6 +359,44 @@ def test_rq_hypothesis_and_decision_gate_contracts_are_preserved():
         )
         == 1
     )
+
+
+def test_rq1_group_test_disclosure_and_single_frozen_pass_are_explicit():
+    protocol = PROTOCOL.read_text(encoding="utf-8")
+    decision_matrix = _section(protocol, "Decision Matrix")
+    rq1_rows = [
+        line
+        for line in decision_matrix.splitlines()
+        if line.startswith("| **RQ1 / H1**")
+    ]
+
+    assert len(rq1_rows) == 1
+    rq1_row = rq1_rows[0]
+    group_test_rule = (
+        "PhiUSIIL group test is held out and model-unscored but analyst-exposed; "
+        "its raw partition receives exactly one later noninteractive frozen "
+        "processing pass only "
+        "after all four RQ1 models, thresholds, evaluator, manifest specifications "
+        "and selection rules, software environment, and hashes are frozen"
+    )
+    assert rq1_row.count(group_test_rule) == 1
+    assert "untouched phiusiil group test" not in protocol.lower()
+
+    safeguards = _compact(_section(protocol, "Research Safeguards"))
+    assert (
+        "the evaluator accepts no tuning arguments and publishes atomically"
+        in safeguards
+    )
+    assert "a failure leaves the affected hypotheses undecided" in safeguards
+    assert "result-informed revision" in safeguards
+    assert "does not reopen or rescan the raw group-test partition" in safeguards
+
+    operational_replay = _compact(protocol)
+    assert (
+        "the same raw-partition pass produces the paired rq1 predictions and "
+        "reference manifest" in operational_replay
+    )
+    assert "later http replay consumes only that frozen manifest" in operational_replay
 
 
 def test_protocol_records_published_source_freeze():
@@ -197,6 +422,25 @@ def test_v13_change_record_describes_clarification_without_claiming_results():
     for clarification in ("claim", "provenance", "target basis"):
         assert clarification in v13_row
     assert "no experiment was run" in v13_row
+
+
+def test_v15_change_record_describes_access_and_convergence_controls():
+    status = STATUS.read_text(encoding="utf-8")
+    change_record = _section(status, "Change Record")
+    v15_rows = [line for line in change_record.splitlines() if "| 1.5 |" in line]
+
+    assert len(v15_rows) == 1
+    v15_row = v15_rows[0].lower()
+    for detail in (
+        "analyst-exposed but model-unscored",
+        "one later frozen noninteractive raw-partition pass",
+        "provenance-incomplete tolerance observation",
+        "tol=1e-8",
+        "tol=1e-4",
+        "saga diagnostic",
+        "no baseline result",
+    ):
+        assert detail in v15_row
 
 
 def test_readme_links_research_basis_and_limits_synthetic_urls_to_unit_tests():

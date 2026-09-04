@@ -3,16 +3,16 @@
 ## Current Work
 
 This branch contains the active research implementation governed by protocol
-v1.4. The PhiUSIIL preparation milestone and aggregate record are complete.
-The [`rq1-baselines-v1`](data/rq1-baseline-contract.json) contract now freezes
-the 25 raw-URL features, the two logistic baselines, and validation threshold
-selection before model fitting. The pure feature extractor and baseline runner
-are implemented. The first prescribed baseline run stopped when the
-full-feature Logistic-L1 fit reached the frozen 5,000-iteration limit. The
-convergence warning was treated as an error, so atomic publication left no
-model or summary artifact. This is an execution failure, not an H1 result;
-the next full fit requires a prospectively frozen numerical-convergence
-amendment.
+v1.5. The PhiUSIIL preparation milestone and aggregate record are complete.
+The [`rq1-baselines-v1`](data/rq1-baseline-contract.json) contract remains
+unchanged: it freezes the 25 raw-URL features, the two logistic baselines at
+`tol=1e-8`, and validation threshold selection before model fitting. The
+prescribed v1.4 fit stopped at the 5,000-iteration limit with a convergence
+warning and produced no model or summary artifact. A later local `tol=1e-4`
+observation is provenance-incomplete and is not research evidence. The
+prospective SAGA convergence diagnostic is `not_run`.
+No baseline model, threshold, or validation result has been accepted, and H1,
+H2, and H3 remain undecided.
 
 PhiUSIIL is a published collection of URLs from UCI dataset 967. Research
 observations come only from the licensed source; the code does not assign
@@ -88,10 +88,10 @@ registrable domains, and quarantined 2,259 rows under the stated rules. The
 summary gives the split, class, and quarantine counts together with the source
 and output hashes.
 
-## Fit the Development Baselines
+## Reproduce the Stopped v1.4 Baseline Attempt
 
-After reproducing the preparation record, fit the two frozen baselines with
-the explicit train and validation files:
+To reproduce the historical attempt after reproducing the preparation record,
+run:
 
 ```bash
 uv run --locked phishing-research fit-baselines \
@@ -103,16 +103,29 @@ uv run --locked phishing-research fit-baselines \
   --summary reports/rq1-baseline-summary.json
 ```
 
-This invocation is retained to reproduce the stopped v1.4 attempt. The next
-full fit will use only a separately versioned numerical control frozen before
-the retry.
+This invocation is retained to reproduce the stopped v1.4 attempt under the
+unchanged `rq1-baselines-v1` contract. Protocol v1.5 records a separate,
+committed two-model SAGA diagnostic using training data only. It checks the
+one-feature `length-only` model and the 25-feature `Logistic-L1` model twice in
+fresh processes. The diagnostic accepts no validation, group-test, or PhishVN
+input and publishes no model or summary. A passing check would establish
+numerical feasibility only; the method and contract would then be amended
+prospectively before a baseline retry.
 
-The command accepts no group-test input. It verifies all four input hashes
-before parsing, fits scaling and both classifiers on training data only, and
-uses validation data only for threshold selection. Model records are portable
-JSON rather than Python pickle or joblib files. The aggregate summary contains
-counts, hashes, versions, hyperparameters, and validation metrics, but no URL,
-domain, record identifier, feature row, or row score.
+After the protocol checkpoint is committed, run the coordinator once from a
+clean tracked worktree. It launches both fresh-process executions sequentially:
+
+```bash
+uv run --locked python scripts/rq1_saga_convergence_diagnostic.py
+```
+
+The historical `fit-baselines` command accepts no group-test input. It verifies
+all four input hashes before parsing, fits scaling and both classifiers on
+training data only, and uses validation data only for threshold selection.
+Model records are portable JSON rather than Python pickle or joblib files. The
+aggregate summary contains counts, hashes, versions, hyperparameters, and
+validation metrics, but no URL, domain, record identifier, feature row, or row
+score.
 
 ## Evidence Status
 

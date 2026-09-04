@@ -5,8 +5,8 @@ manuscript prose and does not contain an interpretation of results.
 
 | Item | Value |
 |---|---|
-| Protocol version | `1.4` |
-| Protocol SHA-256 | `2c2956e7cf958f9d2d948a2b1b665e214e12b175d84e4b73c766cc0a6e3be4de` |
+| Protocol version | `1.5` |
+| Protocol SHA-256 | `f8579b2e5d85e6de19b2abc653aa9b128715c49c8a3a2fca9f384c2f52d118b6` |
 | RQ1 baseline contract | `data/rq1-baseline-contract.json` (`rq1-baselines-v1`) |
 | RQ1 baseline contract SHA-256 | `594a66769dee3bf23c4133020dcf9b7d57c105590e5007832ac4249def6a33d4` |
 | Development source | PhiUSIIL, UCI dataset 967 |
@@ -15,7 +15,7 @@ manuscript prose and does not contain an interpretation of results.
 | Source-freeze release | [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1) |
 | Development preparation | `complete` |
 | Preparation record | `reports/phiusiil-preparation-summary.json` |
-| Current technical milestone | RQ1 v1.4 baseline attempt `stopped_nonconverged`; no baseline result accepted; a prospective numerical-convergence amendment must be frozen before any retry. |
+| Current technical milestone | Protocol v1.5 diagnostic amendment `frozen`; v1.4 baseline attempt `stopped_nonconverged`; exploratory tolerance observation `not_accepted_provenance_incomplete`; prospective SAGA convergence diagnostic `not_run`; no baseline model, threshold, or validation result accepted. |
 | External source | PhishVN v4, reserved for the frozen external evaluation |
 | Current hypothesis status | H1 `undecided`; H2 `undecided`; H3 `undecided` |
 
@@ -68,14 +68,28 @@ When generated, `access.group_test_accessed=false` in a baseline artifact
 describes only the `fit-baselines` process input boundary. It does not negate
 the analyst access recorded here.
 
-The group-test file has not been used for fitting, selection, prediction,
+The group test is analyst-exposed but model-unscored. Its file has not been
+used for fitting, selection, prediction,
 metric calculation, or method revision, but it will not be described as unseen
 by the analyst. Remaining transformer and cascade procedures will be frozen
 without reference to the displayed rows, and any later internal group-test
-result will disclose this exposure as a validity limitation. No PhishVN record
-was accessed.
+result will disclose this exposure as a validity limitation. The raw group-test
+partition receives exactly one later noninteractive frozen processing pass only
+after all four RQ1 models, thresholds, evaluator, manifest specifications and
+selection rules, software environment, and hashes are frozen. That pass
+produces the paired predictions and realized replay manifests. Later HTTP runs
+use only those frozen manifests and do not reopen or rescan the raw partition.
+No PhishVN record was accessed.
 
 ### RQ1 Baseline Execution Note
+
+The immutable v1.4 failure record is protocol v1.4 SHA-256
+`2c2956e7cf958f9d2d948a2b1b665e214e12b175d84e4b73c766cc0a6e3be4de`,
+contract `rq1-baselines-v1` SHA-256
+`594a66769dee3bf23c4133020dcf9b7d57c105590e5007832ac4249def6a33d4`,
+contract commit `c79e8aefb47560c6ae982dbd5848cf2b707c99a4`, implementation
+commit `e535586c6162a306a8dac7a5a6546f55dc09136f`, and failure-record
+commit `67107874b9e46457ed710db42f050e35c1ca5ea2`.
 
 The prescribed RQ1 baseline run started on 2026-09-03 and stopped on 2026-09-04
 after approximately eight hours and forty minutes. The full-feature
@@ -93,6 +107,45 @@ completed the length-only stage in memory before attempting `Logistic-L1`, but
 atomic publication emitted neither model and no model, threshold, or metric
 from the attempt was reviewed. This is a numerical fitting failure, not
 evidence for or against H1. H1, H2, and H3 remain undecided.
+
+A later exploratory local tolerance check was intended to use training data
+only and to change only the candidate tolerance to `tol=1e-4`. The console
+observation was `elapsed_seconds=22119.348848833004` (`22,119.35` seconds),
+`n_iter=5000`, and `ConvergenceWarning=true`. The exact command, executed code,
+environment, and raw console record were not preserved. The v1.4 implementation
+constructed the estimator from a hard-coded `tol=1e-8` rather than the
+serialized configuration, so the surviving record cannot verify that
+`tol=1e-4` reached the fitted estimator and cannot independently verify its
+input boundary. No model or summary artifact from the check was retained. The
+observation is provenance-incomplete, does not establish that tolerance alone
+failed, and is not research evidence.
+
+### Prospective Convergence Diagnostic
+
+Protocol v1.5 freezes a two-model SAGA diagnostic before it runs and requires
+two fresh-process executions. In each execution, `length-only` uses its one
+declared feature, `Logistic-L1` uses all 25 predictors, and both use training
+data only with `StandardScaler(with_mean=True, with_std=True)`. Their shared
+classifier settings are `penalty="l1"`, `solver="saga"`, `C=1.0`,
+`class_weight="balanced"`, `fit_intercept=True`, `max_iter=5000`, `tol=1e-4`,
+and `random_state=42`. The diagnostic accepts no validation, group-test, or
+PhishVN input and publishes no model or summary. Both models in both
+fresh-process runs must finish without a warning, satisfy
+`0 < n_iter < 5000`, have the declared class and parameter shapes, and produce
+only finite scaler values, parameters, decision scores, and probabilities.
+The repeat must match the first run's iteration counts and fitted-state SHA-256
+values.
+
+SAGA leaves the intercept unpenalized. The frozen `liblinear` baseline instead
+uses a penalized synthetic intercept at `intercept_scaling=1.0`, so this
+diagnostic is not a `rq1-baselines-v1` model. The feature definitions contain
+the exact dependency `raw_url_codepoint_length = raw_url_ascii_letter_count +
+raw_url_ascii_digit_count + raw_url_other_codepoint_count`, so individual
+coefficients and the selected sparsity pattern will not be interpreted as
+feature importance.
+The prospective SAGA convergence diagnostic is `not_run`. No baseline model,
+threshold, or validation result has been accepted, and H1, H2, and H3 remain
+undecided.
 
 ## RQ1 and H1
 
@@ -116,8 +169,10 @@ Required evidence:
   secondary metric.
 
 Current status: baseline contract and feature extraction are `complete`; the
-v1.4 fit is `stopped_nonconverged`; no baseline artifact is accepted; H1 is
-`undecided`.
+v1.4 fit is `stopped_nonconverged`; the exploratory tolerance observation is
+`not_accepted_provenance_incomplete`; the prospective SAGA convergence
+diagnostic is `not_run`; no baseline model, threshold, or validation result has
+been accepted; H1 is `undecided`.
 
 ## RQ2 and H2
 

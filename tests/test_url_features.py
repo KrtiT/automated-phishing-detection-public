@@ -201,6 +201,23 @@ def test_extracts_exact_unicode_authority_and_component_features():
     assert all(type(value) is float and math.isfinite(value) for value in actual)
 
 
+def test_character_counts_exactly_partition_raw_url_length():
+    features = dict(
+        zip(
+            FEATURE_NAMES,
+            url_features.extract_url_features(
+                "https://user:pw@bücher.example:8443/a//β?q=1&x=%2f#frag"
+            ),
+        )
+    )
+
+    assert features["raw_url_codepoint_length"] == (
+        features["raw_url_ascii_letter_count"]
+        + features["raw_url_ascii_digit_count"]
+        + features["raw_url_other_codepoint_count"]
+    )
+
+
 def test_empty_query_and_fragment_delimiters_are_distinct_from_content():
     features = dict(
         zip(FEATURE_NAMES, url_features.extract_url_features("http://example.com?#"))

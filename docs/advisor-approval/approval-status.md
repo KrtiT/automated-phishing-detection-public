@@ -5,25 +5,25 @@ three-question design with objective, reproducible outcome criteria. The
 PhiUSIIL development split and aggregate preparation record are complete. The
 `rq1-baselines-v1` contract remains frozen. Its prescribed fit stopped with a
 convergence warning and published no model or summary. A later local tolerance
-observation is provenance-incomplete and is not research evidence. Protocol
-v1.5 freezes a prospective SAGA
-convergence diagnostic, which is `not_run`. No baseline model, threshold, or
-validation result has been accepted. H1, H2, and H3 remain undecided. No
-PhishVN record has been accessed.
+observation is provenance-incomplete and is not research evidence. The
+execution record marks the v1.5 SAGA diagnostic `stopped_platform_warning` and
+the v1.6 SAGA diagnostic `not_run`. No baseline model, threshold, or validation
+result has been accepted. H1, H2, and H3 remain undecided. No PhishVN record
+has been accessed.
 
 | Field | Value |
 |---|---|
 | Protocol | `docs/advisor-approval/2026-08-16-realignment-matrix.md` |
-| Protocol version | `1.5` |
+| Protocol version | `1.6` |
 | Protocol date | `2026-09-04` |
-| Protocol SHA-256 | `f8579b2e5d85e6de19b2abc653aa9b128715c49c8a3a2fca9f384c2f52d118b6` |
+| Protocol SHA-256 | `9a544e4f6cc408c8e3702b7bb86bb96a91e29d428222827e5f40789a3720d3f5` |
 | RQ1 baseline contract | `rq1-baselines-v1` |
 | RQ1 baseline contract SHA-256 | `594a66769dee3bf23c4133020dcf9b7d57c105590e5007832ac4249def6a33d4` |
 | Development source schema | `2` |
 | Source-freeze release tag | `phiusiil-development-v1` |
 | Source-freeze release | [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1) |
 | Development preparation | `complete` |
-| Current technical milestone | Protocol v1.5 diagnostic amendment `frozen`; v1.4 baseline attempt `stopped_nonconverged`; exploratory tolerance observation `not_accepted_provenance_incomplete`; prospective SAGA convergence diagnostic `not_run`; no baseline model, threshold, or validation result accepted. |
+| Current technical milestone | Protocol v1.6 diagnostic amendment `frozen`; v1.4 baseline attempt `stopped_nonconverged`; exploratory tolerance observation `not_accepted_provenance_incomplete`; v1.5 SAGA diagnostic `stopped_platform_warning`; v1.6 SAGA diagnostic `not_run`; no baseline model, threshold, or validation result accepted. |
 | Current hypothesis status | H1 `undecided`; H2 `undecided`; H3 `undecided` |
 | Legacy base tag | `legacy-v2-clean-2026-08-16` |
 | Legacy base SHA | `a5eceecf21ad5ce29c4ab8f8d4de0edc8b73b240` |
@@ -104,18 +104,29 @@ input boundary. No model or summary artifact from the check was retained. The
 observation is provenance-incomplete, does not establish that tolerance alone
 failed, and is not research evidence.
 
-Protocol v1.5 freezes a prospective two-model SAGA diagnostic, executed twice
-in fresh processes with training data only. `length-only` uses its one declared
-feature, and `Logistic-L1` uses all 25. Both share L1 SAGA with `C=1.0`, balanced
-class weights, an intercept, `max_iter=5000`, `tol=1e-4`, and seed `42`. The
-diagnostic accepts no validation, group-test, or PhishVN input and publishes no
-model or summary. Both models in both fresh-process runs must finish without a
-warning, satisfy `0 < n_iter < 5000`, have the declared class and parameter
-shapes, and produce only finite scaler values, parameters, decision scores, and
-probabilities. The second run must match the first run's iteration counts and
-fitted-state SHA-256 values. The prospective SAGA convergence diagnostic is
-`not_run`. No baseline model, threshold, or validation result has been
-accepted, and H1, H2, and H3 remain undecided.
+Protocol v1.5 froze a prospective two-model SAGA diagnostic, executed twice in
+fresh processes with training data only. Both v1.5 fresh runs completed the
+length-only fit at `n_iter=69` with the same fitted-state SHA-256, then stopped
+while scoring `Logistic-L1` with `RuntimeWarning: divide by zero encountered in
+matmul`. The `Logistic-L1` aggregate was not produced. The exact aggregate
+receipt is
+[`reports/rq1-saga-convergence-v1-execution.json`](../../reports/rq1-saga-convergence-v1-execution.json),
+SHA-256 `7309f52f704150f85e6c17d44d96adcde917d2539c7b75264bf775ccec3aa6f4`.
+The execution record marks the v1.5 SAGA diagnostic
+`stopped_platform_warning`; it is not a baseline result or RQ/H evidence.
+
+Protocol v1.6 freezes the same training-only, two-model SAGA diagnostic under a
+narrow scoring audit. Scaling and fitting warnings remain fatal. On macOS arm64
+with the NumPy Accelerate BLAS only, one of three exact `RuntimeWarning`
+messages from `sklearn.utils.extmath` may be captured during
+`decision_function` or `predict_proba`. The warning is recorded, not silently
+discarded, and the scikit-learn outputs must be finite and agree with independent
+float64 `einsum` and full two-column `expit` probability calculations at
+`rtol=1e-12` and `atol=1e-12`.
+The two fresh runs must still match in iteration counts and fitted-state
+SHA-256. The execution record marks the v1.6 SAGA diagnostic `not_run`. No
+baseline model, threshold, or validation result has been accepted, and H1, H2,
+and H3 remain undecided.
 
 ## Change Record
 
@@ -126,6 +137,7 @@ accepted, and H1, H2, and H3 remain undecided.
 | 2026-09-03 | 1.3 | Clarified the bounded contribution claim, source-derived label provenance, and study-defined target basis; recorded completed preparation and the next baseline milestone. No experiment was run, and no RQ/H method or decision rule changed. |
 | 2026-09-03 | 1.4 | Froze the exact RQ1 feature vector, shared logistic configuration, partition use, convergence handling, score meaning, and validation threshold algorithm before fitting. The feature extractor was implemented and tested; no model was fitted, no threshold was selected, and no RQ/H decision rule changed. |
 | 2026-09-04 | 1.5 | Recorded the group test as analyst-exposed but model-unscored with one later frozen noninteractive raw-partition pass; preserved the failed `tol=1e-8` baseline, qualified the `tol=1e-4` work as a provenance-incomplete tolerance observation, and froze the SAGA diagnostic before use. No baseline result was accepted, and no research question, hypothesis, evidence designation, or decision gate changed. |
+| 2026-09-04 | 1.6 | Recorded the v1.5 diagnostic failure on macOS arm64 with Accelerate and froze a scoring-only warning audit with an independent numerical reference. No baseline result was accepted, and no RQ/H decision rule changed. |
 
 Any change to a research question, hypothesis, evidence designation, method,
 or decision rule increments the protocol version and records a new hash before

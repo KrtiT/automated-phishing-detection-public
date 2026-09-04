@@ -3,16 +3,20 @@
 ## Current Work
 
 This branch contains the active research implementation governed by protocol
-v1.5. The PhiUSIIL preparation milestone and aggregate record are complete.
+v1.6. The PhiUSIIL preparation milestone and aggregate record are complete.
 The [`rq1-baselines-v1`](data/rq1-baseline-contract.json) contract remains
 unchanged: it freezes the 25 raw-URL features, the two logistic baselines at
 `tol=1e-8`, and validation threshold selection before model fitting. The
 prescribed v1.4 fit stopped at the 5,000-iteration limit with a convergence
 warning and produced no model or summary artifact. A later local `tol=1e-4`
-observation is provenance-incomplete and is not research evidence. The
-prospective SAGA convergence diagnostic is `not_run`.
-No baseline model, threshold, or validation result has been accepted, and H1,
-H2, and H3 remain undecided.
+observation is provenance-incomplete and is not research evidence. The v1.5
+training-only SAGA diagnostic stopped during full-model scoring and produced no
+baseline result; its status is `stopped_platform_warning`. Protocol v1.6
+freezes a narrow platform-warning audit plus an independent numerical
+cross-check before the diagnostic is run again; its status is `not_run`. No
+baseline model, threshold, or validation result has been accepted, and H1, H2,
+and H3 remain undecided. No RQ/H decision rule changed, and no PhishVN record
+has been accessed.
 
 PhiUSIIL is a published collection of URLs from UCI dataset 967. Research
 observations come only from the licensed source; the code does not assign
@@ -104,13 +108,21 @@ uv run --locked phishing-research fit-baselines \
 ```
 
 This invocation is retained to reproduce the stopped v1.4 attempt under the
-unchanged `rq1-baselines-v1` contract. Protocol v1.5 records a separate,
-committed two-model SAGA diagnostic using training data only. It checks the
-one-feature `length-only` model and the 25-feature `Logistic-L1` model twice in
-fresh processes. The diagnostic accepts no validation, group-test, or PhishVN
-input and publishes no model or summary. A passing check would establish
-numerical feasibility only; the method and contract would then be amended
-prospectively before a baseline retry.
+unchanged `rq1-baselines-v1` contract. Protocol v1.5 recorded a separate,
+two-model SAGA diagnostic using training data only. Both fresh runs completed
+the length-only model and stopped during full-model scoring with the same
+macOS `matmul` warning. The aggregate failure receipt is retained in
+[`reports/rq1-saga-convergence-v1-execution.json`](reports/rq1-saga-convergence-v1-execution.json).
+
+Protocol v1.6 keeps the same one-feature `length-only` model, 25-feature
+`Logistic-L1` model, two fresh processes, and repeatability gates. It permits
+only three exact scoring warnings on macOS arm64 with NumPy's Accelerate BLAS,
+records any permitted warning, and requires the scikit-learn outputs to match
+independent float64 calculations. Scaling, fitting, non-platform, and
+non-allowlisted warnings still stop the diagnostic. It accepts no validation,
+group-test, or PhishVN input and publishes no model or summary. A passing check
+would establish numerical feasibility only; the method and contract would then
+be amended prospectively before a baseline retry.
 
 After the protocol checkpoint is committed, run the coordinator once from a
 clean tracked worktree. It launches both fresh-process executions sequentially:

@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import math
 import multiprocessing
+import platform
 import subprocess
 import sys
 import time
@@ -15,13 +16,14 @@ from hashlib import sha256
 from pathlib import Path
 
 import numpy as np
+from scipy.special import expit
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 
 from automated_phishing_detection import baselines
 from automated_phishing_detection.url_features import FEATURE_NAMES
 
-DIAGNOSTIC_ID = "rq1-saga-convergence-v1"
+DIAGNOSTIC_ID = "rq1-saga-convergence-v2"
 REPOSITORY = Path(__file__).resolve().parents[1]
 TRAIN_PATH = REPOSITORY / "data/processed/phiusiil-v1/train.jsonl"
 PREPARATION_SUMMARY_PATH = REPOSITORY / "reports/phiusiil-preparation-summary.json"
@@ -60,6 +62,15 @@ MODEL_FEATURES = {
     "length-only": ("raw_url_codepoint_length",),
     "Logistic-L1": FEATURE_NAMES,
 }
+_SCORING_STAGES = frozenset(("decision_function", "predict_proba"))
+_ACCELERATE_SCORING_WARNING_MESSAGES = frozenset(
+    (
+        "divide by zero encountered in matmul",
+        "overflow encountered in matmul",
+        "invalid value encountered in matmul",
+    )
+)
+_SKLEARN_EXTMATH_MODULE = r"^sklearn\.utils\.extmath$"
 
 
 class UsageError(RuntimeError):
@@ -76,6 +87,32 @@ def _sha256_path(path: Path) -> str:
         while chunk := stream.read(1024 * 1024):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def _numpy_blas_name() -> str:
+    try:
+        name = np.__config__.CONFIG["Build Dependencies"]["blas"]["name"]
+    except (AttributeError, KeyError, TypeError) as error:
+        raise RuntimeError("NumPy BLAS name is unavailable") from error
+    if type(name) is not str or not name:
+        raise RuntimeError("NumPy BLAS name is unavailable")
+    return name
+
+
+def _platform_identity() -> dict[str, str]:
+    return {
+        "numpy_blas_name": _numpy_blas_name(),
+        "platform_machine": platform.machine(),
+        "sys_platform": sys.platform,
+    }
+
+
+def _allows_accelerate_scoring_warnings(environment: dict[str, object]) -> bool:
+    return (
+        environment.get("sys_platform") == "darwin"
+        and environment.get("platform_machine") == "arm64"
+        and environment.get("numpy_blas_name") == "accelerate"
+    )
 
 
 def _git_output(arguments: list[str]) -> str:
@@ -116,6 +153,7 @@ def _git_identity() -> dict[str, object]:
         raise RuntimeError("uv.lock hash does not match the frozen value")
     return {
         "git_head": head,
+        **_platform_identity(),
         "tracked_worktree_clean": True,
         "uv_lock_sha256": uv_lock_sha256,
     }
@@ -214,6 +252,151 @@ def _state_sha256(
     return sha256(canonical).hexdigest()
 
 
+def _set_failure_context(
+    error: Exception,
+    stage: str,
+    allowed_warnings: list[dict[str, str]] | None = None,
+) -> None:
+    error.failure_stage = stage
+    if allowed_warnings:
+        error.allowed_warnings = allowed_warnings
+
+
+def _warning_records(
+    stage: str, observed: list[warnings.WarningMessage]
+) -> list[dict[str, str]]:
+    records = []
+    for observed_warning in observed:
+        message = str(observed_warning.message)
+        if (
+            observed_warning.category is not RuntimeWarning
+            or message not in _ACCELERATE_SCORING_WARNING_MESSAGES
+        ):
+            error = observed_warning.message
+            if not isinstance(error, Exception):
+                error = RuntimeWarning(message)
+            _set_failure_context(error, stage, records)
+            raise error
+        records.append(
+            {
+                "category": "RuntimeWarning",
+                "message": message,
+                "stage": stage,
+            }
+        )
+    return records
+
+
+def _score_with_warning_policy(
+    stage: str,
+    operation: Callable[[], object],
+    *,
+    allow_accelerate_warning: bool,
+) -> tuple[object, list[dict[str, str]]]:
+    with warnings.catch_warnings(record=True) as observed:
+        warnings.simplefilter("error")
+        if allow_accelerate_warning and stage in _SCORING_STAGES:
+            warnings.filterwarnings(
+                "always",
+                category=RuntimeWarning,
+                module=_SKLEARN_EXTMATH_MODULE,
+            )
+        try:
+            value = operation()
+        except Exception as error:
+            allowed_warnings = _warning_records(stage, observed)
+            _set_failure_context(error, stage, allowed_warnings)
+            raise
+    return value, _warning_records(stage, observed)
+
+
+def _reference_score_differences(
+    model_name: str,
+    scaled_features: np.ndarray,
+    classifier: LogisticRegression,
+    decision_scores: np.ndarray,
+    probabilities: np.ndarray,
+) -> tuple[float, float]:
+    try:
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            scaled_float64 = np.asarray(scaled_features, dtype=np.float64)
+            coefficients = np.asarray(classifier.coef_, dtype=np.float64)
+            intercept = np.asarray(classifier.intercept_, dtype=np.float64)
+            sklearn_decision = np.asarray(decision_scores, dtype=np.float64)
+            sklearn_probabilities = np.asarray(probabilities, dtype=np.float64)
+            if scaled_float64.ndim != 2:
+                raise RuntimeError(f"{model_name} scaled features are not a matrix")
+            sample_count, feature_count = scaled_float64.shape
+            if coefficients.shape != (1, feature_count) or intercept.shape != (1,):
+                raise RuntimeError(
+                    f"{model_name} fitted parameters cannot be reference-scored"
+                )
+            if sklearn_decision.shape != (sample_count,):
+                raise RuntimeError(
+                    f"{model_name} sklearn decision-score shape is incorrect"
+                )
+            if sklearn_probabilities.shape != (sample_count, 2):
+                raise RuntimeError(
+                    f"{model_name} sklearn probability shape is incorrect"
+                )
+
+            reference_decision = (
+                np.einsum(
+                    "ij,j->i",
+                    scaled_float64,
+                    coefficients[0],
+                    optimize=False,
+                )
+                + intercept[0]
+            )
+            reference_positive_probability = expit(reference_decision)
+            reference_probabilities = np.column_stack(
+                (
+                    1.0 - reference_positive_probability,
+                    reference_positive_probability,
+                )
+            )
+            values = (
+                sklearn_decision,
+                sklearn_probabilities,
+                reference_decision,
+                reference_probabilities,
+            )
+            if not all(np.all(np.isfinite(value)) for value in values):
+                raise RuntimeError(
+                    f"{model_name} sklearn or reference scoring is nonfinite"
+                )
+            if not np.allclose(
+                sklearn_decision,
+                reference_decision,
+                rtol=1e-12,
+                atol=1e-12,
+            ):
+                raise RuntimeError(
+                    f"{model_name} decision scores disagree with float64 reference"
+                )
+            if not np.allclose(
+                sklearn_probabilities,
+                reference_probabilities,
+                rtol=1e-12,
+                atol=1e-12,
+            ):
+                raise RuntimeError(
+                    f"{model_name} probability outputs disagree with float64 reference"
+                )
+            decision_difference = float(
+                np.max(np.abs(sklearn_decision - reference_decision))
+            )
+            probability_difference = float(
+                np.max(np.abs(sklearn_probabilities - reference_probabilities))
+            )
+    except Exception as error:
+        _set_failure_context(error, "reference_check")
+        raise
+    return decision_difference, probability_difference
+
+
 def _candidate_summary(
     model_name: str,
     feature_names: tuple[str, ...],
@@ -223,6 +406,9 @@ def _candidate_summary(
     decision_scores: np.ndarray,
     probabilities: np.ndarray,
     elapsed_seconds: float,
+    allowed_warnings: list[dict[str, str]],
+    max_absolute_decision_difference: float,
+    max_absolute_probability_difference: float,
 ) -> dict[str, object]:
     expected_width = len(feature_names)
     scaled_features = np.asarray(scaled_features)
@@ -272,10 +458,19 @@ def _candidate_summary(
         raise RuntimeError(f"{model_name} produced a nonfinite fitted value")
     if not math.isfinite(elapsed_seconds) or elapsed_seconds < 0.0:
         raise RuntimeError(f"{model_name} elapsed time is not finite and nonnegative")
+    differences = (
+        max_absolute_decision_difference,
+        max_absolute_probability_difference,
+    )
+    if not all(math.isfinite(value) and value >= 0.0 for value in differences):
+        raise RuntimeError(f"{model_name} scoring difference is invalid")
 
     return {
+        "allowed_warnings": allowed_warnings,
         "elapsed_seconds": elapsed_seconds,
         "feature_count": expected_width,
+        "max_absolute_decision_difference": max_absolute_decision_difference,
+        "max_absolute_probability_difference": max_absolute_probability_difference,
         "n_iter": n_iter,
         "nonzero_coefficient_count": int(np.count_nonzero(coefficients)),
         "state_sha256": _state_sha256(model_name, feature_names, scaler, classifier),
@@ -283,7 +478,10 @@ def _candidate_summary(
 
 
 def _fit_candidate(
-    model_name: str, features: np.ndarray, labels: np.ndarray
+    model_name: str,
+    features: np.ndarray,
+    labels: np.ndarray,
+    environment: dict[str, object] | None = None,
 ) -> dict[str, object]:
     feature_names = MODEL_FEATURES[model_name]
     indices = np.asarray(
@@ -296,27 +494,82 @@ def _fit_candidate(
     if labels.shape != (features.shape[0],) or set(labels.tolist()) != {0, 1}:
         raise RuntimeError("training labels must be a two-class vector")
 
-    with warnings.catch_warnings():
-        warnings.simplefilter("error")
-        scaler = StandardScaler(**_constructor_config(SCALER_CONFIG))
-        classifier = LogisticRegression(**_constructor_config(CLASSIFIER_CONFIG))
-        started = time.perf_counter()
-        scaled_features = scaler.fit_transform(features[:, indices])
-        classifier.fit(scaled_features, labels)
-        decision_scores = classifier.decision_function(scaled_features)
-        probabilities = classifier.predict_proba(scaled_features)
-        elapsed_seconds = time.perf_counter() - started
+    scoring_environment = _platform_identity() if environment is None else environment
+    allow_accelerate_warning = _allows_accelerate_scoring_warnings(scoring_environment)
+    started = time.perf_counter()
+    try:
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            scaler = StandardScaler(**_constructor_config(SCALER_CONFIG))
+            scaled_features = scaler.fit_transform(features[:, indices])
+    except Exception as error:
+        _set_failure_context(error, "scaling")
+        raise
 
-    return _candidate_summary(
-        model_name,
-        feature_names,
-        scaler,
-        classifier,
-        scaled_features,
-        decision_scores,
-        probabilities,
-        elapsed_seconds,
+    try:
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            classifier = LogisticRegression(**_constructor_config(CLASSIFIER_CONFIG))
+            classifier.fit(scaled_features, labels)
+    except Exception as error:
+        _set_failure_context(error, "fit")
+        raise
+
+    decision_scores, decision_warnings = _score_with_warning_policy(
+        "decision_function",
+        lambda: classifier.decision_function(scaled_features),
+        allow_accelerate_warning=allow_accelerate_warning,
     )
+    try:
+        probabilities, probability_warnings = _score_with_warning_policy(
+            "predict_proba",
+            lambda: classifier.predict_proba(scaled_features),
+            allow_accelerate_warning=allow_accelerate_warning,
+        )
+    except Exception as error:
+        probability_stage_warnings = getattr(error, "allowed_warnings", [])
+        _set_failure_context(
+            error,
+            getattr(error, "failure_stage", "predict_proba"),
+            decision_warnings + probability_stage_warnings,
+        )
+        raise
+    elapsed_seconds = time.perf_counter() - started
+    allowed_warnings = decision_warnings + probability_warnings
+    try:
+        (
+            max_absolute_decision_difference,
+            max_absolute_probability_difference,
+        ) = _reference_score_differences(
+            model_name,
+            scaled_features,
+            classifier,
+            decision_scores,
+            probabilities,
+        )
+    except Exception as error:
+        _set_failure_context(error, "reference_check", allowed_warnings)
+        raise
+
+    try:
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            return _candidate_summary(
+                model_name,
+                feature_names,
+                scaler,
+                classifier,
+                scaled_features,
+                decision_scores,
+                probabilities,
+                elapsed_seconds,
+                allowed_warnings,
+                max_absolute_decision_difference,
+                max_absolute_probability_difference,
+            )
+    except Exception as error:
+        _set_failure_context(error, "summary", allowed_warnings)
+        raise
 
 
 def _context_record(environment: dict[str, object] | None) -> dict[str, object]:
@@ -352,6 +605,7 @@ def _failure_record(
     environment: dict[str, object] | None,
     models: dict[str, dict[str, object]],
     model_name: str | None = None,
+    stage: str | None = None,
 ) -> dict[str, object]:
     failure = {
         "message": str(error),
@@ -359,6 +613,12 @@ def _failure_record(
     }
     if model_name is not None:
         failure["model_name"] = model_name
+    failure_stage = getattr(error, "failure_stage", stage)
+    if failure_stage is not None:
+        failure["stage"] = failure_stage
+    allowed_warnings = getattr(error, "allowed_warnings", None)
+    if allowed_warnings:
+        failure["allowed_warnings"] = allowed_warnings
     return {
         **_planned_record(environment, models),
         "failure": failure,
@@ -371,15 +631,28 @@ def _execute_single_run() -> dict[str, object]:
     try:
         initial_identity = _git_identity()
     except Exception as error:
-        return _failure_record(error, environment=None, models=models)
+        return _failure_record(
+            error,
+            environment=None,
+            models=models,
+            stage="environment",
+        )
 
     current_model: str | None = None
+    current_stage = "input"
     try:
         features, labels = _load_training_partition()
         for model_name in MODEL_FEATURES:
             current_model = model_name
-            models[model_name] = _fit_candidate(model_name, features, labels)
+            current_stage = "model"
+            models[model_name] = _fit_candidate(
+                model_name,
+                features,
+                labels,
+                initial_identity,
+            )
         current_model = None
+        current_stage = "environment"
         final_identity = _git_identity()
         if final_identity != initial_identity:
             raise RuntimeError("Git identity changed during the diagnostic")
@@ -389,6 +662,7 @@ def _execute_single_run() -> dict[str, object]:
             environment=initial_identity,
             models=models,
             model_name=current_model,
+            stage=current_stage,
         )
 
     return {

@@ -11,6 +11,7 @@ STATUS = ROOT / "docs" / "advisor-approval" / "approval-status.md"
 EVIDENCE_OUTLINE = ROOT / "docs" / "research-evidence-outline.md"
 README = ROOT / "README.md"
 SAGA_DIAGNOSTIC = ROOT / "scripts" / "rq1_saga_convergence_diagnostic.py"
+SAGA_V1_RECEIPT = ROOT / "reports" / "rq1-saga-convergence-v1-execution.json"
 DECISION_MATRIX_SHA256 = (
     "bb8350b12ba5f16737826d819b3bc8e2f6a1626851d1da0109828c8a52bed526"
 )
@@ -54,12 +55,79 @@ def test_protocol_records_current_saga_diagnostic_hash():
     assert pattern.findall(protocol) == [expected]
 
 
-def test_protocol_v15_records_current_convergence_work_without_a_result():
+def test_v15_saga_failure_receipt_is_aggregate_and_immutable():
+    assert sha256(SAGA_V1_RECEIPT.read_bytes()).hexdigest() == (
+        "7309f52f704150f85e6c17d44d96adcde917d2539c7b75264bf775ccec3aa6f4"
+    )
+    receipt = json.loads(SAGA_V1_RECEIPT.read_bytes())
+
+    assert receipt["diagnostic_id"] == "rq1-saga-convergence-v1"
+    assert receipt["status"] == "failed"
+    assert receipt["environment"] == {
+        "git_head": "cbc62f1715d8685ac5c91d49973b5602253cdefd",
+        "tracked_worktree_clean": True,
+        "uv_lock_sha256": (
+            "15fadb4ad1f3c702a902b40d587a55294e7a26c33f268e8708ba8d941e6a51f0"
+        ),
+    }
+    assert receipt["failure"] == {
+        "message": "one or more fresh runs failed",
+        "runs": [
+            {
+                "failure": {
+                    "message": "divide by zero encountered in matmul",
+                    "model_name": "Logistic-L1",
+                    "type": "RuntimeWarning",
+                },
+                "run_number": run_number,
+            }
+            for run_number in (1, 2)
+        ],
+        "type": "FreshRunFailure",
+    }
+    assert len(receipt["runs"]) == 2
+    for run in receipt["runs"]:
+        assert run["run_passed"] is False
+        assert run["models"] == {
+            "length-only": {
+                "elapsed_seconds": run["models"]["length-only"]["elapsed_seconds"],
+                "feature_count": 1,
+                "n_iter": 69,
+                "nonzero_coefficient_count": 1,
+                "state_sha256": (
+                    "d6a510973bdcafb9c9baa07a80528efbb322dc3328ba0169b660c89de1542b3d"
+                ),
+            }
+        }
+        assert run["models"]["length-only"]["elapsed_seconds"] >= 0.0
+
+    forbidden_keys = {
+        "coefficients",
+        "decision_scores",
+        "domains",
+        "probabilities",
+        "raw_urls",
+        "records",
+    }
+
+    def visit(value):
+        if isinstance(value, dict):
+            assert forbidden_keys.isdisjoint(value)
+            for child in value.values():
+                visit(child)
+        elif isinstance(value, list):
+            for child in value:
+                visit(child)
+
+    visit(receipt)
+
+
+def test_protocol_v16_records_current_convergence_work_without_a_result():
     protocol = PROTOCOL.read_text(encoding="utf-8")
     preamble = protocol.split("## Study Plan", maxsplit=1)[0]
     contract = _section(protocol, "RQ1 baseline contract", level=3)
 
-    assert "**Version:** 1.5 | **Date:** 2026-09-04" in preamble
+    assert "**Version:** 1.6 | **Date:** 2026-09-04" in preamble
     assert "PhiUSIIL development-data preparation is complete." in preamble
     assert "rq1-baselines-v1" in preamble
     assert (
@@ -68,7 +136,8 @@ def test_protocol_v15_records_current_convergence_work_without_a_result():
     )
     assert "tolerance observation" in preamble
     assert "provenance-incomplete" in preamble
-    assert "prospective SAGA convergence diagnostic is `not_run`" in preamble
+    assert "v1.5 SAGA diagnostic is `stopped_platform_warning`" in preamble
+    assert "v1.6 SAGA diagnostic is `not_run`" in preamble
     assert (
         "No baseline model, threshold, or validation result has been accepted"
         in preamble
@@ -103,7 +172,7 @@ def test_live_records_preserve_v14_failure_and_qualify_tolerance_observation():
             flags=re.IGNORECASE,
         )
         assert "`rq1-baselines-v1`" in audit
-        assert "| Protocol version | `1.5` |" in text
+        assert "| Protocol version | `1.6` |" in text
         assert contract_row in text
         assert (
             "| RQ1 baseline contract SHA-256 | "
@@ -187,7 +256,16 @@ def test_next_saga_diagnostic_is_prospective_and_training_only():
         "raw_url_ascii_digit_count + raw_url_other_codepoint_count`",
         "no validation, group-test, or phishvn input",
         "publishes no model or summary",
-        "both models in both runs must complete without a warning",
+        "scaling and fitting warnings remain fatal",
+        "only while calling `decision_function` and `predict_proba`",
+        '`sys.platform="darwin"`',
+        '`platform.machine()="arm64"`',
+        "numpy blas name is exactly `accelerate`",
+        "module `sklearn.utils.extmath`",
+        "`divide by zero encountered in matmul`",
+        "`overflow encountered in matmul`",
+        "`invalid value encountered in matmul`",
+        "captured and recorded rather than silently discarded",
         "report `classes_=[0, 1]`",
         "`0 < n_iter < 5000`",
         "parameter shapes matching their declared feature counts",
@@ -198,6 +276,16 @@ def test_next_saga_diagnostic_is_prospective_and_training_only():
         "elapsed time and the nonzero-coefficient count are recorded but are not "
         "selection criteria",
         "coefficient values, signs, and sizes are not emitted or interpreted",
+        "`rq1-saga-convergence-v2`",
+        "`reports/rq1-saga-convergence-v1-execution.json`",
+        "`7309f52f704150f85e6c17d44d96adcde917d2539c7b75264bf775ccec3aa6f4`",
+        "both v1.5 fresh runs stopped",
+        "`runtimewarning: divide by zero encountered in matmul`",
+        "`logistic-l1` aggregate was not produced",
+        'float64 `np.einsum("ij,j->i", ..., optimize=false)`',
+        "`scipy.special.expit`",
+        "`rtol=1e-12` and `atol=1e-12`",
+        "maximum absolute decision-score and probability differences",
         "`scripts/rq1_saga_convergence_diagnostic.py`",
         "`575f2fb13a0766020e29d78bf8e633a185b381abde7060bdd1ed04cc4a5e38a0`",
         "`1a85a7eecc0f5baa7c59e03a0cbde63fd4595409feb918dc5ff916ead7cd5c9e`",
@@ -221,9 +309,10 @@ def test_next_saga_diagnostic_is_prospective_and_training_only():
 
     for record in (STATUS, EVIDENCE_OUTLINE):
         text = _compact(record.read_text(encoding="utf-8"))
-        assert "prospective saga convergence diagnostic is `not_run`" in text
+        assert "v1.5 saga diagnostic `stopped_platform_warning`" in text
+        assert "v1.6 saga diagnostic `not_run`" in text
         assert "two-model saga diagnostic" in text
-        assert "both models in both fresh-process runs" in text
+        assert "both v1.5 fresh runs" in text
         assert "fitted-state sha-256" in text
         assert (
             "no baseline model, threshold, or validation result has been accepted"
@@ -441,6 +530,25 @@ def test_v15_change_record_describes_access_and_convergence_controls():
         "no baseline result",
     ):
         assert detail in v15_row
+
+
+def test_v16_change_record_is_a_diagnostic_only_platform_amendment():
+    status = STATUS.read_text(encoding="utf-8")
+    change_record = _section(status, "Change Record")
+    v16_rows = [line for line in change_record.splitlines() if "| 1.6 |" in line]
+
+    assert len(v16_rows) == 1
+    v16_row = v16_rows[0].lower()
+    for detail in (
+        "v1.5 diagnostic failure",
+        "macos arm64",
+        "accelerate",
+        "scoring-only warning audit",
+        "independent numerical reference",
+        "no baseline result",
+        "no rq/h decision rule changed",
+    ):
+        assert detail in v16_row
 
 
 def test_readme_links_research_basis_and_limits_synthetic_urls_to_unit_tests():

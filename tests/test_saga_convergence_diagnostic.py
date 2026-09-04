@@ -11,6 +11,7 @@ from types import SimpleNamespace
 
 import numpy as np
 import pytest
+from scipy.special import expit
 from sklearn.exceptions import ConvergenceWarning
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
@@ -66,7 +67,7 @@ def _context_record(diagnostic, environment):
             "classifier": diagnostic.CLASSIFIER_CONFIG,
             "scaler": diagnostic.SCALER_CONFIG,
         },
-        "diagnostic_id": "rq1-saga-convergence-v1",
+        "diagnostic_id": "rq1-saga-convergence-v2",
         "environment": environment,
         "input_hashes": diagnostic.INPUT_HASHES,
         "model_features": {
@@ -89,6 +90,9 @@ def _model_aggregates(diagnostic):
         model_name: {
             "elapsed_seconds": float(len(feature_names)),
             "feature_count": len(feature_names),
+            "allowed_warnings": [],
+            "max_absolute_decision_difference": 0.0,
+            "max_absolute_probability_difference": 0.0,
             "n_iter": len(feature_names) + 1,
             "nonzero_coefficient_count": len(feature_names),
             "state_sha256": f"{len(feature_names):064x}",
@@ -195,6 +199,7 @@ def test_contract_hash_is_checked_before_training_data_is_opened(
 
 
 def test_candidate_configuration_and_model_features_are_exact(diagnostic):
+    assert diagnostic.DIAGNOSTIC_ID == "rq1-saga-convergence-v2"
     assert diagnostic.SCALER_CONFIG == {
         "class": "StandardScaler",
         "with_mean": True,
@@ -214,6 +219,54 @@ def test_candidate_configuration_and_model_features_are_exact(diagnostic):
     assert tuple(diagnostic.MODEL_FEATURES) == ("length-only", "Logistic-L1")
     assert diagnostic.MODEL_FEATURES["length-only"] == ("raw_url_codepoint_length",)
     assert diagnostic.MODEL_FEATURES["Logistic-L1"] == FEATURE_NAMES
+
+
+@pytest.mark.parametrize(
+    ("sys_platform", "machine", "blas_name", "expected"),
+    (
+        ("darwin", "arm64", "accelerate", True),
+        ("linux", "arm64", "accelerate", False),
+        ("darwin", "aarch64", "accelerate", False),
+        ("darwin", "arm64", "Accelerate", False),
+        ("darwin", "arm64", "openblas", False),
+    ),
+)
+def test_scoring_warning_platform_predicate_is_exact(
+    diagnostic, sys_platform, machine, blas_name, expected
+):
+    environment = {
+        "sys_platform": sys_platform,
+        "platform_machine": machine,
+        "numpy_blas_name": blas_name,
+    }
+
+    assert diagnostic._allows_accelerate_scoring_warnings(environment) is expected
+
+
+def test_git_identity_reports_platform_machine_and_numpy_blas(diagnostic, monkeypatch):
+    def git_output(arguments):
+        if arguments[0] == "rev-parse":
+            return "a" * 40
+        if arguments[0] == "status":
+            return ""
+        return arguments[-1]
+
+    monkeypatch.setattr(diagnostic, "_git_output", git_output)
+    monkeypatch.setattr(
+        diagnostic, "_sha256_path", lambda path: diagnostic.UV_LOCK_SHA256
+    )
+    monkeypatch.setattr(diagnostic.sys, "platform", "darwin")
+    monkeypatch.setattr(diagnostic.platform, "machine", lambda: "arm64")
+    monkeypatch.setattr(diagnostic, "_numpy_blas_name", lambda: "accelerate")
+
+    assert diagnostic._git_identity() == {
+        "git_head": "a" * 40,
+        "numpy_blas_name": "accelerate",
+        "platform_machine": "arm64",
+        "sys_platform": "darwin",
+        "tracked_worktree_clean": True,
+        "uv_lock_sha256": diagnostic.UV_LOCK_SHA256,
+    }
 
 
 def test_canonical_state_digest_uses_fixed_order_and_normalized_bytes(diagnostic):
@@ -326,14 +379,20 @@ def test_fit_candidate_constructs_exact_estimators_and_returns_aggregates(
         },
     }
     assert set(result) == {
+        "allowed_warnings",
         "elapsed_seconds",
         "feature_count",
+        "max_absolute_decision_difference",
+        "max_absolute_probability_difference",
         "n_iter",
         "nonzero_coefficient_count",
         "state_sha256",
     }
     assert result["elapsed_seconds"] >= 0.0
     assert result["feature_count"] == 1
+    assert result["allowed_warnings"] == []
+    assert result["max_absolute_decision_difference"] <= 1e-12
+    assert result["max_absolute_probability_difference"] <= 1e-12
     assert 0 < result["n_iter"] < 5000
     assert 0 <= result["nonzero_coefficient_count"] <= 1
     assert len(result["state_sha256"]) == 64
@@ -350,8 +409,286 @@ def test_fit_candidate_treats_every_warning_as_fatal(diagnostic, monkeypatch):
     monkeypatch.setattr(diagnostic, "LogisticRegression", WarningClassifier)
     features, labels = _synthetic_training()
 
-    with pytest.raises(ConvergenceWarning, match="forced convergence warning"):
+    with pytest.raises(
+        ConvergenceWarning, match="forced convergence warning"
+    ) as raised:
         diagnostic._fit_candidate("length-only", features, labels)
+    assert raised.value.failure_stage == "fit"
+
+
+def test_scaling_warning_is_fatal_even_when_it_matches_scoring_allowlist(
+    diagnostic, monkeypatch
+):
+    class WarningScaler:
+        def __init__(self, **kwargs):
+            self.kwargs = kwargs
+
+        def fit_transform(self, features):
+            warnings.warn_explicit(
+                "invalid value encountered in matmul",
+                RuntimeWarning,
+                filename="sklearn/utils/extmath.py",
+                lineno=1,
+                module="sklearn.utils.extmath",
+            )
+
+    monkeypatch.setattr(diagnostic, "StandardScaler", WarningScaler)
+    features, labels = _synthetic_training()
+
+    with pytest.raises(RuntimeWarning, match="invalid value") as raised:
+        diagnostic._fit_candidate(
+            "length-only",
+            features,
+            labels,
+            {
+                "sys_platform": "darwin",
+                "platform_machine": "arm64",
+                "numpy_blas_name": "accelerate",
+            },
+        )
+    assert raised.value.failure_stage == "scaling"
+
+
+@pytest.mark.parametrize("stage", ("decision_function", "predict_proba"))
+@pytest.mark.parametrize(
+    "message",
+    (
+        "divide by zero encountered in matmul",
+        "overflow encountered in matmul",
+        "invalid value encountered in matmul",
+    ),
+)
+def test_exact_accelerate_scoring_warnings_are_captured(diagnostic, stage, message):
+    def operation():
+        warnings.warn_explicit(
+            message,
+            RuntimeWarning,
+            filename="sklearn/utils/extmath.py",
+            lineno=1,
+            module="sklearn.utils.extmath",
+        )
+        return np.asarray([1.0])
+
+    value, allowed_warnings = diagnostic._score_with_warning_policy(
+        stage, operation, allow_accelerate_warning=True
+    )
+
+    assert value.tolist() == [1.0]
+    assert allowed_warnings == [
+        {
+            "category": "RuntimeWarning",
+            "message": message,
+            "stage": stage,
+        }
+    ]
+
+
+@pytest.mark.parametrize(
+    ("stage", "message", "category", "module", "allow", "expected_category"),
+    (
+        (
+            "decision_function",
+            "unexpected matmul warning",
+            RuntimeWarning,
+            "sklearn.utils.extmath",
+            True,
+            RuntimeWarning,
+        ),
+        (
+            "decision_function",
+            "invalid value encountered in matmul",
+            RuntimeWarning,
+            "sklearn.linear_model._base",
+            True,
+            RuntimeWarning,
+        ),
+        (
+            "predict_proba",
+            "invalid value encountered in matmul",
+            UserWarning,
+            "sklearn.utils.extmath",
+            True,
+            UserWarning,
+        ),
+        (
+            "fit",
+            "invalid value encountered in matmul",
+            RuntimeWarning,
+            "sklearn.utils.extmath",
+            True,
+            RuntimeWarning,
+        ),
+        (
+            "decision_function",
+            "invalid value encountered in matmul",
+            RuntimeWarning,
+            "sklearn.utils.extmath",
+            False,
+            RuntimeWarning,
+        ),
+    ),
+)
+def test_every_nonallowed_warning_remains_fatal(
+    diagnostic, stage, message, category, module, allow, expected_category
+):
+    def operation():
+        warnings.warn_explicit(
+            message,
+            category,
+            filename="warning-origin.py",
+            lineno=1,
+            module=module,
+        )
+        return np.asarray([1.0])
+
+    with pytest.raises(expected_category, match=message) as raised:
+        diagnostic._score_with_warning_policy(
+            stage, operation, allow_accelerate_warning=allow
+        )
+    assert raised.value.failure_stage == stage
+
+
+@pytest.mark.parametrize(
+    "disagreement",
+    ("decision", "probability_column_0", "probability_column_1"),
+)
+def test_reference_scoring_disagreement_is_fatal(diagnostic, disagreement):
+    scaled = np.asarray([[-1.0], [0.0], [1.0]], dtype=np.float64)
+    classifier = SimpleNamespace(
+        coef_=np.asarray([[2.0]], dtype=np.float64),
+        intercept_=np.asarray([0.5], dtype=np.float64),
+    )
+    reference_decision = (
+        np.einsum("ij,j->i", scaled, classifier.coef_[0], optimize=False)
+        + classifier.intercept_[0]
+    )
+    decision_scores = reference_decision.copy()
+    positive_probability = expit(reference_decision)
+    probabilities = np.column_stack((1.0 - positive_probability, positive_probability))
+    if disagreement == "decision":
+        decision_scores[0] += 1e-6
+    else:
+        probability_column = int(disagreement[-1])
+        probabilities[0, probability_column] += 1e-6
+
+    expected_output = "decision" if disagreement == "decision" else "probability"
+    with pytest.raises(RuntimeError, match=f"{expected_output}.*disagree") as raised:
+        diagnostic._reference_score_differences(
+            "length-only",
+            scaled,
+            classifier,
+            decision_scores,
+            probabilities,
+        )
+    assert raised.value.failure_stage == "reference_check"
+
+
+def test_probability_difference_aggregate_uses_both_columns(diagnostic):
+    scaled = np.asarray([[-1.0], [0.0], [1.0]], dtype=np.float64)
+    classifier = SimpleNamespace(
+        coef_=np.asarray([[2.0]], dtype=np.float64),
+        intercept_=np.asarray([0.5], dtype=np.float64),
+    )
+    decision_scores = (
+        np.einsum("ij,j->i", scaled, classifier.coef_[0], optimize=False)
+        + classifier.intercept_[0]
+    )
+    positive_probability = expit(decision_scores)
+    probabilities = np.column_stack((1.0 - positive_probability, positive_probability))
+    probabilities[0, 0] += 5e-13
+    probabilities[0, 1] += 1e-13
+
+    _, probability_difference = diagnostic._reference_score_differences(
+        "length-only",
+        scaled,
+        classifier,
+        decision_scores,
+        probabilities,
+    )
+
+    assert probability_difference == abs(
+        probabilities[0, 0] - (1.0 - positive_probability[0])
+    )
+
+
+def test_allowed_scoring_warning_is_retained_in_model_aggregate(
+    diagnostic, monkeypatch
+):
+    class WarningClassifier(LogisticRegression):
+        def decision_function(self, features):
+            if not getattr(self, "_warning_emitted", False):
+                self._warning_emitted = True
+                warnings.warn_explicit(
+                    "overflow encountered in matmul",
+                    RuntimeWarning,
+                    filename="sklearn/utils/extmath.py",
+                    lineno=1,
+                    module="sklearn.utils.extmath",
+                )
+            return super().decision_function(features)
+
+    monkeypatch.setattr(diagnostic, "LogisticRegression", WarningClassifier)
+    features, labels = _synthetic_training()
+
+    result = diagnostic._fit_candidate(
+        "length-only",
+        features,
+        labels,
+        {
+            "sys_platform": "darwin",
+            "platform_machine": "arm64",
+            "numpy_blas_name": "accelerate",
+        },
+    )
+
+    assert result["allowed_warnings"] == [
+        {
+            "category": "RuntimeWarning",
+            "message": "overflow encountered in matmul",
+            "stage": "decision_function",
+        }
+    ]
+    assert not any(isinstance(value, np.ndarray) for value in result.values())
+
+
+def test_later_scoring_failure_retains_prior_allowed_warning(diagnostic, monkeypatch):
+    class WarningClassifier(LogisticRegression):
+        def decision_function(self, features):
+            warnings.warn_explicit(
+                "overflow encountered in matmul",
+                RuntimeWarning,
+                filename="sklearn/utils/extmath.py",
+                lineno=1,
+                module="sklearn.utils.extmath",
+            )
+            return super().decision_function(features)
+
+        def predict_proba(self, features):
+            warnings.warn("fatal probability warning", UserWarning)
+
+    monkeypatch.setattr(diagnostic, "LogisticRegression", WarningClassifier)
+    features, labels = _synthetic_training()
+
+    with pytest.raises(UserWarning, match="fatal probability warning") as raised:
+        diagnostic._fit_candidate(
+            "length-only",
+            features,
+            labels,
+            {
+                "sys_platform": "darwin",
+                "platform_machine": "arm64",
+                "numpy_blas_name": "accelerate",
+            },
+        )
+
+    assert raised.value.failure_stage == "predict_proba"
+    assert raised.value.allowed_warnings == [
+        {
+            "category": "RuntimeWarning",
+            "message": "overflow encountered in matmul",
+            "stage": "decision_function",
+        }
+    ]
 
 
 @pytest.mark.parametrize(
@@ -390,6 +727,9 @@ def test_candidate_validation_rejects_invalid_fitted_state(
             np.zeros(4),
             np.full((4, 2), 0.5),
             1.0,
+            [],
+            0.0,
+            0.0,
         )
 
 
@@ -409,14 +749,18 @@ def test_execute_reports_two_model_aggregate_and_stable_git_identity(
         identity_calls.append(True)
         return identity.copy()
 
-    def fit_candidate(model_name, actual_features, actual_labels):
+    def fit_candidate(model_name, actual_features, actual_labels, environment):
         assert actual_features is features
         assert actual_labels is labels
+        assert environment is identity or environment == identity
         model_calls.append(model_name)
         width = len(diagnostic.MODEL_FEATURES[model_name])
         return {
+            "allowed_warnings": [],
             "elapsed_seconds": float(width),
             "feature_count": width,
+            "max_absolute_decision_difference": 0.0,
+            "max_absolute_probability_difference": 0.0,
             "n_iter": width + 1,
             "nonzero_coefficient_count": width,
             "state_sha256": f"{width:064x}",
@@ -434,15 +778,21 @@ def test_execute_reports_two_model_aggregate_and_stable_git_identity(
     assert model_calls == ["length-only", "Logistic-L1"]
     expected_models = {
         "length-only": {
+            "allowed_warnings": [],
             "elapsed_seconds": 1.0,
             "feature_count": 1,
+            "max_absolute_decision_difference": 0.0,
+            "max_absolute_probability_difference": 0.0,
             "n_iter": 2,
             "nonzero_coefficient_count": 1,
             "state_sha256": f"{1:064x}",
         },
         "Logistic-L1": {
+            "allowed_warnings": [],
             "elapsed_seconds": 25.0,
             "feature_count": 25,
+            "max_absolute_decision_difference": 0.0,
+            "max_absolute_probability_difference": 0.0,
             "n_iter": 26,
             "nonzero_coefficient_count": 25,
             "state_sha256": f"{25:064x}",
@@ -465,18 +815,23 @@ def test_model_failure_retains_planned_and_initial_environment_context(
         "uv_lock_sha256": diagnostic.UV_LOCK_SHA256,
     }
     completed = {
+        "allowed_warnings": [],
         "elapsed_seconds": 1.0,
         "feature_count": 1,
+        "max_absolute_decision_difference": 0.0,
+        "max_absolute_probability_difference": 0.0,
         "n_iter": 2,
         "nonzero_coefficient_count": 1,
         "state_sha256": "c" * 64,
     }
 
-    def fit_candidate(model_name, actual_features, actual_labels):
+    def fit_candidate(model_name, actual_features, actual_labels, environment):
         assert actual_features is features
         assert actual_labels is labels
         if model_name == "Logistic-L1":
-            raise ConvergenceWarning("forced full-model warning")
+            error = ConvergenceWarning("forced full-model warning")
+            error.failure_stage = "fit"
+            raise error
         return completed
 
     monkeypatch.setattr(diagnostic, "_git_identity", lambda: identity.copy())
@@ -492,6 +847,7 @@ def test_model_failure_retains_planned_and_initial_environment_context(
         "failure": {
             "message": "forced full-model warning",
             "model_name": "Logistic-L1",
+            "stage": "fit",
             "type": "ConvergenceWarning",
         },
         "run_passed": False,
@@ -521,8 +877,11 @@ def test_execute_rejects_git_identity_changes_during_fit(diagnostic, monkeypatch
         diagnostic,
         "_fit_candidate",
         lambda *args: {
+            "allowed_warnings": [],
             "elapsed_seconds": 1.0,
             "feature_count": 1,
+            "max_absolute_decision_difference": 0.0,
+            "max_absolute_probability_difference": 0.0,
             "n_iter": 1,
             "nonzero_coefficient_count": 1,
             "state_sha256": "0" * 64,
@@ -540,6 +899,7 @@ def test_execute_rejects_git_identity_changes_during_fit(diagnostic, monkeypatch
     }
     assert result["failure"] == {
         "message": "Git identity changed during the diagnostic",
+        "stage": "environment",
         "type": "RuntimeError",
     }
 

@@ -17,7 +17,7 @@ manuscript prose and does not contain an interpretation of results.
 | Source-freeze release | [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1) |
 | Development preparation | `complete` |
 | Preparation record | `reports/phiusiil-preparation-summary.json` |
-| Current technical milestone | Protocol v1.7 baseline amendment `frozen`; v1.4 baseline attempt `stopped_nonconverged`; exploratory tolerance observation `not_accepted_provenance_incomplete`; v1.5 SAGA diagnostic `stopped_platform_warning`; v1.6 SAGA diagnostic `passed_training_only`; rq1-baselines-v2 execution `frozen_not_run`; no baseline model, threshold, or validation result accepted. |
+| Current technical milestone | Protocol v1.7 baseline amendment `frozen`; v1.4 baseline attempt `stopped_nonconverged`; exploratory tolerance observation `not_accepted_provenance_incomplete`; v1.5 SAGA diagnostic `stopped_platform_warning`; v1.6 SAGA diagnostic `passed_training_only`; rq1-baselines-v2 execution `completed_development_validation`; H1, H2, and H3 remain undecided. |
 | External source | PhishVN v4, reserved for the frozen external evaluation |
 | Current hypothesis status | H1 `undecided`; H2 `undecided`; H3 `undecided` |
 
@@ -166,7 +166,7 @@ decision and full-matrix probability differences were
 SAGA diagnostic has status `passed_training_only`. It establishes reproducible
 training feasibility, not generalization or an RQ/H result.
 
-### RQ1 Baseline v2 Freeze
+### RQ1 Baseline v2 Validation
 
 Protocol v1.7 freezes `rq1-baselines-v2` before validation execution. It keeps
 the v1 feature vector, predictor exclusions, partition boundaries, score
@@ -177,10 +177,33 @@ to SAGA's unpenalized intercept. Validation scores must pass the same exact
 platform-warning audit and independent full-matrix numerical reference before
 the scikit-learn class-1 probability is used for threshold selection.
 
-The rq1-baselines-v2 execution has status `frozen_not_run`. No baseline model,
-threshold, or validation result has been accepted, and H1, H2, and H3 remain
-undecided. Protocol v1.7 changed the RQ1 baseline method but no RQ/H question,
-evidence designation, or decision rule. No PhishVN record has been accessed.
+The command ran once on 2026-09-04 from clean commit
+`7ae6c9af85e935c551468f590a7ba43441f58def`, after CI passed. The exact
+aggregate [summary](../reports/rq1-baseline-v2-summary.json), SHA-256
+`bf5b3a6f0fc705d26852da4dd0053c6111ffc3e500d7a2e95dfba5ad859b279c`,
+records `analysis_stage=development_validation_only`. The rq1-baselines-v2
+execution has status `completed_development_validation`. This is development
+validation only.
+
+| Model | Artifact SHA-256 | `n_iter` | Threshold | Validation recall | Observed FPR | One-sided 95% FPR upper bound |
+|---|---|---:|---:|---:|---:|---:|
+| `length-only` | `b8b92cfbe29160e769e5e7d80712becc8fc0680cdfd45a44b839ef9bada87799` | 69 | 0.7612031186147 | 0.3214800576645843 | 0.006680191993666189 | 0.007702192373035135 |
+| `Logistic-L1` | `71a3e24a0283a31ba188bc7dd60b18c1b708370b9ca275d5ab1a1004680c968a` | 4783 | 0.2670846328466124 | 0.9842223290084895 | 0.008758473947251225 | 0.009915480854183582 |
+
+The length-only scoring audit recorded no warning and zero reference
+difference. The full model recorded six allowlisted scoring warnings; its
+finite decision values and full probability matrix matched the independent
+reference with maximum absolute differences of `2.1316282072803006e-14` and
+`3.3306690738754696e-16`. Both thresholds have status `selected`. These
+validation results set operating points; they are not group-test or external
+evidence and do not decide H1. Coefficients and sparsity are not interpreted as
+feature importance.
+
+The group test remains analyst-exposed but model-unscored. The summary's
+`access.group_test_accessed=false` describes the process input boundary and
+does not negate the analyst exposure recorded above. No PhishVN record has
+been accessed. H1, H2, and H3 remain undecided. Protocol v1.7 changed the RQ1
+baseline method but no RQ/H question, evidence designation, or decision rule.
 
 ## RQ1 and H1
 
@@ -207,9 +230,9 @@ Current status: baseline contract and feature extraction are `complete`; the
 v1.4 fit is `stopped_nonconverged`; the exploratory tolerance observation is
 `not_accepted_provenance_incomplete`; the v1.5 SAGA diagnostic is
 `stopped_platform_warning`; the v1.6 SAGA diagnostic is
-`passed_training_only`; the rq1-baselines-v2 execution is `frozen_not_run`; no
-baseline model, threshold, or validation result has been accepted; H1 is
-`undecided`.
+`passed_training_only`; the rq1-baselines-v2 execution is
+`completed_development_validation`; the validation-set operating points are
+recorded above; H1 is `undecided`.
 
 ## RQ2 and H2
 
@@ -264,4 +287,5 @@ They describe robustness but do not replace a primary decision rule.
 
 The working manuscript remains private. Public repository evidence consists of
 the protocol, implementation, tests, source and environment locks, aggregate
-data-preparation record, and later generated result tables and figures.
+data-preparation and baseline-validation records, and later generated result
+tables and figures.

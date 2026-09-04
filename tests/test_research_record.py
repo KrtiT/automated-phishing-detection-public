@@ -13,6 +13,7 @@ README = ROOT / "README.md"
 SAGA_DIAGNOSTIC = ROOT / "scripts" / "rq1_saga_convergence_diagnostic.py"
 SAGA_V1_RECEIPT = ROOT / "reports" / "rq1-saga-convergence-v1-execution.json"
 SAGA_V2_RECEIPT = ROOT / "reports" / "rq1-saga-convergence-v2-execution.json"
+BASELINE_V2_SUMMARY = ROOT / "reports" / "rq1-baseline-v2-summary.json"
 BASELINE_V1_CONTRACT = ROOT / "data" / "rq1-baseline-contract.json"
 BASELINE_V2_CONTRACT = ROOT / "data" / "rq1-baseline-contract-v2.json"
 DECISION_MATRIX_SHA256 = (
@@ -205,13 +206,187 @@ def test_v16_saga_pass_receipt_is_aggregate_and_immutable():
     visit(receipt)
 
 
+def test_v2_baseline_summary_is_aggregate_and_immutable():
+    assert sha256(BASELINE_V2_SUMMARY.read_bytes()).hexdigest() == (
+        "bf5b3a6f0fc705d26852da4dd0053c6111ffc3e500d7a2e95dfba5ad859b279c"
+    )
+    summary = json.loads(BASELINE_V2_SUMMARY.read_bytes())
+
+    assert set(summary) == {
+        "access",
+        "analysis_stage",
+        "contract_id",
+        "hypothesis_status",
+        "input_counts",
+        "input_hashes",
+        "models",
+        "pipeline",
+        "schema_version",
+        "software_versions",
+    }
+    assert summary["schema_version"] == 2
+    assert summary["analysis_stage"] == "development_validation_only"
+    assert summary["contract_id"] == "rq1-baselines-v2"
+    assert summary["hypothesis_status"] == {
+        "H1": "undecided",
+        "H2": "undecided",
+        "H3": "undecided",
+    }
+    assert summary["access"] == {
+        "group_test_accessed": False,
+        "phishvn_accessed": False,
+    }
+    assert summary["input_hashes"] == {
+        "contract": "05d6d0831def7d26448c8dbdc8117800ea2448cdfc2aca2ad95489f22d2d11ba",
+        "preparation_summary": (
+            "1a85a7eecc0f5baa7c59e03a0cbde63fd4595409feb918dc5ff916ead7cd5c9e"
+        ),
+        "train": "575f2fb13a0766020e29d78bf8e633a185b381abde7060bdd1ed04cc4a5e38a0",
+        "validation": (
+            "970c6568a6400a1fc265b7809ef7bd9d1c297632799cbb88801313bc34ac415a"
+        ),
+    }
+    assert summary["input_counts"] == {
+        "train": {"0": 94373, "1": 71875, "rows": 166248},
+        "validation": {"0": 20209, "1": 12486, "rows": 32695},
+    }
+    assert summary["pipeline"]["classifier"] == {
+        "C": 1.0,
+        "class": "LogisticRegression",
+        "class_weight": "balanced",
+        "fit_intercept": True,
+        "max_iter": 5000,
+        "penalty": "l1",
+        "random_state": 42,
+        "solver": "saga",
+        "tol": 1e-4,
+    }
+    assert summary["pipeline"]["scoring_integrity_policy_id"] == (
+        "rq1-scoring-integrity-v1"
+    )
+
+    length_only = summary["models"]["length-only"]
+    assert length_only["artifact_sha256"] == (
+        "b8b92cfbe29160e769e5e7d80712becc8fc0680cdfd45a44b839ef9bada87799"
+    )
+    assert length_only["n_iter"] == [69]
+    assert length_only["validation_scoring_audit"] == {
+        "max_absolute_decision_difference": 0.0,
+        "max_absolute_probability_difference": 0.0,
+        "platform_identity": {
+            "numpy_blas_name": "accelerate",
+            "platform_machine": "arm64",
+            "sys_platform": "darwin",
+        },
+        "warning_records": [],
+    }
+    assert length_only["validation_threshold"] == {
+        "candidate_count": 221,
+        "counts": {
+            "false_negative": 8472,
+            "false_positive": 135,
+            "negative": 20209,
+            "positive": 12486,
+            "true_negative": 20074,
+            "true_positive": 4014,
+        },
+        "fpr_upper_95": 0.007702192373035135,
+        "observed_fpr": 0.006680191993666189,
+        "recall": 0.3214800576645843,
+        "status": "selected",
+        "threshold": 0.7612031186147,
+    }
+
+    logistic = summary["models"]["Logistic-L1"]
+    assert logistic["artifact_sha256"] == (
+        "71a3e24a0283a31ba188bc7dd60b18c1b708370b9ca275d5ab1a1004680c968a"
+    )
+    assert logistic["n_iter"] == [4783]
+    assert logistic["validation_scoring_audit"] == {
+        "max_absolute_decision_difference": 2.1316282072803006e-14,
+        "max_absolute_probability_difference": 3.3306690738754696e-16,
+        "platform_identity": {
+            "numpy_blas_name": "accelerate",
+            "platform_machine": "arm64",
+            "sys_platform": "darwin",
+        },
+        "warning_records": [
+            {"category": "RuntimeWarning", "message": message, "stage": stage}
+            for stage in ("decision_function", "predict_proba")
+            for message in (
+                "divide by zero encountered in matmul",
+                "overflow encountered in matmul",
+                "invalid value encountered in matmul",
+            )
+        ],
+    }
+    assert logistic["validation_threshold"] == {
+        "candidate_count": 11279,
+        "counts": {
+            "false_negative": 197,
+            "false_positive": 177,
+            "negative": 20209,
+            "positive": 12486,
+            "true_negative": 20032,
+            "true_positive": 12289,
+        },
+        "fpr_upper_95": 0.009915480854183582,
+        "observed_fpr": 0.008758473947251225,
+        "recall": 0.9842223290084895,
+        "status": "selected",
+        "threshold": 0.2670846328466124,
+    }
+
+    forbidden_keys = {
+        "canonical_url",
+        "canonical_url_sha256",
+        "coefficients",
+        "decision_scores",
+        "domains",
+        "feature_row",
+        "feature_rows",
+        "feature_vector",
+        "feature_vectors",
+        "intercept",
+        "mean",
+        "predictions",
+        "probabilities",
+        "raw_url",
+        "raw_urls",
+        "record_id",
+        "record_ids",
+        "records",
+        "row_score",
+        "row_scores",
+        "scale",
+        "variance",
+    }
+    forbidden_string_markers = (
+        "http://",
+        "https://",
+        "phiusiil-row-v1:",
+        "/Users/",
+        ".example",
+    )
+
+    def visit(value):
+        if isinstance(value, dict):
+            assert forbidden_keys.isdisjoint(value)
+            for child in value.values():
+                visit(child)
+        elif isinstance(value, list):
+            for child in value:
+                visit(child)
+        elif isinstance(value, str):
+            assert not any(marker in value for marker in forbidden_string_markers)
+
+    visit(summary)
+
+
 def test_protocol_v17_freezes_baseline_v2_without_a_result():
     protocol = PROTOCOL.read_text(encoding="utf-8")
     preamble = protocol.split("## Study Plan", maxsplit=1)[0]
     contract = _section(protocol, "RQ1 baseline contract", level=3)
-    readme_current_work = _compact(
-        _section(README.read_text(encoding="utf-8"), "Current Work", level=2)
-    )
 
     assert "**Version:** 1.7 | **Date:** 2026-09-04" in preamble
     assert "PhiUSIIL development-data preparation is complete." in preamble
@@ -231,16 +406,48 @@ def test_protocol_v17_freezes_baseline_v2_without_a_result():
     )
     assert "H1, H2, and H3 remain undecided" in preamble
     assert "No PhishVN record has been accessed" in preamble
-    for statement in (
-        "v1.5 training-only saga diagnostic has status `stopped_platform_warning`",
-        "v1.6 training-only diagnostic has status `passed_training_only`",
-        "rq1-baselines-v2 execution has status `frozen_not_run`",
-        "no baseline model, threshold, or validation result has been accepted",
-        "h1, h2, and h3 remain undecided",
-        "no PhishVN record has been accessed",
-    ):
-        assert statement.lower() in readme_current_work
-    assert "v1.6 saga diagnostic is `not_run`" not in readme_current_work
+
+
+def test_live_records_capture_v2_validation_without_deciding_hypotheses():
+    records = {
+        "README": README.read_text(encoding="utf-8"),
+        "status": STATUS.read_text(encoding="utf-8"),
+        "evidence": EVIDENCE_OUTLINE.read_text(encoding="utf-8"),
+    }
+    for name, record in records.items():
+        compact = _compact(record)
+        for statement in (
+            "rq1-baselines-v2",
+            "completed_development_validation",
+            "development validation only",
+            "h1, h2, and h3 remain undecided",
+            "no phishvn record has been accessed",
+            "bf5b3a6f0fc705d26852da4dd0053c6111ffc3e500d7a2e95dfba5ad859b279c",
+            "7ae6c9af85e935c551468f590a7ba43441f58def",
+            "b8b92cfbe29160e769e5e7d80712becc8fc0680cdfd45a44b839ef9bada87799",
+            "71a3e24a0283a31ba188bc7dd60b18c1b708370b9ca275d5ab1a1004680c968a",
+        ):
+            assert statement in compact, f"missing from {name}: {statement}"
+        assert "rq1-baselines-v2 execution has status `frozen_not_run`" not in compact
+
+        for copied_value in (
+            "0.7612031186147",
+            "0.3214800576645843",
+            "0.006680191993666189",
+            "0.007702192373035135",
+            "0.2670846328466124",
+            "0.9842223290084895",
+            "0.008758473947251225",
+            "0.009915480854183582",
+            "2.1316282072803006e-14",
+            "3.3306690738754696e-16",
+        ):
+            assert copied_value in compact, f"missing from {name}: {copied_value}"
+
+    for record in records.values():
+        compact = _compact(record)
+        assert "group test remains analyst-exposed but model-unscored" in compact
+        assert "process input boundary" in compact
 
 
 def test_live_records_preserve_v14_failure_and_qualify_tolerance_observation():
@@ -406,14 +613,14 @@ def test_v16_saga_diagnostic_record_is_training_only_and_reproducible():
         text = _compact(record.read_text(encoding="utf-8"))
         assert "v1.5 saga diagnostic has status `stopped_platform_warning`" in text
         assert "v1.6 saga diagnostic has status `passed_training_only`" in text
-        assert "rq1-baselines-v2 execution has status `frozen_not_run`" in text
+        assert (
+            "rq1-baselines-v2 execution has status "
+            "`completed_development_validation`" in text
+        )
         assert "two-model saga diagnostic" in text
         assert "both v1.6 fresh runs" in text
         assert "fitted-state sha-256" in text
-        assert (
-            "no baseline model, threshold, or validation result has been accepted"
-            in text
-        )
+        assert "h1, h2, and h3 remain undecided" in text
 
     readme = README.read_text(encoding="utf-8")
     assert "uv run --locked python scripts/rq1_saga_convergence_diagnostic.py" in readme

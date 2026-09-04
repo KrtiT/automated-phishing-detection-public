@@ -16,12 +16,22 @@ The corrected v1.6 training-only diagnostic has status
 fitted-state hashes. The finite scoring outputs also matched an independent
 full-probability-matrix calculation within the frozen tolerances. This
 establishes numerical feasibility only.
-Protocol v1.7 freezes the separate
+Protocol v1.7 froze the separate
 [`rq1-baselines-v2`](data/rq1-baseline-contract-v2.json) method before its
-validation run; the rq1-baselines-v2 execution has status `frozen_not_run`. No
-baseline model, threshold, or validation result has been accepted, and H1, H2,
-and H3 remain undecided. No RQ/H decision rule changed, and no PhishVN record
-has been accessed.
+validation run. The single planned execution completed from clean commit
+`7ae6c9af85e935c551468f590a7ba43441f58def` and has status
+`completed_development_validation`. Its aggregate result is development
+validation only, not confirmatory evidence. H1, H2, and H3 remain undecided, no
+RQ/H decision rule changed, and no PhishVN record has been accessed. The public
+[summary](reports/rq1-baseline-v2-summary.json) has SHA-256
+`bf5b3a6f0fc705d26852da4dd0053c6111ffc3e500d7a2e95dfba5ad859b279c`.
+The private `length-only` and `Logistic-L1` artifacts remain outside Git; the
+summary pins them at SHA-256
+`b8b92cfbe29160e769e5e7d80712becc8fc0680cdfd45a44b839ef9bada87799`
+and `71a3e24a0283a31ba188bc7dd60b18c1b708370b9ca275d5ab1a1004680c968a`.
+The group test remains analyst-exposed but model-unscored. The summary's
+`access.group_test_accessed=false` records the baseline process input boundary;
+it does not erase the separately recorded analyst exposure.
 
 PhiUSIIL is a published collection of URLs from UCI dataset 967. Research
 observations come only from the licensed source; the code does not assign
@@ -125,10 +135,11 @@ It was produced from clean commit
 uv run --locked python scripts/rq1_saga_convergence_diagnostic.py
 ```
 
-## Run the Frozen v2 Baselines
+## Recorded v2 Baseline Validation
 
-After the v1.7 protocol, contract, and implementation checkpoint is committed,
-run the active baseline command once from that clean commit:
+The command below was executed once on 2026-09-04 from clean commit
+`7ae6c9af85e935c551468f590a7ba43441f58def`, after its GitHub Actions checks
+passed. It is retained here as the exact execution command:
 
 ```bash
 uv run --locked phishing-research fit-baselines \
@@ -149,14 +160,31 @@ summary contains aggregate counts, hashes, configuration, scoring-audit fields,
 and validation metrics, but no URL, domain, record identifier, feature row, or
 row score.
 
+Both models completed below the 5,000-iteration limit and produced a threshold
+under the frozen one-sided FPR-bound rule. These are validation-set operating
+points, not internal-test or external results.
+
+| Model | `n_iter` | Threshold | Validation recall | Observed validation FPR | One-sided 95% FPR upper bound |
+|---|---:|---:|---:|---:|---:|
+| `length-only` | 69 | 0.7612031186147 | 0.3214800576645843 | 0.006680191993666189 | 0.007702192373035135 |
+| `Logistic-L1` | 4783 | 0.2670846328466124 | 0.9842223290084895 | 0.008758473947251225 | 0.009915480854183582 |
+
+The full model recorded six allowlisted Accelerate scoring warnings. Its finite
+decision values and full probability matrix matched the independent reference,
+with maximum absolute differences of `2.1316282072803006e-14` and
+`3.3306690738754696e-16`. The summary contains the exact counts and private
+artifact hashes. Coefficients and sparsity are not interpreted as feature
+importance.
+
 ## Evidence Status
 
 The [evidence outline](docs/research-evidence-outline.md) links each research
 question to the artifacts and decision rules needed to answer it. Data
-preparation is an input-control milestone, not a hypothesis result. H1, H2,
-and H3 remain undecided. The [research basis](docs/research-basis.md) records
-the source-provenance limits, ownership of the study-defined gates, closest
-prior work, and narrow contribution boundary.
+preparation is an input-control milestone, and the completed baseline run is a
+development-validation milestone. Neither is a hypothesis result. H1, H2, and
+H3 remain undecided. The [research basis](docs/research-basis.md) records the
+source-provenance limits, ownership of the study-defined gates, closest prior
+work, and narrow contribution boundary.
 
 The complete v2 snapshot remains available at tag
 `legacy-v2-clean-2026-08-16`, commit

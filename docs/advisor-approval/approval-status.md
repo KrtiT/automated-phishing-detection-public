@@ -7,10 +7,11 @@ historical `rq1-baselines-v1` contract remains preserved. Its prescribed fit
 stopped with a convergence warning and published no model or summary. A later
 local tolerance observation is provenance-incomplete and is not research
 evidence. The v1.5 SAGA diagnostic has status `stopped_platform_warning`; the
-v1.6 SAGA diagnostic has status `passed_training_only`. Protocol v1.7 freezes
-`rq1-baselines-v2`, and its execution has status `frozen_not_run`. No baseline
-model, threshold, or validation result has been accepted. H1, H2, and H3
-remain undecided. No PhishVN record has been accessed.
+v1.6 SAGA diagnostic has status `passed_training_only`. Protocol v1.7 froze
+`rq1-baselines-v2` before validation. Its single planned execution completed
+from clean commit `7ae6c9af85e935c551468f590a7ba43441f58def` and has status
+`completed_development_validation`. This is development validation only. H1,
+H2, and H3 remain undecided, and no PhishVN record has been accessed.
 
 | Field | Value |
 |---|---|
@@ -26,7 +27,7 @@ remain undecided. No PhishVN record has been accessed.
 | Source-freeze release tag | `phiusiil-development-v1` |
 | Source-freeze release | [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1) |
 | Development preparation | `complete` |
-| Current technical milestone | Protocol v1.7 baseline amendment `frozen`; v1.4 baseline attempt `stopped_nonconverged`; exploratory tolerance observation `not_accepted_provenance_incomplete`; v1.5 SAGA diagnostic `stopped_platform_warning`; v1.6 SAGA diagnostic `passed_training_only`; rq1-baselines-v2 execution `frozen_not_run`; no baseline model, threshold, or validation result accepted. |
+| Current technical milestone | Protocol v1.7 baseline amendment `frozen`; v1.4 baseline attempt `stopped_nonconverged`; exploratory tolerance observation `not_accepted_provenance_incomplete`; v1.5 SAGA diagnostic `stopped_platform_warning`; v1.6 SAGA diagnostic `passed_training_only`; rq1-baselines-v2 execution `completed_development_validation`; H1, H2, and H3 remain undecided. |
 | Current hypothesis status | H1 `undecided`; H2 `undecided`; H3 `undecided` |
 | Legacy base tag | `legacy-v2-clean-2026-08-16` |
 | Legacy base SHA | `a5eceecf21ad5ce29c4ab8f8d4de0edc8b73b240` |
@@ -44,7 +45,7 @@ remain undecided. No PhishVN record has been accessed.
   label-blind rule in the protocol.
 - `rq1-baselines-v2` preserves the 25 raw-URL features, their order and
   denominators, partition use, score meaning, and threshold rule from v1. It
-  prospectively freezes SAGA and the validation-scoring audit before execution.
+  froze SAGA and the validation-scoring audit before the recorded execution.
   Both the active and historical contract hashes are recorded above.
 - The PhiUSIIL group test is analyst-exposed but model-unscored. It remains
   excluded from fitting and selection. Its raw partition receives exactly one
@@ -140,11 +141,31 @@ were `4.263256414560601e-14` and `5.551115123125783e-16`, respectively. The
 v1.6 SAGA diagnostic has status `passed_training_only`; this establishes
 training feasibility only.
 
-Protocol v1.7 freezes `rq1-baselines-v2` before validation. It adopts the tested
-SAGA configuration and repeats the same scoring audit on validation before the
-unchanged threshold rule is applied. The rq1-baselines-v2 execution has status
-`frozen_not_run`. No baseline model, threshold, or validation result has been
-accepted, and H1, H2, and H3 remain undecided.
+Protocol v1.7 froze `rq1-baselines-v2` before validation. The command then ran
+once from clean commit `7ae6c9af85e935c551468f590a7ba43441f58def`, after CI passed.
+The exact aggregate [summary](../../reports/rq1-baseline-v2-summary.json) has
+SHA-256 `bf5b3a6f0fc705d26852da4dd0053c6111ffc3e500d7a2e95dfba5ad859b279c`.
+The rq1-baselines-v2 execution has status `completed_development_validation`.
+The private `length-only` artifact has SHA-256
+`b8b92cfbe29160e769e5e7d80712becc8fc0680cdfd45a44b839ef9bada87799`;
+the private `Logistic-L1` artifact has SHA-256
+`71a3e24a0283a31ba188bc7dd60b18c1b708370b9ca275d5ab1a1004680c968a`.
+
+| Model | `n_iter` | Threshold | Validation recall | Observed FPR | One-sided 95% FPR upper bound |
+|---|---:|---:|---:|---:|---:|
+| `length-only` | 69 | 0.7612031186147 | 0.3214800576645843 | 0.006680191993666189 | 0.007702192373035135 |
+| `Logistic-L1` | 4783 | 0.2670846328466124 | 0.9842223290084895 | 0.008758473947251225 | 0.009915480854183582 |
+
+The length-only scoring audit recorded no warning and zero reference
+difference. The full model recorded six allowlisted scoring warnings; its
+finite decision values and full probability matrix matched the independent
+reference with maximum absolute differences of `2.1316282072803006e-14` and
+`3.3306690738754696e-16`. Both thresholds have status `selected`. These are
+validation-set operating points, not group-test, external, or hypothesis
+results. The group test remains analyst-exposed but model-unscored. The
+summary's `access.group_test_accessed=false` records the process input boundary
+and does not negate the earlier analyst exposure. No PhishVN record was
+accessed, and H1, H2, and H3 remain undecided.
 
 ## Change Record
 

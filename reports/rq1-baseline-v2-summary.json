@@ -1,0 +1,162 @@
+{
+  "access": {
+    "group_test_accessed": false,
+    "phishvn_accessed": false
+  },
+  "analysis_stage": "development_validation_only",
+  "contract_id": "rq1-baselines-v2",
+  "hypothesis_status": {
+    "H1": "undecided",
+    "H2": "undecided",
+    "H3": "undecided"
+  },
+  "input_counts": {
+    "train": {
+      "0": 94373,
+      "1": 71875,
+      "rows": 166248
+    },
+    "validation": {
+      "0": 20209,
+      "1": 12486,
+      "rows": 32695
+    }
+  },
+  "input_hashes": {
+    "contract": "05d6d0831def7d26448c8dbdc8117800ea2448cdfc2aca2ad95489f22d2d11ba",
+    "preparation_summary": "1a85a7eecc0f5baa7c59e03a0cbde63fd4595409feb918dc5ff916ead7cd5c9e",
+    "train": "575f2fb13a0766020e29d78bf8e633a185b381abde7060bdd1ed04cc4a5e38a0",
+    "validation": "970c6568a6400a1fc265b7809ef7bd9d1c297632799cbb88801313bc34ac415a"
+  },
+  "models": {
+    "Logistic-L1": {
+      "artifact": "logistic-l1.json",
+      "artifact_sha256": "71a3e24a0283a31ba188bc7dd60b18c1b708370b9ca275d5ab1a1004680c968a",
+      "feature_count": 25,
+      "n_iter": [
+        4783
+      ],
+      "validation_scoring_audit": {
+        "max_absolute_decision_difference": 2.1316282072803006e-14,
+        "max_absolute_probability_difference": 3.3306690738754696e-16,
+        "platform_identity": {
+          "numpy_blas_name": "accelerate",
+          "platform_machine": "arm64",
+          "sys_platform": "darwin"
+        },
+        "warning_records": [
+          {
+            "category": "RuntimeWarning",
+            "message": "divide by zero encountered in matmul",
+            "stage": "decision_function"
+          },
+          {
+            "category": "RuntimeWarning",
+            "message": "overflow encountered in matmul",
+            "stage": "decision_function"
+          },
+          {
+            "category": "RuntimeWarning",
+            "message": "invalid value encountered in matmul",
+            "stage": "decision_function"
+          },
+          {
+            "category": "RuntimeWarning",
+            "message": "divide by zero encountered in matmul",
+            "stage": "predict_proba"
+          },
+          {
+            "category": "RuntimeWarning",
+            "message": "overflow encountered in matmul",
+            "stage": "predict_proba"
+          },
+          {
+            "category": "RuntimeWarning",
+            "message": "invalid value encountered in matmul",
+            "stage": "predict_proba"
+          }
+        ]
+      },
+      "validation_threshold": {
+        "candidate_count": 11279,
+        "counts": {
+          "false_negative": 197,
+          "false_positive": 177,
+          "negative": 20209,
+          "positive": 12486,
+          "true_negative": 20032,
+          "true_positive": 12289
+        },
+        "fpr_upper_95": 0.009915480854183582,
+        "observed_fpr": 0.008758473947251225,
+        "recall": 0.9842223290084895,
+        "status": "selected",
+        "threshold": 0.2670846328466124
+      }
+    },
+    "length-only": {
+      "artifact": "length-only.json",
+      "artifact_sha256": "b8b92cfbe29160e769e5e7d80712becc8fc0680cdfd45a44b839ef9bada87799",
+      "feature_count": 1,
+      "n_iter": [
+        69
+      ],
+      "validation_scoring_audit": {
+        "max_absolute_decision_difference": 0.0,
+        "max_absolute_probability_difference": 0.0,
+        "platform_identity": {
+          "numpy_blas_name": "accelerate",
+          "platform_machine": "arm64",
+          "sys_platform": "darwin"
+        },
+        "warning_records": []
+      },
+      "validation_threshold": {
+        "candidate_count": 221,
+        "counts": {
+          "false_negative": 8472,
+          "false_positive": 135,
+          "negative": 20209,
+          "positive": 12486,
+          "true_negative": 20074,
+          "true_positive": 4014
+        },
+        "fpr_upper_95": 0.007702192373035135,
+        "observed_fpr": 0.006680191993666189,
+        "recall": 0.3214800576645843,
+        "status": "selected",
+        "threshold": 0.7612031186147
+      }
+    }
+  },
+  "pipeline": {
+    "alert_rule": "score >= threshold",
+    "classifier": {
+      "C": 1.0,
+      "class": "LogisticRegression",
+      "class_weight": "balanced",
+      "fit_intercept": true,
+      "max_iter": 5000,
+      "penalty": "l1",
+      "random_state": 42,
+      "solver": "saga",
+      "tol": 0.0001
+    },
+    "convergence_warning_action": "error",
+    "scaler": {
+      "class": "StandardScaler",
+      "fit_partition": "train",
+      "with_mean": true,
+      "with_std": true
+    },
+    "score": "P(is_phishing=1)",
+    "scoring_integrity_policy_id": "rq1-scoring-integrity-v1",
+    "threshold_constraint": "exact one-sided 95% Clopper-Pearson false-positive-rate upper confidence bound <= 0.01"
+  },
+  "schema_version": 2,
+  "software_versions": {
+    "numpy": "2.2.6",
+    "scikit-learn": "1.7.2",
+    "scipy": "1.15.3"
+  }
+}

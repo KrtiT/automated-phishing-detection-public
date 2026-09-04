@@ -7,8 +7,12 @@ v1.4. The PhiUSIIL preparation milestone and aggregate record are complete.
 The [`rq1-baselines-v1`](data/rq1-baseline-contract.json) contract now freezes
 the 25 raw-URL features, the two logistic baselines, and validation threshold
 selection before model fitting. The pure feature extractor and baseline runner
-are implemented; the prescribed training-only fit and validation-only threshold
-selection are in progress.
+are implemented. The first prescribed baseline run stopped when the
+full-feature Logistic-L1 fit reached the frozen 5,000-iteration limit. The
+convergence warning was treated as an error, so atomic publication left no
+model or summary artifact. This is an execution failure, not an H1 result;
+the next full fit requires a prospectively frozen numerical-convergence
+amendment.
 
 PhiUSIIL is a published collection of URLs from UCI dataset 967. Research
 observations come only from the licensed source; the code does not assign
@@ -98,6 +102,10 @@ uv run --locked phishing-research fit-baselines \
   --output-dir data/processed/rq1-baselines-v1 \
   --summary reports/rq1-baseline-summary.json
 ```
+
+This invocation is retained to reproduce the stopped v1.4 attempt. The next
+full fit will use only a separately versioned numerical control frozen before
+the retry.
 
 The command accepts no group-test input. It verifies all four input hashes
 before parsing, fits scaling and both classifiers on training data only, and

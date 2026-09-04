@@ -50,9 +50,10 @@ def test_protocol_v14_records_frozen_baseline_contract_and_next_step():
     assert "H1, H2, and H3 remain undecided" in preamble
     assert "No PhishVN record has been accessed" in preamble
 
+
+def test_live_records_report_stopped_v14_baseline_attempt():
     for record in (STATUS, EVIDENCE_OUTLINE):
         text = record.read_text(encoding="utf-8")
-        lowered = text.lower()
         assert "| Protocol version | `1.4` |" in text
         assert "rq1-baselines-v1" in text
         assert "| Development source schema | `2` |" in text
@@ -62,11 +63,12 @@ def test_protocol_v14_records_frozen_baseline_contract_and_next_step():
             "releases/tag/phiusiil-development-v1" in text
         )
         assert "| Development preparation | `complete` |" in text
-        assert "baseline contract and pure feature extractor complete" in lowered
-        assert (
-            "training-only fitting and validation-only threshold selection" in lowered
-        )
+        assert "`stopped_nonconverged`" in text
+        assert "Atomic publication left no model" in text
+        assert "error: Logistic-L1 did not converge" in text
+        assert "e535586c6162a306a8dac7a5a6546f55dc09136f" in text
         assert "H1 `undecided`; H2 `undecided`; H3 `undecided`" in text
+        assert "No PhishVN record" in text
 
 
 def test_protocol_distinguishes_reference_classifications_from_ground_truth():

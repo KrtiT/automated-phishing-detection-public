@@ -15,7 +15,7 @@ manuscript prose and does not contain an interpretation of results.
 | Source-freeze release | [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1) |
 | Development preparation | `complete` |
 | Preparation record | `reports/phiusiil-preparation-summary.json` |
-| Current technical milestone | RQ1 baseline contract and pure feature extractor complete; training-only fitting and validation-only threshold selection are `in_progress`. |
+| Current technical milestone | RQ1 v1.4 baseline attempt `stopped_nonconverged`; no baseline result accepted; a prospective numerical-convergence amendment must be frozen before any retry. |
 | External source | PhishVN v4, reserved for the frozen external evaluation |
 | Current hypothesis status | H1 `undecided`; H2 `undecided`; H3 `undecided` |
 
@@ -75,6 +75,25 @@ without reference to the displayed rows, and any later internal group-test
 result will disclose this exposure as a validity limitation. No PhishVN record
 was accessed.
 
+### RQ1 Baseline Execution Note
+
+The prescribed RQ1 baseline run started on 2026-09-03 and stopped on 2026-09-04
+after approximately eight hours and forty minutes. The full-feature
+`Logistic-L1` fit reached the frozen `max_iter=5000` at `tol=1e-8`; scikit-learn
+therefore raised a convergence warning, which the contract treats as an error.
+The command reported `error: Logistic-L1 did not converge` and exited with code
+2. Atomic publication left no model directory or aggregate summary. No model,
+threshold, or metric from this attempt is used as research evidence.
+
+The run used implementation commit
+`e535586c6162a306a8dac7a5a6546f55dc09136f`. The command accepted only the
+pinned PhiUSIIL training and validation files, the preparation summary, and the
+feature contract. It accepted no group-test or PhishVN input. The runner
+completed the length-only stage in memory before attempting `Logistic-L1`, but
+atomic publication emitted neither model and no model, threshold, or metric
+from the attempt was reviewed. This is a numerical fitting failure, not
+evidence for or against H1. H1, H2, and H3 remain undecided.
+
 ## RQ1 and H1
 
 **Question:** What incremental value do structural URL features and
@@ -96,9 +115,9 @@ Required evidence:
 - a gate table that evaluates every H1 condition without substituting a
   secondary metric.
 
-Current status: baseline contract and feature extraction are `complete`;
-baseline fitting and validation-only threshold selection are `in_progress`;
-H1 is `undecided`.
+Current status: baseline contract and feature extraction are `complete`; the
+v1.4 fit is `stopped_nonconverged`; no baseline artifact is accepted; H1 is
+`undecided`.
 
 ## RQ2 and H2
 

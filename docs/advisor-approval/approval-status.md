@@ -4,10 +4,11 @@
 three-question design with objective, reproducible outcome criteria. The
 PhiUSIIL development split and aggregate preparation record are complete. The
 RQ1 baseline contract and pure raw-URL feature extractor are frozen and
-implemented. The prescribed training-only fit of the two logistic baselines and
-validation-only threshold selection are in progress. No confirmatory v3 result
-has been produced, H1, H2, and H3 remain undecided, and no PhishVN record has
-been accessed.
+implemented. The first prescribed baseline run stopped when the full-feature
+Logistic-L1 fit reached the frozen iteration limit. The convergence warning was
+treated as an error, and no model or summary artifact was published. This is an
+execution failure, not a confirmatory result. H1, H2, and H3 remain undecided,
+and no PhishVN record has been accessed.
 
 | Field | Value |
 |---|---|
@@ -21,7 +22,7 @@ been accessed.
 | Source-freeze release tag | `phiusiil-development-v1` |
 | Source-freeze release | [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1) |
 | Development preparation | `complete` |
-| Current technical milestone | RQ1 baseline contract and pure feature extractor complete; training-only fitting and validation-only threshold selection are `in_progress`. |
+| Current technical milestone | RQ1 v1.4 baseline attempt `stopped_nonconverged`; no baseline result accepted; a prospective numerical-convergence amendment must be frozen before any retry. |
 | Current hypothesis status | H1 `undecided`; H2 `undecided`; H3 `undecided` |
 | Legacy base tag | `legacy-v2-clean-2026-08-16` |
 | Legacy base SHA | `a5eceecf21ad5ce29c4ab8f8d4de0edc8b73b240` |
@@ -67,6 +68,16 @@ was accessed.
 When generated, `access.group_test_accessed=false` in a baseline artifact
 describes only the `fit-baselines` process input boundary. It does not negate
 the analyst access recorded here.
+
+The prescribed run started on 2026-09-03 and stopped on 2026-09-04 after
+approximately eight hours and forty minutes. The full-feature `Logistic-L1`
+fit reached `max_iter=5000` at `tol=1e-8`, and the command exited with
+`error: Logistic-L1 did not converge`. Atomic publication left no model
+directory or summary file. The run used implementation commit
+`e535586c6162a306a8dac7a5a6546f55dc09136f`. The command accepted the pinned
+training, validation, preparation-summary, and contract inputs only; it
+accepted no group-test or PhishVN input. No model, threshold, or metric from the
+attempt was reviewed or used as research evidence.
 
 The protocol matrix remains the byte-for-byte v1.4 freeze record. Its embedded
 status describes the state at freeze time; current execution status is

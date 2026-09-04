@@ -12,7 +12,11 @@ license = { file = "LICENSE" }
 authors = [
   { name = "Krti Tallam" },
 ]
-dependencies = []
+dependencies = [
+    "numpy==2.2.6",
+    "scikit-learn==1.7.2",
+    "scipy==1.15.3",
+]
 
 [project.scripts]
 phishing-research = "automated_phishing_detection.cli:main"

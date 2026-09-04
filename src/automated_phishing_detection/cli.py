@@ -6,7 +6,7 @@ import json
 import sys
 from pathlib import Path
 
-from . import phiusiil, protocol_preflight
+from . import baselines, phiusiil, protocol_preflight
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -28,6 +28,17 @@ def _parser() -> argparse.ArgumentParser:
     prepare.add_argument("--source-spec", required=True, type=Path)
     prepare.add_argument("--output-dir", required=True, type=Path)
     prepare.add_argument("--summary", required=True, type=Path)
+
+    fit_baselines = commands.add_parser(
+        "fit-baselines",
+        description="Fit frozen RQ1 baselines and select validation thresholds.",
+    )
+    fit_baselines.add_argument("--train", required=True, type=Path)
+    fit_baselines.add_argument("--validation", required=True, type=Path)
+    fit_baselines.add_argument("--preparation-summary", required=True, type=Path)
+    fit_baselines.add_argument("--contract", required=True, type=Path)
+    fit_baselines.add_argument("--output-dir", required=True, type=Path)
+    fit_baselines.add_argument("--summary", required=True, type=Path)
     return parser
 
 
@@ -58,6 +69,26 @@ def main(argv=None) -> int:
             json.JSONDecodeError,
             phiusiil.PreparationError,
             protocol_preflight.PreflightError,
+        ) as exc:
+            print(f"error: {exc}", file=sys.stderr)
+            return 2
+        print(json.dumps(summary, sort_keys=True))
+        return 0
+    if args.command == "fit-baselines":
+        try:
+            summary = baselines.fit_baselines(
+                train_path=args.train,
+                validation_path=args.validation,
+                preparation_summary_path=args.preparation_summary,
+                contract_path=args.contract,
+                output_dir=args.output_dir,
+                summary_path=args.summary,
+            )
+        except (
+            OSError,
+            UnicodeError,
+            json.JSONDecodeError,
+            baselines.BaselineError,
         ) as exc:
             print(f"error: {exc}", file=sys.stderr)
             return 2

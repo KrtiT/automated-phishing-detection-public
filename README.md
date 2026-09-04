@@ -6,8 +6,8 @@ This branch contains the active research implementation governed by protocol
 v1.4. The PhiUSIIL preparation milestone and aggregate record are complete.
 The [`rq1-baselines-v1`](data/rq1-baseline-contract.json) contract now freezes
 the 25 raw-URL features, the two logistic baselines, and validation threshold
-selection before model fitting. The pure feature extractor is implemented;
-training-only fitting and validation-only threshold selection are next.
+selection before model fitting. The pure feature extractor and baseline runner
+are implemented; the recorded development-data fit has not been run.
 
 PhiUSIIL is a published collection of URLs from UCI dataset 967. Research
 observations come only from the licensed source; the code does not assign
@@ -82,6 +82,28 @@ The recorded run read 235,795 rows, retained 233,536 rows across 197,105
 registrable domains, and quarantined 2,259 rows under the stated rules. The
 summary gives the split, class, and quarantine counts together with the source
 and output hashes.
+
+## Fit the Development Baselines
+
+After reproducing the preparation record, fit the two frozen baselines with
+the explicit train and validation files:
+
+```bash
+uv run --locked phishing-research fit-baselines \
+  --train data/processed/phiusiil-v1/train.jsonl \
+  --validation data/processed/phiusiil-v1/validation.jsonl \
+  --preparation-summary reports/phiusiil-preparation-summary.json \
+  --contract data/rq1-baseline-contract.json \
+  --output-dir data/processed/rq1-baselines-v1 \
+  --summary reports/rq1-baseline-summary.json
+```
+
+The command accepts no group-test input. It verifies all four input hashes
+before parsing, fits scaling and both classifiers on training data only, and
+uses validation data only for threshold selection. Model records are portable
+JSON rather than Python pickle or joblib files. The aggregate summary contains
+counts, hashes, versions, hyperparameters, and validation metrics, but no URL,
+domain, record identifier, feature row, or row score.
 
 ## Evidence Status
 

@@ -5,15 +5,17 @@ manuscript prose and does not contain an interpretation of results.
 
 | Item | Value |
 |---|---|
-| Protocol version | `1.3` |
-| Protocol SHA-256 | `bf38ed9eb69acfb4ccef0e647a9e45140f7c4ee9274e9d7ded2a966fcd3cd0fb` |
+| Protocol version | `1.4` |
+| Protocol SHA-256 | `2c2956e7cf958f9d2d948a2b1b665e214e12b175d84e4b73c766cc0a6e3be4de` |
+| RQ1 baseline contract | `data/rq1-baseline-contract.json` (`rq1-baselines-v1`) |
+| RQ1 baseline contract SHA-256 | `594a66769dee3bf23c4133020dcf9b7d57c105590e5007832ac4249def6a33d4` |
 | Development source | PhiUSIIL, UCI dataset 967 |
 | Development source schema | `2` |
 | Source-freeze release tag | `phiusiil-development-v1` |
 | Source-freeze release | [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1) |
 | Development preparation | `complete` |
 | Preparation record | `reports/phiusiil-preparation-summary.json` |
-| Current technical milestone | Frozen raw-URL feature extraction; `length-only` and `Logistic-L1` baseline implementation using only the train and validation partitions. |
+| Current technical milestone | RQ1 baseline contract and pure feature extractor complete; training-only fitting and validation-only threshold selection are next. |
 | External source | PhishVN v4, reserved for the frozen external evaluation |
 | Current hypothesis status | H1 `undecided`; H2 `undecided`; H3 `undecided` |
 
@@ -57,6 +59,8 @@ external evaluation?
 
 Required evidence:
 
+- the frozen `rq1-baselines-v1` feature order, predictor exclusions, shared
+  logistic configuration, partition use, and threshold-selection rule;
 - validation-locked thresholds for length-only, Logistic-L1, transformer-only,
   and cascade models;
 - paired predictions on the untouched PhiUSIIL group-test partition;
@@ -66,7 +70,8 @@ Required evidence:
 - a gate table that evaluates every H1 condition without substituting a
   secondary metric.
 
-Current status: `not_run`; H1 is `undecided`.
+Current status: baseline contract and feature extraction are `complete`;
+baseline fitting and threshold selection are `not_run`; H1 is `undecided`.
 
 ## RQ2 and H2
 

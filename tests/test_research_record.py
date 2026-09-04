@@ -38,25 +38,23 @@ def test_recorded_protocol_hash_matches_current_protocol():
         assert pattern.findall(text) == [expected]
 
 
-def test_protocol_v13_records_completed_preparation_and_next_milestone():
+def test_protocol_v14_records_frozen_baseline_contract_and_next_step():
     protocol = PROTOCOL.read_text(encoding="utf-8")
     preamble = protocol.split("## Study Plan", maxsplit=1)[0]
 
-    assert "**Version:** 1.3 | **Date:** 2026-09-03" in preamble
-    assert (
-        "PhiUSIIL development-data preparation and its aggregate record are complete."
-        in preamble
-    )
-    assert "frozen raw-URL feature extraction" in preamble
-    assert "`length-only` and `Logistic-L1` baseline implementation" in preamble
-    assert "using only the train and validation partitions" in preamble
+    assert "**Version:** 1.4 | **Date:** 2026-09-03" in preamble
+    assert "PhiUSIIL development-data preparation is complete." in preamble
+    assert "RQ1 baseline contract and pure raw-URL feature extractor" in preamble
+    assert "fit the two frozen logistic baselines" in preamble
+    assert "select their thresholds on validation" in preamble
     assert "H1, H2, and H3 remain undecided" in preamble
     assert "No PhishVN record has been accessed" in preamble
 
     for record in (STATUS, EVIDENCE_OUTLINE):
         text = record.read_text(encoding="utf-8")
         lowered = text.lower()
-        assert "| Protocol version | `1.3` |" in text
+        assert "| Protocol version | `1.4` |" in text
+        assert "rq1-baselines-v1" in text
         assert "| Development source schema | `2` |" in text
         assert "| Source-freeze release tag | `phiusiil-development-v1` |" in text
         assert (
@@ -64,8 +62,10 @@ def test_protocol_v13_records_completed_preparation_and_next_milestone():
             "releases/tag/phiusiil-development-v1" in text
         )
         assert "| Development preparation | `complete` |" in text
-        assert "frozen raw-url feature extraction" in lowered
-        assert "`length-only` and `logistic-l1` baseline implementation" in lowered
+        assert "baseline contract and pure feature extractor complete" in lowered
+        assert (
+            "training-only fitting and validation-only threshold selection" in lowered
+        )
         assert "H1 `undecided`; H2 `undecided`; H3 `undecided`" in text
 
 

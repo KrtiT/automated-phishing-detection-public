@@ -3,10 +3,11 @@
 ## Current Work
 
 This branch contains the active research implementation governed by protocol
-v1.3. The PhiUSIIL preparation milestone and aggregate record are complete.
-The current technical milestone is frozen raw-URL feature extraction and
-`length-only` and `Logistic-L1` baseline implementation using only the train
-and validation partitions.
+v1.4. The PhiUSIIL preparation milestone and aggregate record are complete.
+The [`rq1-baselines-v1`](data/rq1-baseline-contract.json) contract now freezes
+the 25 raw-URL features, the two logistic baselines, and validation threshold
+selection before model fitting. The pure feature extractor is implemented;
+training-only fitting and validation-only threshold selection are next.
 
 PhiUSIIL is a published collection of URLs from UCI dataset 967. Research
 observations come only from the licensed source; the code does not assign
@@ -29,6 +30,13 @@ once by the frozen hash rule in the
 [research protocol](docs/advisor-approval/2026-08-16-realignment-matrix.md).
 The procedure is label-blind and does not reroll or rebalance a split after its
 class counts are known.
+
+The baseline extractor accepts one raw URL and returns the contract's ordered
+`float64` feature vector. It uses the untouched string for whole-URL counts,
+`urlsplit` for component text, and the existing IDNA-normalized ASCII host for
+host syntax. It does not accept labels, split membership, record or domain
+identity, or publisher fields. Missing and invalid URLs stop extraction rather
+than receiving imputed values.
 
 ## Reproduce the Preparation
 

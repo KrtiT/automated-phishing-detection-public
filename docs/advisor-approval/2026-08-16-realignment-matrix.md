@@ -1,8 +1,8 @@
 # Automated Phishing Detection for Frontier AI Inference
 
-**Status:** The August 20 advisor report directed continuation of the three-question design with objective, reproducible outcome criteria. PhiUSIIL development-data preparation and its aggregate record are complete. The current technical milestone is frozen raw-URL feature extraction and `length-only` and `Logistic-L1` baseline implementation using only the train and validation partitions. H1, H2, and H3 remain undecided; no confirmatory experiment has been run. No PhishVN record has been accessed.
+**Status:** The August 20 advisor report directed continuation of the three-question design with objective, reproducible outcome criteria. PhiUSIIL development-data preparation is complete. The RQ1 baseline contract and pure raw-URL feature extractor are frozen and implemented. The next technical step is to fit the two frozen logistic baselines on the training partition and select their thresholds on validation. H1, H2, and H3 remain undecided; no confirmatory experiment has been run. No PhishVN record has been accessed.
 
-**Version:** 1.3 | **Date:** 2026-09-03
+**Version:** 1.4 | **Date:** 2026-09-03
 
 ## Study Plan
 
@@ -42,6 +42,14 @@ All defined binary outcome labels are normalized to the local field `is_phishing
 - PhishVN-specific rules: require a valid URL, source, source class, confidence tier, published split, and stable published record ID. The source-class/tier combination must match the defined mapping above. Quarantine a record or affected group when a required value is absent or unknown or when the combination is not defined.
 
 No numeric encoding is assumed for PhishVN. At the external-evaluation freeze, its schema, provenance fields, and label encoding are verified before any record is processed. If the verified schema cannot support the defined mapping without interpretation, the external evaluation stops and the discrepancy is recorded. Mapping and exclusion counts are frozen before model predictions or inferential results are examined.
+
+### RQ1 baseline contract
+
+The machine-readable contract is [`data/rq1-baseline-contract.json`](../../data/rq1-baseline-contract.json), contract `rq1-baselines-v1`, SHA-256 `594a66769dee3bf23c4133020dcf9b7d57c105590e5007832ac4249def6a33d4`. It fixes an ordered 25-element `float64` vector derived only from the untouched raw URL, parsed component text from `urlsplit`, and the existing IDNA-normalized ASCII host. Missing or invalid URLs raise the same stated error under `canonical-url-v1`; values are not imputed. Labels, split membership, record or domain identity, and publisher fields are forbidden predictors.
+
+`length-only` and `Logistic-L1` use the same pipeline. A training-only `StandardScaler(with_mean=True, with_std=True)` precedes L1 `LogisticRegression(solver="liblinear", C=1.0, class_weight="balanced", fit_intercept=True, intercept_scaling=1.0, max_iter=5000, tol=1e-8, random_state=42)`. A convergence warning is an error, and there is no hyperparameter or feature search. `length-only` uses only `raw_url_codepoint_length`; `Logistic-L1` uses all 25 features in contract order.
+
+The score is `P(is_phishing=1)`, and a score at or above the threshold produces an alert. Candidate thresholds are the unique validation scores plus the finite no-alert value `nextafter(max(validation score), +infinity)`. Selection maximizes validation recall subject to an exact one-sided 95% Clopper-Pearson FPR upper bound `<= 0.01`; ties prefer the smaller upper bound and then the higher threshold. If no candidate qualifies, the recorded outcome is `target_not_met`. Scaling and model fitting use training data only, and threshold selection uses validation data only. The extractor has no split or evaluation-data interface.
 
 ### H3 request-error construct
 
@@ -98,7 +106,7 @@ The revised study links three questions: which representation improves low-FPR d
 - The [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1) GitHub Release is the source-freeze record for this milestone. It keeps the exact licensed UCI source archive outside Git history and ties it to the archive and CSV SHA-256 checksums recorded in `data/sources.json`.
 - Negative, null, or mixed results under the locked analysis are reported without test-informed retuning. The PhishVN v4 `frozen full-test stream` is not reused as validation data.
 - The project title remains unchanged.
-- PhiUSIIL preparation and its aggregate record are complete. The next technical milestone is frozen raw-URL feature extraction and `length-only` and `Logistic-L1` baseline implementation using only the train and validation partitions. PhishVN v4 remains sealed until the complete external-evaluation freeze described above.
+- PhiUSIIL preparation and its aggregate record are complete. The frozen RQ1 baseline contract and pure feature extractor are implemented. Next, the two logistic baselines are fitted on training data and their thresholds are selected on validation. PhishVN v4 remains sealed until the complete external-evaluation freeze described above.
 
 ## Active Decisions
 
@@ -106,4 +114,4 @@ The revised study links three questions: which representation improves low-FPR d
 2. The outcome-label contract and dataset-specific mapping and quarantine rules are mechanical. Whole-group conflicts and duplicate handling are recorded without personal adjudication.
 3. PhishVN v4 replaces v1 for the later external evaluation because it incorporates the corrected v3 data and completed audit documentation. Tranco remains a secondary popularity control rather than verified benign evidence.
 4. The numerical targets and H3 request-error construct are frozen prospectively and will not be revised in response to observed test results.
-5. The current technical milestone is frozen raw-URL feature extraction and `length-only` and `Logistic-L1` baseline implementation using only the train and validation partitions. The PhishVN external evaluation begins only after the complete freeze described above.
+5. The RQ1 feature and baseline method is frozen under `rq1-baselines-v1`. The next technical step fits the two logistic baselines on training data and selects thresholds on validation; the PhishVN external evaluation begins only after the complete freeze described above.

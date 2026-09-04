@@ -12,6 +12,9 @@ EVIDENCE_OUTLINE = ROOT / "docs" / "research-evidence-outline.md"
 README = ROOT / "README.md"
 SAGA_DIAGNOSTIC = ROOT / "scripts" / "rq1_saga_convergence_diagnostic.py"
 SAGA_V1_RECEIPT = ROOT / "reports" / "rq1-saga-convergence-v1-execution.json"
+SAGA_V2_RECEIPT = ROOT / "reports" / "rq1-saga-convergence-v2-execution.json"
+BASELINE_V1_CONTRACT = ROOT / "data" / "rq1-baseline-contract.json"
+BASELINE_V2_CONTRACT = ROOT / "data" / "rq1-baseline-contract-v2.json"
 DECISION_MATRIX_SHA256 = (
     "bb8350b12ba5f16737826d819b3bc8e2f6a1626851d1da0109828c8a52bed526"
 )
@@ -122,28 +125,122 @@ def test_v15_saga_failure_receipt_is_aggregate_and_immutable():
     visit(receipt)
 
 
-def test_protocol_v16_records_current_convergence_work_without_a_result():
+def test_v16_saga_pass_receipt_is_aggregate_and_immutable():
+    assert sha256(SAGA_V2_RECEIPT.read_bytes()).hexdigest() == (
+        "487714ea17a095e369d381da5a27452f3b263f1be1a05db2ebe061eecdefebdf"
+    )
+    receipt = json.loads(SAGA_V2_RECEIPT.read_bytes())
+
+    assert receipt["diagnostic_id"] == "rq1-saga-convergence-v2"
+    assert receipt["status"] == "passed"
+    assert receipt["scope"] == "training_only"
+    assert receipt["environment"] == {
+        "git_head": "69a67d4e5cb81d49009d6a90e87f4c0c5f2cea87",
+        "numpy_blas_name": "accelerate",
+        "platform_machine": "arm64",
+        "sys_platform": "darwin",
+        "tracked_worktree_clean": True,
+        "uv_lock_sha256": (
+            "15fadb4ad1f3c702a902b40d587a55294e7a26c33f268e8708ba8d941e6a51f0"
+        ),
+    }
+    assert len(receipt["runs"]) == 2
+    expected_warnings = [
+        {"category": "RuntimeWarning", "message": message, "stage": stage}
+        for stage in ("decision_function", "predict_proba")
+        for message in (
+            "divide by zero encountered in matmul",
+            "overflow encountered in matmul",
+            "invalid value encountered in matmul",
+        )
+    ]
+    for run in receipt["runs"]:
+        assert run["run_passed"] is True
+        assert run["models"]["length-only"] == {
+            "allowed_warnings": [],
+            "elapsed_seconds": run["models"]["length-only"]["elapsed_seconds"],
+            "feature_count": 1,
+            "max_absolute_decision_difference": 0.0,
+            "max_absolute_probability_difference": 0.0,
+            "n_iter": 69,
+            "nonzero_coefficient_count": 1,
+            "state_sha256": (
+                "d6a510973bdcafb9c9baa07a80528efbb322dc3328ba0169b660c89de1542b3d"
+            ),
+        }
+        assert run["models"]["Logistic-L1"] == {
+            "allowed_warnings": expected_warnings,
+            "elapsed_seconds": run["models"]["Logistic-L1"]["elapsed_seconds"],
+            "feature_count": 25,
+            "max_absolute_decision_difference": 4.263256414560601e-14,
+            "max_absolute_probability_difference": 5.551115123125783e-16,
+            "n_iter": 4783,
+            "nonzero_coefficient_count": 22,
+            "state_sha256": (
+                "1884d7c72bb1ce88392318b1ddecd90c0d9cfa8b2210340743245e15e353be35"
+            ),
+        }
+        assert run["models"]["length-only"]["elapsed_seconds"] >= 0.0
+        assert run["models"]["Logistic-L1"]["elapsed_seconds"] >= 0.0
+
+    forbidden_keys = {
+        "coefficients",
+        "decision_scores",
+        "domains",
+        "probabilities",
+        "raw_urls",
+        "records",
+        "predictions",
+    }
+
+    def visit(value):
+        if isinstance(value, dict):
+            assert forbidden_keys.isdisjoint(value)
+            for child in value.values():
+                visit(child)
+        elif isinstance(value, list):
+            for child in value:
+                visit(child)
+
+    visit(receipt)
+
+
+def test_protocol_v17_freezes_baseline_v2_without_a_result():
     protocol = PROTOCOL.read_text(encoding="utf-8")
     preamble = protocol.split("## Study Plan", maxsplit=1)[0]
     contract = _section(protocol, "RQ1 baseline contract", level=3)
+    readme_current_work = _compact(
+        _section(README.read_text(encoding="utf-8"), "Current Work", level=2)
+    )
 
-    assert "**Version:** 1.6 | **Date:** 2026-09-04" in preamble
+    assert "**Version:** 1.7 | **Date:** 2026-09-04" in preamble
     assert "PhiUSIIL development-data preparation is complete." in preamble
-    assert "rq1-baselines-v1" in preamble
+    assert "rq1-baselines-v2" in preamble
+    expected_contract_hash = sha256(BASELINE_V2_CONTRACT.read_bytes()).hexdigest()
     assert (
-        "contract `rq1-baselines-v1`, SHA-256 "
-        "`594a66769dee3bf23c4133020dcf9b7d57c105590e5007832ac4249def6a33d4`" in contract
+        f"contract `rq1-baselines-v2`, SHA-256 `{expected_contract_hash}`" in contract
     )
     assert "tolerance observation" in preamble
     assert "provenance-incomplete" in preamble
     assert "v1.5 SAGA diagnostic is `stopped_platform_warning`" in preamble
-    assert "v1.6 SAGA diagnostic is `not_run`" in preamble
+    assert "v1.6 SAGA diagnostic is `passed_training_only`" in preamble
+    assert "rq1-baselines-v2 execution is `frozen_not_run`" in preamble
     assert (
         "No baseline model, threshold, or validation result has been accepted"
         in preamble
     )
     assert "H1, H2, and H3 remain undecided" in preamble
     assert "No PhishVN record has been accessed" in preamble
+    for statement in (
+        "v1.5 training-only saga diagnostic has status `stopped_platform_warning`",
+        "v1.6 training-only diagnostic has status `passed_training_only`",
+        "rq1-baselines-v2 execution has status `frozen_not_run`",
+        "no baseline model, threshold, or validation result has been accepted",
+        "h1, h2, and h3 remain undecided",
+        "no PhishVN record has been accessed",
+    ):
+        assert statement.lower() in readme_current_work
+    assert "v1.6 saga diagnostic is `not_run`" not in readme_current_work
 
 
 def test_live_records_preserve_v14_failure_and_qualify_tolerance_observation():
@@ -152,13 +249,13 @@ def test_live_records_preserve_v14_failure_and_qualify_tolerance_observation():
             STATUS,
             "Execution Audit",
             2,
-            "| RQ1 baseline contract | `rq1-baselines-v1` |",
+            "| Historical RQ1 baseline contract | `rq1-baselines-v1` |",
         ),
         (
             EVIDENCE_OUTLINE,
             "RQ1 Baseline Execution Note",
             3,
-            "| RQ1 baseline contract | `data/rq1-baseline-contract.json` "
+            "| Historical RQ1 baseline contract | `data/rq1-baseline-contract.json` "
             "(`rq1-baselines-v1`) |",
         ),
     )
@@ -172,10 +269,10 @@ def test_live_records_preserve_v14_failure_and_qualify_tolerance_observation():
             flags=re.IGNORECASE,
         )
         assert "`rq1-baselines-v1`" in audit
-        assert "| Protocol version | `1.6` |" in text
+        assert "| Protocol version | `1.7` |" in text
         assert contract_row in text
         assert (
-            "| RQ1 baseline contract SHA-256 | "
+            "| Historical RQ1 baseline contract SHA-256 | "
             "`594a66769dee3bf23c4133020dcf9b7d57c105590e5007832ac4249def6a33d4` |"
             in text
         )
@@ -228,11 +325,9 @@ def test_live_records_preserve_v14_failure_and_qualify_tolerance_observation():
         assert "No PhishVN record" in text
 
 
-def test_next_saga_diagnostic_is_prospective_and_training_only():
+def test_v16_saga_diagnostic_record_is_training_only_and_reproducible():
     protocol = PROTOCOL.read_text(encoding="utf-8")
-    diagnostic = _compact(
-        _section(protocol, "Prospective convergence diagnostic", level=3)
-    )
+    diagnostic = _compact(_section(protocol, "SAGA convergence diagnostic", level=3))
     for rule in (
         "one two-model saga diagnostic",
         "executed twice in fresh processes",
@@ -309,10 +404,11 @@ def test_next_saga_diagnostic_is_prospective_and_training_only():
 
     for record in (STATUS, EVIDENCE_OUTLINE):
         text = _compact(record.read_text(encoding="utf-8"))
-        assert "v1.5 saga diagnostic `stopped_platform_warning`" in text
-        assert "v1.6 saga diagnostic `not_run`" in text
+        assert "v1.5 saga diagnostic has status `stopped_platform_warning`" in text
+        assert "v1.6 saga diagnostic has status `passed_training_only`" in text
+        assert "rq1-baselines-v2 execution has status `frozen_not_run`" in text
         assert "two-model saga diagnostic" in text
-        assert "both v1.5 fresh runs" in text
+        assert "both v1.6 fresh runs" in text
         assert "fitted-state sha-256" in text
         assert (
             "no baseline model, threshold, or validation result has been accepted"
@@ -321,6 +417,71 @@ def test_next_saga_diagnostic_is_prospective_and_training_only():
 
     readme = README.read_text(encoding="utf-8")
     assert "uv run --locked python scripts/rq1_saga_convergence_diagnostic.py" in readme
+
+
+def test_baseline_v2_contract_preserves_design_and_freezes_executed_method():
+    legacy_bytes = BASELINE_V1_CONTRACT.read_bytes()
+    assert sha256(legacy_bytes).hexdigest() == (
+        "594a66769dee3bf23c4133020dcf9b7d57c105590e5007832ac4249def6a33d4"
+    )
+    legacy = json.loads(legacy_bytes)
+    current = json.loads(BASELINE_V2_CONTRACT.read_bytes())
+
+    assert current["contract_id"] == "rq1-baselines-v2"
+    assert current["schema_version"] == 2
+    assert current["protocol_version"] == "1.7"
+    for field in (
+        "input",
+        "output",
+        "predictor_policy",
+        "features",
+        "partition_use",
+        "score",
+        "threshold_selection",
+    ):
+        assert current[field] == legacy[field]
+    assert current["models"]["length-only"] == legacy["models"]["length-only"]
+    assert current["models"]["Logistic-L1"] == legacy["models"]["Logistic-L1"]
+    assert current["models"]["search"] == "none"
+
+    classifier = current["models"]["common_pipeline"]["classifier"]
+    assert classifier == {
+        "class": "LogisticRegression",
+        "penalty": "l1",
+        "solver": "saga",
+        "C": 1.0,
+        "class_weight": "balanced",
+        "fit_intercept": True,
+        "max_iter": 5000,
+        "tol": 1e-4,
+        "random_state": 42,
+    }
+    assert "intercept_scaling" not in classifier
+    integrity = current["scoring_integrity"]
+    compact_integrity = _compact(json.dumps(integrity, sort_keys=True))
+    for rule in (
+        "decision_function",
+        "predict_proba",
+        "darwin",
+        "arm64",
+        "accelerate",
+        "runtimewarning",
+        "sklearn.utils.extmath",
+        "divide by zero encountered in matmul",
+        "overflow encountered in matmul",
+        "invalid value encountered in matmul",
+        "einsum",
+        "expit",
+        "1e-12",
+    ):
+        assert rule in compact_integrity
+
+    contract_hash = sha256(BASELINE_V2_CONTRACT.read_bytes()).hexdigest()
+    for record in (PROTOCOL, STATUS, EVIDENCE_OUTLINE):
+        text = record.read_text(encoding="utf-8")
+        assert "rq1-baselines-v2" in text
+        assert contract_hash in text
+    assert "data/rq1-baseline-contract-v2.json" in README.read_text(encoding="utf-8")
 
 
 def test_live_records_preserve_group_test_analyst_access_caveat():
@@ -549,6 +710,26 @@ def test_v16_change_record_is_a_diagnostic_only_platform_amendment():
         "no rq/h decision rule changed",
     ):
         assert detail in v16_row
+
+
+def test_v17_change_record_freezes_baseline_v2_without_claiming_a_result():
+    status = STATUS.read_text(encoding="utf-8")
+    change_record = _section(status, "Change Record")
+    v17_rows = [line for line in change_record.splitlines() if "| 1.7 |" in line]
+
+    assert len(v17_rows) == 1
+    v17_row = v17_rows[0].lower()
+    for detail in (
+        "v1.6 diagnostic passed",
+        "training feasibility only",
+        "rq1-baselines-v2",
+        "saga",
+        "validation scoring audit",
+        "frozen before validation",
+        "no baseline result",
+        "no rq/h decision rule changed",
+    ):
+        assert detail in v17_row
 
 
 def test_readme_links_research_basis_and_limits_synthetic_urls_to_unit_tests():

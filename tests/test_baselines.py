@@ -1,9 +1,223 @@
+import json
 import math
+import warnings
+from pathlib import Path
+from types import SimpleNamespace
 
 import numpy as np
 import pytest
 
 from automated_phishing_detection import baselines
+
+ROOT = Path(__file__).resolve().parents[1]
+CONTRACT = ROOT / "data" / "rq1-baseline-contract-v2.json"
+ACCELERATE_ENVIRONMENT = {
+    "sys_platform": "darwin",
+    "platform_machine": "arm64",
+    "numpy_blas_name": "accelerate",
+}
+
+
+def _validated_contract():
+    return baselines._validate_contract(json.loads(CONTRACT.read_text()))
+
+
+def _warning_operation(
+    message="divide by zero encountered in matmul",
+    *,
+    category=RuntimeWarning,
+    module="sklearn.utils.extmath",
+):
+    def operation():
+        warnings.warn_explicit(
+            message,
+            category,
+            filename="synthetic-extmath.py",
+            lineno=1,
+            module=module,
+        )
+        return np.asarray([1.0])
+
+    return operation
+
+
+@pytest.mark.parametrize(
+    "message",
+    (
+        "divide by zero encountered in matmul",
+        "overflow encountered in matmul",
+        "invalid value encountered in matmul",
+    ),
+)
+@pytest.mark.parametrize("stage", ("decision_function", "predict_proba"))
+def test_scoring_policy_captures_each_exact_accelerate_warning(message, stage):
+    policy = _validated_contract()["scoring_integrity"]
+
+    value, records = baselines._score_with_warning_policy(
+        stage,
+        _warning_operation(message),
+        policy=policy,
+        environment=ACCELERATE_ENVIRONMENT,
+    )
+
+    np.testing.assert_array_equal(value, np.asarray([1.0]))
+    assert records == [
+        {"stage": stage, "category": "RuntimeWarning", "message": message}
+    ]
+
+
+@pytest.mark.parametrize(
+    ("stage", "environment", "message", "category", "module"),
+    (
+        (
+            "decision_function",
+            {**ACCELERATE_ENVIRONMENT, "sys_platform": "linux"},
+            "divide by zero encountered in matmul",
+            RuntimeWarning,
+            "sklearn.utils.extmath",
+        ),
+        (
+            "decision_function",
+            {**ACCELERATE_ENVIRONMENT, "platform_machine": "x86_64"},
+            "divide by zero encountered in matmul",
+            RuntimeWarning,
+            "sklearn.utils.extmath",
+        ),
+        (
+            "decision_function",
+            {**ACCELERATE_ENVIRONMENT, "numpy_blas_name": "openblas"},
+            "divide by zero encountered in matmul",
+            RuntimeWarning,
+            "sklearn.utils.extmath",
+        ),
+        (
+            "decision_function",
+            ACCELERATE_ENVIRONMENT,
+            "divide by zero encountered in matmul!",
+            RuntimeWarning,
+            "sklearn.utils.extmath",
+        ),
+        (
+            "decision_function",
+            ACCELERATE_ENVIRONMENT,
+            "divide by zero encountered in matmul",
+            UserWarning,
+            "sklearn.utils.extmath",
+        ),
+        (
+            "decision_function",
+            ACCELERATE_ENVIRONMENT,
+            "divide by zero encountered in matmul",
+            RuntimeWarning,
+            "sklearn.utils.extmath.extra",
+        ),
+        (
+            "fit",
+            ACCELERATE_ENVIRONMENT,
+            "divide by zero encountered in matmul",
+            RuntimeWarning,
+            "sklearn.utils.extmath",
+        ),
+    ),
+)
+def test_scoring_policy_rejects_every_near_miss(
+    stage, environment, message, category, module
+):
+    with pytest.raises(Warning):
+        baselines._score_with_warning_policy(
+            stage,
+            _warning_operation(message, category=category, module=module),
+            policy=_validated_contract()["scoring_integrity"],
+            environment=environment,
+        )
+
+
+@pytest.mark.parametrize("column", (0, 1))
+def test_reference_check_rejects_disagreement_in_either_probability_column(column):
+    scaled = np.asarray([[0.0], [1.0]], dtype=np.float64)
+    classifier = SimpleNamespace(
+        coef_=np.asarray([[1.0]], dtype=np.float64),
+        intercept_=np.asarray([0.0], dtype=np.float64),
+    )
+    decision = np.asarray([0.0, 1.0], dtype=np.float64)
+    positive = baselines.expit(decision)
+    probabilities = np.column_stack((1.0 - positive, positive))
+    probabilities[0, column] += 1e-4
+
+    with pytest.raises(baselines.BaselineError, match="probability outputs disagree"):
+        baselines._reference_score_differences(
+            "fixture",
+            scaled,
+            classifier,
+            decision,
+            probabilities,
+            _validated_contract()["scoring_integrity"],
+        )
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    (
+        ("decision", np.asarray([0.0, math.nan])),
+        (
+            "probability",
+            np.asarray([[0.5, 0.5], [math.inf, -math.inf]]),
+        ),
+    ),
+)
+def test_reference_check_rejects_nonfinite_outputs(field, value):
+    scaled = np.asarray([[0.0], [1.0]], dtype=np.float64)
+    classifier = SimpleNamespace(
+        coef_=np.asarray([[1.0]], dtype=np.float64),
+        intercept_=np.asarray([0.0], dtype=np.float64),
+    )
+    decision = np.asarray([0.0, 1.0], dtype=np.float64)
+    positive = 1.0 / (1.0 + np.exp(-decision))
+    probabilities = np.column_stack((1.0 - positive, positive))
+
+    with pytest.raises(baselines.BaselineError, match="nonfinite"):
+        baselines._reference_score_differences(
+            "fixture",
+            scaled,
+            classifier,
+            value if field == "decision" else decision,
+            value if field == "probability" else probabilities,
+            _validated_contract()["scoring_integrity"],
+        )
+
+
+@pytest.mark.parametrize(
+    ("decisions", "probabilities", "message"),
+    (
+        (
+            np.asarray([[0.0], [1.0]]),
+            np.asarray([[0.5, 0.5], [0.25, 0.75]]),
+            "decision-score shape",
+        ),
+        (
+            np.asarray([0.0, 1.0]),
+            np.asarray([0.5, 0.75]),
+            "probability shape",
+        ),
+    ),
+)
+def test_reference_check_rejects_output_shape_changes(
+    decisions, probabilities, message
+):
+    classifier = SimpleNamespace(
+        coef_=np.asarray([[1.0]], dtype=np.float64),
+        intercept_=np.asarray([0.0], dtype=np.float64),
+    )
+
+    with pytest.raises(baselines.BaselineError, match=message):
+        baselines._reference_score_differences(
+            "fixture",
+            np.asarray([[0.0], [1.0]], dtype=np.float64),
+            classifier,
+            decisions,
+            probabilities,
+            _validated_contract()["scoring_integrity"],
+        )
 
 
 def test_clopper_pearson_upper_matches_closed_form_boundaries():

@@ -5,12 +5,14 @@ import errno
 import json
 import math
 import os
+import platform
+import re
 import shutil
 import stat
 import sys
 import tempfile
 import warnings
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
 from contextlib import ExitStack
 from dataclasses import dataclass
 from hashlib import sha256
@@ -20,14 +22,14 @@ from typing import BinaryIO
 import numpy as np
 import scipy
 import sklearn
-from scipy.special import betaincinv
+from scipy.special import betaincinv, expit
 from sklearn.exceptions import ConvergenceWarning
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 
 from .url_features import FEATURE_NAMES, FeatureExtractionError, extract_url_features
 
-CONTRACT_ID = "rq1-baselines-v1"
+CONTRACT_ID = "rq1-baselines-v2"
 ANALYSIS_STAGE = "development_validation_only"
 _OFFICIAL_TRAIN_SHA256 = (
     "575f2fb13a0766020e29d78bf8e633a185b381abde7060bdd1ed04cc4a5e38a0"
@@ -39,7 +41,10 @@ _OFFICIAL_PREPARATION_SUMMARY_SHA256 = (
     "1a85a7eecc0f5baa7c59e03a0cbde63fd4595409feb918dc5ff916ead7cd5c9e"
 )
 _OFFICIAL_CONTRACT_SHA256 = (
-    "594a66769dee3bf23c4133020dcf9b7d57c105590e5007832ac4249def6a33d4"
+    "05d6d0831def7d26448c8dbdc8117800ea2448cdfc2aca2ad95489f22d2d11ba"
+)
+_EXPECTED_CONTRACT_CANONICAL_SHA256 = (
+    "e667a0823b7fc145ac975c63b586f1fcc3baf5460d6578757560d06b852fe4cd"
 )
 _LOWERCASE_HEX = frozenset("0123456789abcdef")
 _RECORD_FIELDS = frozenset(
@@ -63,13 +68,12 @@ _MODEL_FILENAMES = {
 _CLASSIFIER_CONFIG = {
     "class": "LogisticRegression",
     "penalty": "l1",
-    "solver": "liblinear",
+    "solver": "saga",
     "C": 1.0,
     "class_weight": "balanced",
     "fit_intercept": True,
-    "intercept_scaling": 1.0,
     "max_iter": 5000,
-    "tol": 1e-8,
+    "tol": 1e-4,
     "random_state": 42,
 }
 _SCALER_CONFIG = {
@@ -77,6 +81,41 @@ _SCALER_CONFIG = {
     "fit_partition": "train",
     "with_mean": True,
     "with_std": True,
+}
+_SCORING_INTEGRITY_POLICY = {
+    "policy_id": "rq1-scoring-integrity-v1",
+    "stages": ["decision_function", "predict_proba"],
+    "default_warning_action": "error",
+    "allowed_warning": {
+        "environment": {
+            "sys_platform": "darwin",
+            "platform_machine": "arm64",
+            "numpy_blas_name": "accelerate",
+        },
+        "category": "RuntimeWarning",
+        "module": "sklearn.utils.extmath",
+        "messages": [
+            "divide by zero encountered in matmul",
+            "overflow encountered in matmul",
+            "invalid value encountered in matmul",
+        ],
+        "action": "capture-and-verify",
+    },
+    "reference": {
+        "dtype": "float64",
+        "decision": "np.einsum('ij,j->i', scaled, coef[0], optimize=False)+intercept",
+        "probability": "[1-expit(decision), expit(decision)]",
+        "finite_required": True,
+        "rtol": 1e-12,
+        "atol": 1e-12,
+    },
+    "authoritative_threshold_input": "sklearn predict_proba class-1 column",
+    "emitted_aggregate_fields": [
+        "platform_identity",
+        "warning_records",
+        "max_absolute_decision_difference",
+        "max_absolute_probability_difference",
+    ],
 }
 
 
@@ -253,7 +292,7 @@ def _verify_input_hashes(
     return observed
 
 
-def _validate_contract(contract: object) -> None:
+def _validate_contract(contract: object) -> dict:
     contract = _expect_keys(
         contract,
         {
@@ -268,15 +307,16 @@ def _validate_contract(contract: object) -> None:
             "partition_use",
             "score",
             "threshold_selection",
+            "scoring_integrity",
         },
         "baseline contract",
     )
     if contract["contract_id"] != CONTRACT_ID:
         raise BaselineError(f"contract_id must be {CONTRACT_ID}")
-    if contract["schema_version"] != 1 or type(contract["schema_version"]) is not int:
-        raise BaselineError("contract schema_version must be exact integer 1")
-    if contract["protocol_version"] != "1.4":
-        raise BaselineError("contract protocol_version must be 1.4")
+    if contract["schema_version"] != 2 or type(contract["schema_version"]) is not int:
+        raise BaselineError("contract schema_version must be exact integer 2")
+    if contract["protocol_version"] != "1.7":
+        raise BaselineError("contract protocol_version must be 1.7")
     if not _matches_exactly(
         contract["input"],
         {
@@ -383,6 +423,21 @@ def _validate_contract(contract: object) -> None:
         },
     ):
         raise BaselineError("threshold-selection policy has changed")
+    if not _matches_exactly(contract["scoring_integrity"], _SCORING_INTEGRITY_POLICY):
+        raise BaselineError("scoring-integrity policy has changed")
+    try:
+        canonical_contract = json.dumps(
+            contract,
+            ensure_ascii=False,
+            allow_nan=False,
+            separators=(",", ":"),
+            sort_keys=True,
+        ).encode("utf-8")
+    except ValueError as exc:
+        raise BaselineError("contract contains a nonfinite number") from exc
+    if sha256(canonical_contract).hexdigest() != _EXPECTED_CONTRACT_CANONICAL_SHA256:
+        raise BaselineError("contract content does not match the frozen method")
+    return contract
 
 
 def _validate_string_list(value: object, field: str) -> None:
@@ -824,6 +879,145 @@ def _software_versions() -> dict[str, str]:
     }
 
 
+def _numpy_blas_name() -> str:
+    try:
+        name = np.__config__.CONFIG["Build Dependencies"]["blas"]["name"]
+    except (AttributeError, KeyError, TypeError) as exc:
+        raise BaselineError("NumPy BLAS name is unavailable") from exc
+    if type(name) is not str or not name:
+        raise BaselineError("NumPy BLAS name is unavailable")
+    return name
+
+
+def _platform_identity() -> dict[str, str]:
+    return {
+        "sys_platform": sys.platform,
+        "platform_machine": platform.machine(),
+        "numpy_blas_name": _numpy_blas_name(),
+    }
+
+
+def _warning_records(
+    stage: str,
+    observed: list[warnings.WarningMessage],
+    policy: dict,
+) -> list[dict[str, str]]:
+    allowed = policy["allowed_warning"]
+    records = []
+    for observed_warning in observed:
+        message = str(observed_warning.message)
+        if (
+            observed_warning.category is not RuntimeWarning
+            or message not in allowed["messages"]
+        ):
+            warning = observed_warning.message
+            if not isinstance(warning, Warning):
+                warning = RuntimeWarning(message)
+            raise warning
+        records.append(
+            {"stage": stage, "category": "RuntimeWarning", "message": message}
+        )
+    return records
+
+
+def _score_with_warning_policy(
+    stage: str,
+    operation: Callable[[], object],
+    *,
+    policy: dict,
+    environment: dict[str, str],
+) -> tuple[object, list[dict[str, str]]]:
+    allowed = policy["allowed_warning"]
+    exception_applies = (
+        stage in policy["stages"] and environment == allowed["environment"]
+    )
+    with warnings.catch_warnings(record=True) as observed:
+        warnings.simplefilter("error")
+        if exception_applies:
+            warnings.filterwarnings(
+                "always",
+                category=RuntimeWarning,
+                module=rf"^{re.escape(allowed['module'])}$",
+            )
+        value = operation()
+    return value, _warning_records(stage, observed, policy)
+
+
+def _reference_score_differences(
+    model_name: str,
+    scaled_features: np.ndarray,
+    classifier: LogisticRegression,
+    decision_scores: np.ndarray,
+    probabilities: np.ndarray,
+    policy: dict,
+) -> tuple[float, float]:
+    reference = policy["reference"]
+    try:
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            scaled = np.asarray(scaled_features, dtype=np.float64)
+            coefficients = np.asarray(classifier.coef_, dtype=np.float64)
+            intercept = np.asarray(classifier.intercept_, dtype=np.float64)
+            decisions = np.asarray(decision_scores, dtype=np.float64)
+            sklearn_probabilities = np.asarray(probabilities, dtype=np.float64)
+            if scaled.ndim != 2:
+                raise BaselineError(f"{model_name} scaled features are not a matrix")
+            sample_count, feature_count = scaled.shape
+            if coefficients.shape != (1, feature_count) or intercept.shape != (1,):
+                raise BaselineError(
+                    f"{model_name} fitted parameters cannot be reference-scored"
+                )
+            if decisions.shape != (sample_count,):
+                raise BaselineError(f"{model_name} decision-score shape is incorrect")
+            if sklearn_probabilities.shape != (sample_count, 2):
+                raise BaselineError(f"{model_name} probability shape is incorrect")
+
+            reference_decisions = (
+                np.einsum("ij,j->i", scaled, coefficients[0], optimize=False)
+                + intercept[0]
+            )
+            positive = expit(reference_decisions)
+            reference_probabilities = np.column_stack((1.0 - positive, positive))
+            if not all(
+                np.all(np.isfinite(value))
+                for value in (
+                    decisions,
+                    sklearn_probabilities,
+                    reference_decisions,
+                    reference_probabilities,
+                )
+            ):
+                raise BaselineError(
+                    f"{model_name} sklearn or reference scoring is nonfinite"
+                )
+            if not np.allclose(
+                decisions,
+                reference_decisions,
+                rtol=reference["rtol"],
+                atol=reference["atol"],
+            ):
+                raise BaselineError(
+                    f"{model_name} decision scores disagree with float64 reference"
+                )
+            if not np.allclose(
+                sklearn_probabilities,
+                reference_probabilities,
+                rtol=reference["rtol"],
+                atol=reference["atol"],
+            ):
+                raise BaselineError(
+                    f"{model_name} probability outputs disagree with float64 reference"
+                )
+            return (
+                float(np.max(np.abs(decisions - reference_decisions))),
+                float(np.max(np.abs(sklearn_probabilities - reference_probabilities))),
+            )
+    except BaselineError:
+        raise
+    except (ValueError, Warning, FloatingPointError) as exc:
+        raise BaselineError(f"{model_name} reference scoring failed: {exc}") from exc
+
+
 def _fit_model(
     model_name: str,
     train_features: np.ndarray,
@@ -831,16 +1025,24 @@ def _fit_model(
     validation_features: np.ndarray,
     validation_labels: np.ndarray,
     input_hashes: dict[str, str],
+    contract: dict,
+    *,
+    _environment: dict[str, str] | None = None,
 ) -> dict:
-    feature_names = _MODEL_FEATURES[model_name]
+    feature_names = tuple(contract["models"][model_name]["features"])
     feature_indices = np.asarray(
         [FEATURE_NAMES.index(name) for name in feature_names], dtype=np.intp
     )
     train_matrix = train_features[:, feature_indices]
     validation_matrix = validation_features[:, feature_indices]
+    common_pipeline = contract["models"]["common_pipeline"]
+    scaler_config = common_pipeline["scaler"]
+    classifier_config = common_pipeline["classifier"]
+    scoring_policy = contract["scoring_integrity"]
+    environment = _platform_identity() if _environment is None else _environment
     scaler_kwargs = {
         key: value
-        for key, value in _SCALER_CONFIG.items()
+        for key, value in scaler_config.items()
         if key not in {"class", "fit_partition"}
     }
     scaler = StandardScaler(**scaler_kwargs)
@@ -856,7 +1058,7 @@ def _fit_model(
     ):
         raise BaselineError(f"{model_name} scaling produced nonfinite values")
     classifier_kwargs = {
-        key: value for key, value in _CLASSIFIER_CONFIG.items() if key != "class"
+        key: value for key, value in classifier_config.items() if key != "class"
     }
     classifier = LogisticRegression(**classifier_kwargs)
     try:
@@ -867,52 +1069,103 @@ def _fit_model(
         if isinstance(exc, ConvergenceWarning):
             raise BaselineError(f"{model_name} did not converge") from exc
         raise BaselineError(f"{model_name} fitting failed: {exc}") from exc
-    if classifier.classes_.tolist() != [0, 1]:
+    classes = np.asarray(classifier.classes_)
+    coefficients = np.asarray(classifier.coef_)
+    intercept = np.asarray(classifier.intercept_)
+    iterations = np.asarray(classifier.n_iter_)
+    expected_width = len(feature_names)
+    scaler_values = tuple(
+        np.asarray(value) for value in (scaler.mean_, scaler.scale_, scaler.var_)
+    )
+    n_samples_seen = np.asarray(scaler.n_samples_seen_)
+    if scaled_train.shape != (train_matrix.shape[0], expected_width):
+        raise BaselineError(f"{model_name} scaled training shape is incorrect")
+    if scaled_validation.shape != (validation_matrix.shape[0], expected_width):
+        raise BaselineError(f"{model_name} scaled validation shape is incorrect")
+    if any(value.shape != (expected_width,) for value in scaler_values):
+        raise BaselineError(f"{model_name} scaler parameter shape is incorrect")
+    if n_samples_seen.ndim != 0 or int(n_samples_seen) != train_matrix.shape[0]:
+        raise BaselineError(f"{model_name} scaler sample count is incorrect")
+    if classes.shape != (2,) or classes.tolist() != [0, 1]:
         raise BaselineError(f"{model_name} classifier classes are not [0, 1]")
-    with warnings.catch_warnings():
-        warnings.simplefilter("error")
-        # Accelerate-backed NumPy may emit spurious matmul warnings here even when
-        # every input and output is finite. The explicit check below remains fatal.
-        warnings.filterwarnings(
-            "ignore",
-            message=".*encountered in matmul",
-            category=RuntimeWarning,
-            module=r"sklearn\.utils\.extmath",
+    if coefficients.shape != (1, expected_width) or intercept.shape != (1,):
+        raise BaselineError(f"{model_name} classifier parameter shape is incorrect")
+    if iterations.shape != (1,):
+        raise BaselineError(f"{model_name} iteration-count shape is incorrect")
+    n_iter = int(iterations[0])
+    if not 0 < n_iter < classifier_config["max_iter"]:
+        raise BaselineError(f"{model_name} did not stop below max_iter")
+    finite_state = (
+        scaled_train,
+        scaled_validation,
+        *scaler_values,
+        coefficients,
+        intercept,
+    )
+    if not all(np.all(np.isfinite(value)) for value in finite_state):
+        raise BaselineError(f"{model_name} fitted state contains nonfinite values")
+
+    try:
+        decision_scores, decision_warnings = _score_with_warning_policy(
+            "decision_function",
+            lambda: classifier.decision_function(scaled_validation),
+            policy=scoring_policy,
+            environment=environment,
         )
-        try:
-            scores = classifier.predict_proba(scaled_validation)[:, 1]
-        except (ValueError, Warning, FloatingPointError) as exc:
-            raise BaselineError(f"{model_name} scoring failed: {exc}") from exc
-    if not np.all(np.isfinite(scores)):
-        raise BaselineError(f"{model_name} produced nonfinite validation scores")
-    threshold = select_validation_threshold(scores, validation_labels)
-    n_samples_seen = scaler.n_samples_seen_
-    if np.ndim(n_samples_seen) != 0:
-        raise BaselineError("scaler sample count is unexpectedly feature-specific")
+        probabilities, probability_warnings = _score_with_warning_policy(
+            "predict_proba",
+            lambda: classifier.predict_proba(scaled_validation),
+            policy=scoring_policy,
+            environment=environment,
+        )
+    except (ValueError, Warning, FloatingPointError) as exc:
+        raise BaselineError(f"{model_name} scoring failed: {exc}") from exc
+    decision_difference, probability_difference = _reference_score_differences(
+        model_name,
+        scaled_validation,
+        classifier,
+        decision_scores,
+        probabilities,
+        scoring_policy,
+    )
+    scores = np.asarray(probabilities, dtype=np.float64)[:, 1]
+    try:
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            threshold = select_validation_threshold(scores, validation_labels)
+    except (ValueError, Warning, FloatingPointError) as exc:
+        raise BaselineError(f"{model_name} threshold selection failed: {exc}") from exc
+    scoring_audit = {
+        "platform_identity": environment,
+        "warning_records": decision_warnings + probability_warnings,
+        "max_absolute_decision_difference": decision_difference,
+        "max_absolute_probability_difference": probability_difference,
+    }
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "artifact_type": "rq1-baseline-model",
         "analysis_stage": ANALYSIS_STAGE,
-        "contract_id": CONTRACT_ID,
+        "contract_id": contract["contract_id"],
         "contract_sha256": input_hashes["contract"],
         "model_name": model_name,
         "features": list(feature_names),
         "classes": [int(value) for value in classifier.classes_.tolist()],
         "scaler": {
-            "config": _SCALER_CONFIG,
+            "config": scaler_config,
             "mean": [float(value) for value in scaler.mean_.tolist()],
             "scale": [float(value) for value in scaler.scale_.tolist()],
             "variance": [float(value) for value in scaler.var_.tolist()],
             "n_samples_seen": int(n_samples_seen),
         },
         "classifier": {
-            "config": _CLASSIFIER_CONFIG,
+            "config": classifier_config,
             "coefficients": [
                 [float(value) for value in row] for row in classifier.coef_.tolist()
             ],
             "intercept": [float(value) for value in classifier.intercept_.tolist()],
             "n_iter": [int(value) for value in classifier.n_iter_.tolist()],
         },
+        "validation_scoring_audit": scoring_audit,
         "validation_threshold": threshold,
         "input_hashes": input_hashes,
         "software_versions": _software_versions(),
@@ -1008,6 +1261,24 @@ def _publish_path_without_replace(source: Path, destination: Path) -> None:
         raise OSError(error_number, os.strerror(error_number), os.fspath(destination))
 
 
+def _path_identity(path: Path) -> tuple[int, int]:
+    metadata = path.lstat()
+    return metadata.st_dev, metadata.st_ino
+
+
+def _remove_if_identity(path: Path, expected: tuple[int, int]) -> None:
+    try:
+        metadata = path.lstat()
+    except FileNotFoundError:
+        return
+    if (metadata.st_dev, metadata.st_ino) != expected:
+        return
+    if stat.S_ISDIR(metadata.st_mode):
+        shutil.rmtree(path)
+    else:
+        path.unlink()
+
+
 def _build_summary(
     *,
     artifacts: dict[str, dict],
@@ -1015,6 +1286,7 @@ def _build_summary(
     input_hashes: dict[str, str],
     train_counts: dict[str, int],
     validation_counts: dict[str, int],
+    contract: dict,
 ) -> dict:
     models = {}
     for model_name in ("length-only", "Logistic-L1"):
@@ -1025,12 +1297,14 @@ def _build_summary(
             "artifact_sha256": artifact_hashes[filename],
             "feature_count": len(artifact["features"]),
             "n_iter": artifact["classifier"]["n_iter"],
+            "validation_scoring_audit": artifact["validation_scoring_audit"],
             "validation_threshold": artifact["validation_threshold"],
         }
+    common_pipeline = contract["models"]["common_pipeline"]
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "analysis_stage": ANALYSIS_STAGE,
-        "contract_id": CONTRACT_ID,
+        "contract_id": contract["contract_id"],
         "input_hashes": input_hashes,
         "input_counts": {
             "train": {
@@ -1045,14 +1319,13 @@ def _build_summary(
             },
         },
         "pipeline": {
-            "scaler": _SCALER_CONFIG,
-            "classifier": _CLASSIFIER_CONFIG,
-            "convergence_warning_action": "error",
-            "score": "P(is_phishing=1)",
-            "alert_rule": "score >= threshold",
-            "threshold_constraint": (
-                "exact one-sided 95% Clopper-Pearson FPR upper bound <= 0.01"
-            ),
+            "scaler": common_pipeline["scaler"],
+            "classifier": common_pipeline["classifier"],
+            "convergence_warning_action": common_pipeline["convergence_warning_action"],
+            "scoring_integrity_policy_id": contract["scoring_integrity"]["policy_id"],
+            "score": contract["score"]["value"],
+            "alert_rule": contract["score"]["alert_rule"],
+            "threshold_constraint": contract["threshold_selection"]["constraint"],
         },
         "models": models,
         "software_versions": _software_versions(),
@@ -1069,6 +1342,7 @@ def _publish_artifacts(
     input_hashes: dict[str, str],
     train_counts: dict[str, int],
     validation_counts: dict[str, int],
+    contract: dict,
 ) -> dict:
     temporary_output = Path(
         tempfile.mkdtemp(prefix=f".{output_dir.name}.tmp-", dir=output_dir.parent)
@@ -1092,14 +1366,22 @@ def _publish_artifacts(
             input_hashes=input_hashes,
             train_counts=train_counts,
             validation_counts=validation_counts,
+            contract=contract,
         )
         summary_bytes = _json_bytes(summary)
         temporary_summary = _write_summary_temp(summary_path, summary_bytes)
 
-        _publish_path_without_replace(temporary_output, output_dir)
-        temporary_output = None
-        _publish_path_without_replace(temporary_summary, summary_path)
-        temporary_summary = None
+        output_identity = _path_identity(temporary_output)
+        summary_identity = _path_identity(temporary_summary)
+        try:
+            _publish_path_without_replace(temporary_output, output_dir)
+            temporary_output = None
+            _publish_path_without_replace(temporary_summary, summary_path)
+            temporary_summary = None
+        except BaseException:
+            _remove_if_identity(summary_path, summary_identity)
+            _remove_if_identity(output_dir, output_identity)
+            raise
         return summary
     finally:
         if temporary_output is not None:
@@ -1168,7 +1450,7 @@ def _fit_baselines(
                 input_streams["preparation_summary"].read(), "preparation summary"
             )
         )
-        _validate_contract(
+        contract = _validate_contract(
             _load_json_bytes(input_streams["contract"].read(), "contract")
         )
         if preparation_summary["output_hashes"]["train.jsonl"] != input_hashes["train"]:
@@ -1217,6 +1499,7 @@ def _fit_baselines(
             validation_features,
             validation_labels,
             input_hashes,
+            contract,
         )
         for model_name in ("length-only", "Logistic-L1")
     }
@@ -1227,6 +1510,7 @@ def _fit_baselines(
         input_hashes=input_hashes,
         train_counts=train_counts,
         validation_counts=validation_counts,
+        contract=contract,
     )
 
 

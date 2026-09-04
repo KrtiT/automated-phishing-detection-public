@@ -5,17 +5,19 @@ manuscript prose and does not contain an interpretation of results.
 
 | Item | Value |
 |---|---|
-| Protocol version | `1.6` |
-| Protocol SHA-256 | `9a544e4f6cc408c8e3702b7bb86bb96a91e29d428222827e5f40789a3720d3f5` |
-| RQ1 baseline contract | `data/rq1-baseline-contract.json` (`rq1-baselines-v1`) |
-| RQ1 baseline contract SHA-256 | `594a66769dee3bf23c4133020dcf9b7d57c105590e5007832ac4249def6a33d4` |
+| Protocol version | `1.7` |
+| Protocol SHA-256 | `ebd5b9f90157d6d21e8f22b7e1937c16dbaf60a577ec4f55cefc4709b604caef` |
+| RQ1 baseline contract | `data/rq1-baseline-contract-v2.json` (`rq1-baselines-v2`) |
+| RQ1 baseline contract SHA-256 | `05d6d0831def7d26448c8dbdc8117800ea2448cdfc2aca2ad95489f22d2d11ba` |
+| Historical RQ1 baseline contract | `data/rq1-baseline-contract.json` (`rq1-baselines-v1`) |
+| Historical RQ1 baseline contract SHA-256 | `594a66769dee3bf23c4133020dcf9b7d57c105590e5007832ac4249def6a33d4` |
 | Development source | PhiUSIIL, UCI dataset 967 |
 | Development source schema | `2` |
 | Source-freeze release tag | `phiusiil-development-v1` |
 | Source-freeze release | [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1) |
 | Development preparation | `complete` |
 | Preparation record | `reports/phiusiil-preparation-summary.json` |
-| Current technical milestone | Protocol v1.6 diagnostic amendment `frozen`; v1.4 baseline attempt `stopped_nonconverged`; exploratory tolerance observation `not_accepted_provenance_incomplete`; v1.5 SAGA diagnostic `stopped_platform_warning`; v1.6 SAGA diagnostic `not_run`; no baseline model, threshold, or validation result accepted. |
+| Current technical milestone | Protocol v1.7 baseline amendment `frozen`; v1.4 baseline attempt `stopped_nonconverged`; exploratory tolerance observation `not_accepted_provenance_incomplete`; v1.5 SAGA diagnostic `stopped_platform_warning`; v1.6 SAGA diagnostic `passed_training_only`; rq1-baselines-v2 execution `frozen_not_run`; no baseline model, threshold, or validation result accepted. |
 | External source | PhishVN v4, reserved for the frozen external evaluation |
 | Current hypothesis status | H1 `undecided`; H2 `undecided`; H3 `undecided` |
 
@@ -120,7 +122,7 @@ input boundary. No model or summary artifact from the check was retained. The
 observation is provenance-incomplete, does not establish that tolerance alone
 failed, and is not research evidence.
 
-### Prospective Convergence Diagnostic
+### SAGA Convergence Diagnostic
 
 Protocol v1.5 froze a two-model SAGA diagnostic and required two fresh-process
 executions. Both v1.5 fresh runs completed the length-only fit at `n_iter=69`
@@ -129,22 +131,21 @@ with `RuntimeWarning: divide by zero encountered in matmul`. The
 `Logistic-L1` aggregate was not produced. The exact aggregate receipt is
 [`reports/rq1-saga-convergence-v1-execution.json`](../reports/rq1-saga-convergence-v1-execution.json),
 SHA-256 `7309f52f704150f85e6c17d44d96adcde917d2539c7b75264bf775ccec3aa6f4`.
-The execution record marks the v1.5 SAGA diagnostic
-`stopped_platform_warning`; it is a diagnostic stop, not a baseline result or
-RQ/H evidence.
+The v1.5 SAGA diagnostic has status `stopped_platform_warning` in the execution
+record; it is a diagnostic stop, not a baseline result or RQ/H evidence.
 
-Protocol v1.6 freezes the next training-only, two-model SAGA diagnostic before
-use. It retains the same two fresh processes, models, feature sets, scaler,
+Protocol v1.6 froze the next training-only, two-model SAGA diagnostic before
+use. It retained the same two fresh processes, models, feature sets, scaler,
 classifier configuration, state digest, and repeatability gates. Scaling and
-fitting warnings remain fatal. A narrow scoring-only audit applies on macOS
-arm64 when NumPy reports the Accelerate BLAS: one of three exact
-`RuntimeWarning` messages from `sklearn.utils.extmath` may be captured only
-during `decision_function` or `predict_proba`. The warning is recorded rather
-than silently discarded. The scikit-learn scores and probabilities must be
-finite and agree with independent float64 `einsum` and full two-column `expit`
-probability calculations at `rtol=1e-12` and `atol=1e-12`; only the maximum
-absolute differences are reported. The repeat must match the first run's
-iteration counts and fitted-state SHA-256 values.
+fitting warnings remained fatal. A narrow scoring-only audit applied on macOS
+arm64 when NumPy reported the Accelerate BLAS: one of three exact
+`RuntimeWarning` messages from `sklearn.utils.extmath` could be captured only
+during `decision_function` or `predict_proba`. The warning had to be recorded.
+The scikit-learn scores and probabilities had to be finite and agree with
+independent float64 `einsum` and full two-column `expit` calculations at
+`rtol=1e-12` and `atol=1e-12`; only the maximum absolute differences could be
+reported. The repeat had to match the first run's iteration counts and
+fitted-state SHA-256 values.
 
 SAGA leaves the intercept unpenalized. The frozen `liblinear` baseline instead
 uses a penalized synthetic intercept at `intercept_scaling=1.0`, so this
@@ -153,9 +154,33 @@ the exact dependency `raw_url_codepoint_length = raw_url_ascii_letter_count +
 raw_url_ascii_digit_count + raw_url_other_codepoint_count`, so individual
 coefficients and the selected sparsity pattern will not be interpreted as
 feature importance.
-The execution record marks the v1.6 SAGA diagnostic `not_run`. No baseline
-model, threshold, or validation result has been accepted, and H1, H2, and H3
-remain undecided. Protocol v1.6 changed no RQ/H decision rule.
+The exact aggregate receipt is
+[`reports/rq1-saga-convergence-v2-execution.json`](../reports/rq1-saga-convergence-v2-execution.json),
+SHA-256 `487714ea17a095e369d381da5a27452f3b263f1be1a05db2ebe061eecdefebdf`,
+from clean commit `69a67d4e5cb81d49009d6a90e87f4c0c5f2cea87`. Both v1.6 fresh
+runs passed with matching iteration counts and fitted-state SHA-256 values.
+`length-only` stopped at `n_iter=69`; `Logistic-L1` stopped at `n_iter=4783`.
+Each full-model run recorded six allowlisted scoring warnings. Maximum absolute
+decision and full-matrix probability differences were
+`4.263256414560601e-14` and `5.551115123125783e-16`, respectively. The v1.6
+SAGA diagnostic has status `passed_training_only`. It establishes reproducible
+training feasibility, not generalization or an RQ/H result.
+
+### RQ1 Baseline v2 Freeze
+
+Protocol v1.7 freezes `rq1-baselines-v2` before validation execution. It keeps
+the v1 feature vector, predictor exclusions, partition boundaries, score
+meaning, threshold-selection rule, and no-search policy. It prospectively
+replaces `liblinear` at `tol=1e-8` with the diagnostic's SAGA configuration at
+`tol=1e-4`; this also changes the intercept from a penalized synthetic feature
+to SAGA's unpenalized intercept. Validation scores must pass the same exact
+platform-warning audit and independent full-matrix numerical reference before
+the scikit-learn class-1 probability is used for threshold selection.
+
+The rq1-baselines-v2 execution has status `frozen_not_run`. No baseline model,
+threshold, or validation result has been accepted, and H1, H2, and H3 remain
+undecided. Protocol v1.7 changed the RQ1 baseline method but no RQ/H question,
+evidence designation, or decision rule. No PhishVN record has been accessed.
 
 ## RQ1 and H1
 
@@ -165,7 +190,7 @@ external evaluation?
 
 Required evidence:
 
-- the frozen `rq1-baselines-v1` feature order, predictor exclusions, shared
+- the frozen `rq1-baselines-v2` feature order, predictor exclusions, shared
   logistic configuration, partition use, and threshold-selection rule;
 - validation-locked thresholds for length-only, Logistic-L1, transformer-only,
   and cascade models;
@@ -181,8 +206,10 @@ Required evidence:
 Current status: baseline contract and feature extraction are `complete`; the
 v1.4 fit is `stopped_nonconverged`; the exploratory tolerance observation is
 `not_accepted_provenance_incomplete`; the v1.5 SAGA diagnostic is
-`stopped_platform_warning`; the v1.6 SAGA diagnostic is `not_run`; no baseline
-model, threshold, or validation result has been accepted; H1 is `undecided`.
+`stopped_platform_warning`; the v1.6 SAGA diagnostic is
+`passed_training_only`; the rq1-baselines-v2 execution is `frozen_not_run`; no
+baseline model, threshold, or validation result has been accepted; H1 is
+`undecided`.
 
 ## RQ2 and H2
 

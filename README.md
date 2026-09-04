@@ -3,17 +3,22 @@
 ## Current Work
 
 This branch contains the active research implementation governed by protocol
-v1.6. The PhiUSIIL preparation milestone and aggregate record are complete.
-The [`rq1-baselines-v1`](data/rq1-baseline-contract.json) contract remains
-unchanged: it freezes the 25 raw-URL features, the two logistic baselines at
-`tol=1e-8`, and validation threshold selection before model fitting. The
-prescribed v1.4 fit stopped at the 5,000-iteration limit with a convergence
-warning and produced no model or summary artifact. A later local `tol=1e-4`
-observation is provenance-incomplete and is not research evidence. The v1.5
-training-only SAGA diagnostic stopped during full-model scoring and produced no
-baseline result; its status is `stopped_platform_warning`. Protocol v1.6
-freezes a narrow platform-warning audit plus an independent numerical
-cross-check before the diagnostic is run again; its status is `not_run`. No
+v1.7. The PhiUSIIL preparation milestone and aggregate record are complete.
+The historical [`rq1-baselines-v1`](data/rq1-baseline-contract.json) contract is
+preserved unchanged. Its prescribed fit stopped at the 5,000-iteration limit
+with a convergence warning and produced no model or summary artifact. A later
+local `tol=1e-4` observation is provenance-incomplete and is not research
+evidence. The v1.5 training-only SAGA diagnostic has status
+`stopped_platform_warning`.
+
+The corrected v1.6 training-only diagnostic has status
+`passed_training_only`. Both fresh runs produced the same iteration counts and
+fitted-state hashes. The finite scoring outputs also matched an independent
+full-probability-matrix calculation within the frozen tolerances. This
+establishes numerical feasibility only.
+Protocol v1.7 freezes the separate
+[`rq1-baselines-v2`](data/rq1-baseline-contract-v2.json) method before its
+validation run; the rq1-baselines-v2 execution has status `frozen_not_run`. No
 baseline model, threshold, or validation result has been accepted, and H1, H2,
 and H3 remain undecided. No RQ/H decision rule changed, and no PhishVN record
 has been accessed.
@@ -92,10 +97,12 @@ registrable domains, and quarantined 2,259 rows under the stated rules. The
 summary gives the split, class, and quarantine counts together with the source
 and output hashes.
 
-## Reproduce the Stopped v1.4 Baseline Attempt
+## Historical v1.4 Baseline Attempt
 
-To reproduce the historical attempt after reproducing the preparation record,
-run:
+The command below documents the stopped v1.4 attempt. It is reproducible from
+implementation commit `e535586c6162a306a8dac7a5a6546f55dc09136f` after the
+preparation record is reproduced. Current HEAD intentionally rejects the v1
+contract because the active implementation is pinned to `rq1-baselines-v2`.
 
 ```bash
 uv run --locked phishing-research fit-baselines \
@@ -107,37 +114,40 @@ uv run --locked phishing-research fit-baselines \
   --summary reports/rq1-baseline-summary.json
 ```
 
-This invocation is retained to reproduce the stopped v1.4 attempt under the
-unchanged `rq1-baselines-v1` contract. Protocol v1.5 recorded a separate,
-two-model SAGA diagnostic using training data only. Both fresh runs completed
-the length-only model and stopped during full-model scoring with the same
-macOS `matmul` warning. The aggregate failure receipt is retained in
+The v1.5 failure receipt is
 [`reports/rq1-saga-convergence-v1-execution.json`](reports/rq1-saga-convergence-v1-execution.json).
-
-Protocol v1.6 keeps the same one-feature `length-only` model, 25-feature
-`Logistic-L1` model, two fresh processes, and repeatability gates. It permits
-only three exact scoring warnings on macOS arm64 with NumPy's Accelerate BLAS,
-records any permitted warning, and requires the scikit-learn outputs to match
-independent float64 calculations. Scaling, fitting, non-platform, and
-non-allowlisted warnings still stop the diagnostic. It accepts no validation,
-group-test, or PhishVN input and publishes no model or summary. A passing check
-would establish numerical feasibility only; the method and contract would then
-be amended prospectively before a baseline retry.
-
-After the protocol checkpoint is committed, run the coordinator once from a
-clean tracked worktree. It launches both fresh-process executions sequentially:
+The corrected v1.6 receipt is
+[`reports/rq1-saga-convergence-v2-execution.json`](reports/rq1-saga-convergence-v2-execution.json).
+It was produced from clean commit
+`69a67d4e5cb81d49009d6a90e87f4c0c5f2cea87` by this training-only command:
 
 ```bash
 uv run --locked python scripts/rq1_saga_convergence_diagnostic.py
 ```
 
-The historical `fit-baselines` command accepts no group-test input. It verifies
-all four input hashes before parsing, fits scaling and both classifiers on
-training data only, and uses validation data only for threshold selection.
-Model records are portable JSON rather than Python pickle or joblib files. The
-aggregate summary contains counts, hashes, versions, hyperparameters, and
-validation metrics, but no URL, domain, record identifier, feature row, or row
-score.
+## Run the Frozen v2 Baselines
+
+After the v1.7 protocol, contract, and implementation checkpoint is committed,
+run the active baseline command once from that clean commit:
+
+```bash
+uv run --locked phishing-research fit-baselines \
+  --train data/processed/phiusiil-v1/train.jsonl \
+  --validation data/processed/phiusiil-v1/validation.jsonl \
+  --preparation-summary reports/phiusiil-preparation-summary.json \
+  --contract data/rq1-baseline-contract-v2.json \
+  --output-dir data/processed/rq1-baselines-v2 \
+  --summary reports/rq1-baseline-v2-summary.json
+```
+
+The command accepts no group-test or external input. It verifies all four input
+hashes before parsing, fits the scaler and both SAGA classifiers on training
+data only, audits validation scoring against the independent numerical
+reference, and then applies the unchanged validation threshold rule. Private
+model records are portable JSON rather than pickle or joblib files. The public
+summary contains aggregate counts, hashes, configuration, scoring-audit fields,
+and validation metrics, but no URL, domain, record identifier, feature row, or
+row score.
 
 ## Evidence Status
 

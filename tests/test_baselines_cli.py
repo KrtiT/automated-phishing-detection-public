@@ -1,5 +1,6 @@
 import inspect
 import json
+import math
 import os
 import stat
 import subprocess
@@ -21,7 +22,8 @@ from automated_phishing_detection.url_features import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-CONTRACT = ROOT / "data" / "rq1-baseline-contract.json"
+CONTRACT_V1 = ROOT / "data" / "rq1-baseline-contract.json"
+CONTRACT = ROOT / "data" / "rq1-baseline-contract-v2.json"
 OFFICIAL_TRAIN_SHA256 = (
     "575f2fb13a0766020e29d78bf8e633a185b381abde7060bdd1ed04cc4a5e38a0"
 )
@@ -32,7 +34,7 @@ OFFICIAL_SUMMARY_SHA256 = (
     "1a85a7eecc0f5baa7c59e03a0cbde63fd4595409feb918dc5ff916ead7cd5c9e"
 )
 OFFICIAL_CONTRACT_SHA256 = (
-    "594a66769dee3bf23c4133020dcf9b7d57c105590e5007832ac4249def6a33d4"
+    "05d6d0831def7d26448c8dbdc8117800ea2448cdfc2aca2ad95489f22d2d11ba"
 )
 SOURCE_CSV_SHA256 = "0" * 64
 
@@ -207,7 +209,7 @@ def _write_fixture(tmp_path, *, mutate_summary=None, mutate_train=None):
     train_path = tmp_path / "train.jsonl"
     validation_path = tmp_path / "validation.jsonl"
     prep_summary_path = tmp_path / "preparation-summary.json"
-    contract_path = tmp_path / "rq1-baseline-contract.json"
+    contract_path = tmp_path / "rq1-baseline-contract-v2.json"
     train_path.write_bytes(train_bytes)
     validation_path.write_bytes(validation_bytes)
     prep_summary_path.write_bytes(summary_bytes)
@@ -330,6 +332,14 @@ def _assert_no_sensitive_keys(value):
             _assert_no_sensitive_keys(child)
 
 
+def _all_mapping_keys(value):
+    if isinstance(value, dict):
+        return set(value).union(*(_all_mapping_keys(child) for child in value.values()))
+    if isinstance(value, list):
+        return set().union(*(_all_mapping_keys(child) for child in value))
+    return set()
+
+
 def _fixture_features(path):
     records = [json.loads(line) for line in path.read_text().splitlines()]
     return (
@@ -358,9 +368,18 @@ def _round_trip_probabilities(artifact, train, train_labels, validation):
     reference_classifier.fit(
         reference_scaler.fit_transform(train[:, indices]), train_labels
     )
-    reference_scores = reference_classifier.predict_proba(
-        reference_scaler.transform(validation[:, indices])
-    )[:, 1]
+    policy = baselines._validate_contract(json.loads(CONTRACT.read_bytes()))[
+        "scoring_integrity"
+    ]
+    environment = baselines._platform_identity()
+    reference_validation = reference_scaler.transform(validation[:, indices])
+    reference_probabilities, _ = baselines._score_with_warning_policy(
+        "predict_proba",
+        lambda: reference_classifier.predict_proba(reference_validation),
+        policy=policy,
+        environment=environment,
+    )
+    reference_scores = reference_probabilities[:, 1]
 
     restored_scaler = StandardScaler(**scaler_config)
     restored_scaler.mean_ = np.asarray(artifact["scaler"]["mean"])
@@ -378,10 +397,29 @@ def _round_trip_probabilities(artifact, train, train_labels, validation):
     )
     restored_classifier.n_iter_ = np.asarray(artifact["classifier"]["n_iter"])
     restored_classifier.n_features_in_ = len(indices)
-    restored_scores = restored_classifier.predict_proba(
-        restored_scaler.transform(validation[:, indices])
-    )[:, 1]
+    restored_validation = restored_scaler.transform(validation[:, indices])
+    restored_probabilities, _ = baselines._score_with_warning_policy(
+        "predict_proba",
+        lambda: restored_classifier.predict_proba(restored_validation),
+        policy=policy,
+        environment=environment,
+    )
+    restored_scores = restored_probabilities[:, 1]
     return reference_scores, restored_scores
+
+
+def _synthetic_model_inputs():
+    generator = np.random.default_rng(42)
+    return (
+        generator.normal(size=(40, len(FEATURE_NAMES))),
+        np.tile(np.asarray([0, 1], dtype=np.int8), 20),
+        generator.normal(size=(12, len(FEATURE_NAMES))),
+        np.tile(np.asarray([0, 1], dtype=np.int8), 6),
+    )
+
+
+def _validated_contract():
+    return baselines._validate_contract(json.loads(CONTRACT.read_bytes()))
 
 
 def test_fixture_fit_writes_portable_private_models_and_public_summary(tmp_path):
@@ -404,6 +442,8 @@ def test_fixture_fit_writes_portable_private_models_and_public_summary(tmp_path)
     summary = json.loads(paths["summary"].read_bytes())
     assert json.loads(completed.stdout) == summary
     assert summary["analysis_stage"] == "development_validation_only"
+    assert summary["schema_version"] == 2
+    assert summary["contract_id"] == "rq1-baselines-v2"
     assert summary["hypothesis_status"] == {
         "H1": "undecided",
         "H2": "undecided",
@@ -423,9 +463,35 @@ def test_fixture_fit_writes_portable_private_models_and_public_summary(tmp_path)
         "train": paths["policy"].train_sha256,
         "validation": paths["policy"].validation_sha256,
     }
+    contract = _validated_contract()
+    assert (
+        summary["pipeline"]["threshold_constraint"]
+        == contract["threshold_selection"]["constraint"]
+    )
     assert set(summary["models"]) == {"Logistic-L1", "length-only"}
     assert summary["models"]["length-only"]["feature_count"] == 1
     assert summary["models"]["Logistic-L1"]["feature_count"] == 25
+    assert not {
+        "coefficients",
+        "intercept",
+        "mean",
+        "scale",
+        "variance",
+        "row",
+        "array",
+    } & _all_mapping_keys(summary)
+    for model in summary["models"].values():
+        audit = model["validation_scoring_audit"]
+        assert set(audit) == set(
+            contract["scoring_integrity"]["emitted_aggregate_fields"]
+        )
+        assert set(audit["platform_identity"]) == {
+            "sys_platform",
+            "platform_machine",
+            "numpy_blas_name",
+        }
+        assert audit["max_absolute_decision_difference"] >= 0.0
+        assert audit["max_absolute_probability_difference"] >= 0.0
     _assert_no_sensitive_keys(summary)
     assert str(tmp_path) not in paths["summary"].read_text(encoding="ascii")
     assert "tr-0001.example" not in paths["summary"].read_text(encoding="ascii")
@@ -439,6 +505,7 @@ def test_fixture_fit_writes_portable_private_models_and_public_summary(tmp_path)
         artifact_path = paths["output_dir"] / filename
         assert sha256(artifact_path.read_bytes()).hexdigest() == digest
         artifact = json.loads(artifact_path.read_bytes())
+        assert artifact["schema_version"] == 2
         assert artifact["artifact_type"] == "rq1-baseline-model"
         assert artifact["analysis_stage"] == "development_validation_only"
         assert artifact["classes"] == [0, 1]
@@ -447,12 +514,13 @@ def test_fixture_fit_writes_portable_private_models_and_public_summary(tmp_path)
             "target_not_met",
         }
         assert "scaler" in artifact and "classifier" in artifact
+        assert (
+            artifact["validation_scoring_audit"]
+            == summary["models"][artifact["model_name"]]["validation_scoring_audit"]
+        )
         _assert_no_sensitive_keys(artifact)
 
 
-@pytest.mark.filterwarnings(
-    r"ignore:.*encountered in matmul:RuntimeWarning:sklearn\.utils\.extmath"
-)
 def test_portable_models_reproduce_fixture_validation_results(tmp_path):
     completed, paths = _successful_run(tmp_path)
 
@@ -481,6 +549,7 @@ def test_portable_models_reproduce_fixture_validation_results(tmp_path):
             "artifact_sha256": sha256(artifact_path.read_bytes()).hexdigest(),
             "feature_count": len(artifact["features"]),
             "n_iter": artifact["classifier"]["n_iter"],
+            "validation_scoring_audit": artifact["validation_scoring_audit"],
             "validation_threshold": expected_threshold,
         }
 
@@ -506,16 +575,11 @@ def test_fit_model_constructs_real_estimators_from_serialized_config(monkeypatch
         }
         return estimator
 
-    monkeypatch.setattr(
-        baselines,
-        "_SCALER_CONFIG",
-        {**baselines._SCALER_CONFIG, "with_mean": False},
-    )
-    monkeypatch.setattr(
-        baselines,
-        "_CLASSIFIER_CONFIG",
-        {**baselines._CLASSIFIER_CONFIG, "C": 0.75},
-    )
+    contract = baselines._validate_contract(json.loads(CONTRACT.read_bytes()))
+    expected_scaler = contract["models"]["common_pipeline"]["scaler"]
+    expected_classifier = contract["models"]["common_pipeline"]["classifier"]
+    monkeypatch.setattr(baselines, "_SCALER_CONFIG", {"not": "serialized"})
+    monkeypatch.setattr(baselines, "_CLASSIFIER_CONFIG", {"not": "serialized"})
     monkeypatch.setattr(baselines, "StandardScaler", construct_scaler)
     monkeypatch.setattr(baselines, "LogisticRegression", construct_classifier)
     generator = np.random.default_rng(42)
@@ -529,6 +593,7 @@ def test_fit_model_constructs_real_estimators_from_serialized_config(monkeypatch
         validation_features,
         np.tile(np.asarray([0, 1], dtype=np.int8), 4),
         {"contract": "0" * 64},
+        contract,
     )
 
     assert constructed == {
@@ -549,6 +614,317 @@ def test_fit_model_constructs_real_estimators_from_serialized_config(monkeypatch
             },
         },
     }
+    assert artifact["scaler"]["config"] == expected_scaler
+    assert artifact["classifier"]["config"] == expected_classifier
+
+
+def test_fit_model_records_allowed_scoring_warnings(monkeypatch):
+    real_decision = baselines.LogisticRegression.decision_function
+    real_predict_proba = baselines.LogisticRegression.predict_proba
+
+    def decision_with_warning(self, features):
+        warnings.warn_explicit(
+            "divide by zero encountered in matmul",
+            RuntimeWarning,
+            filename="synthetic-extmath.py",
+            lineno=1,
+            module="sklearn.utils.extmath",
+        )
+        return real_decision(self, features)
+
+    def probability_with_warning(self, features):
+        warnings.warn_explicit(
+            "overflow encountered in matmul",
+            RuntimeWarning,
+            filename="synthetic-extmath.py",
+            lineno=1,
+            module="sklearn.utils.extmath",
+        )
+        return real_predict_proba(self, features)
+
+    monkeypatch.setattr(
+        baselines.LogisticRegression, "decision_function", decision_with_warning
+    )
+    monkeypatch.setattr(
+        baselines.LogisticRegression, "predict_proba", probability_with_warning
+    )
+    train, train_labels, validation, validation_labels = _synthetic_model_inputs()
+
+    artifact = baselines._fit_model(
+        "length-only",
+        train,
+        train_labels,
+        validation,
+        validation_labels,
+        {"contract": "0" * 64},
+        _validated_contract(),
+        _environment={
+            "sys_platform": "darwin",
+            "platform_machine": "arm64",
+            "numpy_blas_name": "accelerate",
+        },
+    )
+
+    records = artifact["validation_scoring_audit"]["warning_records"]
+    assert {
+        (record["stage"], record["category"], record["message"]) for record in records
+    } >= {
+        (
+            "decision_function",
+            "RuntimeWarning",
+            "divide by zero encountered in matmul",
+        ),
+        ("predict_proba", "RuntimeWarning", "overflow encountered in matmul"),
+    }
+
+
+def test_threshold_selection_uses_authoritative_sklearn_class_one_column(monkeypatch):
+    real_predict_proba = baselines.LogisticRegression.predict_proba
+    observed = {}
+
+    def shifted_probabilities(self, features):
+        probabilities = real_predict_proba(self, features).copy()
+        probabilities[:, 0] -= 5e-14
+        probabilities[:, 1] += 5e-14
+        observed["probabilities"] = probabilities.copy()
+        return probabilities
+
+    def capture_threshold_input(scores, labels):
+        observed["scores"] = np.asarray(scores).copy()
+        observed["labels"] = np.asarray(labels).copy()
+        return {"status": "synthetic-threshold-capture"}
+
+    monkeypatch.setattr(
+        baselines.LogisticRegression, "predict_proba", shifted_probabilities
+    )
+    monkeypatch.setattr(
+        baselines, "select_validation_threshold", capture_threshold_input
+    )
+    train, train_labels, validation, validation_labels = _synthetic_model_inputs()
+
+    artifact = baselines._fit_model(
+        "length-only",
+        train,
+        train_labels,
+        validation,
+        validation_labels,
+        {"contract": "0" * 64},
+        _validated_contract(),
+    )
+
+    np.testing.assert_array_equal(observed["scores"], observed["probabilities"][:, 1])
+    np.testing.assert_array_equal(observed["labels"], validation_labels)
+    assert artifact["validation_threshold"] == {"status": "synthetic-threshold-capture"}
+
+
+def test_threshold_selection_warning_is_fatal(monkeypatch):
+    def threshold_with_warning(scores, labels):
+        warnings.warn("synthetic threshold warning", RuntimeWarning)
+
+    monkeypatch.setattr(
+        baselines, "select_validation_threshold", threshold_with_warning
+    )
+    train, train_labels, validation, validation_labels = _synthetic_model_inputs()
+
+    with pytest.raises(baselines.BaselineError, match="threshold selection failed"):
+        baselines._fit_model(
+            "length-only",
+            train,
+            train_labels,
+            validation,
+            validation_labels,
+            {"contract": "0" * 64},
+            _validated_contract(),
+        )
+
+
+@pytest.mark.parametrize(
+    "mutate",
+    (
+        lambda contract: contract.__setitem__("extra", True),
+        lambda contract: contract["models"]["common_pipeline"][
+            "classifier"
+        ].__setitem__("C", 0.5),
+        lambda contract: contract["scoring_integrity"]["allowed_warning"][
+            "messages"
+        ].append("generic matmul warning"),
+        lambda contract: contract["predictor_policy"]["forbidden"].pop(),
+        lambda contract: contract["features"][0].__setitem__(
+            "definition", "Different feature definition."
+        ),
+    ),
+)
+def test_contract_validation_is_exact_and_fail_closed(mutate):
+    contract = json.loads(CONTRACT.read_bytes())
+    mutate(contract)
+
+    with pytest.raises(baselines.BaselineError):
+        baselines._validate_contract(contract)
+
+
+def test_scaling_warning_is_fatal(monkeypatch):
+    real_transform = baselines.StandardScaler.fit_transform
+
+    def transform_with_warning(self, features, *args, **kwargs):
+        warnings.warn("synthetic scaling warning", RuntimeWarning)
+        return real_transform(self, features, *args, **kwargs)
+
+    monkeypatch.setattr(
+        baselines.StandardScaler, "fit_transform", transform_with_warning
+    )
+    train, train_labels, validation, validation_labels = _synthetic_model_inputs()
+
+    with pytest.raises(baselines.BaselineError, match="scaling failed"):
+        baselines._fit_model(
+            "length-only",
+            train,
+            train_labels,
+            validation,
+            validation_labels,
+            {"contract": "0" * 64},
+            _validated_contract(),
+        )
+
+
+def test_nonconvergence_iteration_count_is_fatal(monkeypatch):
+    real_fit = baselines.LogisticRegression.fit
+
+    def fit_at_limit(self, features, labels, *args, **kwargs):
+        result = real_fit(self, features, labels, *args, **kwargs)
+        self.n_iter_ = np.asarray([self.max_iter])
+        return result
+
+    monkeypatch.setattr(baselines.LogisticRegression, "fit", fit_at_limit)
+    train, train_labels, validation, validation_labels = _synthetic_model_inputs()
+
+    with pytest.raises(baselines.BaselineError, match="did not stop below max_iter"):
+        baselines._fit_model(
+            "length-only",
+            train,
+            train_labels,
+            validation,
+            validation_labels,
+            {"contract": "0" * 64},
+            _validated_contract(),
+        )
+
+
+def test_nonconvergence_fitting_warning_is_fatal(monkeypatch):
+    def fit_with_warning(self, features, labels, *args, **kwargs):
+        warnings.warn("synthetic fitting warning", RuntimeWarning)
+
+    monkeypatch.setattr(baselines.LogisticRegression, "fit", fit_with_warning)
+    train, train_labels, validation, validation_labels = _synthetic_model_inputs()
+
+    with pytest.raises(baselines.BaselineError, match="fitting failed"):
+        baselines._fit_model(
+            "length-only",
+            train,
+            train_labels,
+            validation,
+            validation_labels,
+            {"contract": "0" * 64},
+            _validated_contract(),
+        )
+
+
+@pytest.mark.parametrize(
+    ("attribute", "value", "message"),
+    (
+        ("classes_", np.asarray([1, 0]), "classes are not"),
+        ("coef_", np.asarray([[math.nan]]), "nonfinite"),
+        ("intercept_", np.asarray([0.0, 1.0]), "parameter shape"),
+        ("n_iter_", np.asarray([1, 2]), "iteration-count shape"),
+    ),
+)
+def test_invalid_fitted_classifier_state_is_fatal(
+    monkeypatch, attribute, value, message
+):
+    real_fit = baselines.LogisticRegression.fit
+
+    def fit_with_invalid_state(self, features, labels, *args, **kwargs):
+        result = real_fit(self, features, labels, *args, **kwargs)
+        setattr(self, attribute, value)
+        return result
+
+    monkeypatch.setattr(baselines.LogisticRegression, "fit", fit_with_invalid_state)
+    train, train_labels, validation, validation_labels = _synthetic_model_inputs()
+
+    with pytest.raises(baselines.BaselineError, match=message):
+        baselines._fit_model(
+            "length-only",
+            train,
+            train_labels,
+            validation,
+            validation_labels,
+            {"contract": "0" * 64},
+            _validated_contract(),
+        )
+
+
+def test_nonfinite_scaler_state_is_fatal(monkeypatch):
+    real_transform = baselines.StandardScaler.fit_transform
+
+    def transform_with_nonfinite_state(self, features, *args, **kwargs):
+        result = real_transform(self, features, *args, **kwargs)
+        self.mean_[0] = math.nan
+        return result
+
+    monkeypatch.setattr(
+        baselines.StandardScaler, "fit_transform", transform_with_nonfinite_state
+    )
+    train, train_labels, validation, validation_labels = _synthetic_model_inputs()
+
+    with pytest.raises(baselines.BaselineError, match="nonfinite"):
+        baselines._fit_model(
+            "length-only",
+            train,
+            train_labels,
+            validation,
+            validation_labels,
+            {"contract": "0" * 64},
+            _validated_contract(),
+        )
+
+
+def test_reference_failure_leaves_no_publication_remnants(tmp_path, monkeypatch):
+    paths = _write_fixture(tmp_path)
+    initial_inventory = {path.relative_to(tmp_path) for path in tmp_path.rglob("*")}
+    calls = 0
+    real_reference = baselines._reference_score_differences
+
+    def fail_second_reference(*args, **kwargs):
+        nonlocal calls
+        calls += 1
+        if calls == 2:
+            raise baselines.BaselineError(
+                "Logistic-L1 probability outputs disagree with float64 reference"
+            )
+        return real_reference(*args, **kwargs)
+
+    monkeypatch.setattr(
+        baselines, "_reference_score_differences", fail_second_reference
+    )
+
+    with pytest.raises(baselines.BaselineError, match="probability outputs disagree"):
+        baselines._fit_baselines(
+            train_path=paths["train"],
+            validation_path=paths["validation"],
+            preparation_summary_path=paths["preparation_summary"],
+            contract_path=paths["contract"],
+            output_dir=paths["output_dir"],
+            summary_path=paths["summary"],
+            _input_hash_policy=paths["policy"],
+        )
+
+    assert calls == 2
+    assert not paths["output_dir"].exists()
+    assert not paths["summary"].exists()
+    assert list(tmp_path.glob(".models.tmp-*")) == []
+    assert list(tmp_path.glob(".baseline-summary.json.tmp-*")) == []
+    assert {path.relative_to(tmp_path) for path in tmp_path.rglob("*")} == (
+        initial_inventory
+    )
 
 
 def test_threshold_selection_docstring_is_version_neutral():
@@ -747,7 +1123,7 @@ def test_existing_or_aliased_destinations_are_not_replaced(tmp_path):
     assert not paths["output_dir"].exists()
 
 
-def test_summary_publish_collision_preserves_published_output_and_competitor_summary(
+def test_summary_publish_collision_rolls_back_output_and_preserves_competitor_summary(
     tmp_path, monkeypatch
 ):
     paths = _write_fixture(tmp_path)
@@ -772,11 +1148,7 @@ def test_summary_publish_collision_preserves_published_output_and_competitor_sum
         )
 
     assert paths["summary"].read_text() == "competitor summary\n"
-    assert {path.name for path in paths["output_dir"].iterdir()} == {
-        "length-only.json",
-        "logistic-l1.json",
-        "SHA256SUMS",
-    }
+    assert not paths["output_dir"].exists()
 
 
 def test_summary_interruption_cannot_delete_competitor_swapped_output(

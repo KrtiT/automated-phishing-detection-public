@@ -9,7 +9,8 @@ import pytest
 from automated_phishing_detection import url_features
 
 ROOT = Path(__file__).resolve().parents[1]
-CONTRACT = ROOT / "data" / "rq1-baseline-contract.json"
+CONTRACT_V1 = ROOT / "data" / "rq1-baseline-contract.json"
+CONTRACT = ROOT / "data" / "rq1-baseline-contract-v2.json"
 PROTOCOL = ROOT / "docs" / "advisor-approval" / "2026-08-16-realignment-matrix.md"
 STATUS = ROOT / "docs" / "advisor-approval" / "approval-status.md"
 EVIDENCE_OUTLINE = ROOT / "docs" / "research-evidence-outline.md"
@@ -43,16 +44,38 @@ FEATURE_NAMES = (
 )
 
 
-def _contract():
-    return json.loads(CONTRACT.read_text(encoding="utf-8"))
+def _contract(path=CONTRACT):
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def test_v1_contract_remains_byte_identical_and_v2_preserves_method_boundaries():
+    assert sha256(CONTRACT_V1.read_bytes()).hexdigest() == (
+        "594a66769dee3bf23c4133020dcf9b7d57c105590e5007832ac4249def6a33d4"
+    )
+
+    v1 = _contract(CONTRACT_V1)
+    v2 = _contract()
+    for field in (
+        "input",
+        "output",
+        "predictor_policy",
+        "features",
+        "partition_use",
+        "score",
+        "threshold_selection",
+    ):
+        assert v2[field] == v1[field]
+    assert v2["models"]["length-only"] == v1["models"]["length-only"]
+    assert v2["models"]["Logistic-L1"] == v1["models"]["Logistic-L1"]
+    assert v2["models"]["search"] == v1["models"]["search"]
 
 
 def test_feature_contract_freezes_order_types_and_denominators():
     contract = _contract()
 
-    assert contract["contract_id"] == "rq1-baselines-v1"
-    assert contract["schema_version"] == 1
-    assert contract["protocol_version"] == "1.4"
+    assert contract["contract_id"] == "rq1-baselines-v2"
+    assert contract["schema_version"] == 2
+    assert contract["protocol_version"] == "1.7"
     assert contract["output"] == {
         "container": "ordered_vector",
         "dtype": "float64",
@@ -117,13 +140,12 @@ def test_contract_freezes_model_and_threshold_selection():
         "classifier": {
             "class": "LogisticRegression",
             "penalty": "l1",
-            "solver": "liblinear",
+            "solver": "saga",
             "C": 1.0,
             "class_weight": "balanced",
             "fit_intercept": True,
-            "intercept_scaling": 1.0,
             "max_iter": 5000,
-            "tol": 1e-8,
+            "tol": 1e-4,
             "random_state": 42,
         },
         "convergence_warning_action": "error",
@@ -155,6 +177,46 @@ def test_contract_freezes_model_and_threshold_selection():
             "higher threshold",
         ],
         "no_feasible_candidate": "target_not_met",
+    }
+
+
+def test_contract_freezes_scoring_integrity_policy():
+    assert _contract()["scoring_integrity"] == {
+        "policy_id": "rq1-scoring-integrity-v1",
+        "stages": ["decision_function", "predict_proba"],
+        "default_warning_action": "error",
+        "allowed_warning": {
+            "environment": {
+                "sys_platform": "darwin",
+                "platform_machine": "arm64",
+                "numpy_blas_name": "accelerate",
+            },
+            "category": "RuntimeWarning",
+            "module": "sklearn.utils.extmath",
+            "messages": [
+                "divide by zero encountered in matmul",
+                "overflow encountered in matmul",
+                "invalid value encountered in matmul",
+            ],
+            "action": "capture-and-verify",
+        },
+        "reference": {
+            "dtype": "float64",
+            "decision": (
+                "np.einsum('ij,j->i', scaled, coef[0], optimize=False)+intercept"
+            ),
+            "probability": "[1-expit(decision), expit(decision)]",
+            "finite_required": True,
+            "rtol": 1e-12,
+            "atol": 1e-12,
+        },
+        "authoritative_threshold_input": ("sklearn predict_proba class-1 column"),
+        "emitted_aggregate_fields": [
+            "platform_identity",
+            "warning_records",
+            "max_absolute_decision_difference",
+            "max_absolute_probability_difference",
+        ],
     }
 
 
@@ -270,8 +332,8 @@ def test_missing_or_invalid_urls_raise_the_frozen_error(raw_url):
         url_features.extract_url_features(raw_url)
 
 
-def test_contract_sha_is_recorded_in_each_v14_research_record():
-    expected = sha256(CONTRACT.read_bytes()).hexdigest()
+def test_v1_contract_sha_is_recorded_in_each_v14_research_record():
+    expected = sha256(CONTRACT_V1.read_bytes()).hexdigest()
     marker = f"`{expected}`"
 
     for path in (PROTOCOL, STATUS, EVIDENCE_OUTLINE):

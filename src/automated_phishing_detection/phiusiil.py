@@ -30,6 +30,12 @@ CANONICAL_URL_VERSION = "canonical-url-v1"
 DOMAIN_SPLIT_VERSION = "phiusiil-domain-split-v1"
 SPLIT_SEED = "20260816"
 SOURCE_CONTRACT_ID = "phiusiil-development-v1"
+_OFFICIAL_CSV_SHA256 = (
+    "a236549cd369cd80bd478ff8e1779cbf44c58d5c3f79f7a51a1adbed7d06d1c6"
+)
+_OFFICIAL_PSL_SHA256 = (
+    "65365c4c9a4a6f746d53aadc758ab6b08aa10bb1379fea8ac353e381bca4b62e"
+)
 SPLITS = ("train", "validation", "group_test")
 SPLIT_WEIGHTS = (70, 15, 15)
 _LOWERCASE_HEX = frozenset("0123456789abcdef")
@@ -37,6 +43,18 @@ _LOWERCASE_HEX = frozenset("0123456789abcdef")
 
 class PreparationError(ValueError):
     """Raised when deterministic preparation cannot satisfy its contract."""
+
+
+@dataclass(frozen=True)
+class _SourceHashPolicy:
+    csv_sha256: str
+    suffix_rules_sha256: str
+
+
+_OFFICIAL_SOURCE_HASH_POLICY = _SourceHashPolicy(
+    csv_sha256=_OFFICIAL_CSV_SHA256,
+    suffix_rules_sha256=_OFFICIAL_PSL_SHA256,
+)
 
 
 @dataclass(frozen=True)
@@ -377,12 +395,19 @@ _SOURCE_SPEC_FIELDS = frozenset(
 _PHIUSIIL_SOURCE_FIELDS = frozenset(
     {
         "uci_dataset_id",
+        "paper_doi",
         "archive_url",
         "archive_sha256",
         "csv_filename",
         "csv_sha256",
         "license",
         "page_url",
+        "native_label_semantics",
+        "publisher_reported_class_sources",
+        "publisher_reported_phishing_retrieval_window",
+        "publisher_reported_legitimate_collection_window",
+        "reference_classification_basis",
+        "public_per_row_provenance_available",
     }
 )
 _PSL_SOURCE_FIELDS = frozenset(
@@ -396,11 +421,29 @@ _QUARANTINE_REASONS = (
 )
 _OFFICIAL_PHIUSIIL_METADATA = {
     "uci_dataset_id": 967,
+    "paper_doi": "10.1016/j.cose.2023.103545",
     "archive_url": "https://archive.ics.uci.edu/static/public/967/phiusiil%2Bphishing%2Burl%2Bdataset.zip",
     "archive_sha256": "0a639fd03aea6308c5b1c10c92aa23c2ce1505447a9137271865cd0badc9a59a",
     "csv_filename": "PhiUSIIL_Phishing_URL_Dataset.csv",
     "license": "CC BY 4.0",
     "page_url": "https://archive.ics.uci.edu/dataset/967/phiusiil+phishing+url+dataset",
+    "native_label_semantics": {"0": "phishing", "1": "legitimate"},
+    "publisher_reported_class_sources": {
+        "legitimate": ["Open PageRank"],
+        "phishing": ["PhishTank", "OpenPhish", "MalwareWorld"],
+    },
+    "publisher_reported_phishing_retrieval_window": {
+        "start": "2022-10-01",
+        "end": "2023-05-21",
+    },
+    "publisher_reported_legitimate_collection_window": None,
+    "reference_classification_basis": "publisher-provided/source-derived",
+    "public_per_row_provenance_available": {
+        "source": False,
+        "timestamp": False,
+        "snapshot": False,
+        "independent_adjudication": False,
+    },
 }
 _OFFICIAL_PSL_METADATA = {
     "url": "https://raw.githubusercontent.com/publicsuffix/list/0f1fa47ec45056a19c2fdcd32a08442de9715d12/public_suffix_list.dat",
@@ -427,6 +470,21 @@ def _require_nonempty_string(mapping: dict, key: str, section: str) -> str:
     return value
 
 
+def _matches_exactly(actual: object, expected: object) -> bool:
+    if type(actual) is not type(expected):
+        return False
+    if isinstance(expected, dict):
+        return actual.keys() == expected.keys() and all(
+            _matches_exactly(actual[key], value) for key, value in expected.items()
+        )
+    if isinstance(expected, list):
+        return len(actual) == len(expected) and all(
+            _matches_exactly(actual_value, expected_value)
+            for actual_value, expected_value in zip(actual, expected)
+        )
+    return actual == expected
+
+
 def _load_source_spec(source_spec_bytes: bytes) -> dict:
     source_spec = json.loads(
         source_spec_bytes.decode("utf-8"),
@@ -440,9 +498,9 @@ def _load_source_spec(source_spec_bytes: bytes) -> dict:
         raise PreparationError(f"source spec contract_id must be {SOURCE_CONTRACT_ID}")
     if (
         type(source_spec["schema_version"]) is not int
-        or source_spec["schema_version"] != 1
+        or source_spec["schema_version"] != 2
     ):
-        raise PreparationError("source spec schema_version must be 1")
+        raise PreparationError("source spec schema_version must be 2")
 
     phiusiil_source = source_spec["phiusiil"]
     if (
@@ -455,7 +513,14 @@ def _load_source_spec(source_spec_bytes: bytes) -> dict:
         or phiusiil_source["uci_dataset_id"] != 967
     ):
         raise PreparationError("source spec PhiUSIIL UCI dataset ID must be 967")
-    for key in ("archive_url", "csv_filename", "license", "page_url"):
+    for key in (
+        "paper_doi",
+        "archive_url",
+        "csv_filename",
+        "license",
+        "page_url",
+        "reference_classification_basis",
+    ):
         _require_nonempty_string(phiusiil_source, key, "phiusiil")
     _validate_sha256(phiusiil_source.get("archive_sha256"), "archive_sha256")
     _validate_sha256(phiusiil_source.get("csv_sha256"), "csv_sha256")
@@ -465,7 +530,7 @@ def _load_source_spec(source_spec_bytes: bytes) -> dict:
     if Path(csv_filename).name != csv_filename:
         raise PreparationError("source spec CSV filename must be a basename")
     if any(
-        phiusiil_source[key] != expected
+        not _matches_exactly(phiusiil_source[key], expected)
         for key, expected in _OFFICIAL_PHIUSIIL_METADATA.items()
     ):
         raise PreparationError("source spec PhiUSIIL metadata is not recognized")
@@ -484,7 +549,8 @@ def _load_source_spec(source_spec_bytes: bytes) -> dict:
     if psl_source["license"] != "MPL-2.0":
         raise PreparationError("source spec PSL license must be MPL-2.0")
     if any(
-        psl_source[key] != expected for key, expected in _OFFICIAL_PSL_METADATA.items()
+        not _matches_exactly(psl_source[key], expected)
+        for key, expected in _OFFICIAL_PSL_METADATA.items()
     ):
         raise PreparationError("source spec PSL metadata is not recognized")
     return source_spec
@@ -573,6 +639,12 @@ def _build_summary(
         "schema_version": 1,
         "source_spec_sha256": source_spec_sha256,
         "declared_sources": source_spec,
+        "label_mapping": {
+            "version": "phiusiil-native-label-map-v1",
+            "native_label_meanings": {"0": "phishing", "1": "legitimate"},
+            "native_to_is_phishing": {"0": 1, "1": 0},
+            "is_phishing_meanings": {"0": "legitimate", "1": "phishing"},
+        },
         "algorithms": {
             "record_identifier_version": "phiusiil-row-v1",
             "canonicalization_version": CANONICAL_URL_VERSION,
@@ -751,13 +823,14 @@ def _publish_staged_artifacts(
             temporary_summary.unlink(missing_ok=True)
 
 
-def prepare_phiusiil(
+def _prepare_phiusiil(
     *,
     csv_path: Path,
     suffix_rules_path: Path,
     source_spec_path: Path,
     output_dir: Path,
     summary_path: Path,
+    _source_hash_policy: _SourceHashPolicy,
 ) -> dict:
     csv_path = Path(csv_path)
     suffix_rules_path = Path(suffix_rules_path)
@@ -784,14 +857,21 @@ def prepare_phiusiil(
     source_spec = _load_source_spec(source_spec_bytes)
     if csv_path.name != source_spec["phiusiil"]["csv_filename"]:
         raise PreparationError("CSV filename does not match the source spec")
+    if source_spec["phiusiil"]["csv_sha256"] != _source_hash_policy.csv_sha256:
+        raise PreparationError("CSV SHA-256 mismatch")
+    if (
+        source_spec["public_suffix_list"]["sha256"]
+        != _source_hash_policy.suffix_rules_sha256
+    ):
+        raise PreparationError("PSL SHA-256 mismatch")
 
     csv_bytes = csv_path.read_bytes()
     suffix_rules_bytes = suffix_rules_path.read_bytes()
     csv_sha256 = sha256(csv_bytes).hexdigest()
     suffix_rules_sha256 = sha256(suffix_rules_bytes).hexdigest()
-    if csv_sha256 != source_spec["phiusiil"]["csv_sha256"]:
+    if csv_sha256 != _source_hash_policy.csv_sha256:
         raise PreparationError("CSV SHA-256 mismatch")
-    if suffix_rules_sha256 != source_spec["public_suffix_list"]["sha256"]:
+    if suffix_rules_sha256 != _source_hash_policy.suffix_rules_sha256:
         raise PreparationError("PSL SHA-256 mismatch")
 
     suffix_rules = parse_suffix_rules(suffix_rules_bytes.decode("utf-8"))
@@ -805,4 +885,22 @@ def prepare_phiusiil(
         resolution=resolution,
         source_spec=source_spec,
         source_spec_sha256=sha256(source_spec_bytes).hexdigest(),
+    )
+
+
+def prepare_phiusiil(
+    *,
+    csv_path: Path,
+    suffix_rules_path: Path,
+    source_spec_path: Path,
+    output_dir: Path,
+    summary_path: Path,
+) -> dict:
+    return _prepare_phiusiil(
+        csv_path=csv_path,
+        suffix_rules_path=suffix_rules_path,
+        source_spec_path=source_spec_path,
+        output_dir=output_dir,
+        summary_path=summary_path,
+        _source_hash_policy=_OFFICIAL_SOURCE_HASH_POLICY,
     )

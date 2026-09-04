@@ -2,20 +2,27 @@
 
 ## Current Work
 
-This branch contains the active v3 research implementation. The first
-milestone prepares the PhiUSIIL development corpus with a reproducible label,
-deduplication, and registrable-domain split procedure.
+This branch contains the active research implementation governed by protocol
+v1.3. The PhiUSIIL preparation milestone and aggregate record are complete.
+The current technical milestone is frozen raw-URL feature extraction and
+`length-only` and `Logistic-L1` baseline implementation using only the train
+and validation partitions.
 
-PhiUSIIL is a published collection of URLs from UCI dataset 967. This code does
-not generate substitute URLs or assign outcomes from personal judgment. The
-publisher's native label is converted by one exact rule: `0` becomes local
-`is_phishing=1`, and `1` becomes local `is_phishing=0`. Invalid labels, invalid
-URLs, and conflicting canonical-URL groups are quarantined mechanically.
-Same-label duplicates retain one deterministic record.
+PhiUSIIL is a published collection of URLs from UCI dataset 967. Research
+observations come only from the licensed source; the code does not assign
+outcomes from personal judgment. Invented or synthetic URLs are unit-test
+fixtures only; they are never research observations. The publisher's native
+label is converted by one exact rule: `0` becomes local `is_phishing=1`, and
+`1` becomes local `is_phishing=0`. Invalid labels, invalid URLs, and conflicting
+canonical-URL groups are quarantined mechanically. Same-label duplicates retain
+one deterministic record.
 
 [`data/sources.json`](data/sources.json) is the source-of-truth manifest for
 the recorded run. Its `contract_id` names the preparation rules; the manifest
-hash and listed content hashes identify the exact source bytes.
+hash and listed content hashes identify the exact source bytes. The
+[`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1)
+GitHub Release is the source-freeze record for the exact licensed UCI archive
+outside Git history, tied to the archive and CSV checksums.
 
 Retained registrable domains are assigned to train, validation, or group-test
 once by the frozen hash rule in the
@@ -73,7 +80,9 @@ and output hashes.
 The [evidence outline](docs/research-evidence-outline.md) links each research
 question to the artifacts and decision rules needed to answer it. Data
 preparation is an input-control milestone, not a hypothesis result. H1, H2,
-and H3 remain undecided.
+and H3 remain undecided. The [research basis](docs/research-basis.md) records
+the source-provenance limits, ownership of the study-defined gates, closest
+prior work, and narrow contribution boundary.
 
 The complete v2 snapshot remains available at tag
 `legacy-v2-clean-2026-08-16`, commit

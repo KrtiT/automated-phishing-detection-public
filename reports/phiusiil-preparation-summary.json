@@ -20,7 +20,34 @@
       "csv_filename": "PhiUSIIL_Phishing_URL_Dataset.csv",
       "csv_sha256": "a236549cd369cd80bd478ff8e1779cbf44c58d5c3f79f7a51a1adbed7d06d1c6",
       "license": "CC BY 4.0",
+      "native_label_semantics": {
+        "0": "phishing",
+        "1": "legitimate"
+      },
       "page_url": "https://archive.ics.uci.edu/dataset/967/phiusiil+phishing+url+dataset",
+      "paper_doi": "10.1016/j.cose.2023.103545",
+      "public_per_row_provenance_available": {
+        "independent_adjudication": false,
+        "snapshot": false,
+        "source": false,
+        "timestamp": false
+      },
+      "publisher_reported_class_sources": {
+        "legitimate": [
+          "Open PageRank"
+        ],
+        "phishing": [
+          "PhishTank",
+          "OpenPhish",
+          "MalwareWorld"
+        ]
+      },
+      "publisher_reported_legitimate_collection_window": null,
+      "publisher_reported_phishing_retrieval_window": {
+        "end": "2023-05-21",
+        "start": "2022-10-01"
+      },
+      "reference_classification_basis": "publisher-provided/source-derived",
       "uci_dataset_id": 967
     },
     "public_suffix_list": {
@@ -31,7 +58,22 @@
       "url": "https://raw.githubusercontent.com/publicsuffix/list/0f1fa47ec45056a19c2fdcd32a08442de9715d12/public_suffix_list.dat",
       "version": "commit-pinned snapshot"
     },
-    "schema_version": 1
+    "schema_version": 2
+  },
+  "label_mapping": {
+    "is_phishing_meanings": {
+      "0": "legitimate",
+      "1": "phishing"
+    },
+    "native_label_meanings": {
+      "0": "phishing",
+      "1": "legitimate"
+    },
+    "native_to_is_phishing": {
+      "0": 1,
+      "1": 0
+    },
+    "version": "phiusiil-native-label-map-v1"
   },
   "local_label_counts": {
     "0": 134849,
@@ -63,7 +105,7 @@
     "invalid_phiusiil_native_label": 0
   },
   "schema_version": 1,
-  "source_spec_sha256": "e78db109cde7510411f2e22b85cd2b4e07cd41cdc56dfcf6eab73c8bc9f072e2",
+  "source_spec_sha256": "314ea940494c70cf15aa4a5db05063402eec1629ee99b4c96522cf57dfd12229",
   "splits": {
     "group_test": {
       "class_counts": {

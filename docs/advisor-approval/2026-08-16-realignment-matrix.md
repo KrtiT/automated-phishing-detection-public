@@ -1,8 +1,8 @@
 # Automated Phishing Detection for Frontier AI Inference
 
-**Status:** Active implementation under the August 20 written direction. PhiUSIIL development-data preparation is the current implementation step. No confirmatory experiment has been run, and no PhishVN record has been accessed.
+**Status:** The August 20 advisor report directed continuation of the three-question design with objective, reproducible outcome criteria. PhiUSIIL development-data preparation and its aggregate record are complete. The current technical milestone is frozen raw-URL feature extraction and `length-only` and `Logistic-L1` baseline implementation using only the train and validation partitions. H1, H2, and H3 remain undecided; no confirmatory experiment has been run. No PhishVN record has been accessed.
 
-**Version:** 1.2 | **Date:** 2026-09-03
+**Version:** 1.3 | **Date:** 2026-09-03
 
 ## Study Plan
 
@@ -20,13 +20,15 @@ I will test three linked claims. First, whether structural URL features and a co
 
 ### Contribution boundary
 
-I do not claim to have invented domain-disjoint evaluation, drift detection, cascades, or FPR-constrained classification. The study contribution is a prospective evaluation of a frozen, drift-gated URL cascade under external source/domain shift with prespecified false-positive, compute, latency, and reliability constraints. Frontier AI inference is the deployment context. The GMM is evaluated as a flag of distributional departure consistent with covariate/source shift; comparison of downstream detection errors tests whether its alerts are useful for routing.
+The [research basis](../research-basis.md) documents the established components and closest current prior work: structural and character-based URL models, domain-disjoint and external evaluation, calibrated selective cascades, and security drift monitoring. The defensible contribution is the narrow prospective joint systems evaluation of a frozen structural-to-character-transformer URL cascade whose future routing changes after a validation-calibrated GMM alert under external source/domain shift, evaluated jointly against FPR, transformer-invocation, real-HTTP p95, and request-error gates. No priority is claimed for any individual component or method.
+
+The GMM observes a change in the input distribution `P(X)` consistent with covariate/source shift. Its alert does not by itself prove harmful drift, label shift, concept drift, or causal performance degradation. Comparison of downstream detection errors tests whether the alert is useful for routing.
 
 ## Method and Evidence
 
 ### Outcome-label contract
 
-All defined binary outcome labels are normalized to the local field `is_phishing`; the Tranco control designation remains separate as specified below. A local value of `is_phishing=1` means that the publisher or source designates the record as phishing; `is_phishing=0` means that the publisher or source designates it as legitimate. These are reference classifications, not infallible truth. Neither Krti nor another individual assigns, overrides, or changes a confirmatory outcome.
+All defined binary outcome labels are normalized to the local field `is_phishing`; the Tranco control designation remains separate as specified below. A local value of `is_phishing=1` means that the publisher or source designates the record as phishing; `is_phishing=0` means that the publisher or source designates it as legitimate. As detailed in the [research basis](../research-basis.md), these are publisher-provided, source-derived reference classifications, not independently verified ground truth. Neither Krti nor another individual assigns, overrides, or changes a confirmatory outcome.
 
 ### Mechanical mapping and quarantine rules
 
@@ -46,7 +48,7 @@ No numeric encoding is assumed for PhishVN. At the external-evaluation freeze, i
 - The denominator is all 50,000 measured concurrency-64 requests across five runs of 10,000 requests each. The 1,000 warm-up requests in each run are excluded. No timeout or connection failure is dropped from the measured denominator.
 - The numerator is every measured request that fails to return HTTP 200 with syntactically valid JSON and all required `/v1/scan` response fields valid within a frozen 2,000 ms client timeout. It includes connection refusal or reset, client timeout, any non-2xx response, malformed JSON, and a missing or invalid required response field.
 - A valid `alert` or `allow` response is not a request error. An incorrect phishing decision is a detection error, not a request error.
-- The 2,000 ms client timeout and this exact request-error construct are prospective design choices frozen in protocol v1.2 before operational replay.
+- The 2,000 ms client timeout and this exact request-error construct are prospective design choices frozen in protocol v1.3 before operational replay.
 
 | Element | Specification |
 |---|---|
@@ -72,7 +74,7 @@ No numeric encoding is assumed for PhishVN. At the external-evaluation freeze, i
 
 ## Basis of Numerical Targets
 
-The <= 1% FPR ceiling, <= 200 ms p95 latency target, and < 0.1% request-error target are inherited operational constraints. The 2,000 ms client timeout, exact H3 request-error numerator and denominator, 80% shift-window detection target, 5% false-alert ceiling, `-0.02` noninferiority margin, and 30% transformer-invocation ceiling are prospective design choices frozen in protocol v1.2; they are not reported as literature-achieved results. No exact threshold in this plan is claimed to be prescribed by the literature.
+All numerical values in the decision rules are study-defined operating gates, not prescribed by the literature and not already achieved by prior work. The `<= 1%` FPR ceiling, `<= 200 ms` p95 latency, `< 0.1%` request errors, `2000 ms` client timeout, `>= 80%` shift-window detection, `<= 5%` false alerts, `-0.02` recall-noninferiority margin, and `<= 30%` transformer invocation are prospective design choices frozen in protocol v1.3. Prior measurements motivate evaluation but do not establish compliance with these gates.
 
 ## Continuity With the Original Project
 
@@ -93,10 +95,10 @@ The revised study links three questions: which representation improves low-FPR d
 - Controlled URL perturbations are used only as declared monitoring probes; they do not replace labeled development or external evidence.
 - A measured schema-invalid API request retains the frozen FastAPI validation response and counts in the H3 request-error numerator; it is not converted to a phishing label or removed from the 50,000-request denominator. Timeouts and connection failures also remain in that denominator.
 - The protocol, model artifacts, thresholds, software environment, outcome-label contract, common and dataset-specific mechanical rules, full-test population rule, published-file ordering rule, and routing and outcome denominator rules are frozen before PhishVN v4 record access. At that external-evaluation freeze, schema metadata, provenance, and encoding are verified before the PhishVN-specific rules are applied; the deterministic source-to-local mapping and realized exclusion and denominator counts, dataset hashes, row identifiers, and split and window manifests are then frozen before model predictions or inferential results are examined.
-- License-compliant source archives, processed splits, licenses, data cards, and `SHA256SUMS` will be published in the repository's `datasets-v3.0.0` GitHub release; if a platform limit prevents a release asset, the manifest will record the licensed upstream archive and immutable checksum instead.
+- The [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1) GitHub Release is the source-freeze record for this milestone. It keeps the exact licensed UCI source archive outside Git history and ties it to the archive and CSV SHA-256 checksums recorded in `data/sources.json`.
 - Negative, null, or mixed results under the locked analysis are reported without test-informed retuning. The PhishVN v4 `frozen full-test stream` is not reused as validation data.
 - The project title remains unchanged.
-- PhiUSIIL development work proceeds under this protocol. PhishVN v4 remains sealed until the complete external-evaluation freeze described above.
+- PhiUSIIL preparation and its aggregate record are complete. The next technical milestone is frozen raw-URL feature extraction and `length-only` and `Logistic-L1` baseline implementation using only the train and validation partitions. PhishVN v4 remains sealed until the complete external-evaluation freeze described above.
 
 ## Active Decisions
 
@@ -104,4 +106,4 @@ The revised study links three questions: which representation improves low-FPR d
 2. The outcome-label contract and dataset-specific mapping and quarantine rules are mechanical. Whole-group conflicts and duplicate handling are recorded without personal adjudication.
 3. PhishVN v4 replaces v1 for the later external evaluation because it incorporates the corrected v3 data and completed audit documentation. Tranco remains a secondary popularity control rather than verified benign evidence.
 4. The numerical targets and H3 request-error construct are frozen prospectively and will not be revised in response to observed test results.
-5. Current work is limited to PhiUSIIL development-data preparation and implementation. The PhishVN external evaluation begins only after the complete freeze described above.
+5. The current technical milestone is frozen raw-URL feature extraction and `length-only` and `Logistic-L1` baseline implementation using only the train and validation partitions. The PhishVN external evaluation begins only after the complete freeze described above.

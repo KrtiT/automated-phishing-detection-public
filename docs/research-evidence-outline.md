@@ -5,16 +5,25 @@ manuscript prose and does not contain an interpretation of results.
 
 | Item | Value |
 |---|---|
-| Protocol version | `1.2` |
-| Protocol SHA-256 | `ee0bdc75a0367b4ad1f745b3575a9843373519f9920cae39d0a5808507be1cd7` |
+| Protocol version | `1.3` |
+| Protocol SHA-256 | `bf38ed9eb69acfb4ccef0e647a9e45140f7c4ee9274e9d7ded2a966fcd3cd0fb` |
 | Development source | PhiUSIIL, UCI dataset 967 |
+| Development source schema | `2` |
+| Source-freeze release tag | `phiusiil-development-v1` |
+| Source-freeze release | [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1) |
 | Development preparation | `complete` |
 | Preparation record | `reports/phiusiil-preparation-summary.json` |
+| Current technical milestone | Frozen raw-URL feature extraction; `length-only` and `Logistic-L1` baseline implementation using only the train and validation partitions. |
 | External source | PhishVN v4, reserved for the frozen external evaluation |
 | Current hypothesis status | H1 `undecided`; H2 `undecided`; H3 `undecided` |
 
 An absent artifact or denominator leaves the related item `not_run` or
 `undecided`. It is not inferred from another experiment.
+
+The [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1)
+GitHub Release is the source-freeze record for the completed preparation
+milestone. It holds the exact licensed UCI archive outside Git history and
+connects it to the archive and CSV SHA-256 checksums in source schema version 2.
 
 ## Common Audit Record
 

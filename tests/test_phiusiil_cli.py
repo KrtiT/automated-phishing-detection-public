@@ -6,12 +6,15 @@ import stat
 import subprocess
 import sys
 from hashlib import sha256
+from pathlib import Path
 
 import pytest
 
-from automated_phishing_detection import phiusiil
+from automated_phishing_detection import phiusiil, protocol_preflight
 
 PSL_BYTES = b"// fixture PSL\nexample\n"
+OFFICIAL_CSV_SHA256 = "a236549cd369cd80bd478ff8e1779cbf44c58d5c3f79f7a51a1adbed7d06d1c6"
+OFFICIAL_PSL_SHA256 = "65365c4c9a4a6f746d53aadc758ab6b08aa10bb1379fea8ac353e381bca4b62e"
 
 
 def _csv_bytes(rows, headers=("URL", "label", "unused"), bom=False):
@@ -26,15 +29,36 @@ def _csv_bytes(rows, headers=("URL", "label", "unused"), bom=False):
 def _source_spec(csv_path, csv_bytes, psl_bytes=PSL_BYTES):
     return {
         "contract_id": "phiusiil-development-v1",
-        "schema_version": 1,
+        "schema_version": 2,
         "phiusiil": {
             "uci_dataset_id": 967,
+            "paper_doi": "10.1016/j.cose.2023.103545",
             "archive_url": "https://archive.ics.uci.edu/static/public/967/phiusiil%2Bphishing%2Burl%2Bdataset.zip",
             "archive_sha256": "0a639fd03aea6308c5b1c10c92aa23c2ce1505447a9137271865cd0badc9a59a",
             "csv_filename": csv_path.name,
             "csv_sha256": sha256(csv_bytes).hexdigest(),
             "license": "CC BY 4.0",
             "page_url": "https://archive.ics.uci.edu/dataset/967/phiusiil+phishing+url+dataset",
+            "native_label_semantics": {
+                "0": "phishing",
+                "1": "legitimate",
+            },
+            "publisher_reported_class_sources": {
+                "legitimate": ["Open PageRank"],
+                "phishing": ["PhishTank", "OpenPhish", "MalwareWorld"],
+            },
+            "publisher_reported_phishing_retrieval_window": {
+                "start": "2022-10-01",
+                "end": "2023-05-21",
+            },
+            "publisher_reported_legitimate_collection_window": None,
+            "reference_classification_basis": "publisher-provided/source-derived",
+            "public_per_row_provenance_available": {
+                "source": False,
+                "timestamp": False,
+                "snapshot": False,
+                "independent_adjudication": False,
+            },
         },
         "public_suffix_list": {
             "url": "https://raw.githubusercontent.com/publicsuffix/list/0f1fa47ec45056a19c2fdcd32a08442de9715d12/public_suffix_list.dat",
@@ -77,7 +101,7 @@ def _two_class_rows():
     return rows
 
 
-def _run_prepare(csv_path, psl_path, spec_path, output_dir, summary_path):
+def _run_production_prepare(csv_path, psl_path, spec_path, output_dir, summary_path):
     environment = os.environ.copy()
     environment["PYTHONDONTWRITEBYTECODE"] = "1"
     return subprocess.run(
@@ -101,6 +125,72 @@ def _run_prepare(csv_path, psl_path, spec_path, output_dir, summary_path):
         check=False,
         env=environment,
     )
+
+
+def _run_prepare(csv_path, psl_path, spec_path, output_dir, summary_path):
+    environment = os.environ.copy()
+    environment["PYTHONDONTWRITEBYTECODE"] = "1"
+    return subprocess.run(
+        [
+            sys.executable,
+            str(Path(__file__).resolve()),
+            "_private-fixture-prepare",
+            str(csv_path),
+            str(psl_path),
+            str(spec_path),
+            str(output_dir),
+            str(summary_path),
+        ],
+        capture_output=True,
+        check=False,
+        env=environment,
+    )
+
+
+def _prepare_fixture(
+    *, csv_path, suffix_rules_path, source_spec_path, output_dir, summary_path
+):
+    return phiusiil._prepare_phiusiil(
+        csv_path=csv_path,
+        suffix_rules_path=suffix_rules_path,
+        source_spec_path=source_spec_path,
+        output_dir=output_dir,
+        summary_path=summary_path,
+        _source_hash_policy=phiusiil._SourceHashPolicy(
+            csv_sha256=sha256(Path(csv_path).read_bytes()).hexdigest(),
+            suffix_rules_sha256=sha256(
+                Path(suffix_rules_path).read_bytes()
+            ).hexdigest(),
+        ),
+    )
+
+
+def _private_fixture_main(arguments):
+    if len(arguments) != 6 or arguments[0] != "_private-fixture-prepare":
+        raise AssertionError("tests-only fixture invocation is invalid")
+    csv_path, suffix_rules_path, source_spec_path, output_dir, summary_path = map(
+        Path, arguments[1:]
+    )
+    try:
+        summary = _prepare_fixture(
+            csv_path=csv_path,
+            suffix_rules_path=suffix_rules_path,
+            source_spec_path=source_spec_path,
+            output_dir=output_dir,
+            summary_path=summary_path,
+        )
+    except (
+        OSError,
+        UnicodeError,
+        csv.Error,
+        json.JSONDecodeError,
+        phiusiil.PreparationError,
+        protocol_preflight.PreflightError,
+    ) as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+    print(json.dumps(summary, sort_keys=True))
+    return 0
 
 
 def _read_jsonl(path):
@@ -199,6 +289,12 @@ def test_prepare_cli_writes_private_validated_artifacts_and_public_summary(tmp_p
     assert summary["schema_version"] == 1
     assert summary["source_spec_sha256"] == sha256(source_spec_bytes).hexdigest()
     assert summary["declared_sources"] == json.loads(source_spec_bytes)
+    assert summary["label_mapping"] == {
+        "version": "phiusiil-native-label-map-v1",
+        "native_label_meanings": {"0": "phishing", "1": "legitimate"},
+        "native_to_is_phishing": {"0": 1, "1": 0},
+        "is_phishing_meanings": {"0": "legitimate", "1": "phishing"},
+    }
     assert summary["algorithms"] == {
         "allocation_basis": "unique_ascii_domain_groups",
         "allocation_version": "hamilton-largest-remainder-v1",
@@ -297,6 +393,43 @@ def test_repeated_cli_runs_are_byte_identical(tmp_path):
         ).read_bytes()
 
 
+@pytest.mark.parametrize("substituted_source", ["csv", "psl"])
+def test_production_cli_rejects_matching_nonofficial_source_bytes(
+    tmp_path, substituted_source
+):
+    csv_bytes = _csv_bytes(_two_class_rows())
+    psl_bytes = PSL_BYTES
+    assert sha256(csv_bytes).hexdigest() != OFFICIAL_CSV_SHA256
+    assert sha256(psl_bytes).hexdigest() != OFFICIAL_PSL_SHA256
+
+    def retain_official_digest_for_other_source(spec):
+        if substituted_source == "csv":
+            spec["public_suffix_list"]["sha256"] = OFFICIAL_PSL_SHA256
+        else:
+            spec["phiusiil"]["csv_sha256"] = OFFICIAL_CSV_SHA256
+
+    csv_path, psl_path, spec_path = _write_inputs(
+        tmp_path,
+        csv_bytes,
+        psl_bytes,
+        retain_official_digest_for_other_source,
+    )
+    output_dir = tmp_path / "prepared"
+    summary_path = tmp_path / "summary.json"
+
+    completed = _run_production_prepare(
+        csv_path, psl_path, spec_path, output_dir, summary_path
+    )
+
+    assert completed.returncode == 2
+    assert completed.stdout == b""
+    assert completed.stderr == (
+        f"error: {substituted_source.upper()} SHA-256 mismatch\n".encode()
+    )
+    assert not output_dir.exists()
+    assert not summary_path.exists()
+
+
 @pytest.mark.parametrize("mismatched_input", ["csv", "psl"])
 def test_hash_mismatch_precedes_parsing_and_leaves_no_artifacts(
     tmp_path, mismatched_input
@@ -378,10 +511,84 @@ def test_source_spec_rejects_unexpected_extra_source(tmp_path):
             id="contract-id",
         ),
         pytest.param(
+            lambda spec: spec.update(schema_version=1),
+            id="source-schema-version",
+        ),
+        pytest.param(
             lambda spec: spec["phiusiil"].update(
                 archive_url="https://unexpected.example/archive.zip"
             ),
             id="phiusiil-identity",
+        ),
+        pytest.param(
+            lambda spec: spec["phiusiil"].update(
+                paper_doi="10.1016/j.cose.2023.invalid"
+            ),
+            id="phiusiil-paper-doi",
+        ),
+        pytest.param(
+            lambda spec: spec["phiusiil"].update(
+                native_label_semantics={"0": "legitimate", "1": "phishing"}
+            ),
+            id="phiusiil-native-label-semantics",
+        ),
+        pytest.param(
+            lambda spec: spec["phiusiil"].update(
+                publisher_reported_class_sources={
+                    "legitimate": ["Open PageRank"],
+                    "phishing": ["PhishTank", "OpenPhish"],
+                }
+            ),
+            id="phiusiil-class-sources",
+        ),
+        pytest.param(
+            lambda spec: spec["phiusiil"].update(
+                publisher_reported_phishing_retrieval_window={
+                    "start": "2022-10-01",
+                    "end": "2023-05-20",
+                }
+            ),
+            id="phiusiil-phishing-retrieval-window",
+        ),
+        pytest.param(
+            lambda spec: spec["phiusiil"].update(
+                publisher_reported_legitimate_collection_window={
+                    "start": "2022-10-01",
+                    "end": "2023-05-21",
+                }
+            ),
+            id="phiusiil-unknown-legitimate-window",
+        ),
+        pytest.param(
+            lambda spec: spec["phiusiil"].update(
+                reference_classification_basis="independently adjudicated"
+            ),
+            id="phiusiil-reference-classification-basis",
+        ),
+        pytest.param(
+            lambda spec: spec["phiusiil"].update(
+                public_per_row_provenance_available={
+                    "source": False,
+                    "timestamp": False,
+                    "snapshot": False,
+                    "independent_adjudication": True,
+                }
+            ),
+            id="phiusiil-per-row-adjudication",
+        ),
+        pytest.param(
+            lambda spec: spec["phiusiil"]["public_per_row_provenance_available"].update(
+                source=0
+            ),
+            id="phiusiil-per-row-provenance-value-type",
+        ),
+        pytest.param(
+            lambda spec: spec["phiusiil"].update(unexpected="field"),
+            id="phiusiil-extra-field",
+        ),
+        pytest.param(
+            lambda spec: spec["phiusiil"].pop("paper_doi"),
+            id="phiusiil-missing-field",
         ),
         pytest.param(
             lambda spec: spec["public_suffix_list"].update(version="other-version"),
@@ -452,7 +659,7 @@ def test_injected_write_failure_removes_all_temporary_artifacts(tmp_path, monkey
     monkeypatch.setattr(phiusiil, "_write_private_file", fail_second_write)
 
     with pytest.raises(OSError, match="injected write failure"):
-        phiusiil.prepare_phiusiil(
+        _prepare_fixture(
             csv_path=csv_path,
             suffix_rules_path=psl_path,
             source_spec_path=spec_path,
@@ -481,7 +688,7 @@ def test_summary_temp_permission_failure_leaves_no_partial_artifact(
     monkeypatch.setattr(phiusiil.os, "fchmod", fail_permission_change)
 
     with pytest.raises(OSError, match="injected summary permission failure"):
-        phiusiil.prepare_phiusiil(
+        _prepare_fixture(
             csv_path=csv_path,
             suffix_rules_path=psl_path,
             source_spec_path=spec_path,
@@ -534,7 +741,7 @@ def test_summary_publish_race_leaves_output_and_competitor_summary(
     )
 
     with pytest.raises(phiusiil.PreparationError, match="already exists"):
-        phiusiil.prepare_phiusiil(
+        _prepare_fixture(
             csv_path=csv_path,
             suffix_rules_path=psl_path,
             source_spec_path=spec_path,
@@ -574,7 +781,7 @@ def test_interruption_after_summary_publish_leaves_both_published_artifacts(
     )
 
     with pytest.raises(KeyboardInterrupt, match="post-summary interruption"):
-        phiusiil.prepare_phiusiil(
+        _prepare_fixture(
             csv_path=csv_path,
             suffix_rules_path=psl_path,
             source_spec_path=spec_path,
@@ -610,7 +817,7 @@ def test_interruption_after_output_publish_leaves_completed_output_without_summa
     )
 
     with pytest.raises(KeyboardInterrupt, match="post-output interruption"):
-        phiusiil.prepare_phiusiil(
+        _prepare_fixture(
             csv_path=csv_path,
             suffix_rules_path=psl_path,
             source_spec_path=spec_path,
@@ -645,7 +852,7 @@ def test_output_publish_race_does_not_replace_competing_empty_directory(
     monkeypatch.setattr(phiusiil, "_publish_path_without_replace", race_at_publish)
 
     with pytest.raises(phiusiil.PreparationError, match="already exists"):
-        phiusiil.prepare_phiusiil(
+        _prepare_fixture(
             csv_path=csv_path,
             suffix_rules_path=psl_path,
             source_spec_path=spec_path,
@@ -692,7 +899,7 @@ def test_existing_summary_alias_is_rejected_without_touching_protected_input(
     output_dir = tmp_path / "prepared"
 
     with pytest.raises(phiusiil.PreparationError, match="summary path already exists"):
-        phiusiil.prepare_phiusiil(
+        _prepare_fixture(
             csv_path=csv_path,
             suffix_rules_path=psl_path,
             source_spec_path=spec_path,
@@ -702,3 +909,7 @@ def test_existing_summary_alias_is_rejected_without_touching_protected_input(
 
     assert not output_dir.exists()
     assert all(path.read_bytes() == content for path, content in originals.items())
+
+
+if __name__ == "__main__":
+    raise SystemExit(_private_fixture_main(sys.argv[1:]))

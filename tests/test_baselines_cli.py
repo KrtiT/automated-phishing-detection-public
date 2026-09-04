@@ -6,9 +6,16 @@ import sys
 from hashlib import sha256
 from pathlib import Path
 
+import numpy as np
 import pytest
+from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import StandardScaler
 
 from automated_phishing_detection import baselines
+from automated_phishing_detection.url_features import (
+    FEATURE_NAMES,
+    extract_url_features,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "data" / "rq1-baseline-contract.json"
@@ -320,6 +327,60 @@ def _assert_no_sensitive_keys(value):
             _assert_no_sensitive_keys(child)
 
 
+def _fixture_features(path):
+    records = [json.loads(line) for line in path.read_text().splitlines()]
+    return (
+        np.asarray(
+            [extract_url_features(record["raw_url"]) for record in records],
+            dtype=np.float64,
+        ),
+        np.asarray([record["is_phishing"] for record in records], dtype=np.int8),
+    )
+
+
+def _round_trip_probabilities(artifact, train, train_labels, validation):
+    indices = [FEATURE_NAMES.index(name) for name in artifact["features"]]
+    scaler_config = {
+        key: value
+        for key, value in artifact["scaler"]["config"].items()
+        if key in {"with_mean", "with_std"}
+    }
+    classifier_config = {
+        key: value
+        for key, value in artifact["classifier"]["config"].items()
+        if key != "class"
+    }
+    reference_scaler = StandardScaler(**scaler_config)
+    reference_classifier = LogisticRegression(**classifier_config)
+    reference_classifier.fit(
+        reference_scaler.fit_transform(train[:, indices]), train_labels
+    )
+    reference_scores = reference_classifier.predict_proba(
+        reference_scaler.transform(validation[:, indices])
+    )[:, 1]
+
+    restored_scaler = StandardScaler(**scaler_config)
+    restored_scaler.mean_ = np.asarray(artifact["scaler"]["mean"])
+    restored_scaler.scale_ = np.asarray(artifact["scaler"]["scale"])
+    restored_scaler.var_ = np.asarray(artifact["scaler"]["variance"])
+    restored_scaler.n_samples_seen_ = artifact["scaler"]["n_samples_seen"]
+    restored_scaler.n_features_in_ = len(indices)
+    restored_classifier = LogisticRegression(**classifier_config)
+    restored_classifier.classes_ = np.asarray(artifact["classes"])
+    restored_classifier.coef_ = np.asarray(
+        artifact["classifier"]["coefficients"], dtype=np.float64
+    )
+    restored_classifier.intercept_ = np.asarray(
+        artifact["classifier"]["intercept"], dtype=np.float64
+    )
+    restored_classifier.n_iter_ = np.asarray(artifact["classifier"]["n_iter"])
+    restored_classifier.n_features_in_ = len(indices)
+    restored_scores = restored_classifier.predict_proba(
+        restored_scaler.transform(validation[:, indices])
+    )[:, 1]
+    return reference_scores, restored_scores
+
+
 def test_fixture_fit_writes_portable_private_models_and_public_summary(tmp_path):
     completed, paths = _successful_run(tmp_path)
 
@@ -384,6 +445,41 @@ def test_fixture_fit_writes_portable_private_models_and_public_summary(tmp_path)
         }
         assert "scaler" in artifact and "classifier" in artifact
         _assert_no_sensitive_keys(artifact)
+
+
+@pytest.mark.filterwarnings(
+    r"ignore:.*encountered in matmul:RuntimeWarning:sklearn\.utils\.extmath"
+)
+def test_portable_models_reproduce_fixture_validation_results(tmp_path):
+    completed, paths = _successful_run(tmp_path)
+
+    assert completed.returncode == 0, completed.stderr.decode()
+    train, train_labels = _fixture_features(paths["train"])
+    validation, validation_labels = _fixture_features(paths["validation"])
+    summary = json.loads(paths["summary"].read_bytes())
+
+    for model_name, filename in (
+        ("length-only", "length-only.json"),
+        ("Logistic-L1", "logistic-l1.json"),
+    ):
+        artifact_path = paths["output_dir"] / filename
+        artifact = json.loads(artifact_path.read_bytes())
+        reference_scores, reconstructed_scores = _round_trip_probabilities(
+            artifact, train, train_labels, validation
+        )
+
+        np.testing.assert_array_equal(reconstructed_scores, reference_scores)
+        expected_threshold = baselines.select_validation_threshold(
+            reconstructed_scores, validation_labels
+        )
+        assert artifact["validation_threshold"] == expected_threshold
+        assert summary["models"][model_name] == {
+            "artifact": filename,
+            "artifact_sha256": sha256(artifact_path.read_bytes()).hexdigest(),
+            "feature_count": len(artifact["features"]),
+            "n_iter": artifact["classifier"]["n_iter"],
+            "validation_threshold": expected_threshold,
+        }
 
 
 def test_repeated_fixture_runs_are_byte_identical(tmp_path):

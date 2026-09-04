@@ -1,13 +1,16 @@
+import inspect
 import json
 import os
 import stat
 import subprocess
 import sys
+import warnings
 from hashlib import sha256
 from pathlib import Path
 
 import numpy as np
 import pytest
+from sklearn.exceptions import ConvergenceWarning
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 
@@ -482,6 +485,80 @@ def test_portable_models_reproduce_fixture_validation_results(tmp_path):
         }
 
 
+def test_fit_model_constructs_real_estimators_from_serialized_config(monkeypatch):
+    real_scaler = baselines.StandardScaler
+    real_classifier = baselines.LogisticRegression
+    constructed = {}
+
+    def construct_scaler(**kwargs):
+        estimator = real_scaler(**kwargs)
+        constructed["scaler"] = {
+            "class": estimator.__class__.__name__,
+            "kwargs": kwargs,
+        }
+        return estimator
+
+    def construct_classifier(**kwargs):
+        estimator = real_classifier(**kwargs)
+        constructed["classifier"] = {
+            "class": estimator.__class__.__name__,
+            "kwargs": kwargs,
+        }
+        return estimator
+
+    monkeypatch.setattr(
+        baselines,
+        "_SCALER_CONFIG",
+        {**baselines._SCALER_CONFIG, "with_mean": False},
+    )
+    monkeypatch.setattr(
+        baselines,
+        "_CLASSIFIER_CONFIG",
+        {**baselines._CLASSIFIER_CONFIG, "C": 0.75},
+    )
+    monkeypatch.setattr(baselines, "StandardScaler", construct_scaler)
+    monkeypatch.setattr(baselines, "LogisticRegression", construct_classifier)
+    generator = np.random.default_rng(42)
+    train_features = generator.normal(size=(20, len(FEATURE_NAMES)))
+    validation_features = generator.normal(size=(8, len(FEATURE_NAMES)))
+
+    artifact = baselines._fit_model(
+        "Logistic-L1",
+        train_features,
+        np.tile(np.asarray([0, 1], dtype=np.int8), 10),
+        validation_features,
+        np.tile(np.asarray([0, 1], dtype=np.int8), 4),
+        {"contract": "0" * 64},
+    )
+
+    assert constructed == {
+        "scaler": {
+            "class": artifact["scaler"]["config"]["class"],
+            "kwargs": {
+                key: value
+                for key, value in artifact["scaler"]["config"].items()
+                if key not in {"class", "fit_partition"}
+            },
+        },
+        "classifier": {
+            "class": artifact["classifier"]["config"]["class"],
+            "kwargs": {
+                key: value
+                for key, value in artifact["classifier"]["config"].items()
+                if key != "class"
+            },
+        },
+    }
+
+
+def test_threshold_selection_docstring_is_version_neutral():
+    docstring = inspect.getdoc(baselines.select_validation_threshold)
+
+    assert docstring == (
+        "Select the validation threshold fixed by the RQ1 baseline contract."
+    )
+
+
 def test_repeated_fixture_runs_are_byte_identical(tmp_path):
     first, first_paths = _successful_run(tmp_path, "-first")
     second, second_paths = _successful_run(tmp_path, "-second")
@@ -534,6 +611,55 @@ def test_production_cli_hard_pins_each_input_before_parsing(tmp_path):
     assert b"JSON" not in completed.stderr
     assert not paths["output_dir"].exists()
     assert not paths["summary"].exists()
+
+
+def test_second_model_convergence_failure_leaves_no_publication_remnants(
+    tmp_path, monkeypatch
+):
+    paths = _write_fixture(tmp_path)
+    initial_inventory = {path.relative_to(tmp_path) for path in tmp_path.rglob("*")}
+    real_fit = baselines.LogisticRegression.fit
+    attempted_feature_counts = []
+    completed_feature_counts = []
+    warning_message = "forced Logistic-L1 convergence warning"
+
+    def fit_with_second_model_warning(self, features, labels, *args, **kwargs):
+        attempted_feature_counts.append(features.shape[1])
+        if features.shape[1] == len(FEATURE_NAMES):
+            warnings.warn(warning_message, ConvergenceWarning)
+        result = real_fit(self, features, labels, *args, **kwargs)
+        completed_feature_counts.append(features.shape[1])
+        return result
+
+    monkeypatch.setattr(
+        baselines.LogisticRegression,
+        "fit",
+        fit_with_second_model_warning,
+    )
+
+    with pytest.raises(baselines.BaselineError) as caught:
+        baselines._fit_baselines(
+            train_path=paths["train"],
+            validation_path=paths["validation"],
+            preparation_summary_path=paths["preparation_summary"],
+            contract_path=paths["contract"],
+            output_dir=paths["output_dir"],
+            summary_path=paths["summary"],
+            _input_hash_policy=paths["policy"],
+        )
+
+    assert str(caught.value) == "Logistic-L1 did not converge"
+    assert type(caught.value.__cause__) is ConvergenceWarning
+    assert str(caught.value.__cause__) == warning_message
+    assert attempted_feature_counts == [1, len(FEATURE_NAMES)]
+    assert completed_feature_counts == [1]
+    assert not paths["output_dir"].exists()
+    assert not paths["summary"].exists()
+    assert list(tmp_path.glob(".models.tmp-*")) == []
+    assert list(tmp_path.glob(".baseline-summary.json.tmp-*")) == []
+    assert {path.relative_to(tmp_path) for path in tmp_path.rglob("*")} == (
+        initial_inventory
+    )
 
 
 @pytest.mark.parametrize(

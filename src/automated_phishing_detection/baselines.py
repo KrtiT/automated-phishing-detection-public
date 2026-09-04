@@ -719,7 +719,7 @@ def clopper_pearson_upper(false_positives: int, negative_count: int) -> float:
 def select_validation_threshold(
     scores: np.ndarray, labels: np.ndarray
 ) -> dict[str, object]:
-    """Select the validation threshold fixed by ``rq1-baselines-v1``."""
+    """Select the validation threshold fixed by the RQ1 baseline contract."""
     scores = np.asarray(scores)
     labels = np.asarray(labels)
     if scores.ndim != 1 or labels.ndim != 1 or scores.shape != labels.shape:
@@ -838,7 +838,12 @@ def _fit_model(
     )
     train_matrix = train_features[:, feature_indices]
     validation_matrix = validation_features[:, feature_indices]
-    scaler = StandardScaler(with_mean=True, with_std=True)
+    scaler_kwargs = {
+        key: value
+        for key, value in _SCALER_CONFIG.items()
+        if key not in {"class", "fit_partition"}
+    }
+    scaler = StandardScaler(**scaler_kwargs)
     try:
         with warnings.catch_warnings():
             warnings.simplefilter("error")
@@ -850,17 +855,10 @@ def _fit_model(
         np.isfinite(scaled_validation)
     ):
         raise BaselineError(f"{model_name} scaling produced nonfinite values")
-    classifier = LogisticRegression(
-        penalty="l1",
-        solver="liblinear",
-        C=1.0,
-        class_weight="balanced",
-        fit_intercept=True,
-        intercept_scaling=1.0,
-        max_iter=5000,
-        tol=1e-8,
-        random_state=42,
-    )
+    classifier_kwargs = {
+        key: value for key, value in _CLASSIFIER_CONFIG.items() if key != "class"
+    }
+    classifier = LogisticRegression(**classifier_kwargs)
     try:
         with warnings.catch_warnings():
             warnings.simplefilter("error")

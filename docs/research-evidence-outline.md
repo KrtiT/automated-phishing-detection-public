@@ -5,10 +5,12 @@ manuscript prose and does not contain an interpretation of results.
 
 | Item | Value |
 |---|---|
-| Protocol version | `1.7` |
-| Protocol SHA-256 | `ebd5b9f90157d6d21e8f22b7e1937c16dbaf60a577ec4f55cefc4709b604caef` |
+| Protocol version | `1.8` |
+| Protocol SHA-256 | `84fcc465151fbd444c0f72e6d195d0a54c81eb9297ccd745264df7cf1ab49483` |
 | RQ1 baseline contract | `data/rq1-baseline-contract-v2.json` (`rq1-baselines-v2`) |
 | RQ1 baseline contract SHA-256 | `05d6d0831def7d26448c8dbdc8117800ea2448cdfc2aca2ad95489f22d2d11ba` |
+| RQ1 transformer/cascade contract | `data/rq1-transformer-cascade-contract-v1.json` (`rq1-transformer-cascade-v1`) |
+| RQ1 transformer/cascade contract SHA-256 | `aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54` |
 | Historical RQ1 baseline contract | `data/rq1-baseline-contract.json` (`rq1-baselines-v1`) |
 | Historical RQ1 baseline contract SHA-256 | `594a66769dee3bf23c4133020dcf9b7d57c105590e5007832ac4249def6a33d4` |
 | Development source | PhiUSIIL, UCI dataset 967 |
@@ -17,7 +19,7 @@ manuscript prose and does not contain an interpretation of results.
 | Source-freeze release | [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1) |
 | Development preparation | `complete` |
 | Preparation record | `reports/phiusiil-preparation-summary.json` |
-| Current technical milestone | Protocol v1.7 baseline amendment `frozen`; v1.4 baseline attempt `stopped_nonconverged`; exploratory tolerance observation `not_accepted_provenance_incomplete`; v1.5 SAGA diagnostic `stopped_platform_warning`; v1.6 SAGA diagnostic `passed_training_only`; rq1-baselines-v2 execution `completed_development_validation`; H1, H2, and H3 remain undecided. |
+| Current technical milestone | v1.4 baseline attempt `stopped_nonconverged`; exploratory tolerance observation `not_accepted_provenance_incomplete`; v1.5 SAGA diagnostic `stopped_platform_warning`; v1.6 SAGA diagnostic `passed_training_only`; protocol v1.7 baseline execution `completed_development_validation`; protocol v1.8 transformer/cascade procedure `frozen_not_run`; GMM `not_run`; H1, H2, and H3 remain undecided. |
 | External source | PhishVN v4, reserved for the frozen external evaluation |
 | Current hypothesis status | H1 `undecided`; H2 `undecided`; H3 `undecided` |
 
@@ -31,6 +33,14 @@ GitHub Release is the source-freeze record for the completed preparation
 milestone. It holds the exact licensed UCI archive outside Git history and
 connects it to the archive and CSV SHA-256 checksums in source schema version 2.
 
+The September 3 advisor report, SHA-256
+`b72da89a4cc8a5b06f6ca88d79fe78dd54e3199a96b7450209ea53b4a4c04215`,
+directed the study to complete and freeze the source-provenance release, then
+conduct systematic hypothesis testing with all gates, thresholds, features,
+and train/validation procedures locked before test results, with particular
+attention to H1 and the GMM. The public `phiusiil-development-v1` release
+completed that requested source freeze after the meeting.
+
 ## Common Audit Record
 
 The evidence index will identify the exact source, license, source hash,
@@ -38,6 +48,11 @@ Public Suffix List hash, software commit, environment lock, split manifest,
 quarantine counts, model artifacts, thresholds, prediction files, and analysis
 outputs. Every reported rate will retain its numerator and denominator; every
 interval will identify its method, grouping unit, seed, and source artifact.
+
+Manual review is permitted only as separately reported post hoc descriptive
+error analysis and cannot assign or override labels, change quarantine or
+inclusion, thresholds, features, model or procedure choices, gates, or
+hypothesis decisions.
 
 The completed development-data run read 235,795 publisher-labeled rows. It
 retained 233,536 rows across 197,105 registrable domains and quarantined 2,259
@@ -205,11 +220,31 @@ does not negate the analyst exposure recorded above. No PhishVN record has
 been accessed. H1, H2, and H3 remain undecided. Protocol v1.7 changed the RQ1
 baseline method but no RQ/H question, evidence designation, or decision rule.
 
+Protocol v1.8 freezes the prospective transformer and cascade method in
+`data/rq1-transformer-cascade-contract-v1.json`
+(`rq1-transformer-cascade-v1`), SHA-256
+`aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54`.
+Its status is `frozen_not_run`; no transformer or cascade fit was run. The
+contract accepts only the pinned training, validation, preparation-summary,
+baseline-contract, and `Logistic-L1` artifact roles. It accepts no group-test,
+external, PhishVN, runtime-tuning, or test-path input and claims no result.
+
 ## RQ1 and H1
 
 **Question:** What incremental value do structural URL features and
-character-level representations provide under registrable-domain-disjoint and
-external evaluation?
+selective character-model escalation provide under
+registrable-domain-disjoint and external evaluation?
+
+The two H1 primary contrasts remain `recall(Logistic-L1) -
+recall(length-only)` and `recall(cascade) - recall(Logistic-L1)`. The latter is
+the selective system contribution, not a pure causal isolation of
+representation. Transformer-only calibrates the cascade and supports H3; it
+does not create a third primary H1 gate.
+
+The exact transformer/cascade procedure is
+`rq1-transformer-cascade-v1`, SHA-256
+`aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54`,
+with status `frozen_not_run`; no transformer or cascade fit was run.
 
 Required evidence:
 
@@ -221,7 +256,7 @@ Required evidence:
   remains excluded from fitting and selection subject to the analyst-access
   limitation recorded above;
 - one frozen pass over the primary PhishVN external strata;
-- observed FPR counts and the four prespecified recall differences with
+- observed FPR counts and the two prespecified H1 recall differences with
   registrable-domain-clustered confidence intervals; and
 - a gate table that evaluates every H1 condition without substituting a
   secondary metric.
@@ -232,12 +267,21 @@ v1.4 fit is `stopped_nonconverged`; the exploratory tolerance observation is
 `stopped_platform_warning`; the v1.6 SAGA diagnostic is
 `passed_training_only`; the rq1-baselines-v2 execution is
 `completed_development_validation`; the validation-set operating points are
-recorded above; H1 is `undecided`.
+recorded above; the transformer/cascade procedure is `frozen_not_run`; H1 is
+`undecided`.
 
 ## RQ2 and H2
 
 **Question:** Can GMM-based monitoring detect an external source/domain shift
 and guide escalation without exceeding the low-FPR operating constraint?
+
+Every complete 256-request window of the retained external stream is a
+prespecified external-shift window. The detection-rate numerator is windows
+with score strictly greater than the boundary; the denominator is all such
+complete windows. Overlapping windows count separately. An incomplete terminal
+window is excluded from this rate, but its requests remain routable from a
+prior alert. The independent validation-audit false-alert fraction uses the
+same complete-window numerator and denominator rule.
 
 Required evidence:
 
@@ -249,8 +293,8 @@ Required evidence:
 - fixed-cascade versus alert-policy errors with the prespecified clustered
   interval and all H2 denominators.
 
-Current status: routing mechanics are `implemented`; monitoring and outcome
-evidence are `not_run`; H2 is `undecided`.
+Current status: routing mechanics are `implemented`; GMM execution is `not_run`;
+monitoring and outcome evidence are `not_run`; H2 is `undecided`.
 
 ## RQ3 and H3
 

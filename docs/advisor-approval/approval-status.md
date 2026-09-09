@@ -1,39 +1,43 @@
 # Research Status
 
-**Status:** The August 20 advisor report directed continuation of the
-three-question design with objective, reproducible outcome criteria. The
-PhiUSIIL development split and aggregate preparation record are complete. The
-historical `rq1-baselines-v1` contract remains preserved. Its prescribed fit
-stopped with a convergence warning and published no model or summary. A later
-local tolerance observation is provenance-incomplete and is not research
-evidence. The v1.5 SAGA diagnostic has status `stopped_platform_warning`; the
-v1.6 SAGA diagnostic has status `passed_training_only`. Protocol v1.7 froze
-`rq1-baselines-v2` before validation. Its single planned execution completed
-from clean commit `7ae6c9af85e935c551468f590a7ba43441f58def` and has status
-`completed_development_validation`. This is development validation only. H1,
-H2, and H3 remain undecided, and no PhishVN record has been accessed.
+**Status:** The September 3 advisor report, SHA-256
+`b72da89a4cc8a5b06f6ca88d79fe78dd54e3199a96b7450209ea53b4a4c04215`,
+directed the study to complete and freeze the source-provenance release, then
+conduct systematic hypothesis testing with all gates, thresholds, features,
+and train/validation procedures locked before test results, with particular
+attention to H1 and the GMM. The public `phiusiil-development-v1` release
+completed that requested source freeze after the meeting. Protocol v1.7 froze
+`rq1-baselines-v2` before validation; its single execution from clean commit
+`7ae6c9af85e935c551468f590a7ba43441f58def` is
+`completed_development_validation`. This is development validation only.
+Protocol v1.8 freezes `rq1-transformer-cascade-v1` at `frozen_not_run`; no
+transformer or cascade fit was run. GMM execution is `not_run`. H1, H2, and H3
+remain undecided. The group test remains analyst-exposed but model-unscored,
+and no PhishVN record has been accessed.
 
 | Field | Value |
 |---|---|
 | Protocol | `docs/advisor-approval/2026-08-16-realignment-matrix.md` |
-| Protocol version | `1.7` |
-| Protocol date | `2026-09-04` |
-| Protocol SHA-256 | `ebd5b9f90157d6d21e8f22b7e1937c16dbaf60a577ec4f55cefc4709b604caef` |
+| Protocol version | `1.8` |
+| Protocol date | `2026-09-09` |
+| Protocol SHA-256 | `84fcc465151fbd444c0f72e6d195d0a54c81eb9297ccd745264df7cf1ab49483` |
 | RQ1 baseline contract | `data/rq1-baseline-contract-v2.json` (`rq1-baselines-v2`) |
 | RQ1 baseline contract SHA-256 | `05d6d0831def7d26448c8dbdc8117800ea2448cdfc2aca2ad95489f22d2d11ba` |
+| RQ1 transformer/cascade contract | `data/rq1-transformer-cascade-contract-v1.json` (`rq1-transformer-cascade-v1`) |
+| RQ1 transformer/cascade contract SHA-256 | `aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54` |
 | Historical RQ1 baseline contract | `rq1-baselines-v1` |
 | Historical RQ1 baseline contract SHA-256 | `594a66769dee3bf23c4133020dcf9b7d57c105590e5007832ac4249def6a33d4` |
 | Development source schema | `2` |
 | Source-freeze release tag | `phiusiil-development-v1` |
 | Source-freeze release | [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1) |
 | Development preparation | `complete` |
-| Current technical milestone | Protocol v1.7 baseline amendment `frozen`; v1.4 baseline attempt `stopped_nonconverged`; exploratory tolerance observation `not_accepted_provenance_incomplete`; v1.5 SAGA diagnostic `stopped_platform_warning`; v1.6 SAGA diagnostic `passed_training_only`; rq1-baselines-v2 execution `completed_development_validation`; H1, H2, and H3 remain undecided. |
+| Current technical milestone | v1.4 baseline attempt `stopped_nonconverged`; exploratory tolerance observation `not_accepted_provenance_incomplete`; v1.5 SAGA diagnostic `stopped_platform_warning`; v1.6 SAGA diagnostic `passed_training_only`; protocol v1.7 baseline execution `completed_development_validation`; protocol v1.8 transformer/cascade procedure `frozen_not_run`; GMM `not_run`; H1, H2, and H3 remain undecided. |
 | Current hypothesis status | H1 `undecided`; H2 `undecided`; H3 `undecided` |
 | Legacy base tag | `legacy-v2-clean-2026-08-16` |
 | Legacy base SHA | `a5eceecf21ad5ce29c4ab8f8d4de0edc8b73b240` |
-| Advisor report date | `2026-08-20` |
-| Advisor report SHA-256 | `c4be5b5d5c4eaf89a2494a521522d124aa45351ee8d08dda2f41b01b961a0b7a` |
-| Direction | Proceed with the three-question design and make the outcome criteria objective and reproducible. |
+| Advisor report date | `2026-09-03` |
+| Advisor report SHA-256 | `b72da89a4cc8a5b06f6ca88d79fe78dd54e3199a96b7450209ea53b4a4c04215` |
+| Direction | Complete and freeze the source-provenance release, then conduct systematic hypothesis testing with all gates, thresholds, features, and train/validation procedures locked before test results, with particular attention to H1 and the GMM. |
 
 ## Current Controls
 
@@ -47,6 +51,13 @@ H2, and H3 remain undecided, and no PhishVN record has been accessed.
   denominators, partition use, score meaning, and threshold rule from v1. It
   froze SAGA and the validation-scoring audit before the recorded execution.
   Both the active and historical contract hashes are recorded above.
+- `rq1-transformer-cascade-v1`, SHA-256
+  `aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54`,
+  freezes the exact training-only vocabulary, PyTorch model, deterministic MPS
+  runtime, validation stopping and threshold rules, pinned stage-1
+  reconstruction, cascade selection, artifact boundary, and atomic publication
+  procedure. Its status is `frozen_not_run`; no transformer or cascade fit was
+  run.
 - The PhiUSIIL group test is analyst-exposed but model-unscored. It remains
   excluded from fitting and selection. Its raw partition receives exactly one
   later frozen noninteractive processing pass only after all four RQ1 models,
@@ -65,6 +76,11 @@ H2, and H3 remain undecided, and no PhishVN record has been accessed.
   pipeline, models, thresholds, and analysis code are frozen.
 - H1, H2, and H3 remain undecided until their stated evidence and gates have
   been evaluated. Exploratory v2 results do not decide them.
+
+Manual review is permitted only as separately reported post hoc descriptive
+error analysis and cannot assign or override labels, change quarantine or
+inclusion, thresholds, features, model or procedure choices, gates, or
+hypothesis decisions.
 
 ## Execution Audit
 
@@ -167,6 +183,13 @@ summary's `access.group_test_accessed=false` records the process input boundary
 and does not negate the earlier analyst exposure. No PhishVN record was
 accessed, and H1, H2, and H3 remain undecided.
 
+Protocol v1.8 now freezes the transformer and selective cascade procedure under
+`rq1-transformer-cascade-v1`. The contract accepts only the pinned training,
+validation, preparation-summary, baseline-contract, and `Logistic-L1` artifact
+roles. It accepts no group-test, external, PhishVN, runtime-tuning, or test-path
+input. The procedure is `frozen_not_run`; no transformer or cascade fit was run
+and no result is claimed. The GMM execution remains `not_run`.
+
 ## Change Record
 
 | Date | Version | Change |
@@ -178,6 +201,7 @@ accessed, and H1, H2, and H3 remain undecided.
 | 2026-09-04 | 1.5 | Recorded the group test as analyst-exposed but model-unscored with one later frozen noninteractive raw-partition pass; preserved the failed `tol=1e-8` baseline, qualified the `tol=1e-4` work as a provenance-incomplete tolerance observation, and froze the SAGA diagnostic before use. No baseline result was accepted, and no research question, hypothesis, evidence designation, or decision gate changed. |
 | 2026-09-04 | 1.6 | Recorded the v1.5 diagnostic failure on macOS arm64 with Accelerate and froze a scoring-only warning audit with an independent numerical reference. No baseline result was accepted, and no RQ/H decision rule changed. |
 | 2026-09-04 | 1.7 | Recorded that the v1.6 diagnostic passed its prespecified checks as training feasibility only; `rq1-baselines-v2`, SAGA, and the validation scoring audit are frozen before validation. No baseline result was accepted, and no RQ/H decision rule changed. |
+| 2026-09-09 | 1.8 | Recorded the September 3 advisor direction and completed source-provenance release; narrowed RQ1 to selective character-model escalation; froze `rq1-transformer-cascade-v1`, the manual-review boundary, and the complete-window H2 metric at `frozen_not_run`. No transformer, cascade, or GMM fit was run. |
 
 Any change to a research question, hypothesis, evidence designation, method,
 or decision rule increments the protocol version and records a new hash before

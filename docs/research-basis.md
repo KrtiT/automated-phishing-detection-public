@@ -5,6 +5,21 @@ decision gates, and the boundary between established work and the proposed
 evaluation. It does not report a model result or treat a planned gate as
 having been met.
 
+The September 3 advisor report, SHA-256
+`b72da89a4cc8a5b06f6ca88d79fe78dd54e3199a96b7450209ea53b4a4c04215`,
+directed the study to complete and freeze the source-provenance release, then
+conduct systematic hypothesis testing with all gates, thresholds, features,
+and train/validation procedures locked before test results, with particular
+attention to H1 and the GMM. The public `phiusiil-development-v1` release
+completed that requested source freeze after the meeting.
+
+Protocol v1.7 froze `rq1-baselines-v2` before its later
+`completed_development_validation` execution. Those operating points remain
+development validation only. Protocol v1.8 freezes
+`rq1-transformer-cascade-v1` at `frozen_not_run`; no transformer or cascade fit
+was run. H1, H2, and H3 remain undecided, the group test remains
+analyst-exposed but model-unscored, and no PhishVN record has been accessed.
+
 ## Source basis and limitations
 
 The [UCI record for dataset 967](https://archive.ics.uci.edu/dataset/967/phiusiil+phishing+url+dataset)
@@ -31,6 +46,11 @@ test performance against the published reference classifications, but it
 cannot represent each row as independently verified historical ground truth.
 That limitation is a statement about the available provenance, not evidence
 that a particular published label is wrong.
+
+Manual review is permitted only as separately reported post hoc descriptive
+error analysis and cannot assign or override labels, change quarantine or
+inclusion, thresholds, features, model or procedure choices, gates, or
+hypothesis decisions.
 
 `data/sources.json` records these facts together with the exact archive and
 CSV hashes. Its `phiusiil-development-v1` contract identifier remains stable
@@ -61,9 +81,26 @@ hardware, batching, HTTP overhead, concurrency, warm-up, and timeout handling
 also match. Prior measurements motivate what to test; they do not establish
 compliance in advance.
 
+For H2, every complete 256-request window of the retained external stream is a
+prespecified external-shift window. The detection-rate numerator is windows
+with score strictly greater than the boundary; the denominator is all such
+complete windows. Overlapping windows count separately. An incomplete terminal
+window is excluded from this rate, but its requests remain routable from a
+prior alert. The independent validation-audit false-alert fraction uses the
+same complete-window numerator and denominator rule. These definitions are
+prospective; GMM execution remains `not_run`.
+
 ## Closest prior work and contribution boundary
 
 The following primary sources constrain the contribution claim.
+
+RQ1 asks: What incremental value do structural URL features and selective
+character-model escalation provide under registrable-domain-disjoint and
+external evaluation? H1 retains two primary contrasts:
+`recall(Logistic-L1) - recall(length-only)` and
+`recall(cascade) - recall(Logistic-L1)`. The latter is a selective system
+contribution, not a pure causal isolation of representation. Transformer-only
+is a calibration and H3 comparator, not a post hoc third primary H1 gate.
 
 - [Ahamed et al. (2026)](https://doi.org/10.3389/fcomp.2026.1834407) jointly evaluate structural and character-based URL models, adversarial robustness, domain-disjoint behavior, explanation stability, and external data. This establishes that broad integrated URL-evaluation claims are already occupied.
 - [ExpertFusion (2026)](https://www.sciencedirect.com/science/article/pii/S0957417426029957) combines calibrated semantic, structural, sequential, and lexical URL experts through confidence- and uncertainty-aware routing and evaluates cross-dataset distribution shift with registered-domain-stratified splits. It is direct prior work on calibrated URL expert integration under shift.

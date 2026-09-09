@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PROTOCOL = ROOT / "docs" / "advisor-approval" / "2026-08-16-realignment-matrix.md"
 STATUS = ROOT / "docs" / "advisor-approval" / "approval-status.md"
 EVIDENCE_OUTLINE = ROOT / "docs" / "research-evidence-outline.md"
+RESEARCH_BASIS = ROOT / "docs" / "research-basis.md"
 README = ROOT / "README.md"
 SAGA_DIAGNOSTIC = ROOT / "scripts" / "rq1_saga_convergence_diagnostic.py"
 SAGA_V1_RECEIPT = ROOT / "reports" / "rq1-saga-convergence-v1-execution.json"
@@ -16,8 +17,9 @@ SAGA_V2_RECEIPT = ROOT / "reports" / "rq1-saga-convergence-v2-execution.json"
 BASELINE_V2_SUMMARY = ROOT / "reports" / "rq1-baseline-v2-summary.json"
 BASELINE_V1_CONTRACT = ROOT / "data" / "rq1-baseline-contract.json"
 BASELINE_V2_CONTRACT = ROOT / "data" / "rq1-baseline-contract-v2.json"
+TRANSFORMER_CONTRACT = ROOT / "data" / "rq1-transformer-cascade-contract-v1.json"
 DECISION_MATRIX_SHA256 = (
-    "bb8350b12ba5f16737826d819b3bc8e2f6a1626851d1da0109828c8a52bed526"
+    "ae46e3cb883f8335c9b2fbca1d753e4830a94d3d4b9cf08d1447dcc9d7e493ec"
 )
 
 
@@ -383,12 +385,12 @@ def test_v2_baseline_summary_is_aggregate_and_immutable():
     visit(summary)
 
 
-def test_protocol_v17_freezes_baseline_v2_without_a_result():
+def test_protocol_v18_preserves_v17_history_and_freezes_transformer_without_result():
     protocol = PROTOCOL.read_text(encoding="utf-8")
     preamble = protocol.split("## Study Plan", maxsplit=1)[0]
     contract = _section(protocol, "RQ1 baseline contract", level=3)
 
-    assert "**Version:** 1.7 | **Date:** 2026-09-04" in preamble
+    assert "**Version:** 1.8 | **Date:** 2026-09-09" in preamble
     assert "PhiUSIIL development-data preparation is complete." in preamble
     assert "rq1-baselines-v2" in preamble
     expected_contract_hash = sha256(BASELINE_V2_CONTRACT.read_bytes()).hexdigest()
@@ -399,12 +401,14 @@ def test_protocol_v17_freezes_baseline_v2_without_a_result():
     assert "provenance-incomplete" in preamble
     assert "v1.5 SAGA diagnostic is `stopped_platform_warning`" in preamble
     assert "v1.6 SAGA diagnostic is `passed_training_only`" in preamble
-    assert "rq1-baselines-v2 execution is `frozen_not_run`" in preamble
-    assert (
-        "No baseline model, threshold, or validation result has been accepted"
-        in preamble
-    )
+    assert "Protocol v1.7 froze `rq1-baselines-v2` before validation" in preamble
+    assert "rq1-baselines-v2 execution is `completed_development_validation`" in preamble
+    assert "development validation only" in preamble
+    assert "rq1-transformer-cascade-v1" in preamble
+    assert "transformer/cascade procedure is `frozen_not_run`" in preamble
+    assert "No transformer or cascade fit was run" in preamble
     assert "H1, H2, and H3 remain undecided" in preamble
+    assert "group test remains analyst-exposed but model-unscored" in preamble
     assert "No PhishVN record has been accessed" in preamble
 
 
@@ -476,7 +480,7 @@ def test_live_records_preserve_v14_failure_and_qualify_tolerance_observation():
             flags=re.IGNORECASE,
         )
         assert "`rq1-baselines-v1`" in audit
-        assert "| Protocol version | `1.7` |" in text
+        assert "| Protocol version | `1.8` |" in text
         assert contract_row in text
         assert (
             "| Historical RQ1 baseline contract SHA-256 | "
@@ -789,7 +793,7 @@ def test_rq_hypothesis_and_decision_gate_contracts_are_preserved():
     )
 
     critical_contracts = (
-        "**RQ1:** What incremental value do structural URL features and character-level representations provide under registrable-domain-disjoint and external evaluation?",
+        "**RQ1:** What incremental value do structural URL features and selective character-model escalation provide under registrable-domain-disjoint and external evaluation?",
         "**H1:** At the validation-selected FPR ceiling, full structural features improve recall over a length-only baseline, and the character-transformer cascade improves recall over `Logistic-L1`.",
         "**RQ2:** Can GMM-based monitoring detect an external source/domain shift and guide escalation without exceeding the low-FPR operating constraint?",
         "**H2:** GMM detects at least 80% of prespecified external shift windows at no more than 5% false alerts, and prospective routing reduces the false-negative rate relative to the fixed cascade while retaining FPR <= 1%.",
@@ -816,6 +820,22 @@ def test_rq_hypothesis_and_decision_gate_contracts_are_preserved():
         )
         == 1
     )
+
+    rq1_row = next(
+        line for line in decision_matrix.splitlines() if line.startswith("| **RQ1 / H1**")
+    )
+    rq1_decision_rule = rq1_row.rsplit("|", maxsplit=2)[-2]
+    assert rq1_decision_rule.count(
+        "`recall(Logistic-L1) - recall(length-only)`"
+    ) == 1
+    assert rq1_decision_rule.count(
+        "`recall(cascade) - recall(Logistic-L1)`"
+    ) == 1
+    assert "each of length-only, `Logistic-L1`, and cascade" in rq1_decision_rule
+    assert "transformer-only" not in rq1_decision_rule
+    assert "recall(transformer-only) -" not in rq1_decision_rule
+    assert "system contribution" in rq1_row
+    assert "not a pure causal isolation of representation" in rq1_row
 
 
 def test_rq1_group_test_disclosure_and_single_frozen_pass_are_explicit():
@@ -867,6 +887,100 @@ def test_protocol_records_published_source_freeze():
         "https://github.com/KrtiT/automated-phishing-detection-public/"
         "releases/tag/phiusiil-development-v1" in safeguards
     )
+
+
+def test_v18_binds_transformer_contract_and_preserves_prospective_status():
+    assert TRANSFORMER_CONTRACT.is_file(), (
+        f"missing transformer contract: {TRANSFORMER_CONTRACT}"
+    )
+    expected_hash = sha256(TRANSFORMER_CONTRACT.read_bytes()).hexdigest()
+    bindings = (
+        (
+            PROTOCOL,
+            "RQ1 transformer and cascade contract",
+            3,
+        ),
+        (STATUS, "Current Controls", 2),
+        (EVIDENCE_OUTLINE, "RQ1 and H1", 2),
+    )
+
+    for path, heading, level in bindings:
+        section = _compact(
+            _section(path.read_text(encoding="utf-8"), heading, level=level)
+        )
+        assert "rq1-transformer-cascade-v1" in section
+        assert expected_hash in section
+        assert "`frozen_not_run`" in section
+        assert "no transformer or cascade fit was run" in section
+
+    for path in (STATUS, EVIDENCE_OUTLINE):
+        text = path.read_text(encoding="utf-8")
+        assert (
+            "| RQ1 transformer/cascade contract | "
+            "`data/rq1-transformer-cascade-contract-v1.json` "
+            "(`rq1-transformer-cascade-v1`) |" in text
+        )
+        assert (
+            f"| RQ1 transformer/cascade contract SHA-256 | `{expected_hash}` |"
+            in text
+        )
+
+
+def test_v18_records_september_advisor_direction_and_completed_source_freeze():
+    report_hash = (
+        "b72da89a4cc8a5b06f6ca88d79fe78dd54e3199a96b7450209ea53b4a4c04215"
+    )
+    records = (PROTOCOL, STATUS, EVIDENCE_OUTLINE, RESEARCH_BASIS)
+
+    for path in records:
+        text = _compact(path.read_text(encoding="utf-8"))
+        assert "september 3 advisor report" in text
+        assert report_hash in text
+        assert "complete and freeze the source-provenance release" in text
+        assert "systematic hypothesis testing" in text
+        assert "all gates, thresholds, features, and train/validation procedures" in text
+        assert "locked before test results" in text
+        assert "particular attention to h1 and the gmm" in text
+        assert (
+            "the public `phiusiil-development-v1` release completed that requested "
+            "source freeze after the meeting" in text
+        )
+
+
+def test_v18_freezes_manual_review_boundary_in_all_method_records():
+    boundary = (
+        "manual review is permitted only as separately reported post hoc "
+        "descriptive error analysis and cannot assign or override labels, change "
+        "quarantine or inclusion, thresholds, features, model or procedure choices, "
+        "gates, or hypothesis decisions."
+    )
+
+    for path in (PROTOCOL, STATUS, EVIDENCE_OUTLINE, RESEARCH_BASIS):
+        assert boundary in _compact(path.read_text(encoding="utf-8"))
+
+
+def test_v18_resolves_h2_complete_window_metric_before_gmm_execution():
+    required_rules = (
+        "every complete 256-request window of the retained external stream is a "
+        "prespecified external-shift window",
+        "numerator is windows with score strictly greater than the boundary",
+        "denominator is all such complete windows",
+        "overlapping windows count separately",
+        "incomplete terminal window is excluded from this rate",
+        "its requests remain routable from a prior alert",
+        "independent validation-audit false-alert fraction uses the same "
+        "complete-window numerator and denominator rule",
+    )
+
+    for path in (PROTOCOL, EVIDENCE_OUTLINE, RESEARCH_BASIS):
+        text = _compact(path.read_text(encoding="utf-8"))
+        for rule in required_rules:
+            assert rule in text, f"missing from {path.name}: {rule}"
+
+    combined = _compact(
+        "\n".join(path.read_text(encoding="utf-8") for path in (PROTOCOL, STATUS))
+    )
+    assert "gmm execution is `not_run`" in combined
 
 
 def test_v13_change_record_describes_clarification_without_claiming_results():
@@ -939,6 +1053,26 @@ def test_v17_change_record_freezes_baseline_v2_without_claiming_a_result():
         assert detail in v17_row
 
 
+def test_v18_change_record_freezes_transformer_cascade_without_a_result():
+    status = STATUS.read_text(encoding="utf-8")
+    change_record = _section(status, "Change Record")
+    v18_rows = [line for line in change_record.splitlines() if "| 1.8 |" in line]
+
+    assert len(v18_rows) == 1
+    v18_row = v18_rows[0].lower()
+    for detail in (
+        "september 3 advisor direction",
+        "source-provenance release",
+        "rq1-transformer-cascade-v1",
+        "selective character-model escalation",
+        "manual-review boundary",
+        "complete-window h2 metric",
+        "frozen_not_run",
+        "no transformer, cascade, or gmm fit",
+    ):
+        assert detail in v18_row
+
+
 def test_readme_links_research_basis_and_limits_synthetic_urls_to_unit_tests():
     readme = README.read_text(encoding="utf-8")
     readme_prose = " ".join(readme.split())
@@ -949,7 +1083,7 @@ def test_readme_links_research_basis_and_limits_synthetic_urls_to_unit_tests():
 
 
 def test_public_research_records_exclude_stale_or_approval_gating_language():
-    records = (PROTOCOL, STATUS, EVIDENCE_OUTLINE, README)
+    records = (PROTOCOL, STATUS, EVIDENCE_OUTLINE, RESEARCH_BASIS, README)
     combined = "\n".join(path.read_text(encoding="utf-8") for path in records).lower()
 
     for stale_phrase in (
@@ -962,6 +1096,9 @@ def test_public_research_records_exclude_stale_or_approval_gating_language():
         "phiusiil-development-v1` (planned)",
         "the planned github release",
         "publication occurs only when that release is created",
+        "approval required",
+        "work is stuck",
+        "blocked on approval",
     ):
         assert stale_phrase not in combined
 

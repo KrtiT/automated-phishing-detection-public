@@ -1,0 +1,360 @@
+import json
+import re
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+CONTRACT = ROOT / "data" / "rq1-transformer-cascade-contract-v1.json"
+
+EXPECTED_INPUT_HASHES = {
+    "train": "575f2fb13a0766020e29d78bf8e633a185b381abde7060bdd1ed04cc4a5e38a0",
+    "validation": (
+        "970c6568a6400a1fc265b7809ef7bd9d1c297632799cbb88801313bc34ac415a"
+    ),
+    "preparation_summary": (
+        "1a85a7eecc0f5baa7c59e03a0cbde63fd4595409feb918dc5ff916ead7cd5c9e"
+    ),
+    "logistic_l1_artifact": (
+        "71a3e24a0283a31ba188bc7dd60b18c1b708370b9ca275d5ab1a1004680c968a"
+    ),
+    "contract": (
+        "05d6d0831def7d26448c8dbdc8117800ea2448cdfc2aca2ad95489f22d2d11ba"
+    ),
+}
+
+EXPECTED_CONTRACT = {
+    "contract_id": "rq1-transformer-cascade-v1",
+    "schema_version": 1,
+    "protocol_version": "1.8",
+    "status": "frozen_not_run",
+    "date": "2026-09-09",
+    "purpose": "prospective_method_freeze",
+    "research_claim": {
+        "rq1": (
+            "What incremental value do structural URL features and selective "
+            "character-model escalation provide under registrable-domain-disjoint "
+            "and external evaluation?"
+        ),
+        "h1_primary_contrasts": [
+            "recall(Logistic-L1) - recall(length-only)",
+            "recall(cascade) - recall(Logistic-L1)",
+        ],
+        "transformer_only_primary_gate": False,
+        "cascade_contrast_interpretation": (
+            "system_contribution_not_pure_causal_isolation_of_representation"
+        ),
+    },
+    "inputs": {
+        "accepted_roles": EXPECTED_INPUT_HASHES,
+        "forbidden_roles": [
+            "group_test",
+            "external",
+            "PhishVN",
+            "runtime_tuning",
+            "test_path",
+        ],
+    },
+    "normalization": {
+        "canonicalization": "canonical-url-v1",
+        "remaining_non_ascii": "percent_encode_utf8_bytes",
+        "preserve": [
+            "existing_percent_escapes",
+            "rfc3986_reserved_characters",
+        ],
+        "output_encoding": "ASCII",
+        "max_characters": 256,
+        "truncation": {"first": 192, "last": 64},
+    },
+    "vocabulary": {
+        "source": "train_only",
+        "ordering": "ascending_ascii_codepoint",
+        "reserved_ids": {"PAD": 0, "UNK": 1},
+        "character_ids_start": 2,
+        "additional_special_tokens": [],
+        "padding_side": "right",
+        "mask_padding": True,
+    },
+    "architecture": {
+        "framework": "PyTorch",
+        "framework_version": "2.7.1",
+        "dtype": "float32",
+        "token_embedding": {"kind": "learned", "width": 192, "padding_idx": 0},
+        "position_embedding": {
+            "kind": "learned",
+            "width": 192,
+            "count": 256,
+            "absolute_position_ids": "0_through_255",
+        },
+        "encoder": {
+            "layers": 4,
+            "normalization": "pre_norm",
+            "attention_heads": 6,
+            "feed_forward_width": 768,
+            "activation": "GELU",
+            "dropout": 0.1,
+        },
+        "output": {
+            "normalization": "LayerNorm",
+            "pooling": {
+                "kind": "masked_mean",
+                "mask": "exclude_PAD_positions",
+                "denominator": "non_PAD_token_count",
+            },
+            "head": "linear_logit",
+        },
+        "initialization": {
+            "embeddings": {"distribution": "normal", "mean": 0.0, "std": 0.02},
+            "linear_and_attention_weights": "xavier_uniform",
+            "biases": "zero",
+            "layer_norm": {"weight": 1.0, "bias": 0.0},
+            "pad_embedding_row": "zero_and_gradient_frozen_by_padding_idx",
+        },
+    },
+    "runtime": {
+        "device": "mps",
+        "automatic_mixed_precision": False,
+        "data_loader_workers": 0,
+        "deterministic_algorithms": {"enabled": True, "warn_only": False},
+        "seed": 42,
+    },
+    "training": {
+        "loss": {
+            "name": "binary_cross_entropy_with_logits",
+            "pos_weight": "train_negative_count / train_positive_count",
+        },
+        "optimizer": {
+            "name": "AdamW",
+            "learning_rate": 0.0001,
+            "betas": [0.9, 0.999],
+            "epsilon": 1e-08,
+            "weight_decay": 0.01,
+            "parameter_grouping": "single_group_all_trainable_parameters",
+        },
+        "scheduler": "none",
+        "batch_size": 256,
+        "validation_batch_size": 512,
+        "max_epochs": 40,
+        "gradient_clip_max_norm": 1.0,
+        "batches": {
+            "train": {
+                "source_order": "pinned_train_input_order",
+                "shuffle": True,
+                "generator": (
+                    "one_torch_generator_seeded_42_once_before_epoch_1_with_state_"
+                    "advanced_across_epochs"
+                ),
+                "drop_last": False,
+            },
+            "validation": {
+                "source_order": "pinned_validation_input_order",
+                "shuffle": False,
+                "drop_last": False,
+            },
+        },
+    },
+    "validation": {
+        "metric": "average_precision",
+        "cadence": "each_epoch",
+        "min_delta": 0.0001,
+        "patience": 5,
+        "evaluation_mode": "eval_with_dropout_disabled",
+        "first_epoch_rule": "establish_recorded_best_and_checkpoint",
+        "later_qualifying_epoch_rule": (
+            "epoch_average_precision > recorded_best_average_precision + min_delta"
+        ),
+        "patience_rule": {
+            "increment": "after_each_consecutive_nonqualifying_epoch",
+            "reset": "zero_after_each_qualifying_epoch",
+            "stop": "immediately_after_fifth_consecutive_nonqualifying_epoch",
+        },
+        "best_epoch_tie_rule": "preserve_earliest_qualifying_best",
+        "restore": "earliest_qualifying_best_checkpoint",
+        "stop_conditions": [
+            "warning",
+            "nonfinite_value",
+            "missing_class",
+            "deterministic_algorithm_error",
+        ],
+    },
+    "threshold_selection": {
+        "imported_from": "rq1-baselines-v2",
+        "imported_without_change": True,
+        "score": "P(is_phishing=1)",
+        "positive_if": "probability >= threshold",
+        "confidence_bound": "exact_one_sided_95_percent_clopper_pearson",
+        "maximum_fpr_upper_bound": 0.01,
+        "candidates": (
+            "unique_validation_probabilities_plus_finite_nextafter_max_toward_"
+            "positive_infinity"
+        ),
+        "objective": "maximize_validation_recall",
+        "tie_break_order": ["smaller_fpr_upper_bound", "higher_threshold"],
+        "no_qualifying_candidate_status": "target_not_met",
+    },
+    "stage1": {
+        "model": "Logistic-L1",
+        "source_role": "logistic_l1_artifact",
+        "reconstruction": "pinned_artifact_only",
+        "refit": False,
+    },
+    "cascade": {
+        "prerequisites": {
+            "required_threshold_status": {
+                "stage1": "selected",
+                "transformer": "selected",
+            },
+            "on_either_target_not_met": {
+                "calibrate_cascade": False,
+                "accepted_cascade": False,
+                "cascade_status": "target_not_met",
+            },
+        },
+        "escalation_rule": {
+            "expression": (
+                "abs(stage1_probability - stage1_threshold) <= half_width"
+            ),
+            "inclusive": True,
+        },
+        "inside_band": {
+            "probability": "transformer_probability",
+            "decision": "transformer_binary_decision",
+        },
+        "outside_band": {
+            "probability": "stage1_probability",
+            "decision": "stage1_binary_decision",
+        },
+        "candidate_half_widths": (
+            "sorted_unique_validation_abs_stage1_probability_minus_stage1_threshold"
+        ),
+        "selection": {
+            "primary": "fewest_transformer_invocations",
+            "constraints": {
+                "recall": "cascade_recall >= transformer_recall - 0.02",
+                "fpr": (
+                    "exact_one_sided_95_percent_clopper_pearson_upper <= 0.01"
+                ),
+            },
+            "tie_breaker": "smaller_half_width",
+            "failure": {"status": "target_not_met", "accepted_cascade": False},
+        },
+    },
+    "manual_review": {
+        "role": "separately_reported_post_hoc_descriptive_error_analysis_only",
+        "may_not": [
+            "assign_or_override_labels",
+            "change_quarantine_or_inclusion",
+            "change_thresholds",
+            "change_features",
+            "change_model_or_procedure_choices",
+            "change_gates",
+            "change_hypothesis_decisions",
+        ],
+    },
+    "artifacts": {
+        "private": {
+            "directory_mode": "0700",
+            "file_mode": "0600",
+            "files": {
+                "vocabulary.json": "vocabulary",
+                "transformer-weights.npz": "deterministic_weights",
+                "transformer.json": "transformer_metadata",
+                "cascade.json": "cascade_metadata",
+                "SHA256SUMS": "sha256_manifest",
+            },
+            "canonical_json": {
+                "encoding": "UTF-8",
+                "allow_nan": False,
+                "ensure_ascii": False,
+                "sort_keys": True,
+                "separators": [",", ":"],
+                "terminal_newline": True,
+            },
+            "deterministic_npz": {
+                "tensor_source": "complete_model_state_dict",
+                "tensor_order": "lexicographic_state_dict_key",
+                "tensor_dtype": "little_endian_float32",
+                "tensor_layout": "C_contiguous",
+                "member_name": "<state_dict_key>.npy",
+                "npy_format_version": "1.0",
+                "compression": "ZIP_STORED",
+                "member_timestamp": [1980, 1, 1, 0, 0, 0],
+                "member_create_system": 3,
+                "member_external_attr": "0o600 << 16",
+                "member_extra": "empty",
+                "archive_comment": "empty",
+            },
+            "sha256sums": {
+                "files": [
+                    "cascade.json",
+                    "transformer-weights.npz",
+                    "transformer.json",
+                    "vocabulary.json",
+                ],
+                "order": "lexicographic_filename",
+                "line_format": "<lowercase_sha256><two_spaces><filename>\\n",
+                "self_included": False,
+            },
+        },
+        "public_summary": {
+            "allowlisted_content": [
+                "counts",
+                "rates",
+                "configuration",
+                "versions",
+                "hashes",
+                "warnings",
+                "status",
+            ],
+            "forbidden_content": [
+                "URLs",
+                "records",
+                "domains",
+                "sequences",
+                "predictions",
+                "coefficients",
+                "weights",
+            ],
+        },
+    },
+    "publication": {
+        "mode": "failure_atomic",
+        "on_failure": "publish_nothing",
+    },
+    "execution": {"fit_performed": False, "result_claimed": False},
+}
+
+
+def test_transformer_contract_is_an_exact_prospective_method_freeze():
+    assert CONTRACT.is_file(), f"missing frozen contract: {CONTRACT}"
+    contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
+
+    assert contract == EXPECTED_CONTRACT
+
+
+def test_transformer_contract_accepts_no_held_out_or_tuning_input_role():
+    assert CONTRACT.is_file(), f"missing frozen contract: {CONTRACT}"
+    contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
+    accepted = contract["inputs"]["accepted_roles"]
+
+    assert set(accepted) == {
+        "train",
+        "validation",
+        "preparation_summary",
+        "logistic_l1_artifact",
+        "contract",
+    }
+    assert set(accepted).isdisjoint(
+        {"group_test", "held_out", "test", "external", "PhishVN", "runtime_tuning"}
+    )
+
+
+def test_torch_is_exactly_pinned_in_project_and_lock():
+    project = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    lock = (ROOT / "uv.lock").read_text(encoding="utf-8")
+
+    assert project.count('"torch==2.7.1"') == 1
+    assert re.search(
+        r'^\[\[package\]\]\nname = "torch"\nversion = "2\.7\.1"$',
+        lock,
+        flags=re.MULTILINE,
+    )
+    assert lock.count('{ name = "torch", specifier = "==2.7.1" }') == 1

@@ -323,11 +323,39 @@ EXPECTED_CONTRACT = {
 }
 
 
+def _assert_strict_json(actual, expected, path="$"):
+    assert type(actual) is type(expected), (
+        f"{path}: expected {type(expected).__name__}, "
+        f"got {type(actual).__name__}"
+    )
+
+    if isinstance(expected, dict):
+        actual_keys = set(actual)
+        expected_keys = set(expected)
+        assert actual_keys == expected_keys, (
+            f"{path}: missing keys {sorted(expected_keys - actual_keys)!r}; "
+            f"unexpected keys {sorted(actual_keys - expected_keys)!r}"
+        )
+        for key in expected:
+            _assert_strict_json(actual[key], expected[key], f"{path}.{key}")
+        return
+
+    if isinstance(expected, list):
+        assert len(actual) == len(expected), (
+            f"{path}: expected list length {len(expected)}, got {len(actual)}"
+        )
+        for index, (actual_item, expected_item) in enumerate(zip(actual, expected)):
+            _assert_strict_json(actual_item, expected_item, f"{path}[{index}]")
+        return
+
+    assert actual == expected, f"{path}: expected {expected!r}, got {actual!r}"
+
+
 def test_transformer_contract_is_an_exact_prospective_method_freeze():
     assert CONTRACT.is_file(), f"missing frozen contract: {CONTRACT}"
     contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
 
-    assert contract == EXPECTED_CONTRACT
+    _assert_strict_json(contract, EXPECTED_CONTRACT)
 
 
 def test_transformer_contract_accepts_no_held_out_or_tuning_input_role():

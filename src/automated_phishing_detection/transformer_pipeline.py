@@ -8,6 +8,7 @@ import os
 import platform
 import shutil
 import stat
+import sys
 import tempfile
 import warnings
 import zipfile
@@ -40,8 +41,8 @@ _PRIVATE_FILENAMES = (
 )
 _LOWERCASE_HEX = frozenset("0123456789abcdef")
 
-_write_file = baselines._write_file
-_write_summary_temp = baselines._write_summary_temp
+_baseline_write_file = baselines._write_file
+_baseline_write_summary_temp = baselines._write_summary_temp
 _publish_path_without_replace = baselines._publish_path_without_replace
 _path_identity = baselines._path_identity
 _remove_if_identity = baselines._remove_if_identity
@@ -49,6 +50,58 @@ _remove_if_identity = baselines._remove_if_identity
 
 class TransformerPipelineError(ValueError):
     """Raised when the frozen pipeline cannot complete without protocol drift."""
+
+
+def _sync_descriptor(descriptor: int) -> None:
+    if sys.platform == "darwin":
+        import fcntl
+
+        try:
+            command = fcntl.F_FULLFSYNC
+        except AttributeError as exc:
+            raise TransformerPipelineError(
+                "F_FULLFSYNC is required for durable MPS artifact publication"
+            ) from exc
+        fcntl.fcntl(descriptor, command)
+        return
+    os.fsync(descriptor)
+
+
+def _sync_path(path: Path, *, directory: bool) -> None:
+    flags = os.O_RDONLY
+    if directory:
+        flags |= getattr(os, "O_DIRECTORY", 0)
+    descriptor = os.open(path, flags)
+    try:
+        _sync_descriptor(descriptor)
+    finally:
+        os.close(descriptor)
+
+
+def _fsync_directory(path: Path) -> None:
+    _sync_path(path, directory=True)
+
+
+def _write_file(path: Path, content: bytes, mode: int) -> None:
+    _baseline_write_file(path, content, mode)
+    _sync_path(path, directory=False)
+
+
+def _write_summary_temp(summary_path: Path, content: bytes) -> Path:
+    temporary_path = _baseline_write_summary_temp(summary_path, content)
+    try:
+        _sync_path(temporary_path, directory=False)
+    except BaseException:
+        temporary_path.unlink(missing_ok=True)
+        raise
+    return temporary_path
+
+
+def _has_path_identity(path: Path, expected: tuple[int, int]) -> bool:
+    try:
+        return _path_identity(path) == expected
+    except FileNotFoundError:
+        return False
 
 
 @dataclass(frozen=True)
@@ -694,17 +747,39 @@ def _publish_artifacts(
 
         summary_bytes = _canonical_json_bytes(summary)
         temporary_summary = _write_summary_temp(summary_path, summary_bytes)
+        _fsync_directory(temporary_output)
         output_identity = _path_identity(temporary_output)
         summary_identity = _path_identity(temporary_summary)
         try:
             # The public summary is the completion marker, so it is published last.
             _publish_path_without_replace(temporary_output, output_dir)
             temporary_output = None
+            _fsync_directory(output_dir.parent)
             _publish_path_without_replace(temporary_summary, summary_path)
             temporary_summary = None
+            _fsync_directory(summary_path.parent)
+            if not _has_path_identity(
+                output_dir, output_identity
+            ) or not _has_path_identity(summary_path, summary_identity):
+                raise TransformerPipelineError(
+                    "publication destination identity changed before completion"
+                )
         except BaseException:
-            _remove_if_identity(summary_path, summary_identity)
-            _remove_if_identity(output_dir, output_identity)
+            for source, path, identity in (
+                (temporary_summary, summary_path, summary_identity),
+                (temporary_output, output_dir, output_identity),
+            ):
+                if source is not None and os.path.lexists(source):
+                    continue
+                try:
+                    _remove_if_identity(path, identity)
+                except BaseException:
+                    pass
+            for parent in dict.fromkeys((summary_path.parent, output_dir.parent)):
+                try:
+                    _fsync_directory(parent)
+                except BaseException:
+                    pass
             raise
         return summary
     finally:

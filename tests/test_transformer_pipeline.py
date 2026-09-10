@@ -926,6 +926,16 @@ def test_inputs_and_outputs_cannot_alias_or_overwrite(tmp_path, monkeypatch):
     assert sentinel.read_text() == "competitor"
     assert not paths["summary"].exists()
 
+    paths = _write_fixture(tmp_path / "completed-output")
+    paths["output_dir"].mkdir()
+    private_sentinel = paths["output_dir"] / "sentinel"
+    private_sentinel.write_text("completed private", encoding="ascii")
+    paths["summary"].write_text("completed summary", encoding="ascii")
+    with pytest.raises(transformer_pipeline.TransformerPipelineError, match="exists"):
+        _run_fixture(paths)
+    assert private_sentinel.read_text(encoding="ascii") == "completed private"
+    assert paths["summary"].read_text(encoding="ascii") == "completed summary"
+
 
 def test_private_without_summary_is_incomplete_and_requires_cleanup_before_rerun(
     tmp_path, monkeypatch
@@ -1025,6 +1035,173 @@ def test_missing_input_is_reported_as_a_pipeline_error(tmp_path, monkeypatch):
         _run_fixture(paths)
 
 
+def test_publication_fsync_order_makes_summary_the_durable_completion_marker(
+    tmp_path, monkeypatch
+):
+    paths = _write_fixture(tmp_path / "durable-publication")
+    _install_fixture_trainer(monkeypatch)
+    original_publish = transformer_pipeline._publish_path_without_replace
+    original_fsync_directory = transformer_pipeline._fsync_directory
+    events = []
+
+    def observe_publish(source, destination):
+        events.append(("publish", Path(destination)))
+        return original_publish(source, destination)
+
+    def observe_fsync(path):
+        events.append(("fsync", Path(path)))
+        return original_fsync_directory(path)
+
+    monkeypatch.setattr(
+        transformer_pipeline, "_publish_path_without_replace", observe_publish
+    )
+    monkeypatch.setattr(transformer_pipeline, "_fsync_directory", observe_fsync)
+
+    assert _run_fixture(paths)["status"] == "completed_development_validation"
+    assert events[0][0] == "fsync"
+    assert events[0][1].parent == paths["output_dir"].parent
+    assert events[0][1].name.startswith(f".{paths['output_dir'].name}.tmp-")
+    assert events[1:] == [
+        ("publish", paths["output_dir"]),
+        ("fsync", paths["output_dir"].parent),
+        ("publish", paths["summary"]),
+        ("fsync", paths["summary"].parent),
+    ]
+
+
+def test_private_parent_fsync_failure_rolls_back_before_summary_publication(
+    tmp_path, monkeypatch
+):
+    paths = _write_fixture(tmp_path / "fsync-failure")
+    _install_fixture_trainer(monkeypatch)
+    original_fsync_directory = transformer_pipeline._fsync_directory
+    publish_destinations = []
+    failed = False
+
+    def observe_publish(source, destination):
+        publish_destinations.append(Path(destination))
+        return transformer_pipeline.baselines._publish_path_without_replace(
+            source, destination
+        )
+
+    def fail_first_installed_private_parent_fsync(path):
+        nonlocal failed
+        path = Path(path)
+        if (
+            path == paths["output_dir"].parent
+            and paths["output_dir"].exists()
+            and not failed
+        ):
+            failed = True
+            raise OSError("injected directory fsync failure")
+        return original_fsync_directory(path)
+
+    monkeypatch.setattr(
+        transformer_pipeline, "_publish_path_without_replace", observe_publish
+    )
+    monkeypatch.setattr(
+        transformer_pipeline,
+        "_fsync_directory",
+        fail_first_installed_private_parent_fsync,
+    )
+
+    with pytest.raises(OSError, match="injected directory fsync failure"):
+        _run_fixture(paths)
+
+    assert publish_destinations == [paths["output_dir"]]
+    assert not paths["output_dir"].exists()
+    assert not paths["summary"].exists()
+
+
+def test_summary_parent_fsync_failure_preserves_original_error_after_cleanup(
+    tmp_path, monkeypatch
+):
+    paths = _write_fixture(tmp_path / "summary-fsync-failure")
+    _install_fixture_trainer(monkeypatch)
+    original_fsync_directory = transformer_pipeline._fsync_directory
+    primary_failed = False
+
+    def fail_summary_then_cleanup_fsync(path):
+        nonlocal primary_failed
+        if paths["summary"].exists() and not primary_failed:
+            primary_failed = True
+            raise OSError("injected summary durability failure")
+        if primary_failed and not paths["output_dir"].exists():
+            raise OSError("injected cleanup durability failure")
+        return original_fsync_directory(path)
+
+    monkeypatch.setattr(
+        transformer_pipeline, "_fsync_directory", fail_summary_then_cleanup_fsync
+    )
+
+    with pytest.raises(OSError, match="injected summary durability failure"):
+        _run_fixture(paths)
+
+    assert not paths["output_dir"].exists()
+    assert not paths["summary"].exists()
+
+
+def test_cleanup_removal_error_does_not_skip_private_rollback_or_mask_primary_error(
+    tmp_path, monkeypatch
+):
+    paths = _write_fixture(tmp_path / "cleanup-removal-failure")
+    _install_fixture_trainer(monkeypatch)
+    original_fsync_directory = transformer_pipeline._fsync_directory
+    original_remove = transformer_pipeline._remove_if_identity
+    primary_failed = False
+    removal_attempts = []
+
+    def fail_summary_durability(path):
+        nonlocal primary_failed
+        if paths["summary"].exists() and not primary_failed:
+            primary_failed = True
+            raise OSError("primary summary durability failure")
+        return original_fsync_directory(path)
+
+    def remove_summary_then_fail(path, identity):
+        removal_attempts.append(Path(path))
+        original_remove(path, identity)
+        if path == paths["summary"]:
+            raise OSError("cleanup removal failure")
+
+    monkeypatch.setattr(
+        transformer_pipeline, "_fsync_directory", fail_summary_durability
+    )
+    monkeypatch.setattr(
+        transformer_pipeline, "_remove_if_identity", remove_summary_then_fail
+    )
+
+    with pytest.raises(OSError, match="primary summary durability failure"):
+        _run_fixture(paths)
+
+    assert removal_attempts == [paths["summary"], paths["output_dir"]]
+    assert not paths["output_dir"].exists()
+    assert not paths["summary"].exists()
+
+
+def test_darwin_durability_barrier_uses_fullfsync(monkeypatch):
+    import fcntl
+
+    calls = []
+    full_fsync = 51
+
+    def observe_fcntl(descriptor, command):
+        calls.append((descriptor, command))
+        return 0
+
+    def reject_plain_fsync(_descriptor):
+        raise AssertionError("plain fsync is not the Darwin durability barrier")
+
+    monkeypatch.setattr(transformer_pipeline.sys, "platform", "darwin")
+    monkeypatch.setattr(fcntl, "F_FULLFSYNC", full_fsync, raising=False)
+    monkeypatch.setattr(fcntl, "fcntl", observe_fcntl)
+    monkeypatch.setattr(transformer_pipeline.os, "fsync", reject_plain_fsync)
+
+    transformer_pipeline._sync_descriptor(123)
+
+    assert calls == [(123, full_fsync)]
+
+
 def test_warning_or_publication_failure_leaves_no_outputs(tmp_path, monkeypatch):
     warning_paths = _write_fixture(tmp_path / "warning")
     _install_fixture_trainer(monkeypatch, warning=True)
@@ -1053,6 +1230,34 @@ def test_warning_or_publication_failure_leaves_no_outputs(tmp_path, monkeypatch)
     assert not collision_paths["output_dir"].exists()
     assert not collision_paths["summary"].exists()
     assert not list(collision_paths["summary"].parent.glob(".*.tmp-*"))
+
+
+def test_baseexception_after_private_install_rolls_back_both_destinations(
+    tmp_path, monkeypatch
+):
+    class SimulatedPublicationInterrupt(BaseException):
+        pass
+
+    paths = _write_fixture(tmp_path / "baseexception")
+    _install_fixture_trainer(monkeypatch)
+    original_publish = transformer_pipeline._publish_path_without_replace
+    calls = 0
+
+    def interrupt_before_summary(source, destination):
+        nonlocal calls
+        calls += 1
+        if calls == 2:
+            raise SimulatedPublicationInterrupt
+        return original_publish(source, destination)
+
+    monkeypatch.setattr(
+        transformer_pipeline, "_publish_path_without_replace", interrupt_before_summary
+    )
+
+    with pytest.raises(SimulatedPublicationInterrupt):
+        _run_fixture(paths)
+    assert not paths["output_dir"].exists()
+    assert not paths["summary"].exists()
 
 
 def test_training_runtime_error_is_translated_without_publication(
@@ -1101,6 +1306,95 @@ def test_publish_time_competitor_survives_rollback(tmp_path, monkeypatch):
         _run_fixture(paths)
     assert paths["summary"].read_text() == "competitor"
     assert not paths["output_dir"].exists()
+
+
+def test_hard_linked_summary_competitor_survives_identity_guarded_rollback(
+    tmp_path, monkeypatch
+):
+    paths = _write_fixture(tmp_path / "hard-link-summary-race")
+    _install_fixture_trainer(monkeypatch)
+    original_publish = transformer_pipeline._publish_path_without_replace
+
+    def hard_link_before_summary(source, destination):
+        if destination == paths["summary"]:
+            os.link(source, destination)
+        return original_publish(source, destination)
+
+    monkeypatch.setattr(
+        transformer_pipeline,
+        "_publish_path_without_replace",
+        hard_link_before_summary,
+    )
+
+    with pytest.raises(
+        transformer_pipeline.TransformerPipelineError, match="already exists"
+    ):
+        _run_fixture(paths)
+
+    assert paths["summary"].is_file()
+    assert json.loads(paths["summary"].read_text())["status"] == (
+        "completed_development_validation"
+    )
+    assert not paths["output_dir"].exists()
+
+
+def test_private_destination_swap_cannot_publish_a_completed_summary(
+    tmp_path, monkeypatch
+):
+    paths = _write_fixture(tmp_path / "private-swap")
+    _install_fixture_trainer(monkeypatch)
+    original_publish = transformer_pipeline._publish_path_without_replace
+    preserved_output = paths["output_dir"].with_name("moved-run-output")
+    sentinel = paths["output_dir"] / "competitor.txt"
+
+    def swap_private_before_summary(source, destination):
+        if destination == paths["summary"]:
+            paths["output_dir"].rename(preserved_output)
+            paths["output_dir"].mkdir()
+            sentinel.write_text("competitor", encoding="ascii")
+        return original_publish(source, destination)
+
+    monkeypatch.setattr(
+        transformer_pipeline,
+        "_publish_path_without_replace",
+        swap_private_before_summary,
+    )
+
+    with pytest.raises(
+        transformer_pipeline.TransformerPipelineError,
+        match="publication destination identity changed before completion",
+    ):
+        _run_fixture(paths)
+
+    assert sentinel.read_text(encoding="ascii") == "competitor"
+    assert preserved_output.is_dir()
+    assert not paths["summary"].exists()
+
+
+def test_private_publish_time_competitor_survives_rollback(tmp_path, monkeypatch):
+    paths = _write_fixture(tmp_path / "private-race")
+    _install_fixture_trainer(monkeypatch)
+    original_publish = transformer_pipeline._publish_path_without_replace
+    sentinel = paths["output_dir"] / "competitor.txt"
+
+    def install_competitor_before_private(source, destination):
+        if destination == paths["output_dir"]:
+            destination.mkdir()
+            sentinel.write_text("competitor", encoding="ascii")
+        return original_publish(source, destination)
+
+    monkeypatch.setattr(
+        transformer_pipeline,
+        "_publish_path_without_replace",
+        install_competitor_before_private,
+    )
+
+    with pytest.raises(
+        transformer_pipeline.TransformerPipelineError, match="already exists"
+    ):
+        _run_fixture(paths)
+    assert sentinel.read_text(encoding="ascii") == "competitor"
+    assert not paths["summary"].exists()
 
 
 def test_public_entry_point_has_only_paths_and_forces_official_policy(monkeypatch):

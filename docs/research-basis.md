@@ -16,9 +16,11 @@ completed that requested source freeze after the meeting.
 Protocol v1.7 froze `rq1-baselines-v2` before its later
 `completed_development_validation` execution. Those operating points remain
 development validation only. Protocol v1.8 freezes
-`rq1-transformer-cascade-v1` at `frozen_not_run`; no transformer or cascade fit
-was run. H1, H2, and H3 remain undecided, the group test remains
-analyst-exposed but model-unscored, and no PhishVN record has been accessed.
+`rq1-transformer-cascade-v1` at contract status `frozen_not_run`. Its exact
+procedure is now implemented at status `frozen_implemented_not_run`. No
+transformer fit, threshold calibration, or cascade result exists. H1, H2, and
+H3 remain undecided, the group test remains analyst-exposed but model-unscored,
+and no PhishVN record has been accessed.
 
 ## Source basis and limitations
 
@@ -100,10 +102,10 @@ external evaluation? H1 retains two primary contrasts:
 `recall(Logistic-L1) - recall(length-only)` and
 `recall(cascade) - recall(Logistic-L1)`. The latter is a selective system
 contribution, not a pure causal isolation of representation. Transformer-only
-is a calibration and H3 comparator, not a post hoc third primary H1 gate.
+remains a comparator and operational reference, not a third primary H1 gate.
 
 - [Ahamed et al. (2026)](https://doi.org/10.3389/fcomp.2026.1834407) jointly evaluate structural and character-based URL models, adversarial robustness, domain-disjoint behavior, explanation stability, and external data. This establishes that broad integrated URL-evaluation claims are already occupied.
-- [ExpertFusion (2026)](https://www.sciencedirect.com/science/article/pii/S0957417426029957) combines calibrated semantic, structural, sequential, and lexical URL experts through confidence- and uncertainty-aware routing and evaluates cross-dataset distribution shift with registered-domain-stratified splits. It is direct prior work on calibrated URL expert integration under shift.
+- [ExpertFusion (2027)](https://www.sciencedirect.com/science/article/pii/S0957417426029957) combines calibrated semantic, structural, sequential, and lexical URL experts through confidence- and uncertainty-aware routing and evaluates cross-dataset distribution shift with registered-domain-stratified splits. It is direct prior work on calibrated URL expert integration under shift.
 - [Alajaji (2026)](https://doi.org/10.3390/electronics15143051) evaluates a validation-selected classical-first selective cascade with transformer deferral for phishing email detection. Selective cascading and a classical-first ordering are therefore not inventions of this study.
 - The [PhishVN Data in Brief article (2026)](https://doi.org/10.1016/j.dib.2026.113195) reports time-stamped source records, confidence tiers, and registrable-domain-grouped splitting for a phishing URL corpus. Domain grouping and source-aware external evaluation are not independently novel.
 - [Rashid et al. (2024)](https://doi.org/10.1016/j.comnet.2024.110398) show cross-dataset degradation in phishing URL detection and evaluate unsupervised domain adaptation. [Tsai et al. (2024)](https://doi.org/10.1609/aaai.v38i19.30161) identify dataset bias in malicious-URL models and evaluate adversarial training for more invariant representations. Together they make source-shift generalization an established problem rather than a new premise.

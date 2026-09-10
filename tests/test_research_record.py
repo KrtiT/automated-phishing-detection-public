@@ -18,6 +18,15 @@ BASELINE_V2_SUMMARY = ROOT / "reports" / "rq1-baseline-v2-summary.json"
 BASELINE_V1_CONTRACT = ROOT / "data" / "rq1-baseline-contract.json"
 BASELINE_V2_CONTRACT = ROOT / "data" / "rq1-baseline-contract-v2.json"
 TRANSFORMER_CONTRACT = ROOT / "data" / "rq1-transformer-cascade-contract-v1.json"
+FINAL_TRANSFORMER_CODE_COMMIT = "0793ca3dbc36e49b561cd0ac74968a4644060426"
+INITIAL_TRANSFORMER_CODE_COMMIT = "a8ee067bda8fd45d19f5c4b794ba21f58d1947fc"
+TRANSFORMER_CONTRACT_SHA256 = (
+    "aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54"
+)
+V18_MATRIX_SHA256 = "84fcc465151fbd444c0f72e6d195d0a54c81eb9297ccd745264df7cf1ab49483"
+SEPTEMBER_REPORT_SHA256 = (
+    "b72da89a4cc8a5b06f6ca88d79fe78dd54e3199a96b7450209ea53b4a4c04215"
+)
 DECISION_MATRIX_SHA256 = (
     "ae46e3cb883f8335c9b2fbca1d753e4830a94d3d4b9cf08d1447dcc9d7e493ec"
 )
@@ -402,7 +411,9 @@ def test_protocol_v18_preserves_v17_history_and_freezes_transformer_without_resu
     assert "v1.5 SAGA diagnostic is `stopped_platform_warning`" in preamble
     assert "v1.6 SAGA diagnostic is `passed_training_only`" in preamble
     assert "Protocol v1.7 froze `rq1-baselines-v2` before validation" in preamble
-    assert "rq1-baselines-v2 execution is `completed_development_validation`" in preamble
+    assert (
+        "rq1-baselines-v2 execution is `completed_development_validation`" in preamble
+    )
     assert "development validation only" in preamble
     assert "rq1-transformer-cascade-v1" in preamble
     assert "transformer/cascade procedure is `frozen_not_run`" in preamble
@@ -425,7 +436,6 @@ def test_live_records_capture_v2_validation_without_deciding_hypotheses():
             "completed_development_validation",
             "development validation only",
             "h1, h2, and h3 remain undecided",
-            "no phishvn record has been accessed",
             "bf5b3a6f0fc705d26852da4dd0053c6111ffc3e500d7a2e95dfba5ad859b279c",
             "7ae6c9af85e935c551468f590a7ba43441f58def",
             "b8b92cfbe29160e769e5e7d80712becc8fc0680cdfd45a44b839ef9bada87799",
@@ -447,6 +457,13 @@ def test_live_records_capture_v2_validation_without_deciding_hypotheses():
             "3.3306690738754696e-16",
         ):
             assert copied_value in compact, f"missing from {name}: {copied_value}"
+
+    for name in ("README", "evidence"):
+        assert "no phishvn record has been accessed" in _compact(records[name])
+    assert (
+        "the implementation and its tests did not open the phiusiil group-test "
+        "partition or phishvn" in _compact(records["status"])
+    )
 
     for record in records.values():
         compact = _compact(record)
@@ -822,15 +839,13 @@ def test_rq_hypothesis_and_decision_gate_contracts_are_preserved():
     )
 
     rq1_row = next(
-        line for line in decision_matrix.splitlines() if line.startswith("| **RQ1 / H1**")
+        line
+        for line in decision_matrix.splitlines()
+        if line.startswith("| **RQ1 / H1**")
     )
     rq1_decision_rule = rq1_row.rsplit("|", maxsplit=2)[-2]
-    assert rq1_decision_rule.count(
-        "`recall(Logistic-L1) - recall(length-only)`"
-    ) == 1
-    assert rq1_decision_rule.count(
-        "`recall(cascade) - recall(Logistic-L1)`"
-    ) == 1
+    assert rq1_decision_rule.count("`recall(Logistic-L1) - recall(length-only)`") == 1
+    assert rq1_decision_rule.count("`recall(cascade) - recall(Logistic-L1)`") == 1
     assert "each of length-only, `Logistic-L1`, and cascade" in rq1_decision_rule
     assert "transformer-only" not in rq1_decision_rule
     assert "recall(transformer-only) -" not in rq1_decision_rule
@@ -911,7 +926,13 @@ def test_v18_binds_transformer_contract_and_preserves_prospective_status():
         assert "rq1-transformer-cascade-v1" in section
         assert expected_hash in section
         assert "`frozen_not_run`" in section
-        assert "no transformer or cascade fit was run" in section
+        assert any(
+            boundary in section
+            for boundary in (
+                "no transformer or cascade fit was run",
+                "no transformer fit, threshold calibration, or cascade result exists",
+            )
+        )
 
     for path in (STATUS, EVIDENCE_OUTLINE):
         text = path.read_text(encoding="utf-8")
@@ -921,15 +942,109 @@ def test_v18_binds_transformer_contract_and_preserves_prospective_status():
             "(`rq1-transformer-cascade-v1`) |" in text
         )
         assert (
-            f"| RQ1 transformer/cascade contract SHA-256 | `{expected_hash}` |"
-            in text
+            f"| RQ1 transformer/cascade contract SHA-256 | `{expected_hash}` |" in text
         )
 
 
-def test_v18_records_september_advisor_direction_and_completed_source_freeze():
-    report_hash = (
-        "b72da89a4cc8a5b06f6ca88d79fe78dd54e3199a96b7450209ea53b4a4c04215"
+def test_live_records_bind_reviewed_transformer_code_without_claiming_a_run():
+    readme = _compact(README.read_text(encoding="utf-8"))
+    status = _compact(STATUS.read_text(encoding="utf-8"))
+    evidence = _compact(EVIDENCE_OUTLINE.read_text(encoding="utf-8"))
+    basis = _compact(RESEARCH_BASIS.read_text(encoding="utf-8"))
+    question = (
+        "What incremental value do structural URL features and selective "
+        "character-model escalation provide under registrable-domain-disjoint "
+        "and external evaluation?"
     )
+
+    for required in (
+        "`frozen_implemented_not_run`",
+        FINAL_TRANSFORMER_CODE_COMMIT,
+        INITIAL_TRANSFORMER_CODE_COMMIT,
+        TRANSFORMER_CONTRACT_SHA256,
+        V18_MATRIX_SHA256,
+        SEPTEMBER_REPORT_SHA256,
+        "procedure code, tests, cli, and private/public artifact publication code "
+        "are complete",
+        "no transformer fit, threshold calibration, or cascade result exists",
+        "h1, h2, and h3 remain undecided",
+        "group test remains analyst-exposed but model-unscored",
+        "the implementation and its tests did not open the phiusiil group-test "
+        "partition or phishvn",
+        "identifies reviewed executable code, not a performance or result run",
+        "uses temporary paths, publishes the private output directory before the "
+        "public-summary completion marker, and rolls back both destinations for a "
+        "caught in-process publication error",
+        "this guarantee is limited to caught in-process errors; abrupt process or "
+        "host failure can leave the private directory without the final public "
+        "completion record",
+    ):
+        assert required in status, f"missing from approval status: {required}"
+
+    for required in (
+        "`frozen_implemented_not_run`",
+        FINAL_TRANSFORMER_CODE_COMMIT,
+        "rq1-transformer-cascade-v1",
+        TRANSFORMER_CONTRACT_SHA256,
+        "procedure code, tests, cli, and private/public artifact publication code "
+        "are complete",
+        "no transformer fit, threshold calibration, or cascade result exists",
+        "h1, h2, and h3 remain undecided",
+        "group test remains analyst-exposed but model-unscored",
+        "no phishvn record has been accessed",
+    ):
+        assert required in readme, f"missing from README: {required}"
+
+    for required in (
+        "`frozen_implemented_not_run`",
+        FINAL_TRANSFORMER_CODE_COMMIT,
+        TRANSFORMER_CONTRACT_SHA256,
+        "the implementation can produce evidence when run; it is not itself a "
+        "model result",
+        "no transformer fit, threshold calibration, or cascade result exists",
+        "h1, h2, and h3 remain undecided",
+        "group test remains analyst-exposed but model-unscored",
+        "no phishvn record has been accessed",
+        "the implementation and its tests did not open the phiusiil group-test "
+        "partition or phishvn",
+    ):
+        assert required in evidence, f"missing from evidence outline: {required}"
+
+    for required in (
+        "`frozen_implemented_not_run`",
+        _compact(question),
+        "`recall(logistic-l1) - recall(length-only)`",
+        "`recall(cascade) - recall(logistic-l1)`",
+        "transformer-only remains a comparator and operational reference",
+        "not a third primary h1 gate",
+        "system contribution, not a pure causal isolation",
+        "no transformer fit, threshold calibration, or cascade result exists",
+    ):
+        assert required in basis, f"missing from research basis: {required}"
+
+
+def test_live_records_keep_manual_review_post_hoc_and_non_interventional():
+    records = (STATUS, EVIDENCE_OUTLINE, RESEARCH_BASIS)
+    boundary = (
+        "manual review is permitted only as separately reported post hoc "
+        "descriptive error analysis and cannot assign or override labels, change "
+        "quarantine or inclusion, thresholds, features, model or procedure choices, "
+        "gates, or hypothesis decisions."
+    )
+
+    for path in records:
+        assert boundary in _compact(path.read_text(encoding="utf-8"))
+
+
+def test_research_basis_uses_expertfusion_2027_issue_year():
+    basis = RESEARCH_BASIS.read_text(encoding="utf-8")
+
+    assert basis.count("[ExpertFusion (2027)]") == 1
+    assert "[ExpertFusion (2026)]" not in basis
+
+
+def test_v18_records_september_advisor_direction_and_completed_source_freeze():
+    report_hash = "b72da89a4cc8a5b06f6ca88d79fe78dd54e3199a96b7450209ea53b4a4c04215"
     records = (PROTOCOL, STATUS, EVIDENCE_OUTLINE, RESEARCH_BASIS)
 
     for path in records:
@@ -938,7 +1053,9 @@ def test_v18_records_september_advisor_direction_and_completed_source_freeze():
         assert report_hash in text
         assert "complete and freeze the source-provenance release" in text
         assert "systematic hypothesis testing" in text
-        assert "all gates, thresholds, features, and train/validation procedures" in text
+        assert (
+            "all gates, thresholds, features, and train/validation procedures" in text
+        )
         assert "locked before test results" in text
         assert "particular attention to h1 and the gmm" in text
         assert (

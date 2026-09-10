@@ -7,18 +7,14 @@ CONTRACT = ROOT / "data" / "rq1-transformer-cascade-contract-v1.json"
 
 EXPECTED_INPUT_HASHES = {
     "train": "575f2fb13a0766020e29d78bf8e633a185b381abde7060bdd1ed04cc4a5e38a0",
-    "validation": (
-        "970c6568a6400a1fc265b7809ef7bd9d1c297632799cbb88801313bc34ac415a"
-    ),
+    "validation": ("970c6568a6400a1fc265b7809ef7bd9d1c297632799cbb88801313bc34ac415a"),
     "preparation_summary": (
         "1a85a7eecc0f5baa7c59e03a0cbde63fd4595409feb918dc5ff916ead7cd5c9e"
     ),
     "logistic_l1_artifact": (
         "71a3e24a0283a31ba188bc7dd60b18c1b708370b9ca275d5ab1a1004680c968a"
     ),
-    "contract": (
-        "05d6d0831def7d26448c8dbdc8117800ea2448cdfc2aca2ad95489f22d2d11ba"
-    ),
+    "contract": ("05d6d0831def7d26448c8dbdc8117800ea2448cdfc2aca2ad95489f22d2d11ba"),
 }
 
 EXPECTED_CONTRACT = {
@@ -209,9 +205,7 @@ EXPECTED_CONTRACT = {
             },
         },
         "escalation_rule": {
-            "expression": (
-                "abs(stage1_probability - stage1_threshold) <= half_width"
-            ),
+            "expression": ("abs(stage1_probability - stage1_threshold) <= half_width"),
             "inclusive": True,
         },
         "inside_band": {
@@ -229,9 +223,7 @@ EXPECTED_CONTRACT = {
             "primary": "fewest_transformer_invocations",
             "constraints": {
                 "recall": "cascade_recall >= transformer_recall - 0.02",
-                "fpr": (
-                    "exact_one_sided_95_percent_clopper_pearson_upper <= 0.01"
-                ),
+                "fpr": ("exact_one_sided_95_percent_clopper_pearson_upper <= 0.01"),
             },
             "tie_breaker": "smaller_half_width",
             "failure": {"status": "target_not_met", "accepted_cascade": False},
@@ -325,8 +317,7 @@ EXPECTED_CONTRACT = {
 
 def _assert_strict_json(actual, expected, path="$"):
     assert type(actual) is type(expected), (
-        f"{path}: expected {type(expected).__name__}, "
-        f"got {type(actual).__name__}"
+        f"{path}: expected {type(expected).__name__}, got {type(actual).__name__}"
     )
 
     if isinstance(expected, dict):

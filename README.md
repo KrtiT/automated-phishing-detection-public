@@ -176,6 +176,23 @@ with maximum absolute differences of `2.1316282072803006e-14` and
 artifact hashes. Coefficients and sparsity are not interpreted as feature
 importance.
 
+## Frozen Transformer/Cascade Implementation
+
+Protocol v1.8 keeps the prospective method frozen in
+[`rq1-transformer-cascade-v1`](data/rq1-transformer-cascade-contract-v1.json),
+SHA-256
+`aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54`.
+The procedure code, tests, CLI, and private/public artifact publication code
+are complete at final reviewed code commit
+`0793ca3dbc36e49b561cd0ac74968a4644060426`, with status
+`frozen_implemented_not_run`. No transformer fit, threshold calibration, or
+cascade result exists. The commit records executable method code, not a
+performance run. H1, H2, and H3 remain undecided. The group test remains
+analyst-exposed but model-unscored, and no PhishVN record has been accessed.
+Publication uses temporary paths and writes the public summary last as its
+completion marker; caught in-process publication errors roll back both
+destinations.
+
 ## Evidence Status
 
 The [evidence outline](docs/research-evidence-outline.md) links each research

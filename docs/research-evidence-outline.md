@@ -11,6 +11,7 @@ manuscript prose and does not contain an interpretation of results.
 | RQ1 baseline contract SHA-256 | `05d6d0831def7d26448c8dbdc8117800ea2448cdfc2aca2ad95489f22d2d11ba` |
 | RQ1 transformer/cascade contract | `data/rq1-transformer-cascade-contract-v1.json` (`rq1-transformer-cascade-v1`) |
 | RQ1 transformer/cascade contract SHA-256 | `aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54` |
+| Final reviewed transformer/cascade code commit | `0793ca3dbc36e49b561cd0ac74968a4644060426` |
 | Historical RQ1 baseline contract | `data/rq1-baseline-contract.json` (`rq1-baselines-v1`) |
 | Historical RQ1 baseline contract SHA-256 | `594a66769dee3bf23c4133020dcf9b7d57c105590e5007832ac4249def6a33d4` |
 | Development source | PhiUSIIL, UCI dataset 967 |
@@ -19,7 +20,7 @@ manuscript prose and does not contain an interpretation of results.
 | Source-freeze release | [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1) |
 | Development preparation | `complete` |
 | Preparation record | `reports/phiusiil-preparation-summary.json` |
-| Current technical milestone | v1.4 baseline attempt `stopped_nonconverged`; exploratory tolerance observation `not_accepted_provenance_incomplete`; v1.5 SAGA diagnostic `stopped_platform_warning`; v1.6 SAGA diagnostic `passed_training_only`; protocol v1.7 baseline execution `completed_development_validation`; protocol v1.8 transformer/cascade procedure `frozen_not_run`; GMM `not_run`; H1, H2, and H3 remain undecided. |
+| Current technical milestone | v1.4 baseline attempt `stopped_nonconverged`; exploratory tolerance observation `not_accepted_provenance_incomplete`; v1.5 SAGA diagnostic `stopped_platform_warning`; v1.6 SAGA diagnostic `passed_training_only`; protocol v1.7 baseline execution `completed_development_validation`; protocol v1.8 transformer/cascade contract `frozen_not_run`, implementation `frozen_implemented_not_run`; GMM `not_run`; H1, H2, and H3 remain undecided. |
 | External source | PhishVN v4, reserved for the frozen external evaluation |
 | Current hypothesis status | H1 `undecided`; H2 `undecided`; H3 `undecided` |
 
@@ -228,6 +229,14 @@ Its status is `frozen_not_run`; no transformer or cascade fit was run. The
 contract accepts only the pinned training, validation, preparation-summary,
 baseline-contract, and `Logistic-L1` artifact roles. It accepts no group-test,
 external, PhishVN, runtime-tuning, or test-path input and claims no result.
+The procedure code, tests, CLI, and private/public artifact publication code
+are complete at final reviewed code commit
+`0793ca3dbc36e49b561cd0ac74968a4644060426`; the
+implementation status is `frozen_implemented_not_run`. The implementation can
+produce evidence when run; it is not itself a model result. No
+transformer fit, threshold calibration, or cascade result exists. The
+implementation and its tests did not open the PhiUSIIL group-test partition or
+PhishVN.
 
 ## RQ1 and H1
 
@@ -238,13 +247,16 @@ registrable-domain-disjoint and external evaluation?
 The two H1 primary contrasts remain `recall(Logistic-L1) -
 recall(length-only)` and `recall(cascade) - recall(Logistic-L1)`. The latter is
 the selective system contribution, not a pure causal isolation of
-representation. Transformer-only calibrates the cascade and supports H3; it
-does not create a third primary H1 gate.
+representation. Transformer-only remains a comparator and operational
+reference, not a third primary H1 gate. It calibrates the cascade and supports
+the H3 comparison.
 
 The exact transformer/cascade procedure is
 `rq1-transformer-cascade-v1`, SHA-256
 `aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54`,
 with status `frozen_not_run`; no transformer or cascade fit was run.
+The reviewed implementation is `frozen_implemented_not_run`; its final code
+commit is `0793ca3dbc36e49b561cd0ac74968a4644060426`.
 
 Required evidence:
 
@@ -267,8 +279,8 @@ v1.4 fit is `stopped_nonconverged`; the exploratory tolerance observation is
 `stopped_platform_warning`; the v1.6 SAGA diagnostic is
 `passed_training_only`; the rq1-baselines-v2 execution is
 `completed_development_validation`; the validation-set operating points are
-recorded above; the transformer/cascade procedure is `frozen_not_run`; H1 is
-`undecided`.
+recorded above; the transformer/cascade contract is `frozen_not_run` and its
+implementation is `frozen_implemented_not_run`; H1 is `undecided`.
 
 ## RQ2 and H2
 
@@ -329,7 +341,8 @@ They describe robustness but do not replace a primary decision rule.
 | 5 | Interpret the recorded findings, answer each RQ directly, compare with prior work, and delimit mixed or negative results. |
 | Appendix | Provide one reproduction and evidence index, with supplemental diagnostics only when needed. |
 
-The working manuscript remains private. Public repository evidence consists of
-the protocol, implementation, tests, source and environment locks, aggregate
-data-preparation and baseline-validation records, and later generated result
-tables and figures.
+The working manuscript remains private. Public repository evidence currently
+consists of the protocol, implementation, tests, source and environment locks,
+and aggregate data-preparation and baseline-validation records. The implemented
+transformer/cascade procedure is not a model result; later result tables and
+figures enter this record only after their stated runs.

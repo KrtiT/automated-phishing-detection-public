@@ -5,13 +5,15 @@ manuscript prose and does not contain an interpretation of results.
 
 | Item | Value |
 |---|---|
-| Protocol version | `1.8` |
-| Protocol SHA-256 | `84fcc465151fbd444c0f72e6d195d0a54c81eb9297ccd745264df7cf1ab49483` |
+| Protocol version | `1.9` |
+| Protocol SHA-256 | `476bcebaa24af5f7b24e5b73c9836952e38b13315625bee43fb9c3bf585c2297` |
 | RQ1 baseline contract | `data/rq1-baseline-contract-v2.json` (`rq1-baselines-v2`) |
 | RQ1 baseline contract SHA-256 | `05d6d0831def7d26448c8dbdc8117800ea2448cdfc2aca2ad95489f22d2d11ba` |
-| RQ1 transformer/cascade contract | `data/rq1-transformer-cascade-contract-v1.json` (`rq1-transformer-cascade-v1`) |
-| RQ1 transformer/cascade contract SHA-256 | `aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54` |
-| Final reviewed transformer/cascade code commit | `0793ca3dbc36e49b561cd0ac74968a4644060426` |
+| RQ1 transformer/cascade contract | `data/rq1-transformer-cascade-contract-v2.json` (`rq1-transformer-cascade-v2`) |
+| RQ1 transformer/cascade contract SHA-256 | `686c0d86b33b8a6c2e09cd6e174003db0bd2f7c30b087faf5470e6a270524213` |
+| Superseded unrun transformer/cascade contract | `data/rq1-transformer-cascade-contract-v1.json` (`rq1-transformer-cascade-v1`) |
+| Superseded unrun transformer/cascade contract SHA-256 | `aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54` |
+| Review-hardening repository commit | `0793ca3dbc36e49b561cd0ac74968a4644060426` |
 | Historical RQ1 baseline contract | `data/rq1-baseline-contract.json` (`rq1-baselines-v1`) |
 | Historical RQ1 baseline contract SHA-256 | `594a66769dee3bf23c4133020dcf9b7d57c105590e5007832ac4249def6a33d4` |
 | Development source | PhiUSIIL, UCI dataset 967 |
@@ -20,7 +22,7 @@ manuscript prose and does not contain an interpretation of results.
 | Source-freeze release | [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1) |
 | Development preparation | `complete` |
 | Preparation record | `reports/phiusiil-preparation-summary.json` |
-| Current technical milestone | v1.4 baseline attempt `stopped_nonconverged`; exploratory tolerance observation `not_accepted_provenance_incomplete`; v1.5 SAGA diagnostic `stopped_platform_warning`; v1.6 SAGA diagnostic `passed_training_only`; protocol v1.7 baseline execution `completed_development_validation`; protocol v1.8 transformer/cascade contract `frozen_not_run`, implementation `frozen_implemented_not_run`; GMM `not_run`; H1, H2, and H3 remain undecided. |
+| Current technical milestone | v1.4 baseline attempt `stopped_nonconverged`; exploratory tolerance observation `not_accepted_provenance_incomplete`; v1.5 SAGA diagnostic `stopped_platform_warning`; v1.6 SAGA diagnostic `passed_training_only`; protocol v1.7 baseline execution `completed_development_validation`; protocol v1.8 transformer/cascade v1 `superseded_unrun`; protocol v1.9 transformer/cascade v2 contract `frozen_not_run`, implementation `frozen_implemented_not_run`; GMM `not_run`; H1, H2, and H3 remain undecided. |
 | External source | PhishVN v4, reserved for the frozen external evaluation |
 | Current hypothesis status | H1 `undecided`; H2 `undecided`; H3 `undecided` |
 
@@ -82,22 +84,29 @@ threshold selection used the pinned validation partition. No group-test
 prediction or metric was produced, and no contract, implementation, threshold
 rule, or hypothesis decision changed in response.
 
+On 2026-09-09, a second broad local wording search displayed row content from
+the same ignored group-test file. The displayed rows informed no model,
+threshold, gate, routing, or scientific-procedure change; the separate v1.9
+publication correction arose from code review and changed no scientific field.
+No fit, score, metric, or PhishVN access occurred. The partition remains
+analyst-exposed but model-unscored.
+
 When generated, `access.group_test_accessed=false` in a baseline artifact
 describes only the `fit-baselines` process input boundary. It does not negate
 the analyst access recorded here.
 
-The group test is analyst-exposed but model-unscored. Its file has not been
-used for fitting, selection, prediction,
-metric calculation, or method revision, but it will not be described as unseen
-by the analyst. Remaining transformer and cascade procedures will be frozen
-without reference to the displayed rows, and any later internal group-test
-result will disclose this exposure as a validity limitation. The raw group-test
-partition receives exactly one later noninteractive frozen processing pass only
-after all four RQ1 models, thresholds, evaluator, manifest specifications and
-selection rules, software environment, and hashes are frozen. That pass
-produces the paired predictions and realized replay manifests. Later HTTP runs
-use only those frozen manifests and do not reopen or rescan the raw partition.
-No PhishVN record was accessed.
+The group test is analyst-exposed but model-unscored. Its file has not been used
+for fitting, selection, prediction, or metric calculation, and the displayed
+rows informed no model, threshold, gate, routing, or scientific-procedure
+change. It will not be described as unseen by the analyst. The transformer and
+cascade scientific procedure was frozen without reference to the displayed
+rows, and any later internal group-test result will disclose this exposure as a
+validity limitation. The raw group-test partition receives exactly one later
+noninteractive frozen processing pass only after all four RQ1 models,
+thresholds, evaluator, manifest specifications and selection rules, software
+environment, and hashes are frozen. That pass produces the paired predictions
+and realized replay manifests. Later HTTP runs use only those frozen manifests
+and do not reopen or rescan the raw partition. No PhishVN record was accessed.
 
 ### RQ1 Baseline Execution Note
 
@@ -221,22 +230,18 @@ does not negate the analyst exposure recorded above. No PhishVN record has
 been accessed. H1, H2, and H3 remain undecided. Protocol v1.7 changed the RQ1
 baseline method but no RQ/H question, evidence designation, or decision rule.
 
-Protocol v1.8 freezes the prospective transformer and cascade method in
-`data/rq1-transformer-cascade-contract-v1.json`
-(`rq1-transformer-cascade-v1`), SHA-256
-`aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54`.
-Its status is `frozen_not_run`; no transformer or cascade fit was run. The
+Protocol v1.8's byte-preserved `rq1-transformer-cascade-v1`, SHA-256
+`aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54`, is
+`superseded_unrun`. Protocol v1.9 freezes the publication-only amendment
+`rq1-transformer-cascade-v2`, SHA-256
+`686c0d86b33b8a6c2e09cd6e174003db0bd2f7c30b087faf5470e6a270524213`, at
+`frozen_not_run`. Its scientific and artifact-content rules are unchanged. The
 contract accepts only the pinned training, validation, preparation-summary,
-baseline-contract, and `Logistic-L1` artifact roles. It accepts no group-test,
-external, PhishVN, runtime-tuning, or test-path input and claims no result.
-The procedure code, tests, CLI, and private/public artifact publication code
-are complete at final reviewed code commit
-`0793ca3dbc36e49b561cd0ac74968a4644060426`; the
-implementation status is `frozen_implemented_not_run`. The implementation can
-produce evidence when run; it is not itself a model result. No
-transformer fit, threshold calibration, or cascade result exists. The
-implementation and its tests did not open the PhiUSIIL group-test partition or
-PhishVN.
+baseline-contract, and `Logistic-L1` artifact roles; it accepts no group-test,
+external, PhishVN, runtime-tuning, or test-path input. The implementation is
+unit-tested at status `frozen_implemented_not_run`; the official MPS fit has not
+run. The implementation and its tests did not open the PhiUSIIL group-test
+partition or PhishVN.
 
 ## RQ1 and H1
 
@@ -251,12 +256,11 @@ representation. Transformer-only remains a comparator and operational
 reference, not a third primary H1 gate. It calibrates the cascade and supports
 the H3 comparison.
 
-The exact transformer/cascade procedure is
-`rq1-transformer-cascade-v1`, SHA-256
-`aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54`,
-with status `frozen_not_run`; no transformer or cascade fit was run.
-The reviewed implementation is `frozen_implemented_not_run`; its final code
-commit is `0793ca3dbc36e49b561cd0ac74968a4644060426`.
+The current `rq1-transformer-cascade-v2` contract is `frozen_not_run`, and the
+unit-tested implementation is `frozen_implemented_not_run`. Reviewed repository commit
+`0793ca3dbc36e49b561cd0ac74968a4644060426` records the last implementation
+hardening before this publication amendment. No transformer fit, threshold
+calibration, or cascade result exists.
 
 Required evidence:
 
@@ -344,5 +348,6 @@ They describe robustness but do not replace a primary decision rule.
 The working manuscript remains private. Public repository evidence currently
 consists of the protocol, implementation, tests, source and environment locks,
 and aggregate data-preparation and baseline-validation records. The implemented
-transformer/cascade procedure is not a model result; later result tables and
-figures enter this record only after their stated runs.
+transformer/cascade procedure can produce evidence when run; it is not itself a
+model result. Later result tables and figures enter this record only after their
+stated runs.

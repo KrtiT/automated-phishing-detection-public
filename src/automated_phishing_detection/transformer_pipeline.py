@@ -25,12 +25,12 @@ from torch import Tensor, nn
 from . import baselines, character_sequence, character_transformer, fixed_cascade
 
 ANALYSIS_STAGE = "development_validation_only"
-CONTRACT_ID = "rq1-transformer-cascade-v1"
+CONTRACT_ID = "rq1-transformer-cascade-v2"
 OFFICIAL_TRANSFORMER_CONTRACT_SHA256 = (
-    "aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54"
+    "686c0d86b33b8a6c2e09cd6e174003db0bd2f7c30b087faf5470e6a270524213"
 )
 _EXPECTED_TRANSFORMER_CONTRACT_CANONICAL_SHA256 = (
-    "70f528ac9e9a4838c0ed8304c3c8a10a1e1ec472cbef70e375046f35f49b3b74"
+    "3b73a76e564367535be106e25c1d8696fe7bd1992f7ac59ee50fd4217ae73df0"
 )
 _PRIVATE_FILENAMES = (
     "cascade.json",
@@ -221,6 +221,38 @@ def _validate_paths(
             raise TransformerPipelineError(
                 f"{label} input must be a regular file, not an alias"
             )
+    resolved_output = output_dir.resolve(strict=False)
+    resolved_summary = summary_path.resolve(strict=False)
+    if resolved_summary == resolved_output:
+        raise TransformerPipelineError(
+            "summary must not alias the private output directory"
+        )
+    try:
+        resolved_summary.relative_to(resolved_output)
+    except ValueError:
+        pass
+    else:
+        raise TransformerPipelineError(
+            "summary must be outside the private output directory"
+        )
+    for label, input_path in input_paths.items():
+        if input_path.resolve(strict=True) in (resolved_output, resolved_summary):
+            raise TransformerPipelineError(
+                f"{label} input aliases an output destination"
+            )
+    output_exists = os.path.lexists(output_dir)
+    summary_exists = os.path.lexists(summary_path)
+    if output_exists != summary_exists:
+        existing = (
+            "private output without the public summary"
+            if output_exists
+            else "public summary without the private output"
+        )
+        raise TransformerPipelineError(
+            f"one publication destination exists as {existing}; "
+            "this is incomplete_not_result; "
+            "verify it is a stale publication and remove it before rerun"
+        )
     try:
         baselines._validate_paths(
             input_paths=input_paths,

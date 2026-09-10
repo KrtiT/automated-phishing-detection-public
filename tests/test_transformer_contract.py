@@ -1,9 +1,13 @@
 import json
 import re
+from hashlib import sha256
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CONTRACT = ROOT / "data" / "rq1-transformer-cascade-contract-v1.json"
+V1_CONTRACT = ROOT / "data" / "rq1-transformer-cascade-contract-v1.json"
+V2_CONTRACT = ROOT / "data" / "rq1-transformer-cascade-contract-v2.json"
+CONTRACT = V1_CONTRACT
+V1_CONTRACT_SHA256 = "aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54"
 
 EXPECTED_INPUT_HASHES = {
     "train": "575f2fb13a0766020e29d78bf8e633a185b381abde7060bdd1ed04cc4a5e38a0",
@@ -347,6 +351,126 @@ def test_transformer_contract_is_an_exact_prospective_method_freeze():
     contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
 
     _assert_strict_json(contract, EXPECTED_CONTRACT)
+
+
+def test_v1_contract_remains_byte_for_byte_immutable():
+    assert sha256(V1_CONTRACT.read_bytes()).hexdigest() == V1_CONTRACT_SHA256
+
+
+def test_v2_changes_only_identity_version_date_and_publication_semantics():
+    assert V2_CONTRACT.is_file(), f"missing amended contract: {V2_CONTRACT}"
+    v1 = json.loads(V1_CONTRACT.read_text(encoding="utf-8"))
+    v2 = json.loads(V2_CONTRACT.read_text(encoding="utf-8"))
+
+    assert v2["contract_id"] == "rq1-transformer-cascade-v2"
+    assert v2["schema_version"] == 2
+    assert v2["protocol_version"] == "1.9"
+    assert v2["date"] == "2026-09-09"
+    assert v2["publication"] == {
+        "temporary_writes": {
+            "private_output_directory": "temporary_path_in_destination_parent",
+            "public_summary": "temporary_path_in_destination_parent",
+        },
+        "destination_installation": "atomic_no_replace",
+        "install_order": ["private_output_directory", "public_summary"],
+        "completion_marker": "public_summary",
+        "completed_result_requires": [
+            "private_output_directory",
+            "public_summary",
+        ],
+        "caught_in_process_failure": {
+            "caught": "BaseException",
+            "rollback": "remove_destinations_created_by_this_run",
+        },
+        "abrupt_process_or_host_failure": {
+            "cross_destination_atomic": False,
+            "possible_state": "private_output_without_public_summary",
+        },
+        "incomplete_states": {
+            "one_destination_without_the_other": [
+                "private_output_without_public_summary",
+                "public_summary_without_private_output",
+            ],
+            "classification": "incomplete_not_result",
+        },
+        "rerun_precondition": {
+            "existing_incomplete_output": {
+                "pipeline_action": "abort_without_mutation",
+                "required_before_rerun": (
+                    "operator_verifies_stale_publication_and_removes_existing_output"
+                ),
+            },
+        },
+    }
+
+    amendment_fields = {
+        "contract_id",
+        "schema_version",
+        "protocol_version",
+        "date",
+        "publication",
+    }
+    assert {key: value for key, value in v2.items() if key not in amendment_fields} == {
+        key: value for key, value in v1.items() if key not in amendment_fields
+    }
+
+
+def test_v2_bytes_differ_from_v1_only_at_the_permitted_amendment_fields():
+    v1_bytes = V1_CONTRACT.read_bytes()
+    expected = v1_bytes.replace(
+        b'"contract_id": "rq1-transformer-cascade-v1"',
+        b'"contract_id": "rq1-transformer-cascade-v2"',
+        1,
+    )
+    expected = expected.replace(b'"schema_version": 1', b'"schema_version": 2', 1)
+    expected = expected.replace(
+        b'"protocol_version": "1.8"', b'"protocol_version": "1.9"', 1
+    )
+    old_publication = b"""  "publication": {
+    "mode": "failure_atomic",
+    "on_failure": "publish_nothing"
+  },"""
+    new_publication = b"""  "publication": {
+    "temporary_writes": {
+      "private_output_directory": "temporary_path_in_destination_parent",
+      "public_summary": "temporary_path_in_destination_parent"
+    },
+    "destination_installation": "atomic_no_replace",
+    "install_order": [
+      "private_output_directory",
+      "public_summary"
+    ],
+    "completion_marker": "public_summary",
+    "completed_result_requires": [
+      "private_output_directory",
+      "public_summary"
+    ],
+    "caught_in_process_failure": {
+      "caught": "BaseException",
+      "rollback": "remove_destinations_created_by_this_run"
+    },
+    "abrupt_process_or_host_failure": {
+      "cross_destination_atomic": false,
+      "possible_state": "private_output_without_public_summary"
+    },
+    "incomplete_states": {
+      "one_destination_without_the_other": [
+        "private_output_without_public_summary",
+        "public_summary_without_private_output"
+      ],
+      "classification": "incomplete_not_result"
+    },
+    "rerun_precondition": {
+      "existing_incomplete_output": {
+        "pipeline_action": "abort_without_mutation",
+        "required_before_rerun": "operator_verifies_stale_publication_and_removes_existing_output"
+      }
+    }
+  },"""
+    assert old_publication in expected
+    expected = expected.replace(old_publication, new_publication, 1)
+
+    assert V2_CONTRACT.read_bytes() == expected
 
 
 def test_transformer_contract_accepts_no_held_out_or_tuning_input_role():

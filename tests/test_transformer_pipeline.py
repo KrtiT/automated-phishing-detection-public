@@ -22,7 +22,9 @@ from automated_phishing_detection.url_features import FEATURE_NAMES
 
 ROOT = Path(__file__).resolve().parents[1]
 BASELINE_CONTRACT = ROOT / "data" / "rq1-baseline-contract-v2.json"
-TRANSFORMER_CONTRACT = ROOT / "data" / "rq1-transformer-cascade-contract-v1.json"
+V1_TRANSFORMER_CONTRACT = ROOT / "data" / "rq1-transformer-cascade-contract-v1.json"
+V2_TRANSFORMER_CONTRACT = ROOT / "data" / "rq1-transformer-cascade-contract-v2.json"
+TRANSFORMER_CONTRACT = V2_TRANSFORMER_CONTRACT
 SOURCE_SHA256 = "0" * 64
 
 
@@ -267,7 +269,7 @@ def _write_fixture(directory, *, validation_negatives=400):
         "preparation_summary": directory / "preparation-summary.json",
         "baseline_contract": directory / "rq1-baseline-contract-v2.json",
         "logistic_l1_artifact": directory / "logistic-l1.json",
-        "transformer_contract": directory / "rq1-transformer-cascade-contract-v1.json",
+        "transformer_contract": directory / "rq1-transformer-cascade-contract-v2.json",
         "output_dir": directory / "private-transformer",
         "summary": directory / "transformer-summary.json",
     }
@@ -508,6 +510,16 @@ def test_fixture_pipeline_is_train_only_validation_only_and_separates_outputs(
         (paths["output_dir"] / "transformer.json").read_text()
     )
     cascade_record = json.loads((paths["output_dir"] / "cascade.json").read_text())
+    for record in (transformer_record, cascade_record):
+        assert record["contract_id"] == "rq1-transformer-cascade-v2"
+        assert record["contract_sha256"] == (
+            transformer_pipeline.OFFICIAL_TRANSFORMER_CONTRACT_SHA256
+        )
+    assert summary["contract"] == {
+        "id": "rq1-transformer-cascade-v2",
+        "protocol_version": "1.9",
+        "sha256": transformer_pipeline.OFFICIAL_TRANSFORMER_CONTRACT_SHA256,
+    }
     assert set(vocabulary_record) == {
         "character_ids_start",
         "characters",
@@ -636,7 +648,7 @@ def test_transformer_target_not_met_is_published_without_a_cascade(
 @pytest.mark.parametrize(
     "mutation",
     (
-        lambda contract: contract.update(protocol_version="1.9"),
+        lambda contract: contract.update(protocol_version="1.8"),
         lambda contract: contract["architecture"]["encoder"].update(layers=5),
         lambda contract: contract["cascade"]["escalation_rule"].update(inclusive=False),
         lambda contract: contract["inputs"]["forbidden_roles"].pop(),
@@ -685,7 +697,7 @@ def test_reordered_whitespace_contract_is_semantically_equivalent_in_fixture(
 
 
 def test_official_hash_policy_matches_the_frozen_contract_and_file():
-    contract_bytes = TRANSFORMER_CONTRACT.read_bytes()
+    contract_bytes = V2_TRANSFORMER_CONTRACT.read_bytes()
     contract = json.loads(contract_bytes)
     policy = transformer_pipeline._OFFICIAL_INPUT_HASH_POLICY
 
@@ -700,6 +712,24 @@ def test_official_hash_policy_matches_the_frozen_contract_and_file():
         "logistic_l1_artifact": policy.logistic_l1_artifact_sha256,
         "contract": policy.baseline_contract_sha256,
     }
+
+
+def test_official_pipeline_rejects_the_superseded_v1_contract():
+    v1_bytes = V1_TRANSFORMER_CONTRACT.read_bytes()
+
+    assert sha256(v1_bytes).hexdigest() == (
+        "aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54"
+    )
+    assert transformer_pipeline.CONTRACT_ID == "rq1-transformer-cascade-v2"
+    assert (
+        transformer_pipeline.OFFICIAL_TRANSFORMER_CONTRACT_SHA256
+        != sha256(v1_bytes).hexdigest()
+    )
+    with pytest.raises(
+        transformer_pipeline.TransformerPipelineError,
+        match="frozen method",
+    ):
+        transformer_pipeline._validate_transformer_contract(json.loads(v1_bytes))
 
 
 def test_hashes_are_checked_before_invalid_content_is_parsed(tmp_path, monkeypatch):
@@ -894,6 +924,76 @@ def test_inputs_and_outputs_cannot_alias_or_overwrite(tmp_path, monkeypatch):
     with pytest.raises(transformer_pipeline.TransformerPipelineError, match="exists"):
         _run_fixture(paths)
     assert sentinel.read_text() == "competitor"
+    assert not paths["summary"].exists()
+
+
+def test_private_without_summary_is_incomplete_and_requires_cleanup_before_rerun(
+    tmp_path, monkeypatch
+):
+    paths = _write_fixture(tmp_path / "incomplete-publication")
+    _install_fixture_trainer(monkeypatch)
+    paths["output_dir"].mkdir()
+    sentinel = paths["output_dir"] / "sentinel"
+    sentinel.write_text("created by an interrupted run", encoding="ascii")
+
+    with pytest.raises(
+        transformer_pipeline.TransformerPipelineError,
+        match=(
+            "incomplete_not_result.*verify it is a stale publication and remove it "
+            ".*before rerun"
+        ),
+    ):
+        _run_fixture(paths)
+
+    assert sentinel.read_text(encoding="ascii") == "created by an interrupted run"
+    assert not paths["summary"].exists()
+
+    sentinel.unlink()
+    paths["output_dir"].rmdir()
+    assert _run_fixture(paths)["status"] == "completed_development_validation"
+
+
+def test_summary_without_private_is_incomplete_and_requires_cleanup_before_rerun(
+    tmp_path, monkeypatch
+):
+    paths = _write_fixture(tmp_path / "incomplete-publication")
+    _install_fixture_trainer(monkeypatch)
+    paths["summary"].write_text("orphaned completion marker", encoding="ascii")
+
+    with pytest.raises(
+        transformer_pipeline.TransformerPipelineError,
+        match=(
+            "incomplete_not_result.*verify it is a stale publication and remove it "
+            ".*before rerun"
+        ),
+    ):
+        _run_fixture(paths)
+
+    assert paths["summary"].read_text(encoding="ascii") == (
+        "orphaned completion marker"
+    )
+    assert not paths["output_dir"].exists()
+
+    paths["summary"].unlink()
+    assert _run_fixture(paths)["status"] == "completed_development_validation"
+
+
+def test_input_output_alias_is_rejected_before_incomplete_cleanup_guidance(
+    tmp_path, monkeypatch
+):
+    paths = _write_fixture(tmp_path / "aliased-publication")
+    _install_fixture_trainer(monkeypatch)
+    train_bytes = paths["train"].read_bytes()
+    paths["output_dir"].symlink_to(paths["train"])
+
+    with pytest.raises(
+        transformer_pipeline.TransformerPipelineError,
+        match="train input aliases an output destination",
+    ):
+        _run_fixture(paths)
+
+    assert paths["train"].read_bytes() == train_bytes
+    assert paths["output_dir"].is_symlink()
     assert not paths["summary"].exists()
 
 

@@ -18,12 +18,16 @@ BASELINE_V2_SUMMARY = ROOT / "reports" / "rq1-baseline-v2-summary.json"
 BASELINE_V1_CONTRACT = ROOT / "data" / "rq1-baseline-contract.json"
 BASELINE_V2_CONTRACT = ROOT / "data" / "rq1-baseline-contract-v2.json"
 TRANSFORMER_CONTRACT = ROOT / "data" / "rq1-transformer-cascade-contract-v1.json"
+TRANSFORMER_CONTRACT_V2 = ROOT / "data" / "rq1-transformer-cascade-contract-v2.json"
 FINAL_TRANSFORMER_CODE_COMMIT = "0793ca3dbc36e49b561cd0ac74968a4644060426"
 INITIAL_TRANSFORMER_CODE_COMMIT = "a8ee067bda8fd45d19f5c4b794ba21f58d1947fc"
 TRANSFORMER_CONTRACT_SHA256 = (
     "aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54"
 )
-V18_MATRIX_SHA256 = "84fcc465151fbd444c0f72e6d195d0a54c81eb9297ccd745264df7cf1ab49483"
+TRANSFORMER_CONTRACT_V2_SHA256 = (
+    "686c0d86b33b8a6c2e09cd6e174003db0bd2f7c30b087faf5470e6a270524213"
+)
+V19_MATRIX_SHA256 = "476bcebaa24af5f7b24e5b73c9836952e38b13315625bee43fb9c3bf585c2297"
 SEPTEMBER_REPORT_SHA256 = (
     "b72da89a4cc8a5b06f6ca88d79fe78dd54e3199a96b7450209ea53b4a4c04215"
 )
@@ -394,12 +398,12 @@ def test_v2_baseline_summary_is_aggregate_and_immutable():
     visit(summary)
 
 
-def test_protocol_v18_preserves_v17_history_and_freezes_transformer_without_result():
+def test_protocol_v19_preserves_v18_history_and_freezes_transformer_without_result():
     protocol = PROTOCOL.read_text(encoding="utf-8")
     preamble = protocol.split("## Study Plan", maxsplit=1)[0]
     contract = _section(protocol, "RQ1 baseline contract", level=3)
 
-    assert "**Version:** 1.8 | **Date:** 2026-09-09" in preamble
+    assert "**Version:** 1.9 | **Date:** 2026-09-09" in preamble
     assert "PhiUSIIL development-data preparation is complete." in preamble
     assert "rq1-baselines-v2" in preamble
     expected_contract_hash = sha256(BASELINE_V2_CONTRACT.read_bytes()).hexdigest()
@@ -415,12 +419,67 @@ def test_protocol_v18_preserves_v17_history_and_freezes_transformer_without_resu
         "rq1-baselines-v2 execution is `completed_development_validation`" in preamble
     )
     assert "development validation only" in preamble
-    assert "rq1-transformer-cascade-v1" in preamble
-    assert "transformer/cascade procedure is `frozen_not_run`" in preamble
-    assert "No transformer or cascade fit was run" in preamble
+    assert "Protocol v1.8 froze `rq1-transformer-cascade-v1`" in preamble
+    assert "`superseded_unrun`" in preamble
+    assert "Protocol v1.9 freezes `rq1-transformer-cascade-v2`" in preamble
+    assert "contract status `frozen_not_run`" in preamble
+    assert "implementation status is `frozen_implemented_not_run`" in preamble
+    assert (
+        "No transformer fit, threshold calibration, or cascade result exists"
+        in preamble
+    )
     assert "H1, H2, and H3 remain undecided" in preamble
     assert "group test remains analyst-exposed but model-unscored" in preamble
     assert "No PhishVN record has been accessed" in preamble
+
+
+def test_protocol_v19_supersedes_unrun_v1_with_the_publication_only_v2_amendment():
+    assert sha256(TRANSFORMER_CONTRACT.read_bytes()).hexdigest() == (
+        TRANSFORMER_CONTRACT_SHA256
+    )
+    assert sha256(TRANSFORMER_CONTRACT_V2.read_bytes()).hexdigest() == (
+        TRANSFORMER_CONTRACT_V2_SHA256
+    )
+
+    protocol = _compact(PROTOCOL.read_text(encoding="utf-8"))
+    status = _compact(STATUS.read_text(encoding="utf-8"))
+    evidence = _compact(EVIDENCE_OUTLINE.read_text(encoding="utf-8"))
+    basis = _compact(RESEARCH_BASIS.read_text(encoding="utf-8"))
+    readme = _compact(README.read_text(encoding="utf-8"))
+
+    assert "**version:** 1.9 | **date:** 2026-09-09" in protocol
+    assert "governed by protocol v1.9" in readme
+    assert "rq1-transformer-cascade-v2" in protocol
+    assert TRANSFORMER_CONTRACT_V2_SHA256 in protocol
+    assert "rq1-transformer-cascade-v1" in protocol
+    assert TRANSFORMER_CONTRACT_SHA256 in protocol
+    assert "superseded_unrun" in protocol
+    assert "no transformer fit" in protocol
+
+    assert "rq1-transformer-cascade-v2" in status
+    assert TRANSFORMER_CONTRACT_V2_SHA256 in status
+    assert "superseded_unrun" in status
+    assert "`frozen_not_run`" in status
+    assert "`frozen_implemented_not_run`" in status
+
+    assert "rq1-transformer-cascade-v2" in readme
+    assert "frozen_implemented_not_run" in readme
+    assert "no transformer fit" in readme
+    assert "rq1-transformer-cascade-v2" in evidence
+    assert "no transformer fit" in evidence
+    assert "rq1-transformer-cascade-v2" in basis
+    assert "official mps fit has not run" in basis
+
+    assert "public summary is the completion marker" in protocol
+    assert "completed result requires both" in protocol
+    assert "incomplete_not_result" in protocol
+    assert "not cross-destination atomic" in protocol
+    assert "verify" in protocol and "remove" in protocol and "before rerun" in protocol
+
+    combined = " ".join((status, evidence, readme))
+    assert "reviewed repository commit" in combined
+    assert "final reviewed code commit" not in combined
+    assert "final executable code commit" not in combined
 
 
 def test_live_records_capture_v2_validation_without_deciding_hypotheses():
@@ -497,7 +556,7 @@ def test_live_records_preserve_v14_failure_and_qualify_tolerance_observation():
             flags=re.IGNORECASE,
         )
         assert "`rq1-baselines-v1`" in audit
-        assert "| Protocol version | `1.8` |" in text
+        assert "| Protocol version | `1.9` |" in text
         assert contract_row in text
         assert (
             "| Historical RQ1 baseline contract SHA-256 | "
@@ -804,10 +863,11 @@ def test_all_numerical_targets_are_identified_as_study_defined_gates():
 def test_rq_hypothesis_and_decision_gate_contracts_are_preserved():
     protocol = PROTOCOL.read_text(encoding="utf-8")
     decision_matrix = _section(protocol, "Decision Matrix")
-
-    assert sha256(decision_matrix.encode("utf-8")).hexdigest() == (
-        DECISION_MATRIX_SHA256
+    v18_identity = decision_matrix.replace(
+        "rq1-transformer-cascade-v2", "rq1-transformer-cascade-v1"
     )
+
+    assert sha256(v18_identity.encode("utf-8")).hexdigest() == (DECISION_MATRIX_SHA256)
 
     critical_contracts = (
         "**RQ1:** What incremental value do structural URL features and selective character-model escalation provide under registrable-domain-disjoint and external evaluation?",
@@ -904,27 +964,29 @@ def test_protocol_records_published_source_freeze():
     )
 
 
-def test_v18_binds_transformer_contract_and_preserves_prospective_status():
-    assert TRANSFORMER_CONTRACT.is_file(), (
-        f"missing transformer contract: {TRANSFORMER_CONTRACT}"
+def test_v19_binds_transformer_contract_and_preserves_prospective_status():
+    assert TRANSFORMER_CONTRACT_V2.is_file(), (
+        f"missing transformer contract: {TRANSFORMER_CONTRACT_V2}"
     )
-    expected_hash = sha256(TRANSFORMER_CONTRACT.read_bytes()).hexdigest()
+    expected_hash = sha256(TRANSFORMER_CONTRACT_V2.read_bytes()).hexdigest()
     bindings = (
         (
             PROTOCOL,
             "RQ1 transformer and cascade contract",
             3,
+            True,
         ),
-        (STATUS, "Current Controls", 2),
-        (EVIDENCE_OUTLINE, "RQ1 and H1", 2),
+        (STATUS, "Current Controls", 2, True),
+        (EVIDENCE_OUTLINE, "RQ1 and H1", 2, False),
     )
 
-    for path, heading, level in bindings:
+    for path, heading, level, binds_hash_locally in bindings:
         section = _compact(
             _section(path.read_text(encoding="utf-8"), heading, level=level)
         )
-        assert "rq1-transformer-cascade-v1" in section
-        assert expected_hash in section
+        assert "rq1-transformer-cascade-v2" in section
+        if binds_hash_locally:
+            assert expected_hash in section
         assert "`frozen_not_run`" in section
         assert any(
             boundary in section
@@ -938,8 +1000,8 @@ def test_v18_binds_transformer_contract_and_preserves_prospective_status():
         text = path.read_text(encoding="utf-8")
         assert (
             "| RQ1 transformer/cascade contract | "
-            "`data/rq1-transformer-cascade-contract-v1.json` "
-            "(`rq1-transformer-cascade-v1`) |" in text
+            "`data/rq1-transformer-cascade-contract-v2.json` "
+            "(`rq1-transformer-cascade-v2`) |" in text
         )
         assert (
             f"| RQ1 transformer/cascade contract SHA-256 | `{expected_hash}` |" in text
@@ -961,8 +1023,8 @@ def test_live_records_bind_reviewed_transformer_code_without_claiming_a_run():
         "`frozen_implemented_not_run`",
         FINAL_TRANSFORMER_CODE_COMMIT,
         INITIAL_TRANSFORMER_CODE_COMMIT,
-        TRANSFORMER_CONTRACT_SHA256,
-        V18_MATRIX_SHA256,
+        TRANSFORMER_CONTRACT_V2_SHA256,
+        V19_MATRIX_SHA256,
         SEPTEMBER_REPORT_SHA256,
         "procedure code, tests, cli, and private/public artifact publication code "
         "are complete",
@@ -971,21 +1033,23 @@ def test_live_records_bind_reviewed_transformer_code_without_claiming_a_run():
         "group test remains analyst-exposed but model-unscored",
         "the implementation and its tests did not open the phiusiil group-test "
         "partition or phishvn",
-        "identifies reviewed executable code, not a performance or result run",
-        "uses temporary paths, publishes the private output directory before the "
-        "public-summary completion marker, and rolls back both destinations for a "
-        "caught in-process publication error",
-        "this guarantee is limited to caught in-process errors; abrupt process or "
-        "host failure can leave the private directory without the final public "
-        "completion record",
+        "they are not performance or result runs",
+        "each destination uses a temporary path in its own parent",
+        "public summary is installed last and is the completion marker",
+        "caught in-process `baseexception` removes only destinations created by "
+        "the run",
+        "not cross-destination atomic",
+        "abrupt process or host failure can leave the private directory without "
+        "the public summary",
+        "either one-sided state is `incomplete_not_result`",
     ):
         assert required in status, f"missing from approval status: {required}"
 
     for required in (
         "`frozen_implemented_not_run`",
         FINAL_TRANSFORMER_CODE_COMMIT,
-        "rq1-transformer-cascade-v1",
-        TRANSFORMER_CONTRACT_SHA256,
+        "rq1-transformer-cascade-v2",
+        TRANSFORMER_CONTRACT_V2_SHA256,
         "procedure code, tests, cli, and private/public artifact publication code "
         "are complete",
         "no transformer fit, threshold calibration, or cascade result exists",
@@ -998,9 +1062,9 @@ def test_live_records_bind_reviewed_transformer_code_without_claiming_a_run():
     for required in (
         "`frozen_implemented_not_run`",
         FINAL_TRANSFORMER_CODE_COMMIT,
-        TRANSFORMER_CONTRACT_SHA256,
-        "the implementation can produce evidence when run; it is not itself a "
-        "model result",
+        TRANSFORMER_CONTRACT_V2_SHA256,
+        "transformer/cascade procedure can produce evidence when run; it is not "
+        "itself a model result",
         "no transformer fit, threshold calibration, or cascade result exists",
         "h1, h2, and h3 remain undecided",
         "group test remains analyst-exposed but model-unscored",
@@ -1018,7 +1082,7 @@ def test_live_records_bind_reviewed_transformer_code_without_claiming_a_run():
         "transformer-only remains a comparator and operational reference",
         "not a third primary h1 gate",
         "system contribution, not a pure causal isolation",
-        "no transformer fit, threshold calibration, or cascade result exists",
+        "official mps fit has not run",
     ):
         assert required in basis, f"missing from research basis: {required}"
 
@@ -1188,6 +1252,65 @@ def test_v18_change_record_freezes_transformer_cascade_without_a_result():
         "no transformer, cascade, or gmm fit",
     ):
         assert detail in v18_row
+
+
+def test_v19_change_record_is_publication_only_and_preserves_v1():
+    status = STATUS.read_text(encoding="utf-8")
+    change_record = _section(status, "Change Record")
+    v19_rows = [line for line in change_record.splitlines() if "| 1.9 |" in line]
+
+    assert len(v19_rows) == 1
+    v19_row = v19_rows[0].lower()
+    for detail in (
+        "preserved `rq1-transformer-cascade-v1` byte-for-byte",
+        "`superseded_unrun`",
+        "`rq1-transformer-cascade-v2`",
+        "`frozen_not_run`",
+        "publication semantics",
+        "does not change a research question, hypothesis, input, model, training, "
+        "threshold, cascade, manual-review, or artifact-content rule",
+        "`frozen_implemented_not_run`",
+        "no transformer, cascade, or gmm fit",
+    ):
+        assert detail in v19_row
+
+
+def test_gmm_allocation_remains_a_prospective_staged_freeze():
+    protocol = _compact(PROTOCOL.read_text(encoding="utf-8"))
+
+    assert "before any gmm execution, a separate contract will freeze" in protocol
+    assert (
+        "namespace, seed, exact allocation rule, tie handling, row order, and "
+        "quantile method" in protocol
+    )
+    assert "validation domains are divided by a frozen domain-hash rule" not in protocol
+
+
+def test_second_group_test_display_is_recorded_without_changing_study_status():
+    status_audit = _compact(
+        _section(STATUS.read_text(encoding="utf-8"), "Execution Audit")
+    )
+    evidence_note = _compact(
+        _section(
+            EVIDENCE_OUTLINE.read_text(encoding="utf-8"),
+            "Internal Holdout Access Note",
+            level=3,
+        )
+    )
+
+    for record in (status_audit, evidence_note):
+        assert "on 2026-09-09" in record
+        assert "second broad local wording search displayed row content" in record
+        assert (
+            "displayed rows informed no model, threshold, gate, routing, or "
+            "scientific-procedure change" in record
+        )
+        assert (
+            "separate v1.9 publication correction arose from code review and "
+            "changed no scientific field" in record
+        )
+        assert "no fit, score, metric, or phishvn access" in record
+        assert "analyst-exposed but model-unscored" in record
 
 
 def test_readme_links_research_basis_and_limits_synthetic_urls_to_unit_tests():

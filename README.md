@@ -3,7 +3,7 @@
 ## Current Work
 
 This branch contains the active research implementation governed by protocol
-v1.7. The PhiUSIIL preparation milestone and aggregate record are complete.
+v1.9. The PhiUSIIL preparation milestone and aggregate record are complete.
 The historical [`rq1-baselines-v1`](data/rq1-baseline-contract.json) contract is
 preserved unchanged. Its prescribed fit stopped at the 5,000-iteration limit
 with a convergence warning and produced no model or summary artifact. A later
@@ -178,20 +178,29 @@ importance.
 
 ## Frozen Transformer/Cascade Implementation
 
-Protocol v1.8 keeps the prospective method frozen in
-[`rq1-transformer-cascade-v1`](data/rq1-transformer-cascade-contract-v1.json),
+Protocol v1.9 freezes the prospective method in
+[`rq1-transformer-cascade-v2`](data/rq1-transformer-cascade-contract-v2.json),
 SHA-256
-`aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54`.
+`686c0d86b33b8a6c2e09cd6e174003db0bd2f7c30b087faf5470e6a270524213`.
+The v1.8 contract remains byte-preserved at SHA-256
+`aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54`
+with status `superseded_unrun`. Version 2 changes only contract identity,
+version, date, and publication semantics; its scientific and artifact-content
+rules are unchanged.
 The procedure code, tests, CLI, and private/public artifact publication code
-are complete at final reviewed code commit
-`0793ca3dbc36e49b561cd0ac74968a4644060426`, with status
-`frozen_implemented_not_run`. No transformer fit, threshold calibration, or
-cascade result exists. The commit records executable method code, not a
-performance run. H1, H2, and H3 remain undecided. The group test remains
-analyst-exposed but model-unscored, and no PhishVN record has been accessed.
-Publication uses temporary paths and writes the public summary last as its
-completion marker; caught in-process publication errors roll back both
-destinations.
+are complete with status `frozen_implemented_not_run`. Reviewed repository
+commit `0793ca3dbc36e49b561cd0ac74968a4644060426` identifies the implementation
+before this publication correction; it is not a performance or result run. The
+implementation is unit-tested; no transformer fit, threshold calibration, or
+cascade result exists. H1, H2, and H3 remain undecided.
+The group test remains analyst-exposed but model-unscored, and no PhishVN record
+has been accessed. Publication stages each destination in its own parent,
+installs the private directory before the public-summary completion marker, and
+requires both for a completed result. Caught in-process `BaseException` failures
+remove run-created destinations. An abrupt failure can leave private output
+without the summary because the two installs are not cross-destination atomic.
+Either one-sided state is `incomplete_not_result` and must be verified as stale
+and removed before rerun.
 
 ## Evidence Status
 

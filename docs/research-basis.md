@@ -15,12 +15,15 @@ completed that requested source freeze after the meeting.
 
 Protocol v1.7 froze `rq1-baselines-v2` before its later
 `completed_development_validation` execution. Those operating points remain
-development validation only. Protocol v1.8 freezes
-`rq1-transformer-cascade-v1` at contract status `frozen_not_run`. Its exact
-procedure is now implemented at status `frozen_implemented_not_run`. No
-transformer fit, threshold calibration, or cascade result exists. H1, H2, and
-H3 remain undecided, the group test remains analyst-exposed but model-unscored,
-and no PhishVN record has been accessed.
+development validation only. Protocol v1.8's byte-preserved
+`rq1-transformer-cascade-v1` is `superseded_unrun`. Protocol v1.9 freezes
+`rq1-transformer-cascade-v2`, SHA-256
+`686c0d86b33b8a6c2e09cd6e174003db0bd2f7c30b087faf5470e6a270524213`, at
+contract status `frozen_not_run`. Version 2 changes publication semantics but no
+scientific or artifact-content rule. The implementation is unit-tested at
+status `frozen_implemented_not_run`; the official MPS fit has not run. H1, H2,
+and H3 remain undecided, the group test remains analyst-exposed but
+model-unscored, and no PhishVN record has been accessed.
 
 ## Source basis and limitations
 

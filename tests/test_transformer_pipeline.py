@@ -931,7 +931,8 @@ def test_private_without_summary_is_incomplete_and_requires_cleanup_before_rerun
     tmp_path, monkeypatch
 ):
     paths = _write_fixture(tmp_path / "incomplete-publication")
-    _install_fixture_trainer(monkeypatch)
+    observed = {}
+    _install_fixture_trainer(monkeypatch, observed)
     paths["output_dir"].mkdir()
     sentinel = paths["output_dir"] / "sentinel"
     sentinel.write_text("created by an interrupted run", encoding="ascii")
@@ -947,6 +948,7 @@ def test_private_without_summary_is_incomplete_and_requires_cleanup_before_rerun
 
     assert sentinel.read_text(encoding="ascii") == "created by an interrupted run"
     assert not paths["summary"].exists()
+    assert observed == {}
 
     sentinel.unlink()
     paths["output_dir"].rmdir()
@@ -957,7 +959,8 @@ def test_summary_without_private_is_incomplete_and_requires_cleanup_before_rerun
     tmp_path, monkeypatch
 ):
     paths = _write_fixture(tmp_path / "incomplete-publication")
-    _install_fixture_trainer(monkeypatch)
+    observed = {}
+    _install_fixture_trainer(monkeypatch, observed)
     paths["summary"].write_text("orphaned completion marker", encoding="ascii")
 
     with pytest.raises(
@@ -973,6 +976,7 @@ def test_summary_without_private_is_incomplete_and_requires_cleanup_before_rerun
         "orphaned completion marker"
     )
     assert not paths["output_dir"].exists()
+    assert observed == {}
 
     paths["summary"].unlink()
     assert _run_fixture(paths)["status"] == "completed_development_validation"

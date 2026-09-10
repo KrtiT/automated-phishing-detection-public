@@ -23,7 +23,9 @@ contract status `frozen_not_run`. Version 2 changes publication semantics but no
 scientific or artifact-content rule. The implementation is unit-tested at
 status `frozen_implemented_not_run`; the official MPS fit has not run. H1, H2,
 and H3 remain undecided, the group test remains analyst-exposed but
-model-unscored, and no PhishVN record has been accessed.
+model-unscored, and no PhishVN record has been accessed. The GMM allocation
+rule is not yet frozen; its separate contract will be completed before any GMM
+execution.
 
 ## Source basis and limitations
 

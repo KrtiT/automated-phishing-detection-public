@@ -357,7 +357,7 @@ def test_v1_contract_remains_byte_for_byte_immutable():
     assert sha256(V1_CONTRACT.read_bytes()).hexdigest() == V1_CONTRACT_SHA256
 
 
-def test_v2_changes_only_identity_version_date_and_publication_semantics():
+def test_v2_changes_only_identity_versions_and_publication_semantics():
     assert V2_CONTRACT.is_file(), f"missing amended contract: {V2_CONTRACT}"
     v1 = json.loads(V1_CONTRACT.read_text(encoding="utf-8"))
     v2 = json.loads(V2_CONTRACT.read_text(encoding="utf-8"))
@@ -365,7 +365,7 @@ def test_v2_changes_only_identity_version_date_and_publication_semantics():
     assert v2["contract_id"] == "rq1-transformer-cascade-v2"
     assert v2["schema_version"] == 2
     assert v2["protocol_version"] == "1.9"
-    assert v2["date"] == "2026-09-09"
+    assert v2["date"] == v1["date"] == "2026-09-09"
     assert v2["publication"] == {
         "temporary_writes": {
             "private_output_directory": "temporary_path_in_destination_parent",
@@ -407,7 +407,6 @@ def test_v2_changes_only_identity_version_date_and_publication_semantics():
         "contract_id",
         "schema_version",
         "protocol_version",
-        "date",
         "publication",
     }
     assert {key: value for key, value in v2.items() if key not in amendment_fields} == {

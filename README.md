@@ -184,9 +184,9 @@ SHA-256
 `686c0d86b33b8a6c2e09cd6e174003db0bd2f7c30b087faf5470e6a270524213`.
 The v1.8 contract remains byte-preserved at SHA-256
 `aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54`
-with status `superseded_unrun`. Version 2 changes only contract identity,
-version, date, and publication semantics; its scientific and artifact-content
-rules are unchanged.
+with status `superseded_unrun`. Version 2 changes only contract identity, schema
+version, protocol version, and publication semantics; its date, scientific rules,
+and artifact-content rules are unchanged.
 The procedure code, tests, CLI, and private/public artifact publication code
 are complete with status `frozen_implemented_not_run`. Reviewed repository
 commit `0793ca3dbc36e49b561cd0ac74968a4644060426` identifies the implementation

@@ -6,7 +6,7 @@ manuscript prose and does not contain an interpretation of results.
 | Item | Value |
 |---|---|
 | Protocol version | `1.9` |
-| Protocol SHA-256 | `476bcebaa24af5f7b24e5b73c9836952e38b13315625bee43fb9c3bf585c2297` |
+| Protocol SHA-256 | `f24eac919cb79d24d2248a94b3a74208f7b4d809ad778b963ad2e62315d78a38` |
 | RQ1 baseline contract | `data/rq1-baseline-contract-v2.json` (`rq1-baselines-v2`) |
 | RQ1 baseline contract SHA-256 | `05d6d0831def7d26448c8dbdc8117800ea2448cdfc2aca2ad95489f22d2d11ba` |
 | RQ1 transformer/cascade contract | `data/rq1-transformer-cascade-contract-v2.json` (`rq1-transformer-cascade-v2`) |
@@ -86,10 +86,10 @@ rule, or hypothesis decision changed in response.
 
 On 2026-09-09, a second broad local wording search displayed row content from
 the same ignored group-test file. The displayed rows informed no model,
-threshold, gate, routing, or scientific-procedure change; the separate v1.9
-publication correction arose from code review and changed no scientific field.
-No fit, score, metric, or PhishVN access occurred. The partition remains
-analyst-exposed but model-unscored.
+threshold, gate, routing, or scientific-procedure change; the separate v2
+transformer publication correction arose from code review and changed no
+scientific field. No fit, score, metric, or PhishVN access occurred. The
+partition remains analyst-exposed but model-unscored.
 
 When generated, `access.group_test_accessed=false` in a baseline artifact
 describes only the `fit-baselines` process input boundary. It does not negate
@@ -240,8 +240,10 @@ contract accepts only the pinned training, validation, preparation-summary,
 baseline-contract, and `Logistic-L1` artifact roles; it accepts no group-test,
 external, PhishVN, runtime-tuning, or test-path input. The implementation is
 unit-tested at status `frozen_implemented_not_run`; the official MPS fit has not
-run. The implementation and its tests did not open the PhiUSIIL group-test
-partition or PhishVN.
+run. Protocol v1.9 separately corrects the still-unrun GMM allocation status to
+a prospective staged freeze; no GMM allocation choice was made. The
+implementation and its tests did not open the PhiUSIIL group-test partition or
+PhishVN.
 
 ## RQ1 and H1
 

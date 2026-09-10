@@ -28,7 +28,7 @@ analyst-exposed but model-unscored.
 | Protocol | `docs/advisor-approval/2026-08-16-realignment-matrix.md` |
 | Protocol version | `1.9` |
 | Protocol date | `2026-09-09` |
-| Protocol SHA-256 | `476bcebaa24af5f7b24e5b73c9836952e38b13315625bee43fb9c3bf585c2297` |
+| Protocol SHA-256 | `f24eac919cb79d24d2248a94b3a74208f7b4d809ad778b963ad2e62315d78a38` |
 | RQ1 baseline contract | `data/rq1-baseline-contract-v2.json` (`rq1-baselines-v2`) |
 | RQ1 baseline contract SHA-256 | `05d6d0831def7d26448c8dbdc8117800ea2448cdfc2aca2ad95489f22d2d11ba` |
 | RQ1 transformer/cascade contract | `data/rq1-transformer-cascade-contract-v2.json` (`rq1-transformer-cascade-v2`) |
@@ -66,7 +66,8 @@ analyst-exposed but model-unscored.
 - `rq1-transformer-cascade-v2`, SHA-256
   `686c0d86b33b8a6c2e09cd6e174003db0bd2f7c30b087faf5470e6a270524213`,
   preserves v1's scientific and artifact-content rules and replaces only its
-  identity, version, date, and publication semantics. Each destination uses a
+  contract identity, schema version, protocol version, and publication semantics.
+  Its date is unchanged. Each destination uses a
   temporary path in its own parent and an atomic no-replace install. The private
   directory is installed first; the public summary is installed last and is the
   completion marker. A completed result requires both. A caught in-process
@@ -114,9 +115,9 @@ detailed record and mitigation are in the
 [research evidence outline](../research-evidence-outline.md). On 2026-09-09, a
 second broad local wording search displayed row content from that ignored file.
 The displayed rows informed no model, threshold, gate, routing, or
-scientific-procedure change; the separate v1.9 publication correction arose
-from code review and changed no scientific field. No fit, score, metric, or
-PhishVN access occurred. The partition remains analyst-exposed but
+scientific-procedure change; the separate v2 transformer publication correction
+arose from code review and changed no scientific field. No fit, score, metric,
+or PhishVN access occurred. The partition remains analyst-exposed but
 model-unscored.
 
 When generated, `access.group_test_accessed=false` in a baseline artifact
@@ -232,7 +233,7 @@ cascade result exists. The GMM execution remains `not_run`.
 | 2026-09-04 | 1.6 | Recorded the v1.5 diagnostic failure on macOS arm64 with Accelerate and froze a scoring-only warning audit with an independent numerical reference. No baseline result was accepted, and no RQ/H decision rule changed. |
 | 2026-09-04 | 1.7 | Recorded that the v1.6 diagnostic passed its prespecified checks as training feasibility only; `rq1-baselines-v2`, SAGA, and the validation scoring audit are frozen before validation. No baseline result was accepted, and no RQ/H decision rule changed. |
 | 2026-09-09 | 1.8 | Recorded the September 3 advisor direction and completed source-provenance release; narrowed RQ1 to selective character-model escalation; froze `rq1-transformer-cascade-v1`, the manual-review boundary, and the complete-window H2 metric at contract status `frozen_not_run`. The procedure was later implemented and review-hardened at `frozen_implemented_not_run`; no transformer, cascade, or GMM fit was run. |
-| 2026-09-09 | 1.9 | Preserved `rq1-transformer-cascade-v1` byte-for-byte as `superseded_unrun` and froze `rq1-transformer-cascade-v2` at `frozen_not_run`. Version 2 changes only identity, version, date, and publication semantics; it does not change a research question, hypothesis, input, model, training, threshold, cascade, manual-review, or artifact-content rule. The implementation is `frozen_implemented_not_run`; no transformer, cascade, or GMM fit was run. |
+| 2026-09-09 | 1.9 | Preserved `rq1-transformer-cascade-v1` byte-for-byte as `superseded_unrun` and froze `rq1-transformer-cascade-v2` at `frozen_not_run`. Version 2 changes only contract identity, schema version, protocol version, and publication semantics; its date is unchanged, and it does not change a research question, hypothesis, input, model, training, threshold, cascade, manual-review, or artifact-content rule. The protocol record also corrected the still-unrun GMM allocation status to a prospective staged freeze without selecting an allocation rule. The implementation is `frozen_implemented_not_run`; no transformer, cascade, or GMM fit was run. |
 
 Any change to a research question, hypothesis, evidence designation, method,
 or decision rule increments the protocol version and records a new hash before

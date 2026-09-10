@@ -27,7 +27,7 @@ TRANSFORMER_CONTRACT_SHA256 = (
 TRANSFORMER_CONTRACT_V2_SHA256 = (
     "686c0d86b33b8a6c2e09cd6e174003db0bd2f7c30b087faf5470e6a270524213"
 )
-V19_MATRIX_SHA256 = "476bcebaa24af5f7b24e5b73c9836952e38b13315625bee43fb9c3bf585c2297"
+V19_MATRIX_SHA256 = "f24eac919cb79d24d2248a94b3a74208f7b4d809ad778b963ad2e62315d78a38"
 SEPTEMBER_REPORT_SHA256 = (
     "b72da89a4cc8a5b06f6ca88d79fe78dd54e3199a96b7450209ea53b4a4c04215"
 )
@@ -475,6 +475,15 @@ def test_protocol_v19_supersedes_unrun_v1_with_the_publication_only_v2_amendment
     assert "incomplete_not_result" in protocol
     assert "not cross-destination atomic" in protocol
     assert "verify" in protocol and "remove" in protocol and "before rerun" in protocol
+    assert "identity, schema and protocol version, date" not in protocol
+    assert "identity, version, date, and publication" not in " ".join(
+        (status, evidence, basis, readme)
+    )
+    for record in (protocol, status, readme):
+        assert (
+            "contract identity, schema version, protocol version, and publication "
+            "semantics" in record
+        )
 
     combined = " ".join((status, evidence, readme))
     assert "reviewed repository commit" in combined
@@ -1271,6 +1280,8 @@ def test_v19_change_record_is_publication_only_and_preserves_v1():
         "threshold, cascade, manual-review, or artifact-content rule",
         "`frozen_implemented_not_run`",
         "no transformer, cascade, or gmm fit",
+        "corrected the still-unrun gmm allocation status to a prospective staged "
+        "freeze without selecting an allocation rule",
     ):
         assert detail in v19_row
 
@@ -1306,7 +1317,7 @@ def test_second_group_test_display_is_recorded_without_changing_study_status():
             "scientific-procedure change" in record
         )
         assert (
-            "separate v1.9 publication correction arose from code review and "
+            "separate v2 transformer publication correction arose from code review and "
             "changed no scientific field" in record
         )
         assert "no fit, score, metric, or phishvn access" in record

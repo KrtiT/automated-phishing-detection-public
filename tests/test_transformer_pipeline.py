@@ -729,6 +729,46 @@ def test_last_input_hash_is_checked_before_its_invalid_content_is_parsed(
     assert not paths["summary"].exists()
 
 
+def test_verified_input_snapshot_is_used_after_same_size_path_mutation(
+    tmp_path, monkeypatch
+):
+    paths = _write_fixture(tmp_path / "run")
+    _install_fixture_trainer(monkeypatch)
+    artifact_path = paths["logistic_l1_artifact"]
+    original_content = artifact_path.read_bytes()
+    changed_content = original_content.replace(
+        b'"n_iter": [\n      12', b'"n_iter": [\n      13'
+    )
+    assert changed_content != original_content
+    assert len(changed_content) == len(original_content)
+    original_metadata = artifact_path.stat()
+    original_stability_check = baselines._require_stable_streams
+    mutated = False
+
+    def mutate_after_verification(streams, expected):
+        nonlocal mutated
+        original_stability_check(streams, expected)
+        if not mutated:
+            artifact_path.write_bytes(changed_content)
+            os.utime(
+                artifact_path,
+                ns=(original_metadata.st_atime_ns, original_metadata.st_mtime_ns),
+            )
+            mutated = True
+
+    monkeypatch.setattr(baselines, "_require_stable_streams", mutate_after_verification)
+
+    summary = _run_fixture(paths)
+
+    assert mutated is True
+    assert artifact_path.read_bytes() == changed_content
+    assert (
+        summary["input_hashes"]["logistic_l1_artifact"]
+        == sha256(original_content).hexdigest()
+    )
+    assert summary["status"] == "completed_development_validation"
+
+
 def test_partition_validation_error_is_translated_and_leaves_no_outputs(
     tmp_path, monkeypatch
 ):
@@ -909,6 +949,27 @@ def test_warning_or_publication_failure_leaves_no_outputs(tmp_path, monkeypatch)
     assert not collision_paths["output_dir"].exists()
     assert not collision_paths["summary"].exists()
     assert not list(collision_paths["summary"].parent.glob(".*.tmp-*"))
+
+
+def test_training_runtime_error_is_translated_without_publication(
+    tmp_path, monkeypatch
+):
+    paths = _write_fixture(tmp_path / "run")
+
+    def deterministic_kernel_failure(*_args, **_kwargs):
+        raise RuntimeError("deterministic MPS kernel unavailable")
+
+    monkeypatch.setattr(
+        transformer_pipeline, "_train_transformer", deterministic_kernel_failure
+    )
+
+    with pytest.raises(
+        transformer_pipeline.TransformerPipelineError,
+        match="deterministic MPS kernel unavailable",
+    ):
+        _run_fixture(paths)
+    assert not paths["output_dir"].exists()
+    assert not paths["summary"].exists()
 
 
 def test_publish_time_competitor_survives_rollback(tmp_path, monkeypatch):

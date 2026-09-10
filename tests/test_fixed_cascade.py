@@ -149,6 +149,46 @@ def test_loader_binds_exact_bytes_contract_and_schema(tmp_path):
         )
 
 
+def test_strict_content_loader_matches_the_public_path_loader(tmp_path):
+    path, digest = _write_artifact(tmp_path)
+    content = path.read_bytes()
+
+    from_path = fixed_cascade.load_logistic_l1_artifact(
+        path, expected_sha256=digest, expected_contract_sha256="0" * 64
+    )
+    from_content = fixed_cascade._load_logistic_l1_artifact_bytes(
+        content,
+        expected_sha256=digest,
+        expected_contract_sha256="0" * 64,
+    )
+
+    assert from_content == from_path
+    assert from_content.score_urls(["https://example.test/path"]) == (
+        from_path.score_urls(["https://example.test/path"])
+    )
+
+
+def test_strict_content_loader_enforces_the_same_hash_and_schema_rules(tmp_path):
+    path, digest = _write_artifact(tmp_path)
+    content = path.read_bytes()
+
+    with pytest.raises(fixed_cascade.FixedCascadeError, match="SHA-256 mismatch"):
+        fixed_cascade._load_logistic_l1_artifact_bytes(
+            content,
+            expected_sha256="f" * 64,
+            expected_contract_sha256="0" * 64,
+        )
+    malformed = content.replace(
+        b'"model_name": "Logistic-L1"', b'"model_name": "length-only"'
+    )
+    with pytest.raises(fixed_cascade.FixedCascadeError, match="model_name"):
+        fixed_cascade._load_logistic_l1_artifact_bytes(
+            malformed,
+            expected_sha256=sha256(malformed).hexdigest(),
+            expected_contract_sha256="0" * 64,
+        )
+
+
 @pytest.mark.parametrize(
     "mutation",
     (

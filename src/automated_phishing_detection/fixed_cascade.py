@@ -520,22 +520,19 @@ class PortableLogisticL1:
         return tuple(float(value) for value in probabilities)
 
 
-def load_logistic_l1_artifact(
-    path: str | os.PathLike[str],
+def _load_logistic_l1_artifact_bytes(
+    content: bytes,
     *,
     expected_sha256: str = OFFICIAL_LOGISTIC_L1_SHA256,
     expected_contract_sha256: str = OFFICIAL_BASELINE_CONTRACT_SHA256,
 ) -> PortableLogisticL1:
-    """Load one exact hash-bound Logistic-L1 artifact without fitting it."""
+    """Load exact artifact bytes that are already isolated from their source path."""
+    if type(content) is not bytes:
+        raise FixedCascadeError("artifact content must be exact bytes")
     expected_sha256 = _lowercase_sha256(expected_sha256, "expected artifact hash")
     expected_contract_sha256 = _lowercase_sha256(
         expected_contract_sha256, "expected contract hash"
     )
-    try:
-        artifact_path = Path(path)
-    except TypeError as exc:
-        raise FixedCascadeError("artifact path must be path-like") from exc
-    content = _read_regular_file(artifact_path)
     observed_sha256 = sha256(content).hexdigest()
     if observed_sha256 != expected_sha256:
         raise FixedCascadeError(
@@ -579,6 +576,24 @@ def load_logistic_l1_artifact(
         max_absolute_probability_difference=probability_difference,
         _threshold_record_json=threshold_json,
         _loader_marker=_LOADED_ARTIFACT_MARKER,
+    )
+
+
+def load_logistic_l1_artifact(
+    path: str | os.PathLike[str],
+    *,
+    expected_sha256: str = OFFICIAL_LOGISTIC_L1_SHA256,
+    expected_contract_sha256: str = OFFICIAL_BASELINE_CONTRACT_SHA256,
+) -> PortableLogisticL1:
+    """Load one exact hash-bound Logistic-L1 artifact without fitting it."""
+    try:
+        artifact_path = Path(path)
+    except TypeError as exc:
+        raise FixedCascadeError("artifact path must be path-like") from exc
+    return _load_logistic_l1_artifact_bytes(
+        _read_regular_file(artifact_path),
+        expected_sha256=expected_sha256,
+        expected_contract_sha256=expected_contract_sha256,
     )
 
 

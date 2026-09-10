@@ -176,12 +176,16 @@ def _expected_input_hashes(policy: _InputHashPolicy) -> dict[str, str]:
     return expected
 
 
-def _verify_hashes(
-    streams: dict[str, BinaryIO], policy: _InputHashPolicy
-) -> dict[str, str]:
+def _snapshot_inputs(
+    streams: dict[str, BinaryIO],
+    stability: dict[str, tuple[int, int, int, int]],
+    policy: _InputHashPolicy,
+) -> tuple[dict[str, bytes], dict[str, str]]:
+    """Read each verified descriptor once and return immutable, hash-bound bytes."""
     expected = _expected_input_hashes(policy)
+    snapshots = {name: stream.read() for name, stream in streams.items()}
     observed = {
-        name: baselines._hash_stream(stream) for name, stream in streams.items()
+        name: sha256(content).hexdigest() for name, content in snapshots.items()
     }
     for name, expected_digest in expected.items():
         if observed[name] != expected_digest:
@@ -189,7 +193,11 @@ def _verify_hashes(
                 f"{name} SHA-256 mismatch: expected {expected_digest}, "
                 f"observed {observed[name]}"
             )
-    return observed
+    try:
+        baselines._require_stable_streams(streams, stability)
+    except baselines.BaselineError as exc:
+        raise TransformerPipelineError(str(exc)) from exc
+    return snapshots, observed
 
 
 def _require_real_directory(path: Path, field: str) -> None:
@@ -657,6 +665,7 @@ def _publish_artifacts(
         output_identity = _path_identity(temporary_output)
         summary_identity = _path_identity(temporary_summary)
         try:
+            # The public summary is the completion marker, so it is published last.
             _publish_path_without_replace(temporary_output, output_dir)
             temporary_output = None
             _publish_path_without_replace(temporary_summary, summary_path)
@@ -724,79 +733,78 @@ def _fit_transformer_cascade(
             streams, stability = baselines._open_input_streams(input_paths, stack)
         except baselines.BaselineError as exc:
             raise TransformerPipelineError(str(exc)) from exc
-        input_hashes = _verify_hashes(streams, _input_hash_policy)
-        try:
-            baselines._require_stable_streams(streams, stability)
-            preparation_summary = baselines._validate_preparation_summary(
-                _load_json(streams["preparation_summary"].read(), "preparation summary")
-            )
-            baseline_contract = baselines._validate_contract(
-                _load_json(streams["baseline_contract"].read(), "baseline contract")
-            )
-        except baselines.BaselineError as exc:
-            raise TransformerPipelineError(str(exc)) from exc
-        transformer_contract = _validate_transformer_contract(
-            _load_json(streams["transformer_contract"].read(), "transformer contract")
+        input_snapshots, input_hashes = _snapshot_inputs(
+            streams, stability, _input_hash_policy
         )
-        if _input_hash_policy == _OFFICIAL_INPUT_HASH_POLICY:
-            accepted = transformer_contract["inputs"]["accepted_roles"]
-            expected_roles = {
-                "train": input_hashes["train"],
-                "validation": input_hashes["validation"],
-                "preparation_summary": input_hashes["preparation_summary"],
-                "logistic_l1_artifact": input_hashes["logistic_l1_artifact"],
-                "contract": input_hashes["baseline_contract"],
-            }
-            if accepted != expected_roles:
-                raise TransformerPipelineError(
-                    "official input hashes do not match the transformer contract"
-                )
-        if baseline_contract["contract_id"] != "rq1-baselines-v2":
-            raise TransformerPipelineError("baseline contract identity is invalid")
-        if preparation_summary["output_hashes"]["train.jsonl"] != input_hashes["train"]:
-            raise TransformerPipelineError(
-                "train hash does not match the preparation summary"
-            )
-        if (
-            preparation_summary["output_hashes"]["validation.jsonl"]
-            != input_hashes["validation"]
-        ):
-            raise TransformerPipelineError(
-                "validation hash does not match the preparation summary"
-            )
+    del streams, stability
 
-        train = _load_partition(
-            streams["train"],
-            split="train",
-            declared=preparation_summary["splits"]["train"],
-            source_csv_sha256=preparation_summary["source_csv_sha256"],
+    try:
+        preparation_summary = baselines._validate_preparation_summary(
+            _load_json(input_snapshots["preparation_summary"], "preparation summary")
         )
-        validation = _load_partition(
-            streams["validation"],
-            split="validation",
-            declared=preparation_summary["splits"]["validation"],
-            source_csv_sha256=preparation_summary["source_csv_sha256"],
+        baseline_contract = baselines._validate_contract(
+            _load_json(input_snapshots["baseline_contract"], "baseline contract")
         )
-        if train.domains & validation.domains:
+    except baselines.BaselineError as exc:
+        raise TransformerPipelineError(str(exc)) from exc
+    transformer_contract = _validate_transformer_contract(
+        _load_json(input_snapshots["transformer_contract"], "transformer contract")
+    )
+    if _input_hash_policy == _OFFICIAL_INPUT_HASH_POLICY:
+        accepted = transformer_contract["inputs"]["accepted_roles"]
+        expected_roles = {
+            "train": input_hashes["train"],
+            "validation": input_hashes["validation"],
+            "preparation_summary": input_hashes["preparation_summary"],
+            "logistic_l1_artifact": input_hashes["logistic_l1_artifact"],
+            "contract": input_hashes["baseline_contract"],
+        }
+        if accepted != expected_roles:
             raise TransformerPipelineError(
-                "registrable domain crosses train and validation"
+                "official input hashes do not match the transformer contract"
             )
-        if train.ordinals & validation.ordinals:
-            raise TransformerPipelineError(
-                "record identifier crosses train and validation"
-            )
-        try:
-            stage1_model = fixed_cascade.load_logistic_l1_artifact(
-                input_paths["logistic_l1_artifact"],
-                expected_sha256=input_hashes["logistic_l1_artifact"],
-                expected_contract_sha256=input_hashes["baseline_contract"],
-            )
-        except fixed_cascade.FixedCascadeError as exc:
-            raise TransformerPipelineError(str(exc)) from exc
-        try:
-            baselines._require_stable_streams(streams, stability)
-        except baselines.BaselineError as exc:
-            raise TransformerPipelineError(str(exc)) from exc
+    if baseline_contract["contract_id"] != "rq1-baselines-v2":
+        raise TransformerPipelineError("baseline contract identity is invalid")
+    if preparation_summary["output_hashes"]["train.jsonl"] != input_hashes["train"]:
+        raise TransformerPipelineError(
+            "train hash does not match the preparation summary"
+        )
+    if (
+        preparation_summary["output_hashes"]["validation.jsonl"]
+        != input_hashes["validation"]
+    ):
+        raise TransformerPipelineError(
+            "validation hash does not match the preparation summary"
+        )
+
+    train = _load_partition(
+        io.BytesIO(input_snapshots["train"]),
+        split="train",
+        declared=preparation_summary["splits"]["train"],
+        source_csv_sha256=preparation_summary["source_csv_sha256"],
+    )
+    validation = _load_partition(
+        io.BytesIO(input_snapshots["validation"]),
+        split="validation",
+        declared=preparation_summary["splits"]["validation"],
+        source_csv_sha256=preparation_summary["source_csv_sha256"],
+    )
+    if train.domains & validation.domains:
+        raise TransformerPipelineError(
+            "registrable domain crosses train and validation"
+        )
+    if train.ordinals & validation.ordinals:
+        raise TransformerPipelineError("record identifier crosses train and validation")
+    try:
+        stage1_model = fixed_cascade._load_logistic_l1_artifact_bytes(
+            input_snapshots["logistic_l1_artifact"],
+            expected_sha256=input_hashes["logistic_l1_artifact"],
+            expected_contract_sha256=input_hashes["baseline_contract"],
+        )
+    except fixed_cascade.FixedCascadeError as exc:
+        raise TransformerPipelineError(str(exc)) from exc
+    # Parsed objects retain only required fields; release the source snapshots before fit.
+    del input_snapshots, baseline_contract, preparation_summary
 
     try:
         vocabulary = character_sequence.build_character_vocabulary(train.raw_urls)
@@ -832,6 +840,7 @@ def _fit_transformer_cascade(
         character_transformer.TransformerTrainingError,
         fixed_cascade.FixedCascadeError,
         FloatingPointError,
+        RuntimeError,
         TypeError,
         ValueError,
     ) as exc:

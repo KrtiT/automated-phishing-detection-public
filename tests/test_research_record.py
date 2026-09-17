@@ -1481,6 +1481,20 @@ def test_gmm_description_preserves_original_gate_and_reports_overlap():
     assert "post hoc" in EVIDENCE_OUTLINE.read_text(encoding="utf-8").lower()
 
 
+def test_controlled_retry_preserves_the_first_attempt_and_scientific_rules():
+    status = _compact(STATUS.read_text(encoding="utf-8"))
+    assert "controlled retry" in status
+    assert "2026-09-17t20:42:45z" in status
+    assert "e866441f2ff858472d031b8d358fd469897c6a65" in status
+    assert "35272134401" in status
+    assert "passed_no_fit_validation_only" in status
+    assert "ba92ef7432b52e8222d30b9df71a13b04d7629ec0204a281c2f44f7eb26df3df" in status
+    assert "running_development_validation" in status
+    assert "no completed transformer, threshold, or cascade result exists" in status
+    assert "gmm retains its frozen portable scorer" in status
+    assert "later endpoints cannot reverse this failed mandatory gate" in status
+
+
 def test_second_group_test_display_is_recorded_without_changing_study_status():
     status_audit = _compact(
         _section(STATUS.read_text(encoding="utf-8"), "Execution Audit")

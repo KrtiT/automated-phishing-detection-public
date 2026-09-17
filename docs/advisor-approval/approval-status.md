@@ -16,7 +16,10 @@ Protocol v1.8 froze `rq1-transformer-cascade-v1`; it was never fit and is now
 CLI, and private/public artifact publication code are complete, and the
 pre-execution
 implementation status was `frozen_implemented_not_run`; its first execution
-is `stopped_stage_one_integrity_check`. Repository commits
+is `stopped_stage_one_integrity_check`. At the 2026-09-17T20:43:08Z
+cutoff, a controlled retry is `running_development_validation` after the
+original baseline scorer was restored and verified without fitting.
+Repository commits
 `a8ee067bda8fd45d19f5c4b794ba21f58d1947fc` and
 `0793ca3dbc36e49b561cd0ac74968a4644060426` record the initial implementation
 and review hardening; they are not performance or result runs. No completed
@@ -50,7 +53,7 @@ analyst-exposed but model-unscored.
 | Source-freeze release tag | `phiusiil-development-v1` |
 | Source-freeze release | [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1) |
 | Development preparation | `complete` |
-| Current technical milestone | Baseline v2 development validation complete; transformer/cascade first execution `stopped_stage_one_integrity_check`; GMM development validation complete with failed false-alert gate (28/252 windows). Historical attempts remain recorded below. |
+| Current technical milestone | Baseline v2 development validation complete; transformer/cascade controlled retry `running_development_validation` at 2026-09-17T20:43:08Z after its first execution stopped; GMM development validation complete with failed false-alert gate (28/252 windows). Historical attempts remain recorded below. |
 | Current hypothesis status | H1 `undecided`; H2 `undecided`; H3 `undecided` |
 | Legacy base tag | `legacy-v2-clean-2026-08-16` |
 | Legacy base SHA | `a5eceecf21ad5ce29c4ab8f8d4de0edc8b73b240` |
@@ -264,9 +267,38 @@ candidates rather than the accepted 11,279. Its threshold difference also
 exceeded the recorded numerical audit, although decisions at the unchanged
 accepted threshold were identical. Reconstructing the original scorer and
 layout reproduced the full threshold record and warning audit exactly.
-The correction must restore that path, not loosen candidate/count checks or
-tolerances. Stage-one binding will be checked before any further transformer
-training. The stopped attempt remains part of the record.
+Commit `cc7edd66409473e7aba5c40c846135699aa1e192` restores that path without
+loosening candidate/count checks or tolerances. It moves stage-one binding
+before vocabulary construction, tensors, and transformer training. GMM retains
+its frozen portable scorer. The stopped attempt remains part of the record.
+
+#### Controlled Retry
+
+The retry started at `2026-09-17T20:42:45Z` from clean, published commit
+`e866441f2ff858472d031b8d358fd469897c6a65`, after
+[CI passed](https://github.com/KrtiT/automated-phishing-detection-public/actions/runs/35272134401).
+The full local suite passed 601 tests; a separate 124-test check passed on
+the original Accelerate execution environment. These checks verify software,
+not scientific outcomes.
+
+Before the retry, a hash-checked validation-only preflight returned
+`passed_no_fit_validation_only`. The complete threshold record and numerical
+warning audit matched the accepted baseline exactly, including all 11,279
+threshold candidates and the unchanged threshold `0.2670846328466124`.
+The preflight script SHA-256 is
+`d0949ddbf40fb85b4253f7010eb3b85b3245a04d88eeadb5ada4755b09cf5d37`;
+its aggregate receipt SHA-256 is
+`ba92ef7432b52e8222d30b9df71a13b04d7629ec0204a281c2f44f7eb26df3df`.
+No baseline was refit. The transformer contract, seed, training and selection
+rules, and output destinations are unchanged. The environment lock SHA-256 is
+`7912cb1be00e009b0fcbaa506fa6eb838c7d4a4743be6e87dc687469b5ccb1af`.
+Its only change from the first attempt promotes the already installed
+`threadpoolctl==3.6.0` from a transitive to a direct dependency; all installed
+dependency versions match the original environment.
+
+At `2026-09-17T20:43:08Z`, the retry is running and has no completed result.
+The original stopped-run record and both sets of private execution receipts
+are preserved separately. No group-test or PhishVN input is accepted.
 
 ### GMM Development Execution
 
@@ -291,6 +323,7 @@ quantile, strict alert count, and gate from the stored window traces.
 
 The status is `completed_development_validation`, not a passed hypothesis.
 This monitor failed the required false-alert component and does not support H2.
+Later endpoints cannot reverse this failed mandatory gate for the frozen monitor.
 External detection and future-routing outcomes remain unmeasured. H1, H2, and
 H3 retain their contract status `undecided`; no group-test or PhishVN input was
 read by this execution.

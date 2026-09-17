@@ -1458,6 +1458,29 @@ def test_transformer_stopped_run_is_preserved_without_claiming_a_result():
     assert "rq1-transformer-cascade-v2-execution.json" in status
 
 
+def test_gmm_description_preserves_original_gate_and_reports_overlap():
+    path = ROOT / "reports" / "rq2-gmm-development-v1-description.json"
+    assert sha256(path.read_bytes()).hexdigest() == (
+        "fe0e8c9fdae32fc48118102b71e0cda7f771b9ab77e49c4146d2f3479c052712"
+    )
+    description = json.loads(path.read_bytes())
+    assert description["analysis_stage"] == "post_hoc_descriptive_only"
+    assert (
+        description["source_hashes"]["summary_sha256"]
+        == sha256(GMM_SUMMARY.read_bytes()).hexdigest()
+    )
+    assert description["original_audit"]["false_alert_gate_met"] is False
+    assert description["original_audit"]["alert_count"] == 28
+    assert description["original_audit"]["window_count"] == 252
+    assert description["original_audit"]["maximum_allowed_alerts"] == 12
+    audit = description["streams"]["audit"]
+    assert audit["consecutive_alert_run_count"] == 9
+    assert audit["unique_rows_covered_by_alert_windows"] == 3456
+    assert audit["alert_window_row_memberships_counting_overlap"] == 7168
+    assert "Remaining Executable Work" in EVIDENCE_OUTLINE.read_text(encoding="utf-8")
+    assert "post hoc" in EVIDENCE_OUTLINE.read_text(encoding="utf-8").lower()
+
+
 def test_second_group_test_display_is_recorded_without_changing_study_status():
     status_audit = _compact(
         _section(STATUS.read_text(encoding="utf-8"), "Execution Audit")

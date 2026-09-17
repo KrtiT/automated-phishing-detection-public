@@ -137,6 +137,10 @@ calibration boundary was not retuned. This is a failed development gate, not
 evidence that the monitor detects useful external shifts or improves routing.
 The [aggregate record](../reports/rq2-gmm-development-v1-summary.json) preserves
 the result; external detection and routing outcomes remain unmeasured.
+The [post hoc description](research-evidence-outline.md#post-hoc-audit-description)
+compares saved window-score distributions and accounts for overlapping alerts.
+It does not identify a causal explanation, select another threshold, or replace
+the original result.
 
 ## Closest prior work and contribution boundary
 

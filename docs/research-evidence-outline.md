@@ -371,6 +371,37 @@ Current status: routing mechanics are `implemented`; GMM execution is
 failed. This result does not support H2. External monitoring and routing-outcome
 evidence remain `not_run`; H1, H2, and H3 remain `undecided`.
 
+### Post Hoc Audit Description
+
+The [saved-window descriptor](../scripts/describe_gmm_audit.py), committed at
+`dc3def7dddfeb2c161d567d89b9cd5fcf0457016` before its recorded execution, reads
+only the hash-pinned summary and saved audit trace. It performs no fitting,
+new URL scoring, or threshold selection. The
+[aggregate description](../reports/rq2-gmm-development-v1-description.json) has
+SHA-256 `fe0e8c9fdae32fc48118102b71e0cda7f771b9ab77e49c4146d2f3479c052712`.
+
+| Saved window score | Calibration | Audit |
+|---|---:|---:|
+| Median | -70.975987 | -70.619527 |
+| 90th percentile | -68.156625 | -67.236718 |
+| 95th percentile | -67.457924 | -65.330474 |
+| Maximum | 482882.365753 | -47.305379 |
+| Above the original boundary | 13/252 | 28/252 |
+
+The audit's upper quantiles are higher, but calibration has a much larger
+maximum. These observations do not show a uniform shift or identify its cause.
+The audit's 28 alerts form nine consecutive-window runs and cover 3,456 unique
+row positions, rather than 7,168 independent memberships. Window overlap does
+not explain away the failed gate: the frozen rule counts windows, permits at
+most 12 of these 252 windows to alert, and still fails at 28.
+
+The audit percentiles above are descriptions, not replacement thresholds.
+Calibration's 13 exceedances are compatible with its linearly interpolated
+95th percentile and do not imply a coding error. These saved scores cannot
+distinguish feature leverage, composition, ordering, or model misspecification
+as the cause. Any later feature-level investigation is exploratory and must
+leave the fitted monitor, allocation, threshold, and failed result unchanged.
+
 ## RQ3 and H3
 
 **Question:** What detection, escalation, throughput, and latency tradeoffs

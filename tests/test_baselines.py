@@ -22,6 +22,62 @@ def _validated_contract():
     return baselines._validate_contract(json.loads(CONTRACT.read_text()))
 
 
+def test_shared_scoring_audit_preserves_complete_synthetic_baseline_artifact(
+    monkeypatch,
+):
+    rng = np.random.default_rng(521)
+    train = rng.normal(size=(100, 25))
+    train_labels = np.tile(np.asarray([0, 1], dtype=np.int8), 50)
+    validation = rng.normal(size=(420, 25))
+    labels = np.asarray([0] * 400 + [1] * 20, dtype=np.int8)
+    hashes = {
+        name: "0" * 64
+        for name in ("contract", "train", "validation", "preparation_summary")
+    }
+    contract = _validated_contract()
+    original = baselines._fit_model(
+        "Logistic-L1", train, train_labels, validation, labels, hashes, contract
+    )
+    scorer = baselines._audited_validation_scores
+
+    def inline_reference(model_name, scaled, classifier, *, policy, environment):
+        decisions, decision_warnings = baselines._score_with_warning_policy(
+            "decision_function",
+            lambda: classifier.decision_function(scaled),
+            policy=policy,
+            environment=environment,
+        )
+        probabilities, probability_warnings = baselines._score_with_warning_policy(
+            "predict_proba",
+            lambda: classifier.predict_proba(scaled),
+            policy=policy,
+            environment=environment,
+        )
+        decision_difference, probability_difference = (
+            baselines._reference_score_differences(
+                model_name, scaled, classifier, decisions, probabilities, policy
+            )
+        )
+        expected_audit = {
+            "platform_identity": environment,
+            "warning_records": decision_warnings + probability_warnings,
+            "max_absolute_decision_difference": decision_difference,
+            "max_absolute_probability_difference": probability_difference,
+        }
+        scores, audit = scorer(
+            model_name, scaled, classifier, policy=policy, environment=environment
+        )
+        np.testing.assert_array_equal(scores, probabilities[:, 1])
+        assert audit == expected_audit
+        return probabilities[:, 1], expected_audit
+
+    monkeypatch.setattr(baselines, "_audited_validation_scores", inline_reference)
+    repeated = baselines._fit_model(
+        "Logistic-L1", train, train_labels, validation, labels, hashes, contract
+    )
+    assert repeated == original
+
+
 def _warning_operation(
     message="divide by zero encountered in matmul",
     *,

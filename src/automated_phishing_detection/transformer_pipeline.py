@@ -578,6 +578,7 @@ def _cascade_metadata(
     calibration: dict[str, object],
     input_hashes: dict[str, str],
     transformer_sha256: str,
+    stage1_warnings: list[dict[str, str]],
 ) -> dict[str, object]:
     return {
         "access": {"group_test_accessed": False, "phishvn_accessed": False},
@@ -595,7 +596,7 @@ def _cascade_metadata(
             "refit": False,
         },
         "transformer_metadata_sha256": transformer_sha256,
-        "warnings": [],
+        "warnings": stage1_warnings,
     }
 
 
@@ -610,6 +611,7 @@ def _public_summary(
     contract: dict,
     input_hashes: dict[str, str],
     artifact_hashes: dict[str, str],
+    stage1_warnings: list[dict[str, str]],
 ) -> dict[str, object]:
     status = (
         "completed_development_validation"
@@ -663,7 +665,7 @@ def _public_summary(
             "sha256": artifact_hashes["vocabulary.json"],
             "size": vocabulary.size,
         },
-        "warnings": [],
+        "warnings": stage1_warnings,
     }
 
 
@@ -914,6 +916,18 @@ def _fit_transformer_cascade(
     del input_snapshots, baseline_contract, preparation_summary
 
     try:
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            stage1_probabilities, stage1_audit = (
+                fixed_cascade.score_logistic_l1_authoritative(
+                    stage1_model, validation.raw_urls
+                )
+            )
+            fixed_cascade._validate_stage1_threshold_binding(
+                stage1_model,
+                np.asarray(stage1_probabilities, dtype=np.float64),
+                validation.labels,
+            )
         vocabulary = character_sequence.build_character_vocabulary(train.raw_urls)
         train_tensors = _encode_partition(train, vocabulary)
         validation_tensors = _encode_partition(validation, vocabulary)
@@ -931,7 +945,6 @@ def _fit_transformer_cascade(
             transformer_threshold = baselines.select_validation_threshold(
                 validation_probabilities, validation.labels
             )
-            stage1_probabilities = stage1_model.score_urls(validation.raw_urls)
             cascade = fixed_cascade.calibrate_fixed_cascade(
                 stage1_model,
                 stage1_probabilities,
@@ -970,10 +983,15 @@ def _fit_transformer_cascade(
         training_device=_training_device,
     )
     transformer_bytes = _canonical_json_bytes(transformer)
+    stage1_warnings = [
+        {**record, "stage": f"stage1.{record['stage']}"}
+        for record in stage1_audit["warning_records"]
+    ]
     cascade_metadata = _cascade_metadata(
         calibration=cascade,
         input_hashes=input_hashes,
         transformer_sha256=sha256(transformer_bytes).hexdigest(),
+        stage1_warnings=stage1_warnings,
     )
     private_contents = {
         "cascade.json": _canonical_json_bytes(cascade_metadata),
@@ -998,6 +1016,7 @@ def _fit_transformer_cascade(
         contract=transformer_contract,
         input_hashes=input_hashes,
         artifact_hashes=artifact_hashes,
+        stage1_warnings=stage1_warnings,
     )
     _validate_public_summary(summary)
     try:

@@ -16,6 +16,7 @@ from automated_phishing_detection import (
     baselines,
     character_sequence,
     character_transformer,
+    fixed_cascade,
     transformer_pipeline,
 )
 from automated_phishing_detection.url_features import FEATURE_NAMES
@@ -403,6 +404,125 @@ def _rewrite_partition(paths, partition, mutation):
             f"{partition}_sha256": sha256(content).hexdigest(),
         }
     )
+
+
+def test_stage1_threshold_binding_precedes_vocabulary_tensors_and_training(
+    tmp_path, monkeypatch
+):
+    paths = _write_fixture(tmp_path / "run")
+    artifact = json.loads(paths["logistic_l1_artifact"].read_text())
+    artifact["validation_threshold"]["candidate_count"] += 1
+    content = _canonical_json_bytes(artifact)
+    paths["logistic_l1_artifact"].write_bytes(content)
+    paths["policy"] = transformer_pipeline._InputHashPolicy(
+        **{
+            **vars(paths["policy"]),
+            "logistic_l1_artifact_sha256": sha256(content).hexdigest(),
+        }
+    )
+    observed = []
+
+    def forbidden_allocation(*args, **kwargs):
+        observed.append("allocation or training")
+        raise RuntimeError("transformer would fail before stage-one validation")
+
+    monkeypatch.setattr(
+        character_sequence, "build_character_vocabulary", forbidden_allocation
+    )
+    monkeypatch.setattr(transformer_pipeline, "_encode_partition", forbidden_allocation)
+    monkeypatch.setattr(
+        transformer_pipeline, "_train_transformer", forbidden_allocation
+    )
+    with pytest.raises(
+        transformer_pipeline.TransformerPipelineError,
+        match="stage-one artifact threshold does not match",
+    ):
+        _run_fixture(paths)
+    assert observed == []
+    assert not paths["output_dir"].exists()
+    assert not paths["summary"].exists()
+
+
+def test_stage1_authoritative_warnings_are_retained_without_schema_changes(
+    tmp_path, monkeypatch
+):
+    paths = _write_fixture(tmp_path / "run")
+    _install_fixture_trainer(monkeypatch)
+    environment = baselines._SCORING_INTEGRITY_POLICY["allowed_warning"]["environment"]
+    messages = baselines._SCORING_INTEGRITY_POLICY["allowed_warning"]["messages"]
+
+    def warning_decision(self, matrix):
+        for message in messages:
+            warnings.warn_explicit(
+                message,
+                RuntimeWarning,
+                filename="synthetic-extmath.py",
+                lineno=1,
+                module="sklearn.utils.extmath",
+            )
+        # Isolate injected warnings from platform-dependent BLAS warnings.
+        return (
+            np.einsum("ij,j->i", matrix, self.coef_[0], optimize=False)
+            + self.intercept_[0]
+        )
+
+    def forbidden_portable(*args, **kwargs):
+        pytest.fail(
+            "transformer stage one must use authoritative sklearn probabilities"
+        )
+
+    monkeypatch.setattr(baselines, "_platform_identity", lambda: dict(environment))
+    monkeypatch.setattr(
+        baselines.LogisticRegression, "decision_function", warning_decision
+    )
+    monkeypatch.setattr(
+        fixed_cascade.PortableLogisticL1, "score_urls", forbidden_portable
+    )
+    summary = _run_fixture(paths)
+    private = json.loads((paths["output_dir"] / "cascade.json").read_text())
+    expected_warnings = [
+        {"stage": f"stage1.{stage}", "category": "RuntimeWarning", "message": message}
+        for stage in ("decision_function", "predict_proba")
+        for message in messages
+    ]
+    assert summary["warnings"] == expected_warnings
+    assert private["warnings"] == expected_warnings
+    assert private["stage1"]["refit"] is False
+    assert set(private["stage1"]) == {
+        "artifact_sha256",
+        "baseline_contract_sha256",
+        "model",
+        "refit",
+    }
+    serialized = paths["summary"].read_text()
+    for private_field in ("raw_url", "coefficients", "probabilities", "half_width"):
+        assert f'"{private_field}"' not in serialized
+
+
+def test_stage1_binding_warning_stops_before_transformer_allocation(
+    tmp_path, monkeypatch
+):
+    paths = _write_fixture(tmp_path / "run")
+
+    def warning_binding(*args, **kwargs):
+        warnings.warn("unexpected stage-one binding warning", RuntimeWarning)
+
+    def forbidden_allocation(*args, **kwargs):
+        pytest.fail("stage-one warnings must stop before transformer allocation")
+
+    monkeypatch.setattr(
+        fixed_cascade, "_validate_stage1_threshold_binding", warning_binding
+    )
+    monkeypatch.setattr(
+        character_sequence, "build_character_vocabulary", forbidden_allocation
+    )
+    with pytest.raises(
+        transformer_pipeline.TransformerPipelineError,
+        match="pipeline stopped on warning: unexpected stage-one binding warning",
+    ):
+        _run_fixture(paths)
+    assert not paths["output_dir"].exists()
+    assert not paths["summary"].exists()
 
 
 def test_fixture_pipeline_is_train_only_validation_only_and_separates_outputs(

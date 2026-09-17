@@ -1,9 +1,13 @@
 import json
+import warnings
+from dataclasses import replace
 from hashlib import sha256
 
 import numpy as np
 import pytest
 from scipy.special import expit
+from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import StandardScaler
 
 from automated_phishing_detection import baselines, fixed_cascade
 from automated_phishing_detection.url_features import (
@@ -240,6 +244,169 @@ def test_portable_model_rejects_invalid_url_inputs(tmp_path, urls):
 
     with pytest.raises(fixed_cascade.FixedCascadeError):
         loaded.score_urls(urls)
+
+
+def _nonzero_scoring_fixture(tmp_path):
+    artifact = _artifact()
+    rng = np.random.default_rng(417)
+    width = len(FEATURE_NAMES)
+    artifact["scaler"]["mean"] = rng.normal(size=width).tolist()
+    artifact["scaler"]["scale"] = rng.uniform(1, 10, size=width).tolist()
+    artifact["classifier"]["coefficients"] = [(rng.normal(size=width) * 0.1).tolist()]
+    artifact["classifier"]["intercept"] = [0.2]
+    artifact["software_versions"] = baselines._software_versions()
+    path, digest = _write_artifact(tmp_path, artifact)
+    model = fixed_cascade.load_logistic_l1_artifact(
+        path, expected_sha256=digest, expected_contract_sha256="0" * 64
+    )
+    urls = tuple(
+        f"https://site-{index}.example/" + "x" * (index % 41) + f"?q={index}"
+        for index in range(420)
+    )
+    return model, urls
+
+
+def _original_baseline_scores_and_audit(model, urls):
+    features = np.asarray([extract_url_features(url) for url in urls], dtype=np.float64)
+    indices = np.asarray([FEATURE_NAMES.index(name) for name in model.feature_names])
+    matrix = features[:, indices]
+    scaler = StandardScaler()
+    scaler.mean_ = np.asarray(model.mean)
+    scaler.scale_ = np.asarray(model.scale)
+    scaler.var_ = np.asarray(model.variance)
+    scaler.n_features_in_ = len(FEATURE_NAMES)
+    scaled = scaler.transform(matrix)
+    assert scaled.flags.f_contiguous and not scaled.flags.c_contiguous
+    classifier = LogisticRegression()
+    classifier.coef_ = np.asarray([model.coefficients])
+    classifier.intercept_ = np.asarray([model.intercept])
+    classifier.classes_ = np.asarray([0, 1])
+    classifier.n_features_in_ = len(FEATURE_NAMES)
+    policy = baselines._SCORING_INTEGRITY_POLICY
+    environment = baselines._platform_identity()
+    decisions, decision_warnings = baselines._score_with_warning_policy(
+        "decision_function",
+        lambda: classifier.decision_function(scaled),
+        policy=policy,
+        environment=environment,
+    )
+    probabilities, probability_warnings = baselines._score_with_warning_policy(
+        "predict_proba",
+        lambda: classifier.predict_proba(scaled),
+        policy=policy,
+        environment=environment,
+    )
+    decision_difference, probability_difference = (
+        baselines._reference_score_differences(
+            "Logistic-L1", scaled, classifier, decisions, probabilities, policy
+        )
+    )
+    return probabilities[:, 1], {
+        "platform_identity": environment,
+        "warning_records": decision_warnings + probability_warnings,
+        "max_absolute_decision_difference": decision_difference,
+        "max_absolute_probability_difference": probability_difference,
+    }
+
+
+def test_authoritative_scorer_matches_original_layout_without_changing_portable(
+    tmp_path, monkeypatch
+):
+    model, urls = _nonzero_scoring_fixture(tmp_path)
+    expected, expected_audit = _original_baseline_scores_and_audit(model, urls)
+    portable_before = model.score_urls(urls)
+    assert np.any(expected != np.asarray(portable_before))
+
+    def forbidden_fit(*args, **kwargs):
+        pytest.fail("reconstructing a pinned artifact must never fit")
+
+    monkeypatch.setattr(StandardScaler, "fit", forbidden_fit)
+    monkeypatch.setattr(LogisticRegression, "fit", forbidden_fit)
+    probabilities, audit = fixed_cascade.score_logistic_l1_authoritative(model, urls)
+
+    np.testing.assert_array_equal(probabilities, expected)
+    assert model.score_urls(urls) == portable_before
+    assert audit == expected_audit
+    assert 0.0 <= audit["max_absolute_decision_difference"] < 1e-12
+    assert 0.0 <= audit["max_absolute_probability_difference"] < 1e-12
+
+
+@pytest.mark.parametrize("urls", ([], "https://example.test", [None]))
+def test_authoritative_scorer_rejects_invalid_urls(tmp_path, urls):
+    model, _ = _nonzero_scoring_fixture(tmp_path)
+    with pytest.raises(fixed_cascade.FixedCascadeError):
+        fixed_cascade.score_logistic_l1_authoritative(model, urls)
+
+
+def test_authoritative_scorer_requires_hash_loaded_state(tmp_path):
+    model, urls = _nonzero_scoring_fixture(tmp_path)
+    with pytest.raises(fixed_cascade.FixedCascadeError, match="loaded"):
+        fixed_cascade.score_logistic_l1_authoritative(
+            replace(model, _loader_marker=None), urls
+        )
+
+
+@pytest.mark.parametrize("package", ("numpy", "scikit-learn", "scipy"))
+def test_authoritative_scorer_rejects_runtime_version_drift(
+    tmp_path, monkeypatch, package
+):
+    model, urls = _nonzero_scoring_fixture(tmp_path)
+    versions = {**baselines._software_versions(), package: "unapproved-version"}
+    monkeypatch.setattr(baselines, "_software_versions", lambda: versions)
+    with pytest.raises(fixed_cascade.FixedCascadeError, match="software versions"):
+        fixed_cascade.score_logistic_l1_authoritative(model, urls)
+
+
+def test_authoritative_scorer_retains_all_allowed_warning_records(
+    tmp_path, monkeypatch
+):
+    model, urls = _nonzero_scoring_fixture(tmp_path)
+    environment = baselines._SCORING_INTEGRITY_POLICY["allowed_warning"]["environment"]
+    messages = baselines._SCORING_INTEGRITY_POLICY["allowed_warning"]["messages"]
+
+    def warning_decision(self, matrix):
+        for message in messages:
+            warnings.warn_explicit(
+                message,
+                RuntimeWarning,
+                filename="synthetic-extmath.py",
+                lineno=1,
+                module="sklearn.utils.extmath",
+            )
+        # Isolate injected warnings from platform-dependent BLAS warnings.
+        return (
+            np.einsum("ij,j->i", matrix, self.coef_[0], optimize=False)
+            + self.intercept_[0]
+        )
+
+    monkeypatch.setattr(baselines, "_platform_identity", lambda: dict(environment))
+    monkeypatch.setattr(LogisticRegression, "decision_function", warning_decision)
+    probabilities, audit = fixed_cascade.score_logistic_l1_authoritative(model, urls)
+    assert len(probabilities) == len(urls)
+    assert audit["warning_records"] == [
+        {"stage": stage, "category": "RuntimeWarning", "message": message}
+        for stage in ("decision_function", "predict_proba")
+        for message in messages
+    ]
+
+
+@pytest.mark.parametrize("failure", ("warning", "wrong_probability", "nonfinite"))
+def test_authoritative_scorer_fails_closed_on_scoring_fault(
+    tmp_path, monkeypatch, failure
+):
+    model, urls = _nonzero_scoring_fixture(tmp_path)
+    original_predict = LogisticRegression.predict_proba
+
+    def invalid_predict(self, matrix):
+        if failure == "warning":
+            warnings.warn("unexpected scoring warning", RuntimeWarning)
+        probabilities = original_predict(self, matrix)
+        probabilities[0, 0] = np.nan if failure == "nonfinite" else 0.0
+        return probabilities
+
+    monkeypatch.setattr(LogisticRegression, "predict_proba", invalid_predict)
+    with pytest.raises(fixed_cascade.FixedCascadeError):
+        fixed_cascade.score_logistic_l1_authoritative(model, urls)
 
 
 def test_scoring_uses_inclusive_band_and_selected_path_score_and_decision():

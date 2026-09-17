@@ -1018,6 +1018,48 @@ def _reference_score_differences(
         raise BaselineError(f"{model_name} reference scoring failed: {exc}") from exc
 
 
+def _audited_validation_scores(
+    model_name: str,
+    scaled_validation: np.ndarray,
+    classifier: LogisticRegression,
+    *,
+    policy: dict,
+    environment: dict[str, str],
+) -> tuple[np.ndarray, dict[str, object]]:
+    """Return authoritative sklearn probabilities and the frozen integrity audit."""
+    try:
+        decision_scores, decision_warnings = _score_with_warning_policy(
+            "decision_function",
+            lambda: classifier.decision_function(scaled_validation),
+            policy=policy,
+            environment=environment,
+        )
+        probabilities, probability_warnings = _score_with_warning_policy(
+            "predict_proba",
+            lambda: classifier.predict_proba(scaled_validation),
+            policy=policy,
+            environment=environment,
+        )
+    except (ValueError, Warning, FloatingPointError) as exc:
+        raise BaselineError(f"{model_name} scoring failed: {exc}") from exc
+    decision_difference, probability_difference = _reference_score_differences(
+        model_name,
+        scaled_validation,
+        classifier,
+        decision_scores,
+        probabilities,
+        policy,
+    )
+    scores = np.asarray(probabilities, dtype=np.float64)[:, 1]
+    scoring_audit = {
+        "platform_identity": environment,
+        "warning_records": decision_warnings + probability_warnings,
+        "max_absolute_decision_difference": decision_difference,
+        "max_absolute_probability_difference": probability_difference,
+    }
+    return scores, scoring_audit
+
+
 def _fit_model(
     model_name: str,
     train_features: np.ndarray,
@@ -1105,42 +1147,19 @@ def _fit_model(
     if not all(np.all(np.isfinite(value)) for value in finite_state):
         raise BaselineError(f"{model_name} fitted state contains nonfinite values")
 
-    try:
-        decision_scores, decision_warnings = _score_with_warning_policy(
-            "decision_function",
-            lambda: classifier.decision_function(scaled_validation),
-            policy=scoring_policy,
-            environment=environment,
-        )
-        probabilities, probability_warnings = _score_with_warning_policy(
-            "predict_proba",
-            lambda: classifier.predict_proba(scaled_validation),
-            policy=scoring_policy,
-            environment=environment,
-        )
-    except (ValueError, Warning, FloatingPointError) as exc:
-        raise BaselineError(f"{model_name} scoring failed: {exc}") from exc
-    decision_difference, probability_difference = _reference_score_differences(
+    scores, scoring_audit = _audited_validation_scores(
         model_name,
         scaled_validation,
         classifier,
-        decision_scores,
-        probabilities,
-        scoring_policy,
+        policy=scoring_policy,
+        environment=environment,
     )
-    scores = np.asarray(probabilities, dtype=np.float64)[:, 1]
     try:
         with warnings.catch_warnings():
             warnings.simplefilter("error")
             threshold = select_validation_threshold(scores, validation_labels)
     except (ValueError, Warning, FloatingPointError) as exc:
         raise BaselineError(f"{model_name} threshold selection failed: {exc}") from exc
-    scoring_audit = {
-        "platform_identity": environment,
-        "warning_records": decision_warnings + probability_warnings,
-        "max_absolute_decision_difference": decision_difference,
-        "max_absolute_probability_difference": probability_difference,
-    }
     return {
         "schema_version": 2,
         "artifact_type": "rq1-baseline-model",

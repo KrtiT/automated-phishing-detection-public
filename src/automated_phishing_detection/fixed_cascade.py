@@ -15,7 +15,10 @@ from pathlib import Path
 
 import numpy as np
 from scipy.special import expit
+from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import StandardScaler
 
+from . import baselines
 from .baselines import clopper_pearson_upper, select_validation_threshold
 from .url_features import FEATURE_NAMES, FeatureExtractionError, extract_url_features
 
@@ -469,6 +472,9 @@ class PortableLogisticL1:
     contract_sha256: str
     max_absolute_probability_difference: float
     _threshold_record_json: str
+    _software_versions: tuple[tuple[str, str], ...]
+    _n_samples_seen: int
+    _n_iter: int
     _loader_marker: object = dataclass_field(repr=False, compare=False)
 
     @property
@@ -518,6 +524,76 @@ class PortableLogisticL1:
         ):
             raise FixedCascadeError("portable Logistic-L1 scores are invalid")
         return tuple(float(value) for value in probabilities)
+
+
+def score_logistic_l1_authoritative(
+    model: PortableLogisticL1, raw_urls: object
+) -> tuple[tuple[float, ...], dict[str, object]]:
+    """Reconstruct the hash-loaded baseline's sklearn scoring path without fitting."""
+    if (
+        type(model) is not PortableLogisticL1
+        or model._loader_marker is not _LOADED_ARTIFACT_MARKER
+    ):
+        raise FixedCascadeError("model must be a loaded PortableLogisticL1 artifact")
+    if baselines._software_versions() != dict(model._software_versions):
+        raise FixedCascadeError(
+            "runtime software versions do not match the frozen baseline artifact"
+        )
+    if isinstance(raw_urls, (str, bytes)) or not isinstance(raw_urls, Iterable):
+        raise FixedCascadeError("raw_urls must be a nonempty iterable")
+    rows = []
+    for index, raw_url in enumerate(raw_urls):
+        try:
+            rows.append(extract_url_features(raw_url))
+        except FeatureExtractionError as exc:
+            raise FixedCascadeError(f"raw_urls[{index}] is invalid: {exc}") from None
+    if not rows:
+        raise FixedCascadeError("raw_urls must be a nonempty iterable")
+
+    try:
+        matrix = np.asarray(rows, dtype=np.float64)
+        indices = np.asarray(
+            [FEATURE_NAMES.index(name) for name in model.feature_names], dtype=np.intp
+        )
+        # Match baseline advanced column selection: F-order affects exact score ties.
+        matrix = matrix[:, indices]
+        scaler = StandardScaler(with_mean=True, with_std=True)
+        scaler.mean_ = np.asarray(model.mean, dtype=np.float64)
+        scaler.scale_ = np.asarray(model.scale, dtype=np.float64)
+        scaler.var_ = np.asarray(model.variance, dtype=np.float64)
+        scaler.n_features_in_ = len(model.feature_names)
+        scaler.n_samples_seen_ = model._n_samples_seen
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            scaled = scaler.transform(matrix)
+        if not np.all(np.isfinite(scaled)):
+            raise FixedCascadeError("Logistic-L1 scaling produced nonfinite values")
+
+        classifier = LogisticRegression(
+            **{
+                key: value
+                for key, value in _CLASSIFIER_CONFIG.items()
+                if key != "class"
+            }
+        )
+        classifier.coef_ = np.asarray([model.coefficients], dtype=np.float64)
+        classifier.intercept_ = np.asarray([model.intercept], dtype=np.float64)
+        classifier.classes_ = np.asarray([0, 1], dtype=np.int64)
+        classifier.n_features_in_ = len(model.feature_names)
+        classifier.n_iter_ = np.asarray([model._n_iter], dtype=np.int32)
+        scores, audit = baselines._audited_validation_scores(
+            "Logistic-L1",
+            scaled,
+            classifier,
+            policy=baselines._SCORING_INTEGRITY_POLICY,
+            environment=baselines._platform_identity(),
+        )
+        scores = _probability_vector(scores, "authoritative Logistic-L1 scores")
+    except (ValueError, Warning, FloatingPointError) as exc:
+        raise FixedCascadeError(
+            f"authoritative Logistic-L1 scoring failed: {exc}"
+        ) from exc
+    return tuple(float(value) for value in scores), audit
 
 
 def _load_logistic_l1_artifact_bytes(
@@ -575,6 +651,9 @@ def _load_logistic_l1_artifact_bytes(
         contract_sha256=expected_contract_sha256,
         max_absolute_probability_difference=probability_difference,
         _threshold_record_json=threshold_json,
+        _software_versions=tuple(sorted(value["software_versions"].items())),
+        _n_samples_seen=value["scaler"]["n_samples_seen"],
+        _n_iter=value["classifier"]["n_iter"][0],
         _loader_marker=_LOADED_ARTIFACT_MARKER,
     )
 

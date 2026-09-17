@@ -25,7 +25,7 @@ manuscript prose and does not contain an interpretation of results.
 | Source-freeze release | [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1) |
 | Development preparation | `complete` |
 | Preparation record | `reports/phiusiil-preparation-summary.json` |
-| Current technical milestone | v1.4 baseline attempt `stopped_nonconverged`; exploratory tolerance observation `not_accepted_provenance_incomplete`; v1.5 SAGA diagnostic `stopped_platform_warning`; v1.6 SAGA diagnostic `passed_training_only`; protocol v1.7 baseline execution `completed_development_validation`; protocol v1.8 transformer/cascade v1 `superseded_unrun`; protocol v1.9 transformer/cascade v2 contract `frozen_not_run`, execution `running_development_validation`; protocol v1.10 GMM contract `frozen_not_run`, execution `not_run`; H1, H2, and H3 remain undecided. |
+| Current technical milestone | v1.4 baseline attempt `stopped_nonconverged`; exploratory tolerance observation `not_accepted_provenance_incomplete`; v1.5 SAGA diagnostic `stopped_platform_warning`; v1.6 SAGA diagnostic `passed_training_only`; protocol v1.7 baseline execution `completed_development_validation`; protocol v1.8 transformer/cascade v1 `superseded_unrun`; protocol v1.9 transformer/cascade v2 contract `frozen_not_run`, execution `running_development_validation`; protocol v1.10 GMM contract `frozen_not_run`, execution `completed_development_validation`, false-alert gate failed (28/252 windows); H1, H2, and H3 remain undecided. |
 | External source | PhishVN v4, reserved for the frozen external evaluation |
 | Current hypothesis status | H1 `undecided`; H2 `undecided`; H3 `undecided` |
 
@@ -348,8 +348,29 @@ Required evidence:
 - fixed-cascade versus alert-policy errors with the prespecified clustered
   interval and all H2 denominators.
 
-Current status: routing mechanics are `implemented`; GMM execution is `not_run`;
-monitoring and outcome evidence are `not_run`; H2 is `undecided`.
+### Development Result
+
+The single prescribed GMM run completed on September 17 from clean, published
+commit `9983bfddc6ea31e370629cb1b2efd3da383f7ff0`, after
+[CI passed](https://github.com/KrtiT/automated-phishing-detection-public/actions/runs/35260883392).
+The [aggregate summary](../reports/rq2-gmm-development-v1-summary.json) has
+SHA-256 `6f695138a302e854e1e5af590152e289486affe8ccdf75510ca9a5dcaad3b523`.
+All six candidates converged without warnings; training BIC selected six
+components. Calibration used 16,325 rows and audit used 16,370, with 14,783
+domains and 252 complete windows in each stream. The frozen calibration rule
+yielded a boundary of `-67.45792380813624`.
+
+The independent audit alerted on **28/252 windows (11.11%)**, exceeding the
+prespecified **5%** limit. Thus `false_alert_gate_met=false`; the boundary was
+not retuned and the run was not repeated. No independent-binomial interval is
+assigned to these overlapping windows. The aggregate does not identify the
+cause of this failure. Private fitted parameters and window traces were
+retained, with their hashes in the public record.
+
+Current status: routing mechanics are `implemented`; GMM execution is
+`completed_development_validation`, with its required false-alert component
+failed. This result does not support H2. External monitoring and routing-outcome
+evidence remain `not_run`; H1, H2, and H3 remain `undecided`.
 
 ## RQ3 and H3
 

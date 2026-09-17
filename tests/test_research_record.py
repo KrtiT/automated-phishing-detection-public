@@ -1,6 +1,7 @@
 import json
 import re
 from hashlib import sha256
+from math import isfinite
 from pathlib import Path
 
 from automated_phishing_detection import phiusiil
@@ -20,6 +21,7 @@ BASELINE_V2_CONTRACT = ROOT / "data" / "rq1-baseline-contract-v2.json"
 TRANSFORMER_CONTRACT = ROOT / "data" / "rq1-transformer-cascade-contract-v1.json"
 TRANSFORMER_CONTRACT_V2 = ROOT / "data" / "rq1-transformer-cascade-contract-v2.json"
 GMM_CONTRACT = ROOT / "data" / "rq2-gmm-development-contract-v1.json"
+GMM_SUMMARY = ROOT / "reports" / "rq2-gmm-development-v1-summary.json"
 FINAL_TRANSFORMER_CODE_COMMIT = "0793ca3dbc36e49b561cd0ac74968a4644060426"
 INITIAL_TRANSFORMER_CODE_COMMIT = "a8ee067bda8fd45d19f5c4b794ba21f58d1947fc"
 TRANSFORMER_CONTRACT_SHA256 = (
@@ -1307,6 +1309,129 @@ def test_v110_records_bind_exact_gmm_contract_before_execution():
     for path in (STATUS, EVIDENCE_OUTLINE):
         text = path.read_text(encoding="utf-8")
         assert f"| RQ2 GMM contract SHA-256 | `{expected_hash}` |" in text
+
+
+def test_gmm_development_summary_binds_frozen_method_and_failed_audit():
+    assert sha256(GMM_SUMMARY.read_bytes()).hexdigest() == (
+        "6f695138a302e854e1e5af590152e289486affe8ccdf75510ca9a5dcaad3b523"
+    )
+    contract_hash = "22d32088b05e74432704f9671ab76ba28b4f573ead418846b23bc366315cb393"
+    assert sha256(GMM_CONTRACT.read_bytes()).hexdigest() == contract_hash
+    contract = json.loads(GMM_CONTRACT.read_bytes())
+    summary = json.loads(GMM_SUMMARY.read_bytes())
+    assert summary["contract"] == {
+        "id": "rq2-gmm-development-v1",
+        "protocol_version": "1.10",
+        "sha256": contract_hash,
+    }
+    assert summary["configuration"] == {
+        key: contract[key]
+        for key in (
+            "features",
+            "scaler",
+            "validation_allocation",
+            "mixture",
+            "runtime",
+            "windows",
+            "calibration",
+            "audit",
+        )
+    }
+    expected_inputs = dict(contract["inputs"]["accepted_roles"])
+    expected_inputs["baseline_contract"] = expected_inputs.pop("contract")
+    assert summary["input_hashes"] == {**expected_inputs, "gmm_contract": contract_hash}
+    assert summary["schema_version"] == 1
+    assert summary["status"] == "completed_development_validation"
+    assert summary["analysis_stage"] == "development_validation_only"
+    assert summary["hypothesis_status"] == {
+        "H1": "undecided",
+        "H2": "undecided",
+        "H3": "undecided",
+    }
+    assert summary["access"] == {
+        "external_accessed": False,
+        "group_test_accessed": False,
+        "phishvn_accessed": False,
+        "scope": "this_process_only",
+    }
+    candidates = summary["candidates"]
+    assert [candidate["components"] for candidate in candidates] == list(range(1, 7))
+    assert all(
+        candidate["converged"] is True
+        and isfinite(candidate["bic"])
+        and 1 <= candidate["n_iter"] <= 500
+        for candidate in candidates
+    )
+    selected = min(candidates, key=lambda item: (item["bic"], item["components"]))
+    assert summary["selected_component_count"] == selected["components"] == 6
+    assert summary["calibration_window_count"] == summary["audit_window_count"] == 252
+    for stream in ("calibration", "audit"):
+        assert summary["input_counts"][stream]["complete_windows"] == 252
+        assert summary["input_counts"][stream]["domain_count"] == 14783
+    assert summary["audit_alert_count"] == 28
+    assert summary["audit_alert_fraction"] == 28 / 252 == 1 / 9
+    assert 20 * summary["audit_alert_count"] > summary["audit_window_count"]
+    assert summary["false_alert_gate_met"] is False
+    assert summary["threshold"] == -67.45792380813624
+    assert summary["warnings"] == []
+
+
+def test_gmm_development_summary_contains_only_public_aggregates():
+    summary = json.loads(GMM_SUMMARY.read_bytes())
+    contract = json.loads(GMM_CONTRACT.read_bytes())
+    wheel_url = contract["runtime"]["macos_arm64_numpy_wheel"]["url"]
+    forbidden_keys = {
+        "raw_url",
+        "raw_urls",
+        "canonical_url",
+        "canonical_url_sha256",
+        "registrable_domain",
+        "domains",
+        "record_id",
+        "record_ids",
+        "records",
+        "feature_row",
+        "feature_rows",
+        "feature_vector",
+        "feature_vectors",
+        "weights",
+        "mean",
+        "means",
+        "variance",
+        "variances",
+        "scale",
+        "coefficients",
+        "intercept",
+        "predictions",
+        "probabilities",
+        "window_scores",
+        "window_end_positions",
+        "input_row_positions",
+    }
+    urls = []
+
+    def visit(value):
+        if isinstance(value, dict):
+            assert forbidden_keys.isdisjoint(value)
+            for child in value.values():
+                visit(child)
+        elif isinstance(value, list):
+            for child in value:
+                visit(child)
+        elif isinstance(value, str):
+            assert not any(
+                marker in value
+                for marker in (
+                    "phiusiil-row-v1:",
+                    "/Users/",
+                    ".example",
+                )
+            )
+            if "http://" in value or "https://" in value:
+                urls.append(value)
+
+    visit(summary)
+    assert urls == [wheel_url]
 
 
 def test_second_group_test_display_is_recorded_without_changing_study_status():

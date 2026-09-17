@@ -22,7 +22,9 @@ implementation status was `frozen_implemented_not_run`; execution is now
 and review hardening; they are not performance or result runs. No completed
 transformer, threshold, or cascade result exists. The implementation and
 its tests did not open the PhiUSIIL group-test partition or PhishVN. GMM
-execution is `not_run`. H1, H2, and H3 remain undecided. The group test remains
+execution is `completed_development_validation`; its independent false-alert
+audit failed the 5% gate (28/252 windows, 11.11%), without retuning.
+H1, H2, and H3 remain undecided. The group test remains
 analyst-exposed but model-unscored.
 
 | Field | Value |
@@ -48,7 +50,7 @@ analyst-exposed but model-unscored.
 | Source-freeze release tag | `phiusiil-development-v1` |
 | Source-freeze release | [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1) |
 | Development preparation | `complete` |
-| Current technical milestone | v1.4 baseline attempt `stopped_nonconverged`; exploratory tolerance observation `not_accepted_provenance_incomplete`; v1.5 SAGA diagnostic `stopped_platform_warning`; v1.6 SAGA diagnostic `passed_training_only`; protocol v1.7 baseline execution `completed_development_validation`; protocol v1.8 transformer/cascade v1 `superseded_unrun`; protocol v1.9 transformer/cascade v2 contract `frozen_not_run`, execution `running_development_validation`; protocol v1.10 GMM contract `frozen_not_run`, execution `not_run`; H1, H2, and H3 remain undecided. |
+| Current technical milestone | v1.4 baseline attempt `stopped_nonconverged`; exploratory tolerance observation `not_accepted_provenance_incomplete`; v1.5 SAGA diagnostic `stopped_platform_warning`; v1.6 SAGA diagnostic `passed_training_only`; protocol v1.7 baseline execution `completed_development_validation`; protocol v1.8 transformer/cascade v1 `superseded_unrun`; protocol v1.9 transformer/cascade v2 contract `frozen_not_run`, execution `running_development_validation`; protocol v1.10 GMM contract `frozen_not_run`, execution `completed_development_validation`, false-alert gate failed (28/252 windows); H1, H2, and H3 remain undecided. |
 | Current hypothesis status | H1 `undecided`; H2 `undecided`; H3 `undecided` |
 | Legacy base tag | `legacy-v2-clean-2026-08-16` |
 | Legacy base SHA | `a5eceecf21ad5ce29c4ab8f8d4de0edc8b73b240` |
@@ -57,8 +59,9 @@ analyst-exposed but model-unscored.
 | Direction | Complete and freeze the source-provenance release, then conduct systematic hypothesis testing with all gates, thresholds, features, and train/validation procedures locked before test results, with particular attention to H1 and the GMM. |
 
 Protocol v1.10 incorporates unchanged transformer v2 and freezes
-`rq2-gmm-development-v1` before GMM execution. The GMM execution is `not_run`;
-the contract and its tests are not fitted results. Synthetic-only preflight
+`rq2-gmm-development-v1` before GMM execution. The contract and matrix retain
+their freeze-time status; the dated execution record below reports the later
+fit and failed false-alert gate. Synthetic-only preflight
 exposed an Accelerate warning; the unchanged NumPy 2.2.6 version with
 `scipy-openblas` 0.3.29 passed all six synthetic candidate fits. The GMM runtime
 therefore pins that backend and rejects Accelerate before input reads, rather
@@ -239,13 +242,40 @@ and review hardening. The v2 amendment changes publication semantics, not the
 model or scientific procedure. The pre-execution implementation was
 `frozen_implemented_not_run`; execution is `running_development_validation`.
 No completed transformer, threshold, or cascade result exists. The GMM
-execution remains `not_run`.
+execution is recorded separately below.
 
 The official transformer run started on 2026-09-17 at 18:21:12 UTC from clean
 detached commit `c3a5c815b20121f1ddd06a2f316f904077c00c4f`, after its
 [CI run](https://github.com/KrtiT/automated-phishing-detection-public/actions/runs/35257955477)
 passed. Execution status is `running_development_validation`. No completed
 transformer, threshold, or cascade result exists.
+
+### GMM Development Execution
+
+The single prescribed run started on September 17 at 18:49:07 UTC and finished
+at 18:50:39 UTC with exit code 0 (92.78 seconds). It used clean, published
+commit `9983bfddc6ea31e370629cb1b2efd3da383f7ff0`, after its
+[CI run](https://github.com/KrtiT/automated-phishing-detection-public/actions/runs/35260883392)
+passed. Commit `df0e37f` records the preceding method freeze. The exact
+[aggregate summary](../../reports/rq2-gmm-development-v1-summary.json) has SHA-256
+`6f695138a302e854e1e5af590152e289486affe8ccdf75510ca9a5dcaad3b523`.
+
+All six candidates converged without warnings; training BIC selected six
+components. Each validation stream contained 14,783 domains and 252 complete
+windows. The calibration stream contained 16,325 rows and audit contained
+16,370. The calibration boundary was `-67.45792380813624`; the independent
+audit alerted on 28/252 windows (11.11%). This exceeds the prespecified 5%
+limit, so `false_alert_gate_met=false`. The boundary was not retuned and the
+run was not repeated. Fitted parameters and window traces remain private.
+Verification matched both private artifact hashes and permissions, checked
+disjoint stream membership and preserved row order, and recomputed the linear
+quantile, strict alert count, and gate from the stored window traces.
+
+The status is `completed_development_validation`, not a passed hypothesis.
+This monitor failed the required false-alert component and does not support H2.
+External detection and future-routing outcomes remain unmeasured. H1, H2, and
+H3 retain their contract status `undecided`; no group-test or PhishVN input was
+read by this execution.
 
 ## Change Record
 

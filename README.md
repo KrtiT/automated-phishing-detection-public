@@ -211,7 +211,12 @@ Protocol v1.10 incorporates unchanged transformer v2 and freezes
 [`rq2-gmm-development-v1`](data/rq2-gmm-development-contract-v1.json),
 SHA-256 `22d32088b05e74432704f9671ab76ba28b4f573ead418846b23bc366315cb393`,
 before GMM execution.
-The GMM execution is `not_run`; a contract is not a fitted result.
+The September 17 [development run](reports/rq2-gmm-development-v1-summary.json)
+completed from published, CI-verified commit `9983bfd`. All six candidates
+converged; training BIC selected six components. The independent audit alerted
+on **28 of 252 windows (11.11%)**, exceeding the **5%** limit. The boundary was
+not retuned. This failed gate remains part of the result and does not support H2.
+The transformer/cascade run is still in progress; external evaluation has not run.
 
 The monitor uses the exact 25 URL features plus the pinned portable Logistic-L1
 probability. It fits a training-only 26-column scaler and all six frozen

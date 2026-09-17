@@ -2,8 +2,8 @@
 
 This note records the public source basis, the ownership of the study's
 decision gates, and the boundary between established work and the proposed
-evaluation. It does not report a model result or treat a planned gate as
-having been met.
+evaluation. It separates development evidence from confirmatory hypothesis
+results and does not treat a planned gate as having been met.
 
 The September 3 advisor report, SHA-256
 `b72da89a4cc8a5b06f6ca88d79fe78dd54e3199a96b7450209ea53b4a4c04215`,
@@ -112,7 +112,12 @@ complete windows. Overlapping windows count separately. An incomplete terminal
 window is excluded from this rate, but its requests remain routable from a
 prior alert. The independent validation-audit false-alert fraction uses the
 same complete-window numerator and denominator rule. These definitions are
-prospective; GMM execution remains `not_run`.
+prospective. The September 17 GMM development run subsequently recorded
+28 alerts in the audit's 252 windows (11.11%), above the 5% gate. The
+calibration boundary was not retuned. This is a failed development gate, not
+evidence that the monitor detects useful external shifts or improves routing.
+The [aggregate record](../reports/rq2-gmm-development-v1-summary.json) preserves
+the result; external detection and routing outcomes remain unmeasured.
 
 ## Closest prior work and contribution boundary
 

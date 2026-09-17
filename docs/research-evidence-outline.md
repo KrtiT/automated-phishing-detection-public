@@ -25,7 +25,7 @@ manuscript prose and does not contain an interpretation of results.
 | Source-freeze release | [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1) |
 | Development preparation | `complete` |
 | Preparation record | `reports/phiusiil-preparation-summary.json` |
-| Current technical milestone | v1.4 baseline attempt `stopped_nonconverged`; exploratory tolerance observation `not_accepted_provenance_incomplete`; v1.5 SAGA diagnostic `stopped_platform_warning`; v1.6 SAGA diagnostic `passed_training_only`; protocol v1.7 baseline execution `completed_development_validation`; protocol v1.8 transformer/cascade v1 `superseded_unrun`; protocol v1.9 transformer/cascade v2 contract `frozen_not_run`, execution `running_development_validation`; protocol v1.10 GMM contract `frozen_not_run`, execution `completed_development_validation`, false-alert gate failed (28/252 windows); H1, H2, and H3 remain undecided. |
+| Current technical milestone | See the [current execution record](advisor-approval/approval-status.md). Frozen contracts and historical rows are not live run status. |
 | External source | PhishVN v4, reserved for the frozen external evaluation |
 | Current hypothesis status | H1 `undecided`; H2 `undecided`; H3 `undecided` |
 
@@ -243,18 +243,17 @@ Protocol v1.8's byte-preserved `rq1-transformer-cascade-v1`, SHA-256
 contract accepts only the pinned training, validation, preparation-summary,
 baseline-contract, and `Logistic-L1` artifact roles; it accepts no group-test,
 external, PhishVN, runtime-tuning, or test-path input. The implementation is
-unit-tested before execution at status `frozen_implemented_not_run`; the official
-MPS execution is now `running_development_validation`. Protocol v1.9 separately
+unit-tested before execution at status `frozen_implemented_not_run`; its first
+MPS execution stopped at a stage-one scoring integrity check. Protocol v1.9 separately
 corrected the then-unrun GMM allocation status to
 a prospective staged freeze; no GMM allocation choice was made. The
 implementation and its tests did not open the PhiUSIIL group-test partition or
 PhishVN.
 
-The official transformer run started on 2026-09-17 at 18:21:12 UTC from clean
-detached commit `c3a5c815b20121f1ddd06a2f316f904077c00c4f`, after its
-[CI run](https://github.com/KrtiT/automated-phishing-detection-public/actions/runs/35257955477)
-passed. Execution status is `running_development_validation`. No completed
-transformer, threshold, or cascade result exists.
+The [stopped execution](../reports/rq1-transformer-cascade-v2-execution.json)
+preserves its exact code, timing, failure, and no-fit diagnosis. The
+[current execution record](advisor-approval/approval-status.md) tracks recovery.
+No completed transformer, threshold, or cascade result exists.
 
 ## RQ1 and H1
 
@@ -270,8 +269,8 @@ reference, not a third primary H1 gate. It calibrates the cascade and supports
 the H3 comparison.
 
 The immutable `rq1-transformer-cascade-v2` contract is `frozen_not_run`. The
-pre-execution implementation was `frozen_implemented_not_run`, and execution is
-now `running_development_validation`. Reviewed repository commit
+pre-execution implementation was `frozen_implemented_not_run`; its first
+execution is `stopped_stage_one_integrity_check`. Reviewed repository commit
 `0793ca3dbc36e49b561cd0ac74968a4644060426` records the last implementation
 hardening before this publication amendment. No completed transformer,
 threshold, or cascade result exists.
@@ -298,7 +297,7 @@ v1.4 fit is `stopped_nonconverged`; the exploratory tolerance observation is
 `passed_training_only`; the rq1-baselines-v2 execution is
 `completed_development_validation`; the validation-set operating points are
 recorded above; the transformer/cascade contract is `frozen_not_run` and its
-execution is `running_development_validation`; H1 is `undecided`.
+first execution is `stopped_stage_one_integrity_check`; H1 is `undecided`.
 
 ## RQ2 and H2
 
@@ -394,6 +393,31 @@ Seed sensitivity, Random Forest, MMD, PSI, controlled perturbations, shortcut
 checks, McNemar tests, and Holm-adjusted ablations are reported separately.
 They describe robustness but do not replace a primary decision rule.
 
+## Remaining Executable Work
+
+The next deliverables are analyses and working inference code, not additional
+versions of this outline. No raw group-test or external partition is needed to
+implement and test the following pieces on synthetic fixtures.
+
+| Order | Work product | What completion must demonstrate |
+|---|---|---|
+| 1 | Corrected transformer/cascade development execution | Reconstruct the accepted baseline scorer exactly, check its binding before training, preserve the stopped attempt, and verify all private artifacts against the aggregate completion marker. |
+| 2 | Portable inference loaders and paired-statistics code | Load each frozen artifact without fitting; compute paired counts and domain-clustered recall/FNR differences. Freeze RNG, domain ordering, cluster weighting, percentile interpolation, and empty-stratum handling before research-data use. |
+| 3 | Composed H2 policy replay | Join saved scores, complete-window alerts, and next-256-request routing; apply outcome-stratum filters after label-blind routing; preserve the failed development false-alert component. |
+| 4 | Selective inference service and real-HTTP harness | Actually skip transformer inference outside the band and independently count calls. Test concurrency, timeouts, errors, warm-up exclusion, and pooled latency accounting. |
+| 5 | Frozen evaluation and replay-manifest contracts | Bind models, thresholds, evaluator, population/order/denominator rules, manifest selection, environment, and hashes before any internal or external pass. |
+| 6 | Independent execution and one gate table | The single internal raw-partition pass produces paired predictions and replay manifests. Later HTTP runs use only those manifests. External schema verification, preparation, and evaluation follow the separate frozen access sequence. |
+
+The existing offline cascade scorer accepts transformer probabilities for every
+row and computes a logical invocation mask. That mask is useful for paired
+evaluation, but it is not measured transformer work saved or HTTP performance.
+The future service must prove actual selective execution independently.
+
+The GMM's failed 5% audit gate remains a failed mandatory H2 component. Further
+external or routing measurements can explain system behavior; they cannot make
+the original conjunctive support rule pass. Descriptive failure analysis is
+separate from model selection and does not reopen the audit for tuning.
+
 ## Manuscript Map
 
 | Chapter | Evidence role |
@@ -407,7 +431,9 @@ They describe robustness but do not replace a primary decision rule.
 
 The working manuscript remains private. Public repository evidence currently
 consists of the protocol, implementation, tests, source and environment locks,
-and aggregate data-preparation and baseline-validation records. The implemented
+and aggregate data-preparation, baseline-validation, and GMM-audit records,
+including the failed false-alert gate. The stopped transformer execution and
+its diagnosed scoring mismatch are also recorded. The implemented
 transformer/cascade procedure can produce evidence when run; it is not itself a
 model result. Later result tables and figures enter this record only after their
 stated runs.

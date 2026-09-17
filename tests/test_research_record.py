@@ -22,6 +22,7 @@ TRANSFORMER_CONTRACT = ROOT / "data" / "rq1-transformer-cascade-contract-v1.json
 TRANSFORMER_CONTRACT_V2 = ROOT / "data" / "rq1-transformer-cascade-contract-v2.json"
 GMM_CONTRACT = ROOT / "data" / "rq2-gmm-development-contract-v1.json"
 GMM_SUMMARY = ROOT / "reports" / "rq2-gmm-development-v1-summary.json"
+TRANSFORMER_EXECUTION = ROOT / "reports" / "rq1-transformer-cascade-v2-execution.json"
 FINAL_TRANSFORMER_CODE_COMMIT = "0793ca3dbc36e49b561cd0ac74968a4644060426"
 INITIAL_TRANSFORMER_CODE_COMMIT = "a8ee067bda8fd45d19f5c4b794ba21f58d1947fc"
 TRANSFORMER_CONTRACT_SHA256 = (
@@ -472,7 +473,7 @@ def test_protocol_v19_supersedes_unrun_v1_with_the_publication_only_v2_amendment
     assert "rq1-transformer-cascade-v2" in evidence
     assert "no completed transformer" in evidence
     assert "rq1-transformer-cascade-v2" in basis
-    assert "`running_development_validation`" in basis
+    assert "current execution record" in basis
 
     assert "public summary is the completion marker" in protocol
     assert "completed result requires both" in protocol
@@ -1095,7 +1096,7 @@ def test_live_records_bind_reviewed_transformer_code_without_claiming_completion
         "transformer-only remains a comparator and operational reference",
         "not a third primary h1 gate",
         "system contribution, not a pure causal isolation",
-        "`running_development_validation`",
+        "current execution record",
     ):
         assert required in basis, f"missing from research basis: {required}"
 
@@ -1432,6 +1433,29 @@ def test_gmm_development_summary_contains_only_public_aggregates():
 
     visit(summary)
     assert urls == [wheel_url]
+
+
+def test_transformer_stopped_run_is_preserved_without_claiming_a_result():
+    execution = json.loads(TRANSFORMER_EXECUTION.read_bytes())
+    assert execution["status"] == "stopped_stage_one_integrity_check"
+    assert execution["execution_commit"] == ("c3a5c815b20121f1ddd06a2f316f904077c00c4f")
+    assert execution["contract_sha256"] == TRANSFORMER_CONTRACT_V2_SHA256
+    assert execution["started_utc"] == "2026-09-17T18:21:12Z"
+    assert execution["finished_utc"] == "2026-09-17T19:24:27Z"
+    assert execution["exit_code"] == 2
+    assert execution["elapsed_seconds"] == 3795.28
+    assert execution["error"] == (
+        "stage-one artifact threshold does not match the supplied scores"
+    )
+    assert execution["output_directory_present"] is False
+    assert execution["public_summary_present"] is False
+    assert execution["result_accepted"] is False
+    assert execution["hypothesis_status"] == dict.fromkeys(
+        ("H1", "H2", "H3"), "undecided"
+    )
+    status = STATUS.read_text(encoding="utf-8")
+    assert "stopped_stage_one_integrity_check" in status
+    assert "rq1-transformer-cascade-v2-execution.json" in status
 
 
 def test_second_group_test_display_is_recorded_without_changing_study_status():

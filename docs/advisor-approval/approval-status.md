@@ -15,8 +15,8 @@ Protocol v1.8 froze `rq1-transformer-cascade-v1`; it was never fit and is now
 `rq1-transformer-cascade-v2` at `frozen_not_run`. The procedure code, tests,
 CLI, and private/public artifact publication code are complete, and the
 pre-execution
-implementation status was `frozen_implemented_not_run`; execution is now
-`running_development_validation`. Repository commits
+implementation status was `frozen_implemented_not_run`; its first execution
+is `stopped_stage_one_integrity_check`. Repository commits
 `a8ee067bda8fd45d19f5c4b794ba21f58d1947fc` and
 `0793ca3dbc36e49b561cd0ac74968a4644060426` record the initial implementation
 and review hardening; they are not performance or result runs. No completed
@@ -50,7 +50,7 @@ analyst-exposed but model-unscored.
 | Source-freeze release tag | `phiusiil-development-v1` |
 | Source-freeze release | [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1) |
 | Development preparation | `complete` |
-| Current technical milestone | v1.4 baseline attempt `stopped_nonconverged`; exploratory tolerance observation `not_accepted_provenance_incomplete`; v1.5 SAGA diagnostic `stopped_platform_warning`; v1.6 SAGA diagnostic `passed_training_only`; protocol v1.7 baseline execution `completed_development_validation`; protocol v1.8 transformer/cascade v1 `superseded_unrun`; protocol v1.9 transformer/cascade v2 contract `frozen_not_run`, execution `running_development_validation`; protocol v1.10 GMM contract `frozen_not_run`, execution `completed_development_validation`, false-alert gate failed (28/252 windows); H1, H2, and H3 remain undecided. |
+| Current technical milestone | Baseline v2 development validation complete; transformer/cascade first execution `stopped_stage_one_integrity_check`; GMM development validation complete with failed false-alert gate (28/252 windows). Historical attempts remain recorded below. |
 | Current hypothesis status | H1 `undecided`; H2 `undecided`; H3 `undecided` |
 | Legacy base tag | `legacy-v2-clean-2026-08-16` |
 | Legacy base SHA | `a5eceecf21ad5ce29c4ab8f8d4de0edc8b73b240` |
@@ -94,7 +94,8 @@ than extending the warning allowlist. No research-data fit informed this choice.
   verifies it is stale and removes it before rerun. V1 remains byte-preserved at
   SHA-256 `aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54`
   with status `superseded_unrun`. V2 is `frozen_not_run`, and the implementation
-  was `frozen_implemented_not_run`; execution is `running_development_validation`.
+  was `frozen_implemented_not_run`; its first execution is
+  `stopped_stage_one_integrity_check`.
   No completed transformer, threshold, or cascade result exists.
 - `rq2-gmm-development-v1` freezes training-only 26-column scaling, six
   diagonal-GMM fits selected by training BIC, the label-blind validation-domain
@@ -157,7 +158,8 @@ started on 2026-09-03 and stopped on 2026-09-04 after approximately eight hours
 and forty minutes. The full-feature `Logistic-L1` fit reached `max_iter=5000`
 at `tol=1e-8`, and the command exited with
 `error: Logistic-L1 did not converge`. Atomic publication left no model
-directory or summary file. The command accepted the pinned training,
+directory or summary file; its status is `stopped_nonconverged`.
+The command accepted the pinned training,
 validation, preparation-summary, and contract inputs only; it accepted no
 group-test or PhishVN input. No model, threshold, or metric from the attempt was
 reviewed or used as research evidence.
@@ -240,15 +242,31 @@ input. Repository commits `a8ee067bda8fd45d19f5c4b794ba21f58d1947fc`
 and `0793ca3dbc36e49b561cd0ac74968a4644060426` record the initial implementation
 and review hardening. The v2 amendment changes publication semantics, not the
 model or scientific procedure. The pre-execution implementation was
-`frozen_implemented_not_run`; execution is `running_development_validation`.
+`frozen_implemented_not_run`; its first execution is
+`stopped_stage_one_integrity_check`.
 No completed transformer, threshold, or cascade result exists. The GMM
 execution is recorded separately below.
 
 The official transformer run started on 2026-09-17 at 18:21:12 UTC from clean
 detached commit `c3a5c815b20121f1ddd06a2f316f904077c00c4f`, after its
 [CI run](https://github.com/KrtiT/automated-phishing-detection-public/actions/runs/35257955477)
-passed. Execution status is `running_development_validation`. No completed
-transformer, threshold, or cascade result exists.
+passed. It stopped at 19:24:27 UTC with exit code 2 after 3,795.28 seconds:
+`stage-one artifact threshold does not match the supplied scores`.
+The [execution record](../../reports/rq1-transformer-cascade-v2-execution.json)
+has status `stopped_stage_one_integrity_check`. No output directory or public
+summary was produced. No completed transformer, threshold, or cascade result exists.
+
+A separate no-fit diagnostic read only the hash-pinned development-validation
+partition and accepted Logistic-L1 artifact. The portable scorer used `einsum`
+and a C-contiguous feature matrix instead of the original scikit-learn scorer
+and Fortran-contiguous matrix. This changed exact score ties: 11,210 threshold
+candidates rather than the accepted 11,279. Its threshold difference also
+exceeded the recorded numerical audit, although decisions at the unchanged
+accepted threshold were identical. Reconstructing the original scorer and
+layout reproduced the full threshold record and warning audit exactly.
+The correction must restore that path, not loosen candidate/count checks or
+tolerances. Stage-one binding will be checked before any further transformer
+training. The stopped attempt remains part of the record.
 
 ### GMM Development Execution
 

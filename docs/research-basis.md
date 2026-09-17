@@ -21,8 +21,10 @@ development validation only. Protocol v1.8's byte-preserved
 `686c0d86b33b8a6c2e09cd6e174003db0bd2f7c30b087faf5470e6a270524213`, at
 contract status `frozen_not_run`. Version 2 changes publication semantics but no
 scientific or artifact-content rule. The implementation is unit-tested at
-pre-execution status `frozen_implemented_not_run`; the official MPS execution
-is `running_development_validation`, without a completed result. H1, H2,
+pre-execution status `frozen_implemented_not_run`; its first official MPS
+execution stopped at a stage-one integrity check, without an accepted result.
+The [current execution record](advisor-approval/approval-status.md) maintains
+live status and the dated diagnosis rather than duplicating it here. H1, H2,
 and H3 remain undecided, the group test remains analyst-exposed but
 model-unscored, and no PhishVN record has been accessed. Protocol v1.10
 incorporates unchanged transformer v2 and freezes
@@ -43,6 +45,23 @@ development validation only, with H1, H2, and H3 undecided. Synthetic-only
 preflight, not research observations, established the supported NumPy 2.2.6
 `scipy-openblas` 0.3.29 runtime after Accelerate raised a fatal warning. The
 GMM rejects unsupported backends before input reads and adds no warning exemption.
+
+## Decisions to Defend
+
+| Choice | Purpose and limit |
+|---|---|
+| Raw-URL structural features | The 25 fixed features describe length, syntax, and character composition without fetching a page or using publisher fields. They provide a reproducible structural baseline, not a claim that this is an optimal feature set. Several features are dependent, so individual coefficients are not causal feature importance. |
+| Fixed Logistic-L1 first stage | Reuse the accepted fitted model and operating threshold. Reconstruction must preserve the authoritative scoring procedure; a mathematically equivalent formula can still change floating-point ties. No new fit is needed to diagnose that implementation discrepancy. |
+| One through six GMM components | Fit every prespecified candidate on training data and choose minimum training BIC. This selects among those six candidates; convergence and BIC do not establish useful drift detection or acceptable audit alerts. |
+| Separate calibration and audit domains | Use calibration to choose the boundary, then evaluate it on disjoint domains without labels, balancing, or rerolls in the allocation. Both streams come from the same development source; this is not an external or temporal evaluation. |
+| Calibration percentile and audit gate | The 95th calibration percentile defines a boundary. The separate <=5% audit gate asks whether it transfers. A percentile selected on calibration does not guarantee the audit fraction. Overlapping windows do not supply independent trials. |
+| Low-FPR and service limits | The limits below are study-defined operating requirements, not achieved results or universal literature standards. A failed required component remains failed even if another metric is favorable. |
+
+The internal group-test partition is analyst-exposed but model-unscored, as
+recorded in the execution history. Later results must disclose that limitation
+rather than call it unseen. The private working manuscript also retains
+protected, outdated front matter; updating its research body does not make the
+whole document submission-ready.
 
 ## Source basis and limitations
 

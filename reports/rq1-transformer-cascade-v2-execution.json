@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "status": "stopped_stage_one_integrity_check",
+  "analysis_stage": "development_validation_only",
+  "execution_commit": "c3a5c815b20121f1ddd06a2f316f904077c00c4f",
+  "contract_id": "rq1-transformer-cascade-v2",
+  "contract_sha256": "686c0d86b33b8a6c2e09cd6e174003db0bd2f7c30b087faf5470e6a270524213",
+  "environment_lock_sha256": "5ed5a67d562b260b8fcc6251c8347b3dcebca49d2759eedbf0ab83b14854ac8e",
+  "runner_sha256": "52964dc1303038a89142c0e881b43a753999b7edc8ca6f534c253d06db1f779b",
+  "started_utc": "2026-09-17T18:21:12Z",
+  "finished_utc": "2026-09-17T19:24:27Z",
+  "elapsed_seconds": 3795.28,
+  "exit_code": 2,
+  "error": "stage-one artifact threshold does not match the supplied scores",
+  "output_directory_present": false,
+  "public_summary_present": false,
+  "result_accepted": false,
+  "hypothesis_status": {
+    "H1": "undecided",
+    "H2": "undecided",
+    "H3": "undecided"
+  },
+  "diagnostic": {
+    "scope": "no_fit_development_validation_only",
+    "script_sha256": "bf6e87229af87f7a2588a835e1ce08e251373dbdf3d806552f2f3b58d88d76fe",
+    "aggregate_sha256": "93c4d50e10b646ab39a25b93034319151a12f316b60e81ef2e88d00660361e25",
+    "validation_sha256": "970c6568a6400a1fc265b7809ef7bd9d1c297632799cbb88801313bc34ac415a",
+    "logistic_l1_artifact_sha256": "71a3e24a0283a31ba188bc7dd60b18c1b708370b9ca275d5ab1a1004680c968a",
+    "accepted_candidate_count": 11279,
+    "portable_candidate_count": 11210,
+    "portable_threshold_absolute_difference": 7.216449660063518e-16,
+    "accepted_probability_audit_maximum": 3.3306690738754696e-16,
+    "portable_decision_disagreements_at_accepted_threshold": 0,
+    "original_sklearn_f_order_reproduces_full_threshold_record": true,
+    "original_sklearn_f_order_reproduces_scoring_audit": true,
+    "threshold_changed": false,
+    "model_refit": false
+  }
+}

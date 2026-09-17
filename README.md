@@ -2,6 +2,13 @@
 
 ## Current Work
 
+The [current execution record](docs/advisor-approval/approval-status.md) is the
+authority for run status; contracts and the matrix retain their freeze-time
+status. The [remaining evaluation work](docs/research-evidence-outline.md#remaining-executable-work)
+distinguishes implemented utilities from scientific analyses not yet run.
+
+## Source and Baseline Record
+
 This branch contains the active research implementation governed by protocol
 v1.10. The PhiUSIIL preparation milestone and aggregate record are complete.
 The historical [`rq1-baselines-v1`](data/rq1-baseline-contract.json) contract is
@@ -193,7 +200,11 @@ are complete; the pre-execution status was `frozen_implemented_not_run`.
 Reviewed repository
 commit `0793ca3dbc36e49b561cd0ac74968a4644060426` identifies the implementation
 before this publication correction; it is not a performance or result run. The
-implementation is unit-tested; execution is now `running_development_validation`.
+implementation is unit-tested; the first execution stopped at a stage-one
+scoring integrity check. The [execution record](reports/rq1-transformer-cascade-v2-execution.json)
+preserves the failure and its no-fit diagnosis. The portable scorer changed
+floating-point ties relative to the accepted baseline; reconstructing the
+original scikit-learn scoring path reproduces its complete threshold record.
 No completed transformer, threshold, or cascade result exists. H1, H2, and H3
 remain undecided.
 The group test remains analyst-exposed but model-unscored, and no PhishVN record
@@ -216,7 +227,8 @@ completed from published, CI-verified commit `9983bfd`. All six candidates
 converged; training BIC selected six components. The independent audit alerted
 on **28 of 252 windows (11.11%)**, exceeding the **5%** limit. The boundary was
 not retuned. This failed gate remains part of the result and does not support H2.
-The transformer/cascade run is still in progress; external evaluation has not run.
+See the current execution record above for transformer/cascade status.
+External evaluation has not run.
 
 The monitor uses the exact 25 URL features plus the pinned portable Logistic-L1
 probability. It fits a training-only 26-column scaler and all six frozen
@@ -257,6 +269,16 @@ clean freeze checkout with unused output destinations:
   --gmm-contract data/rq2-gmm-development-contract-v1.json \
   --output-dir data/processed/rq2-gmm-development-v1 \
   --summary reports/rq2-gmm-development-v1-summary.json
+```
+
+The saved-window description is a separate post hoc check, not a refit or a
+threshold-selection step. It authenticates the recorded inputs and emits only
+aggregate distributions and overlap counts:
+
+```bash
+.venv/bin/python scripts/describe_gmm_audit.py \
+  --summary reports/rq2-gmm-development-v1-summary.json \
+  --audit data/processed/rq2-gmm-development-v1/validation-audit.json
 ```
 
 ## Evidence Status

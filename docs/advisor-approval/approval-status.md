@@ -13,12 +13,14 @@ completed that requested source freeze after the meeting. Protocol v1.7 froze
 Protocol v1.8 froze `rq1-transformer-cascade-v1`; it was never fit and is now
 `superseded_unrun`. Protocol v1.9 freezes the publication-only amendment
 `rq1-transformer-cascade-v2` at `frozen_not_run`. The procedure code, tests,
-CLI, and private/public artifact publication code are complete, and the live
-implementation status is `frozen_implemented_not_run`. Repository commits
+CLI, and private/public artifact publication code are complete, and the
+pre-execution
+implementation status was `frozen_implemented_not_run`; execution is now
+`running_development_validation`. Repository commits
 `a8ee067bda8fd45d19f5c4b794ba21f58d1947fc` and
 `0793ca3dbc36e49b561cd0ac74968a4644060426` record the initial implementation
-and review hardening; they are not performance or result runs. No transformer
-fit, threshold calibration, or cascade result exists. The implementation and
+and review hardening; they are not performance or result runs. No completed
+transformer, threshold, or cascade result exists. The implementation and
 its tests did not open the PhiUSIIL group-test partition or PhishVN. GMM
 execution is `not_run`. H1, H2, and H3 remain undecided. The group test remains
 analyst-exposed but model-unscored.
@@ -26,9 +28,12 @@ analyst-exposed but model-unscored.
 | Field | Value |
 |---|---|
 | Protocol | `docs/advisor-approval/2026-08-16-realignment-matrix.md` |
-| Protocol version | `1.9` |
-| Protocol date | `2026-09-09` |
-| Protocol SHA-256 | `f24eac919cb79d24d2248a94b3a74208f7b4d809ad778b963ad2e62315d78a38` |
+| Protocol version | `1.10` |
+| Protocol date | `2026-09-17` |
+| Protocol SHA-256 | `aad6b7cf8d8416bfb37ec19503dbed031c15767ea96d9b76486ca3f3fedebe1b` |
+| Historical v1.9 protocol SHA-256 | `f24eac919cb79d24d2248a94b3a74208f7b4d809ad778b963ad2e62315d78a38` |
+| RQ2 GMM contract | `data/rq2-gmm-development-contract-v1.json` (`rq2-gmm-development-v1`) |
+| RQ2 GMM contract SHA-256 | `22d32088b05e74432704f9671ab76ba28b4f573ead418846b23bc366315cb393` |
 | RQ1 baseline contract | `data/rq1-baseline-contract-v2.json` (`rq1-baselines-v2`) |
 | RQ1 baseline contract SHA-256 | `05d6d0831def7d26448c8dbdc8117800ea2448cdfc2aca2ad95489f22d2d11ba` |
 | RQ1 transformer/cascade contract | `data/rq1-transformer-cascade-contract-v2.json` (`rq1-transformer-cascade-v2`) |
@@ -43,13 +48,21 @@ analyst-exposed but model-unscored.
 | Source-freeze release tag | `phiusiil-development-v1` |
 | Source-freeze release | [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1) |
 | Development preparation | `complete` |
-| Current technical milestone | v1.4 baseline attempt `stopped_nonconverged`; exploratory tolerance observation `not_accepted_provenance_incomplete`; v1.5 SAGA diagnostic `stopped_platform_warning`; v1.6 SAGA diagnostic `passed_training_only`; protocol v1.7 baseline execution `completed_development_validation`; protocol v1.8 transformer/cascade v1 `superseded_unrun`; protocol v1.9 transformer/cascade v2 contract `frozen_not_run`, implementation `frozen_implemented_not_run`; GMM `not_run`; H1, H2, and H3 remain undecided. |
+| Current technical milestone | v1.4 baseline attempt `stopped_nonconverged`; exploratory tolerance observation `not_accepted_provenance_incomplete`; v1.5 SAGA diagnostic `stopped_platform_warning`; v1.6 SAGA diagnostic `passed_training_only`; protocol v1.7 baseline execution `completed_development_validation`; protocol v1.8 transformer/cascade v1 `superseded_unrun`; protocol v1.9 transformer/cascade v2 contract `frozen_not_run`, execution `running_development_validation`; protocol v1.10 GMM contract `frozen_not_run`, execution `not_run`; H1, H2, and H3 remain undecided. |
 | Current hypothesis status | H1 `undecided`; H2 `undecided`; H3 `undecided` |
 | Legacy base tag | `legacy-v2-clean-2026-08-16` |
 | Legacy base SHA | `a5eceecf21ad5ce29c4ab8f8d4de0edc8b73b240` |
 | Advisor report date | `2026-09-03` |
 | Advisor report SHA-256 | `b72da89a4cc8a5b06f6ca88d79fe78dd54e3199a96b7450209ea53b4a4c04215` |
 | Direction | Complete and freeze the source-provenance release, then conduct systematic hypothesis testing with all gates, thresholds, features, and train/validation procedures locked before test results, with particular attention to H1 and the GMM. |
+
+Protocol v1.10 incorporates unchanged transformer v2 and freezes
+`rq2-gmm-development-v1` before GMM execution. The GMM execution is `not_run`;
+the contract and its tests are not fitted results. Synthetic-only preflight
+exposed an Accelerate warning; the unchanged NumPy 2.2.6 version with
+`scipy-openblas` 0.3.29 passed all six synthetic candidate fits. The GMM runtime
+therefore pins that backend and rejects Accelerate before input reads, rather
+than extending the warning allowlist. No research-data fit informed this choice.
 
 ## Current Controls
 
@@ -78,8 +91,14 @@ analyst-exposed but model-unscored.
   verifies it is stale and removes it before rerun. V1 remains byte-preserved at
   SHA-256 `aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54`
   with status `superseded_unrun`. V2 is `frozen_not_run`, and the implementation
-  is `frozen_implemented_not_run`. No transformer fit, threshold calibration, or
-  cascade result exists.
+  was `frozen_implemented_not_run`; execution is `running_development_validation`.
+  No completed transformer, threshold, or cascade result exists.
+- `rq2-gmm-development-v1` freezes training-only 26-column scaling, six
+  diagonal-GMM fits selected by training BIC, the label-blind validation-domain
+  allocation, the linear calibration quantile, and the independent audit gate.
+  Its SHA-256 is `22d32088b05e74432704f9671ab76ba28b4f573ead418846b23bc366315cb393`.
+  The audit cannot retune the boundary; a failed audit gate is still a completed
+  development-validation run, not H2 evidence.
 - The PhiUSIIL group test is analyst-exposed but model-unscored. It remains
   excluded from fitting and selection. Its raw partition receives exactly one
   later frozen noninteractive processing pass only after all four RQ1 models,
@@ -217,9 +236,16 @@ roles. It accepts no group-test, external, PhishVN, runtime-tuning, or test-path
 input. Repository commits `a8ee067bda8fd45d19f5c4b794ba21f58d1947fc`
 and `0793ca3dbc36e49b561cd0ac74968a4644060426` record the initial implementation
 and review hardening. The v2 amendment changes publication semantics, not the
-model or scientific procedure. The implementation is
-`frozen_implemented_not_run`; no transformer fit, threshold calibration, or
-cascade result exists. The GMM execution remains `not_run`.
+model or scientific procedure. The pre-execution implementation was
+`frozen_implemented_not_run`; execution is `running_development_validation`.
+No completed transformer, threshold, or cascade result exists. The GMM
+execution remains `not_run`.
+
+The official transformer run started on 2026-09-17 at 18:21:12 UTC from clean
+detached commit `c3a5c815b20121f1ddd06a2f316f904077c00c4f`, after its
+[CI run](https://github.com/KrtiT/automated-phishing-detection-public/actions/runs/35257955477)
+passed. Execution status is `running_development_validation`. No completed
+transformer, threshold, or cascade result exists.
 
 ## Change Record
 
@@ -234,6 +260,7 @@ cascade result exists. The GMM execution remains `not_run`.
 | 2026-09-04 | 1.7 | Recorded that the v1.6 diagnostic passed its prespecified checks as training feasibility only; `rq1-baselines-v2`, SAGA, and the validation scoring audit are frozen before validation. No baseline result was accepted, and no RQ/H decision rule changed. |
 | 2026-09-09 | 1.8 | Recorded the September 3 advisor direction and completed source-provenance release; narrowed RQ1 to selective character-model escalation; froze `rq1-transformer-cascade-v1`, the manual-review boundary, and the complete-window H2 metric at contract status `frozen_not_run`. The procedure was later implemented and review-hardened at `frozen_implemented_not_run`; no transformer, cascade, or GMM fit was run. |
 | 2026-09-09 | 1.9 | Preserved `rq1-transformer-cascade-v1` byte-for-byte as `superseded_unrun` and froze `rq1-transformer-cascade-v2` at `frozen_not_run`. Version 2 changes only contract identity, schema version, protocol version, and publication semantics; its date is unchanged, and it does not change a research question, hypothesis, input, model, training, threshold, cascade, manual-review, or artifact-content rule. The protocol record also corrected the still-unrun GMM allocation status to a prospective staged freeze without selecting an allocation rule. The implementation is `frozen_implemented_not_run`; no transformer, cascade, or GMM fit was run. |
+| 2026-09-17 | 1.10 | Froze `rq2-gmm-development-v1` before GMM execution: exact 26-column inputs and training scaler, six diagonal-GMM candidates and training-BIC selection, label-blind domain-hash calibration/audit allocation, complete-window linear quantile, strict audit gate, numerical policy, and private/public publication controls. Incorporates unchanged transformer v2; both transformer contracts remain byte-identical. Transformer execution is `running_development_validation`; GMM execution is `not_run`. No completed transformer or GMM result is claimed and H1, H2, and H3 remain undecided. |
 
 Any change to a research question, hypothesis, evidence designation, method,
 or decision rule increments the protocol version and records a new hash before

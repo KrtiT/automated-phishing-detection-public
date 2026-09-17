@@ -19,6 +19,7 @@ BASELINE_V1_CONTRACT = ROOT / "data" / "rq1-baseline-contract.json"
 BASELINE_V2_CONTRACT = ROOT / "data" / "rq1-baseline-contract-v2.json"
 TRANSFORMER_CONTRACT = ROOT / "data" / "rq1-transformer-cascade-contract-v1.json"
 TRANSFORMER_CONTRACT_V2 = ROOT / "data" / "rq1-transformer-cascade-contract-v2.json"
+GMM_CONTRACT = ROOT / "data" / "rq2-gmm-development-contract-v1.json"
 FINAL_TRANSFORMER_CODE_COMMIT = "0793ca3dbc36e49b561cd0ac74968a4644060426"
 INITIAL_TRANSFORMER_CODE_COMMIT = "a8ee067bda8fd45d19f5c4b794ba21f58d1947fc"
 TRANSFORMER_CONTRACT_SHA256 = (
@@ -398,12 +399,12 @@ def test_v2_baseline_summary_is_aggregate_and_immutable():
     visit(summary)
 
 
-def test_protocol_v19_preserves_v18_history_and_freezes_transformer_without_result():
+def test_protocol_v110_preserves_transformer_history_and_freezes_gmm_without_result():
     protocol = PROTOCOL.read_text(encoding="utf-8")
     preamble = protocol.split("## Study Plan", maxsplit=1)[0]
     contract = _section(protocol, "RQ1 baseline contract", level=3)
 
-    assert "**Version:** 1.9 | **Date:** 2026-09-09" in preamble
+    assert "**Version:** 1.10 | **Date:** 2026-09-17" in preamble
     assert "PhiUSIIL development-data preparation is complete." in preamble
     assert "rq1-baselines-v2" in preamble
     expected_contract_hash = sha256(BASELINE_V2_CONTRACT.read_bytes()).hexdigest()
@@ -423,11 +424,12 @@ def test_protocol_v19_preserves_v18_history_and_freezes_transformer_without_resu
     assert "`superseded_unrun`" in preamble
     assert "Protocol v1.9 freezes `rq1-transformer-cascade-v2`" in preamble
     assert "contract status `frozen_not_run`" in preamble
-    assert "implementation status is `frozen_implemented_not_run`" in preamble
     assert (
-        "No transformer fit, threshold calibration, or cascade result exists"
+        "pre-execution implementation status was `frozen_implemented_not_run`"
         in preamble
     )
+    assert "`running_development_validation`" in preamble
+    assert "no completed transformer, threshold, or cascade result" in preamble
     assert "H1, H2, and H3 remain undecided" in preamble
     assert "group test remains analyst-exposed but model-unscored" in preamble
     assert "No PhishVN record has been accessed" in preamble
@@ -447,14 +449,14 @@ def test_protocol_v19_supersedes_unrun_v1_with_the_publication_only_v2_amendment
     basis = _compact(RESEARCH_BASIS.read_text(encoding="utf-8"))
     readme = _compact(README.read_text(encoding="utf-8"))
 
-    assert "**version:** 1.9 | **date:** 2026-09-09" in protocol
-    assert "governed by protocol v1.9" in readme
+    assert "**version:** 1.10 | **date:** 2026-09-17" in protocol
+    assert "governed by protocol v1.10" in readme
     assert "rq1-transformer-cascade-v2" in protocol
     assert TRANSFORMER_CONTRACT_V2_SHA256 in protocol
     assert "rq1-transformer-cascade-v1" in protocol
     assert TRANSFORMER_CONTRACT_SHA256 in protocol
     assert "superseded_unrun" in protocol
-    assert "no transformer fit" in protocol
+    assert "no completed transformer" in protocol
 
     assert "rq1-transformer-cascade-v2" in status
     assert TRANSFORMER_CONTRACT_V2_SHA256 in status
@@ -464,11 +466,11 @@ def test_protocol_v19_supersedes_unrun_v1_with_the_publication_only_v2_amendment
 
     assert "rq1-transformer-cascade-v2" in readme
     assert "frozen_implemented_not_run" in readme
-    assert "no transformer fit" in readme
+    assert "no completed transformer" in readme
     assert "rq1-transformer-cascade-v2" in evidence
-    assert "no transformer fit" in evidence
+    assert "no completed transformer" in evidence
     assert "rq1-transformer-cascade-v2" in basis
-    assert "official mps fit has not run" in basis
+    assert "`running_development_validation`" in basis
 
     assert "public summary is the completion marker" in protocol
     assert "completed result requires both" in protocol
@@ -565,7 +567,7 @@ def test_live_records_preserve_v14_failure_and_qualify_tolerance_observation():
             flags=re.IGNORECASE,
         )
         assert "`rq1-baselines-v1`" in audit
-        assert "| Protocol version | `1.9` |" in text
+        assert "| Protocol version | `1.10` |" in text
         assert contract_row in text
         assert (
             "| Historical RQ1 baseline contract SHA-256 | "
@@ -1000,8 +1002,8 @@ def test_v19_binds_transformer_contract_and_preserves_prospective_status():
         assert any(
             boundary in section
             for boundary in (
-                "no transformer or cascade fit was run",
-                "no transformer fit, threshold calibration, or cascade result exists",
+                "has no completed result",
+                "no completed transformer, threshold, or cascade result exists",
             )
         )
 
@@ -1017,7 +1019,7 @@ def test_v19_binds_transformer_contract_and_preserves_prospective_status():
         )
 
 
-def test_live_records_bind_reviewed_transformer_code_without_claiming_a_run():
+def test_live_records_bind_reviewed_transformer_code_without_claiming_completion():
     readme = _compact(README.read_text(encoding="utf-8"))
     status = _compact(STATUS.read_text(encoding="utf-8"))
     evidence = _compact(EVIDENCE_OUTLINE.read_text(encoding="utf-8"))
@@ -1037,7 +1039,7 @@ def test_live_records_bind_reviewed_transformer_code_without_claiming_a_run():
         SEPTEMBER_REPORT_SHA256,
         "procedure code, tests, cli, and private/public artifact publication code "
         "are complete",
-        "no transformer fit, threshold calibration, or cascade result exists",
+        "no completed transformer, threshold, or cascade result exists",
         "h1, h2, and h3 remain undecided",
         "group test remains analyst-exposed but model-unscored",
         "the implementation and its tests did not open the phiusiil group-test "
@@ -1061,7 +1063,7 @@ def test_live_records_bind_reviewed_transformer_code_without_claiming_a_run():
         TRANSFORMER_CONTRACT_V2_SHA256,
         "procedure code, tests, cli, and private/public artifact publication code "
         "are complete",
-        "no transformer fit, threshold calibration, or cascade result exists",
+        "no completed transformer, threshold, or cascade result exists",
         "h1, h2, and h3 remain undecided",
         "group test remains analyst-exposed but model-unscored",
         "no phishvn record has been accessed",
@@ -1074,7 +1076,7 @@ def test_live_records_bind_reviewed_transformer_code_without_claiming_a_run():
         TRANSFORMER_CONTRACT_V2_SHA256,
         "transformer/cascade procedure can produce evidence when run; it is not "
         "itself a model result",
-        "no transformer fit, threshold calibration, or cascade result exists",
+        "no completed transformer, threshold, or cascade result exists",
         "h1, h2, and h3 remain undecided",
         "group test remains analyst-exposed but model-unscored",
         "no phishvn record has been accessed",
@@ -1091,7 +1093,7 @@ def test_live_records_bind_reviewed_transformer_code_without_claiming_a_run():
         "transformer-only remains a comparator and operational reference",
         "not a third primary h1 gate",
         "system contribution, not a pure causal isolation",
-        "official mps fit has not run",
+        "`running_development_validation`",
     ):
         assert required in basis, f"missing from research basis: {required}"
 
@@ -1286,15 +1288,25 @@ def test_v19_change_record_is_publication_only_and_preserves_v1():
         assert detail in v19_row
 
 
-def test_gmm_allocation_remains_a_prospective_staged_freeze():
-    protocol = _compact(PROTOCOL.read_text(encoding="utf-8"))
-
-    assert "before any gmm execution, a separate contract will freeze" in protocol
-    assert (
-        "namespace, seed, exact allocation rule, tie handling, row order, and "
-        "quantile method" in protocol
+def test_v110_records_bind_exact_gmm_contract_before_execution():
+    contract = json.loads(GMM_CONTRACT.read_text(encoding="utf-8"))
+    expected_hash = sha256(GMM_CONTRACT.read_bytes()).hexdigest()
+    for path in (PROTOCOL, STATUS, EVIDENCE_OUTLINE, RESEARCH_BASIS, README):
+        text = path.read_text(encoding="utf-8")
+        assert contract["contract_id"] in text
+        assert expected_hash in text
+    protocol = PROTOCOL.read_text(encoding="utf-8")
+    assert "before any gmm execution, a separate contract will freeze" not in _compact(
+        protocol
     )
-    assert "validation domains are divided by a frozen domain-hash rule" not in protocol
+    section = _section(protocol, "RQ2 GMM development contract", level=3)
+    assert contract["validation_allocation"]["namespace"] in section
+    assert str(contract["validation_allocation"]["seed"]) in section
+    assert contract["audit"]["gate"] in section
+    assert contract["execution"]["completed_status"] in section
+    for path in (STATUS, EVIDENCE_OUTLINE):
+        text = path.read_text(encoding="utf-8")
+        assert f"| RQ2 GMM contract SHA-256 | `{expected_hash}` |" in text
 
 
 def test_second_group_test_display_is_recorded_without_changing_study_status():

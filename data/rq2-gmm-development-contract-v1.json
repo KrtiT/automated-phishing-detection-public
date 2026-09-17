@@ -1,0 +1,306 @@
+{
+  "contract_id": "rq2-gmm-development-v1",
+  "schema_version": 1,
+  "protocol_version": "1.10",
+  "status": "frozen_not_run",
+  "date": "2026-09-17",
+  "purpose": "prospective_development_method_freeze",
+  "inputs": {
+    "accepted_roles": {
+      "train": "575f2fb13a0766020e29d78bf8e633a185b381abde7060bdd1ed04cc4a5e38a0",
+      "validation": "970c6568a6400a1fc265b7809ef7bd9d1c297632799cbb88801313bc34ac415a",
+      "preparation_summary": "1a85a7eecc0f5baa7c59e03a0cbde63fd4595409feb918dc5ff916ead7cd5c9e",
+      "logistic_l1_artifact": "71a3e24a0283a31ba188bc7dd60b18c1b708370b9ca275d5ab1a1004680c968a",
+      "contract": "05d6d0831def7d26448c8dbdc8117800ea2448cdfc2aca2ad95489f22d2d11ba"
+    },
+    "forbidden_roles": [
+      "group_test",
+      "external",
+      "PhishVN",
+      "runtime_tuning",
+      "test_path"
+    ]
+  },
+  "cli": {
+    "accepted_path_roles": [
+      "train",
+      "validation",
+      "preparation_summary",
+      "contract",
+      "logistic_l1_artifact",
+      "gmm_contract",
+      "output_directory",
+      "summary"
+    ],
+    "tuning_arguments": false
+  },
+  "features": {
+    "names": [
+      "raw_url_codepoint_length",
+      "raw_url_utf8_byte_length",
+      "hostname_ascii_length",
+      "path_codepoint_length",
+      "query_codepoint_length",
+      "fragment_codepoint_length",
+      "hostname_label_count",
+      "hostname_ascii_digit_count",
+      "hostname_hyphen_count",
+      "hostname_punycode_label_count",
+      "path_segment_count",
+      "query_parameter_count",
+      "raw_url_ascii_letter_count",
+      "raw_url_ascii_digit_count",
+      "raw_url_other_codepoint_count",
+      "raw_url_ascii_digit_ratio",
+      "raw_url_other_codepoint_ratio",
+      "raw_url_unique_codepoint_count",
+      "raw_url_utf8_byte_entropy_bits",
+      "percent_escape_count",
+      "is_https",
+      "has_userinfo",
+      "has_explicit_port",
+      "has_query_delimiter",
+      "has_fragment_delimiter",
+      "logistic_l1_phishing_probability"
+    ],
+    "dtype": "float64",
+    "stage1": {
+      "source_role": "logistic_l1_artifact",
+      "loader": "fixed_cascade.load_logistic_l1_artifact",
+      "scoring": "PortableLogisticL1.score_urls",
+      "refit": false
+    }
+  },
+  "scaler": {
+    "class": "sklearn.preprocessing.StandardScaler",
+    "parameters": {
+      "copy": true,
+      "with_mean": true,
+      "with_std": true
+    },
+    "fit_partition": "entire_training_26_column_matrix_only",
+    "variance_ddof": 0,
+    "constant_column_scale": 1
+  },
+  "validation_allocation": {
+    "unit": "unique_normalized_ascii_registrable_domain",
+    "namespace": "rq2-gmm-validation-v1",
+    "seed": 20260816,
+    "hash": "sha256",
+    "hash_input": "namespace_utf8 + NUL + seed_ascii + NUL + domain_ascii",
+    "sort_key": [
+      "digest_bytes",
+      "domain_ascii_bytes"
+    ],
+    "calibration": "first_floor_domain_count_divided_by_2",
+    "audit": "remaining_domains",
+    "stream_row_order": "preserve_pinned_validation_input_order",
+    "uses_labels": false,
+    "uses_class_counts": false,
+    "reroll": false
+  },
+  "mixture": {
+    "class": "sklearn.mixture.GaussianMixture",
+    "candidate_components": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "parameters": {
+      "covariance_type": "diag",
+      "tol": 0.001,
+      "reg_covar": 0.000001,
+      "max_iter": 500,
+      "n_init": 5,
+      "init_params": "kmeans",
+      "weights_init": null,
+      "means_init": null,
+      "precisions_init": null,
+      "random_state": 42,
+      "warm_start": false,
+      "verbose": 0,
+      "verbose_interval": 10
+    },
+    "fit_partition": "training_only",
+    "selection": {
+      "metric": "training_BIC",
+      "objective": "minimum",
+      "exact_tie_break": "smaller_component_count",
+      "validation_used": false
+    },
+    "require_all_converged": true,
+    "require_finite_parameters": true,
+    "require_positive_weights_and_variances": true,
+    "require_normalized_weights": true,
+    "candidate_failure": "stop_entire_run_no_skip_no_retry"
+  },
+  "runtime": {
+    "device": "cpu",
+    "dtype": "float64",
+    "versions": {
+      "numpy": "2.2.6",
+      "scipy": "1.15.3",
+      "scikit-learn": "1.7.2",
+      "threadpoolctl": "3.6.0"
+    },
+    "threadpoolctl_limits": 1,
+    "numpy_blas": {
+      "name": "scipy-openblas",
+      "version": "0.3.29",
+      "version_match": "release_or_build_suffix",
+      "preflight": "before_input_reads"
+    },
+    "macos_arm64_numpy_wheel": {
+      "filename": "numpy-2.2.6-cp310-cp310-macosx_11_0_arm64.whl",
+      "url": "https://files.pythonhosted.org/packages/22/c2/4b9221495b2a132cc9d2eb862e21d42a009f5a60e45fc44b00118c174bff/numpy-2.2.6-cp310-cp310-macosx_11_0_arm64.whl",
+      "sha256": "8e41fd67c52b86603a91c1a505ebaef50b3314de0213461c7a6e99c9a3beff90"
+    },
+    "warnings": "fatal",
+    "numpy_errors": {
+      "over": "raise",
+      "invalid": "raise",
+      "divide": "raise"
+    },
+    "underflow": "ignore_inside_mixture_fit_bic_and_likelihood_scoring",
+    "nonfinite": "fatal",
+    "accelerate_warning_allowlist_extension": false
+  },
+  "windows": {
+    "length": 256,
+    "stride": 64,
+    "score": "float64_mean_negative_log_likelihood",
+    "complete_only": true,
+    "minimum_complete_windows_per_stream": 1,
+    "overlapping_windows_count_separately": true
+  },
+  "calibration": {
+    "source": "validation_calibration_stream_only",
+    "quantile": 0.95,
+    "numpy_quantile_method": "linear",
+    "alert_rule": "score > boundary"
+  },
+  "audit": {
+    "source": "validation_audit_stream_only",
+    "gate": "20 * alert_windows <= complete_windows",
+    "retune_boundary": false,
+    "binomial_confidence_interval": false,
+    "failed_gate_status": "completed_development_validation",
+    "failed_gate_false_alert_gate_met": false
+  },
+  "artifacts": {
+    "private": {
+      "directory_mode": "0700",
+      "file_mode": "0600",
+      "files": {
+        "gmm.json": "fitted_scaler_and_mixture",
+        "validation-audit.json": "domain_membership_and_window_traces",
+        "SHA256SUMS": "sha256_manifest"
+      },
+      "canonical_json": {
+        "encoding": "UTF-8",
+        "allow_nan": false,
+        "ensure_ascii": false,
+        "sort_keys": true,
+        "separators": [
+          ",",
+          ":"
+        ],
+        "terminal_newline": true
+      },
+      "sha256sums": {
+        "files": [
+          "gmm.json",
+          "validation-audit.json"
+        ],
+        "order": "lexicographic_filename",
+        "line_format": "<lowercase_sha256><two_spaces><filename>\\n",
+        "self_included": false
+      }
+    },
+    "public_summary": {
+      "allowlisted_content": [
+        "counts",
+        "all_six_BIC_values_and_iteration_counts",
+        "selected_component_count",
+        "calibration_boundary",
+        "audit_alert_counts_and_fractions",
+        "false_alert_gate_met",
+        "configuration",
+        "versions",
+        "numpy_build_configuration",
+        "input_hashes",
+        "artifact_hashes",
+        "warnings",
+        "status"
+      ],
+      "forbidden_content": [
+        "URLs",
+        "records",
+        "domains",
+        "record_ids",
+        "fitted_parameter_arrays",
+        "predictions",
+        "scaler_parameters",
+        "mixture_parameters",
+        "window_traces",
+        "membership"
+      ],
+      "access": {
+        "group_test_accessed": false,
+        "external_accessed": false,
+        "phishvn_accessed": false,
+        "scope": "this_process_only"
+      }
+    }
+  },
+  "publication": {
+    "temporary_writes": {
+      "private_output_directory": "temporary_path_in_destination_parent",
+      "public_summary": "temporary_path_in_destination_parent"
+    },
+    "destination_installation": "atomic_no_replace",
+    "install_order": [
+      "private_output_directory",
+      "public_summary"
+    ],
+    "completion_marker": "public_summary",
+    "completed_result_requires": [
+      "private_output_directory",
+      "public_summary"
+    ],
+    "caught_in_process_failure": {
+      "caught": "BaseException",
+      "rollback": "remove_destinations_created_by_this_run"
+    },
+    "abrupt_process_or_host_failure": {
+      "cross_destination_atomic": false,
+      "possible_state": "private_output_without_public_summary"
+    },
+    "incomplete_states": {
+      "one_destination_without_the_other": [
+        "private_output_without_public_summary",
+        "public_summary_without_private_output"
+      ],
+      "classification": "incomplete_not_result"
+    },
+    "rerun_precondition": {
+      "existing_incomplete_output": {
+        "pipeline_action": "abort_without_mutation",
+        "required_before_rerun": "operator_verifies_stale_publication_and_removes_existing_output"
+      }
+    }
+  },
+  "execution": {
+    "fit_performed": false,
+    "result_claimed": false,
+    "completed_status": "completed_development_validation",
+    "hypotheses": {
+      "H1": "undecided",
+      "H2": "undecided",
+      "H3": "undecided"
+    }
+  }
+}

@@ -3,7 +3,7 @@
 ## Current Work
 
 This branch contains the active research implementation governed by protocol
-v1.9. The PhiUSIIL preparation milestone and aggregate record are complete.
+v1.10. The PhiUSIIL preparation milestone and aggregate record are complete.
 The historical [`rq1-baselines-v1`](data/rq1-baseline-contract.json) contract is
 preserved unchanged. Its prescribed fit stopped at the 5,000-iteration limit
 with a convergence warning and produced no model or summary artifact. A later
@@ -99,8 +99,9 @@ cmp data/processed/phiusiil-v1-summary.json \
 The command checks the pinned input hashes before parsing a record. Row-level
 outputs and the reproduced summary remain local; `cmp` confirms that the run
 matches the aggregate [preparation summary](reports/phiusiil-preparation-summary.json)
-recorded in the repository. Run the software checks with
-`uv run --locked pytest -q`.
+recorded in the repository. On macOS arm64, complete the OpenBLAS setup in the
+GMM section below before running the full software checks with
+`.venv/bin/python -m pytest -q`.
 
 The recorded run read 235,795 rows, retained 233,536 rows across 197,105
 registrable domains, and quarantined 2,259 rows under the stated rules. The
@@ -188,11 +189,13 @@ with status `superseded_unrun`. Version 2 changes only contract identity, schema
 version, protocol version, and publication semantics; its date, scientific rules,
 and artifact-content rules are unchanged.
 The procedure code, tests, CLI, and private/public artifact publication code
-are complete with status `frozen_implemented_not_run`. Reviewed repository
+are complete; the pre-execution status was `frozen_implemented_not_run`.
+Reviewed repository
 commit `0793ca3dbc36e49b561cd0ac74968a4644060426` identifies the implementation
 before this publication correction; it is not a performance or result run. The
-implementation is unit-tested; no transformer fit, threshold calibration, or
-cascade result exists. H1, H2, and H3 remain undecided.
+implementation is unit-tested; execution is now `running_development_validation`.
+No completed transformer, threshold, or cascade result exists. H1, H2, and H3
+remain undecided.
 The group test remains analyst-exposed but model-unscored, and no PhishVN record
 has been accessed. Publication stages each destination in its own parent,
 installs the private directory before the public-summary completion marker, and
@@ -201,6 +204,55 @@ remove run-created destinations. An abrupt failure can leave private output
 without the summary because the two installs are not cross-destination atomic.
 Either one-sided state is `incomplete_not_result` and must be verified as stale
 and removed before rerun.
+
+## Frozen GMM Development Contract
+
+Protocol v1.10 incorporates unchanged transformer v2 and freezes
+[`rq2-gmm-development-v1`](data/rq2-gmm-development-contract-v1.json),
+SHA-256 `22d32088b05e74432704f9671ab76ba28b4f573ead418846b23bc366315cb393`,
+before GMM execution.
+The GMM execution is `not_run`; a contract is not a fitted result.
+
+The monitor uses the exact 25 URL features plus the pinned portable Logistic-L1
+probability. It fits a training-only 26-column scaler and all six frozen
+diagonal-GMM candidates, selecting minimum training BIC with exact ties favoring
+the smaller component count. A label-blind domain-hash split separates validation
+calibration from audit and preserves input row order. Complete 256-request
+windows at stride 64 use mean negative log-likelihood. The boundary is the linear
+95th calibration percentile; strict exceedances on audit must satisfy
+`20 * alert_windows <= complete_windows`. The audit never retunes the boundary.
+Even a failed gate is recorded as completed development validation, not a
+hypothesis decision. Fitted parameters and membership/window traces remain
+private; only aggregate counts, candidate BIC/iterations, boundary, audit
+fractions, configuration, versions, and hashes may be published.
+
+The runtime rejects non-OpenBLAS NumPy builds before reading inputs. Synthetic
+preflight encountered a fatal Accelerate warning; the same NumPy 2.2.6 with
+`scipy-openblas` 0.3.29 passed all six synthetic fits. No research data informed
+this backend pin, and no warning exemption was added. The macOS arm64 CPython
+3.10 setup is:
+
+```bash
+uv sync --locked
+uv pip install --python .venv/bin/python --no-deps --reinstall-package numpy \
+  'numpy @ https://files.pythonhosted.org/packages/22/c2/4b9221495b2a132cc9d2eb862e21d42a009f5a60e45fc44b00118c174bff/numpy-2.2.6-cp310-cp310-macosx_11_0_arm64.whl#sha256=8e41fd67c52b86603a91c1a505ebaef50b3314de0213461c7a6e99c9a3beff90'
+```
+
+Use the environment's executable directly afterward: `uv run` may restore the
+Accelerate wheel. After the preparation and baseline steps above, run from the
+clean freeze checkout with unused output destinations:
+
+```bash
+.venv/bin/phishing-research fit-gmm-monitor \
+  --train data/processed/phiusiil-v1/train.jsonl \
+  --validation data/processed/phiusiil-v1/validation.jsonl \
+  --preparation-summary reports/phiusiil-preparation-summary.json \
+  --baseline-contract data/rq1-baseline-contract-v2.json \
+  --logistic-l1-artifact data/processed/rq1-baselines-v2/logistic-l1.json \
+  --gmm-contract data/rq2-gmm-development-contract-v1.json \
+  --output-dir data/processed/rq2-gmm-development-v1 \
+  --summary reports/rq2-gmm-development-v1-summary.json
+```
 
 ## Evidence Status
 

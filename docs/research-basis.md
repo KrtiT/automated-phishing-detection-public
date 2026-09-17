@@ -21,11 +21,28 @@ development validation only. Protocol v1.8's byte-preserved
 `686c0d86b33b8a6c2e09cd6e174003db0bd2f7c30b087faf5470e6a270524213`, at
 contract status `frozen_not_run`. Version 2 changes publication semantics but no
 scientific or artifact-content rule. The implementation is unit-tested at
-status `frozen_implemented_not_run`; the official MPS fit has not run. H1, H2,
+pre-execution status `frozen_implemented_not_run`; the official MPS execution
+is `running_development_validation`, without a completed result. H1, H2,
 and H3 remain undecided, the group test remains analyst-exposed but
-model-unscored, and no PhishVN record has been accessed. The GMM allocation
-rule is not yet frozen; its separate contract will be completed before any GMM
-execution.
+model-unscored, and no PhishVN record has been accessed. Protocol v1.10
+incorporates unchanged transformer v2 and freezes
+[`rq2-gmm-development-v1`](../data/rq2-gmm-development-contract-v1.json),
+SHA-256 `22d32088b05e74432704f9671ab76ba28b4f573ead418846b23bc366315cb393`,
+before any GMM execution.
+Its calibration/audit allocation hashes normalized ASCII domains under namespace
+`rq2-gmm-validation-v1` and seed `20260816`, sorts by digest bytes then domain
+bytes, and assigns the first `floor(D/2)` domains to calibration and the rest to
+audit while preserving input row order. It uses neither labels nor class counts
+and cannot be rerolled. Training-only scaling precedes all six diagonal-GMM
+candidates; training BIC selects the component count with exact ties favoring
+the smaller count. The calibration boundary uses NumPy's linear 0.95 quantile;
+the independent gate is `20 * alert_windows <= complete_windows` for strict
+`score > boundary` alerts. No overlapping-window binomial interval is reported,
+and the audit cannot retune the boundary. Even a failed audit gate remains
+development validation only, with H1, H2, and H3 undecided. Synthetic-only
+preflight, not research observations, established the supported NumPy 2.2.6
+`scipy-openblas` 0.3.29 runtime after Accelerate raised a fatal warning. The
+GMM rejects unsupported backends before input reads and adds no warning exemption.
 
 ## Source basis and limitations
 

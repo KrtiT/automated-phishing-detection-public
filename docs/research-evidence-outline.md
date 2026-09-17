@@ -5,8 +5,11 @@ manuscript prose and does not contain an interpretation of results.
 
 | Item | Value |
 |---|---|
-| Protocol version | `1.9` |
-| Protocol SHA-256 | `f24eac919cb79d24d2248a94b3a74208f7b4d809ad778b963ad2e62315d78a38` |
+| Protocol version | `1.10` |
+| Protocol SHA-256 | `aad6b7cf8d8416bfb37ec19503dbed031c15767ea96d9b76486ca3f3fedebe1b` |
+| Historical v1.9 protocol SHA-256 | `f24eac919cb79d24d2248a94b3a74208f7b4d809ad778b963ad2e62315d78a38` |
+| RQ2 GMM contract | `data/rq2-gmm-development-contract-v1.json` (`rq2-gmm-development-v1`) |
+| RQ2 GMM contract SHA-256 | `22d32088b05e74432704f9671ab76ba28b4f573ead418846b23bc366315cb393` |
 | RQ1 baseline contract | `data/rq1-baseline-contract-v2.json` (`rq1-baselines-v2`) |
 | RQ1 baseline contract SHA-256 | `05d6d0831def7d26448c8dbdc8117800ea2448cdfc2aca2ad95489f22d2d11ba` |
 | RQ1 transformer/cascade contract | `data/rq1-transformer-cascade-contract-v2.json` (`rq1-transformer-cascade-v2`) |
@@ -22,12 +25,13 @@ manuscript prose and does not contain an interpretation of results.
 | Source-freeze release | [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1) |
 | Development preparation | `complete` |
 | Preparation record | `reports/phiusiil-preparation-summary.json` |
-| Current technical milestone | v1.4 baseline attempt `stopped_nonconverged`; exploratory tolerance observation `not_accepted_provenance_incomplete`; v1.5 SAGA diagnostic `stopped_platform_warning`; v1.6 SAGA diagnostic `passed_training_only`; protocol v1.7 baseline execution `completed_development_validation`; protocol v1.8 transformer/cascade v1 `superseded_unrun`; protocol v1.9 transformer/cascade v2 contract `frozen_not_run`, implementation `frozen_implemented_not_run`; GMM `not_run`; H1, H2, and H3 remain undecided. |
+| Current technical milestone | v1.4 baseline attempt `stopped_nonconverged`; exploratory tolerance observation `not_accepted_provenance_incomplete`; v1.5 SAGA diagnostic `stopped_platform_warning`; v1.6 SAGA diagnostic `passed_training_only`; protocol v1.7 baseline execution `completed_development_validation`; protocol v1.8 transformer/cascade v1 `superseded_unrun`; protocol v1.9 transformer/cascade v2 contract `frozen_not_run`, execution `running_development_validation`; protocol v1.10 GMM contract `frozen_not_run`, execution `not_run`; H1, H2, and H3 remain undecided. |
 | External source | PhishVN v4, reserved for the frozen external evaluation |
 | Current hypothesis status | H1 `undecided`; H2 `undecided`; H3 `undecided` |
 
 An absent final artifact or denominator leaves the related item `not_run` or
-`undecided` unless an active execution is explicitly recorded as `in_progress`.
+`undecided` unless an active execution is explicitly recorded as
+`running_development_validation`.
 An in-progress run is not completed evidence, and no result is inferred from
 another experiment.
 
@@ -239,11 +243,18 @@ Protocol v1.8's byte-preserved `rq1-transformer-cascade-v1`, SHA-256
 contract accepts only the pinned training, validation, preparation-summary,
 baseline-contract, and `Logistic-L1` artifact roles; it accepts no group-test,
 external, PhishVN, runtime-tuning, or test-path input. The implementation is
-unit-tested at status `frozen_implemented_not_run`; the official MPS fit has not
-run. Protocol v1.9 separately corrects the still-unrun GMM allocation status to
+unit-tested before execution at status `frozen_implemented_not_run`; the official
+MPS execution is now `running_development_validation`. Protocol v1.9 separately
+corrected the then-unrun GMM allocation status to
 a prospective staged freeze; no GMM allocation choice was made. The
 implementation and its tests did not open the PhiUSIIL group-test partition or
 PhishVN.
+
+The official transformer run started on 2026-09-17 at 18:21:12 UTC from clean
+detached commit `c3a5c815b20121f1ddd06a2f316f904077c00c4f`, after its
+[CI run](https://github.com/KrtiT/automated-phishing-detection-public/actions/runs/35257955477)
+passed. Execution status is `running_development_validation`. No completed
+transformer, threshold, or cascade result exists.
 
 ## RQ1 and H1
 
@@ -258,11 +269,12 @@ representation. Transformer-only remains a comparator and operational
 reference, not a third primary H1 gate. It calibrates the cascade and supports
 the H3 comparison.
 
-The current `rq1-transformer-cascade-v2` contract is `frozen_not_run`, and the
-unit-tested implementation is `frozen_implemented_not_run`. Reviewed repository commit
+The immutable `rq1-transformer-cascade-v2` contract is `frozen_not_run`. The
+pre-execution implementation was `frozen_implemented_not_run`, and execution is
+now `running_development_validation`. Reviewed repository commit
 `0793ca3dbc36e49b561cd0ac74968a4644060426` records the last implementation
-hardening before this publication amendment. No transformer fit, threshold
-calibration, or cascade result exists.
+hardening before this publication amendment. No completed transformer,
+threshold, or cascade result exists.
 
 Required evidence:
 
@@ -286,9 +298,34 @@ v1.4 fit is `stopped_nonconverged`; the exploratory tolerance observation is
 `passed_training_only`; the rq1-baselines-v2 execution is
 `completed_development_validation`; the validation-set operating points are
 recorded above; the transformer/cascade contract is `frozen_not_run` and its
-implementation is `frozen_implemented_not_run`; H1 is `undecided`.
+execution is `running_development_validation`; H1 is `undecided`.
 
 ## RQ2 and H2
+
+Protocol v1.10 freezes [`rq2-gmm-development-v1`](../data/rq2-gmm-development-contract-v1.json),
+SHA-256 `22d32088b05e74432704f9671ab76ba28b4f573ead418846b23bc366315cb393`,
+before GMM execution,
+and incorporates unchanged transformer v2. The ordered 26-column input combines
+the 25 structural features with the pinned portable Logistic-L1 probability.
+Scaling and all six diagonal-GMM fits use training only; minimum training BIC
+selects the component count, with exact ties favoring the smaller count.
+
+Unique normalized ASCII validation domains are SHA-256 ordered under namespace
+`rq2-gmm-validation-v1`, seed `20260816`, digest-byte then domain-byte order.
+The first `floor(D/2)` domains form calibration; the rest form audit, preserving
+input row order without labels, class counts, or rerolling. The boundary is
+`np.quantile(calibration_scores, 0.95, method="linear")`. Audit alerts require
+`score > boundary`; the gate is exactly `20 * alert_windows <= complete_windows`.
+The boundary is never retuned on audit, and overlapping-window fractions get
+no binomial confidence interval. A failed gate still records
+`completed_development_validation` and `false_alert_gate_met=false`, not an H2
+decision. Private scaler/mixture parameters and membership/window traces remain
+outside Git; the public record may contain only aggregate counts, all six
+BIC/iteration records, configuration, boundary, audit fractions, and hashes.
+Synthetic-only preflight exposed an Accelerate warning; all six candidates
+passed with the same NumPy 2.2.6 and `scipy-openblas` 0.3.29. That backend is
+required before input reads and its observed name/version are recorded in the
+public summary. No research-data fit or warning-policy relaxation was used.
 
 **Question:** Can GMM-based monitoring detect an external source/domain shift
 and guide escalation without exceeding the low-FPR operating constraint?

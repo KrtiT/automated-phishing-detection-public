@@ -6,7 +6,7 @@ import json
 import sys
 from pathlib import Path
 
-from . import baselines, phiusiil, protocol_preflight, transformer_pipeline
+from . import baselines, gmm_monitor, phiusiil, protocol_preflight, transformer_pipeline
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -53,6 +53,22 @@ def _parser() -> argparse.ArgumentParser:
     fit_transformer.add_argument("--transformer-contract", required=True, type=Path)
     fit_transformer.add_argument("--output-dir", required=True, type=Path)
     fit_transformer.add_argument("--summary", required=True, type=Path)
+    fit_gmm = commands.add_parser(
+        "fit-gmm-monitor",
+        description="Fit the frozen RQ2 development GMM and validation audit.",
+        allow_abbrev=False,
+    )
+    for option in (
+        "train",
+        "validation",
+        "preparation-summary",
+        "baseline-contract",
+        "logistic-l1-artifact",
+        "gmm-contract",
+        "output-dir",
+        "summary",
+    ):
+        fit_gmm.add_argument("--" + option, required=True, type=Path)
     return parser
 
 
@@ -121,6 +137,23 @@ def main(argv=None) -> int:
                 summary_path=args.summary,
             )
         except (OSError, transformer_pipeline.TransformerPipelineError) as exc:
+            print(f"error: {exc}", file=sys.stderr)
+            return 2
+        print(json.dumps(summary, sort_keys=True))
+        return 0
+    if args.command == "fit-gmm-monitor":
+        try:
+            summary = gmm_monitor.fit_gmm_monitor(
+                train_path=args.train,
+                validation_path=args.validation,
+                preparation_summary_path=args.preparation_summary,
+                baseline_contract_path=args.baseline_contract,
+                logistic_l1_artifact_path=args.logistic_l1_artifact,
+                gmm_contract_path=args.gmm_contract,
+                output_dir=args.output_dir,
+                summary_path=args.summary,
+            )
+        except (OSError, gmm_monitor.GMMMonitorError) as exc:
             print(f"error: {exc}", file=sys.stderr)
             return 2
         print(json.dumps(summary, sort_keys=True))

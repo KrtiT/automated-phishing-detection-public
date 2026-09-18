@@ -87,7 +87,8 @@ def test_research_basis_records_sources_threshold_ownership_and_prior_work():
         assert heading in text
 
     for primary_source in (
-        "https://archive.ics.uci.edu/dataset/967/phiusiil+phishing+url+dataset",
+        "https://archive.ics.uci.edu/dataset/967/phiusiil+phishing+url+website+dataset",
+        "https://data.mendeley.com/datasets/compare/b97hxbxtpd",
         "https://doi.org/10.1016/j.cose.2023.103545",
         "https://doi.org/10.3389/fcomp.2026.1834407",
         "https://www.sciencedirect.com/science/article/pii/S0957417426029957",
@@ -102,5 +103,5 @@ def test_research_basis_records_sources_threshold_ownership_and_prior_work():
 
     assert "Every gate below is study-defined" in text
     assert "not literature-prescribed" in text
-    assert "not an achieved result" in text
+    assert "not literature-prescribed or assumed to have been met" in text
     assert "native `0` -> `is_phishing=1`; native `1` -> `is_phishing=0`" in text

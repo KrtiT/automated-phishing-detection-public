@@ -23,8 +23,19 @@ TRANSFORMER_CONTRACT_V2 = ROOT / "data" / "rq1-transformer-cascade-contract-v2.j
 GMM_CONTRACT = ROOT / "data" / "rq2-gmm-development-contract-v1.json"
 GMM_SUMMARY = ROOT / "reports" / "rq2-gmm-development-v1-summary.json"
 TRANSFORMER_EXECUTION = ROOT / "reports" / "rq1-transformer-cascade-v2-execution.json"
+TRANSFORMER_RETRY_EXECUTION = (
+    ROOT / "reports" / "rq1-transformer-cascade-v2-retry-execution.json"
+)
+TRANSFORMER_SUMMARY = ROOT / "reports" / "rq1-transformer-cascade-v2-summary.json"
 FINAL_TRANSFORMER_CODE_COMMIT = "0793ca3dbc36e49b561cd0ac74968a4644060426"
 INITIAL_TRANSFORMER_CODE_COMMIT = "a8ee067bda8fd45d19f5c4b794ba21f58d1947fc"
+TRANSFORMER_VERIFIER_COMMIT = "ef4e4567df979fef3afc91f8ad8097691f94d1ad"
+TRANSFORMER_SUMMARY_SHA256 = (
+    "41499aa388babe60442de7231b4087f67a53f96f340568a7cc58a3268606a2fd"
+)
+TRANSFORMER_RETRY_EXECUTION_SHA256 = (
+    "9be2519db4782fe71840235f81e58c4382e504d98a9d888512271107b16e4957"
+)
 TRANSFORMER_CONTRACT_SHA256 = (
     "aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54"
 )
@@ -402,6 +413,208 @@ def test_v2_baseline_summary_is_aggregate_and_immutable():
     visit(summary)
 
 
+def test_transformer_summary_is_accepted_development_only_and_immutable():
+    assert sha256(TRANSFORMER_SUMMARY.read_bytes()).hexdigest() == (
+        TRANSFORMER_SUMMARY_SHA256
+    )
+    summary = json.loads(TRANSFORMER_SUMMARY.read_bytes())
+
+    assert summary["status"] == "completed_development_validation"
+    assert summary["analysis_stage"] == "development_validation_only"
+    assert summary["contract"] == {
+        "id": "rq1-transformer-cascade-v2",
+        "protocol_version": "1.9",
+        "sha256": TRANSFORMER_CONTRACT_V2_SHA256,
+    }
+    assert summary["access"] == {
+        "group_test_accessed": False,
+        "phishvn_accessed": False,
+    }
+    assert summary["hypothesis_status"] == dict.fromkeys(
+        ("H1", "H2", "H3"), "undecided"
+    )
+    assert summary["input_counts"]["validation"] == {
+        "0": 20209,
+        "1": 12486,
+        "domain_count": 29566,
+        "rows": 32695,
+    }
+    assert summary["transformer"]["fit"] == {
+        "best_epoch": 5,
+        "best_validation_average_precision": 0.9976128267314585,
+        "epochs_completed": 10,
+        "positive_class_weight": 1.3130156521739131,
+        "stopped_early": True,
+    }
+    assert summary["transformer"]["threshold"] == {
+        "candidate_count": 20771,
+        "counts": {
+            "false_negative": 112,
+            "false_positive": 178,
+            "negative": 20209,
+            "positive": 12486,
+            "true_negative": 20031,
+            "true_positive": 12374,
+        },
+        "fpr_upper_95": 0.00996796597890856,
+        "observed_fpr": 0.008807956850908011,
+        "recall": 0.9910299535479737,
+        "status": "selected",
+    }
+    cascade = summary["cascade"]
+    validation_rows = summary["input_counts"]["validation"]["rows"]
+    assert cascade["accepted_cascade"] is True
+    assert cascade["status"] == "selected"
+    assert cascade["transformer_invocations"] == 3
+    assert cascade["transformer_invocation_rate"] == 3 / validation_rows
+    assert cascade["recall"] == 0.9842223290084895
+    assert cascade["observed_fpr"] == 0.008758473947251225
+    assert cascade["fpr_upper_95"] == 0.009915480854183582
+    assert cascade["counts"] == {
+        "false_negative": 197,
+        "false_positive": 177,
+        "negative": 20209,
+        "positive": 12486,
+        "true_negative": 20032,
+        "true_positive": 12289,
+    }
+    baseline = json.loads(BASELINE_V2_SUMMARY.read_bytes())
+    assert (
+        cascade["recall"]
+        == baseline["models"]["Logistic-L1"]["validation_threshold"]["recall"]
+    )
+    assert summary["artifact_hashes"] == {
+        "cascade.json": "7ac88c784dbc299d436a029904f0c6bde5a8cf741e62028a7635e8672e55119c",
+        "transformer-weights.npz": (
+            "1d4cdef31cb23cb84f093ca61c0afe0318142fa45ae559acd78cf10b49ee5de7"
+        ),
+        "transformer.json": (
+            "a13b6b7d554db6a9ee5b1689ecef44e2ad8069fcd25967f931101bdd3b256727"
+        ),
+        "vocabulary.json": (
+            "68bda780006d07b3b849abc366fbe3ccffe8a29e8984b092396d04f4eef43579"
+        ),
+    }
+    assert len(summary["warnings"]) == 6
+    assert {warning["stage"] for warning in summary["warnings"]} == {
+        "stage1.decision_function",
+        "stage1.predict_proba",
+    }
+
+    forbidden_keys = {
+        "canonical_url",
+        "canonical_url_sha256",
+        "decision_scores",
+        "domains",
+        "feature_row",
+        "feature_rows",
+        "feature_vector",
+        "feature_vectors",
+        "predictions",
+        "probabilities",
+        "raw_url",
+        "raw_urls",
+        "record_id",
+        "record_ids",
+        "records",
+        "row_score",
+        "row_scores",
+    }
+    forbidden_string_markers = (
+        "http://",
+        "https://",
+        "phiusiil-row-v1:",
+        "/Users/",
+        ".example",
+    )
+
+    def visit(value):
+        if isinstance(value, dict):
+            assert forbidden_keys.isdisjoint(value)
+            for child in value.values():
+                visit(child)
+        elif isinstance(value, list):
+            for child in value:
+                visit(child)
+        elif isinstance(value, str):
+            assert not any(marker in value for marker in forbidden_string_markers)
+
+    visit(summary)
+
+
+def test_transformer_retry_receipt_binds_result_and_invocation_scoped_audit():
+    assert sha256(TRANSFORMER_RETRY_EXECUTION.read_bytes()).hexdigest() == (
+        TRANSFORMER_RETRY_EXECUTION_SHA256
+    )
+    receipt = json.loads(TRANSFORMER_RETRY_EXECUTION.read_bytes())
+
+    assert receipt["status"] == "completed_development_validation"
+    assert receipt["analysis_stage"] == "development_validation_only"
+    assert receipt["execution_commit"] == ("e866441f2ff858472d031b8d358fd469897c6a65")
+    assert receipt["started_utc"] == "2026-09-17T20:42:45Z"
+    assert receipt["finished_utc"] == "2026-09-17T22:19:28Z"
+    assert receipt["elapsed_seconds"] == 5802.94
+    assert receipt["exit_code"] == 0
+    assert receipt["summary_sha256"] == TRANSFORMER_SUMMARY_SHA256
+    assert receipt["result_accepted"] is True
+    assert receipt["hypotheses_decided_by_this_run"] == []
+    assert receipt["previous_attempt"] == {
+        "path": "reports/rq1-transformer-cascade-v2-execution.json",
+        "sha256": "2440e4fef8c9035eae702fecad1afb300fe9c3c487c625c8c6e22dff6e4c7786",
+        "status": "stopped_stage_one_integrity_check",
+        "preserved_unchanged": True,
+    }
+    verification = receipt["verification"]
+    assert verification["verifier_commit"] == TRANSFORMER_VERIFIER_COMMIT
+    assert verification["verifier_ci_conclusion"] == "success"
+    assert verification["status"] == "verified_artifact_bundle"
+    assert verification["device"] == "mps"
+    for field in (
+        "private_bundle_hashes_verified",
+        "public_private_projections_match",
+        "execution_receipt_hashes_verified",
+        "execution_stdout_matches_summary",
+        "recorded_history_matches_selection_rule",
+        "class_weight_matches_training_counts",
+        "original_stage_one_warnings_preserved",
+    ):
+        assert verification[field] is True
+    assert verification["private_directory_mode"] == "0700"
+    assert verification["private_file_mode"] == "0600"
+    assert verification["fit_performed_during_verification"] is False
+    assert verification["research_rows_read_during_verification"] is False
+    assert verification["research_rows_scored_during_verification"] is False
+
+
+def test_development_comparison_rounds_the_accepted_operating_points():
+    status = STATUS.read_text(encoding="utf-8")
+    baseline = json.loads(BASELINE_V2_SUMMARY.read_bytes())
+    transformer = json.loads(TRANSFORMER_SUMMARY.read_bytes())
+    comparisons = [
+        (name, baseline["models"][name]["validation_threshold"], "n/a")
+        for name in ("length-only", "Logistic-L1")
+    ]
+    comparisons.extend(
+        [
+            (
+                "transformer",
+                transformer["transformer"]["threshold"],
+                "32,695 of 32,695",
+            ),
+            ("fixed cascade", transformer["cascade"], "3 of 32,695"),
+        ]
+    )
+    for name, record, selections in comparisons:
+        label = f"`{name}`" if name in baseline["models"] else name
+        expected = (
+            f"| {label} | {100 * record['recall']:.4f}% | "
+            f"{100 * record['observed_fpr']:.4f}% | "
+            f"{100 * record['fpr_upper_95']:.4f}% | {selections} |"
+        )
+        assert expected in status
+    assert "Logical transformer selections" in status
+
+
 def test_protocol_v110_preserves_transformer_history_and_freezes_gmm_without_result():
     protocol = PROTOCOL.read_text(encoding="utf-8")
     preamble = protocol.split("## Study Plan", maxsplit=1)[0]
@@ -469,9 +682,9 @@ def test_protocol_v19_supersedes_unrun_v1_with_the_publication_only_v2_amendment
 
     assert "rq1-transformer-cascade-v2" in readme
     assert "frozen_implemented_not_run" in readme
-    assert "no completed transformer" in readme
+    assert "completed_development_validation" in readme
     assert "rq1-transformer-cascade-v2" in evidence
-    assert "no completed transformer" in evidence
+    assert "completed_development_validation" in evidence
     assert "rq1-transformer-cascade-v2" in basis
     assert "current execution record" in basis
 
@@ -491,12 +704,13 @@ def test_protocol_v19_supersedes_unrun_v1_with_the_publication_only_v2_amendment
         )
 
     combined = " ".join((status, evidence, readme))
-    assert "reviewed repository commit" in combined
+    assert "reviewed verifier commit" in combined
+    assert TRANSFORMER_VERIFIER_COMMIT in combined
     assert "final reviewed code commit" not in combined
     assert "final executable code commit" not in combined
 
 
-def test_live_records_capture_v2_validation_without_deciding_hypotheses():
+def test_live_records_capture_v2_validation_and_current_hypothesis_status():
     records = {
         "README": README.read_text(encoding="utf-8"),
         "status": STATUS.read_text(encoding="utf-8"),
@@ -508,7 +722,8 @@ def test_live_records_capture_v2_validation_without_deciding_hypotheses():
             "rq1-baselines-v2",
             "completed_development_validation",
             "development validation only",
-            "h1, h2, and h3 remain undecided",
+            "h1 and h3 remain undecided",
+            "h2 is not supported",
             "bf5b3a6f0fc705d26852da4dd0053c6111ffc3e500d7a2e95dfba5ad859b279c",
             "7ae6c9af85e935c551468f590a7ba43441f58def",
             "b8b92cfbe29160e769e5e7d80712becc8fc0680cdfd45a44b839ef9bada87799",
@@ -622,7 +837,7 @@ def test_live_records_preserve_v14_failure_and_qualify_tolerance_observation():
             "not research evidence",
         ):
             assert diagnostic_fact in compact_audit
-        assert "H1 `undecided`; H2 `undecided`; H3 `undecided`" in text
+        assert "H1 `undecided`; H2 `not_supported`; H3 `undecided`" in text
         assert "No PhishVN record" in text
 
 
@@ -714,7 +929,8 @@ def test_v16_saga_diagnostic_record_is_training_only_and_reproducible():
         assert "two-model saga diagnostic" in text
         assert "both v1.6 fresh runs" in text
         assert "fitted-state sha-256" in text
-        assert "h1, h2, and h3 remain undecided" in text
+        assert "h1 and h3 remain undecided" in text
+        assert "h2 is not supported" in text
 
     readme = README.read_text(encoding="utf-8")
     assert "uv run --locked python scripts/rq1_saga_convergence_diagnostic.py" in readme
@@ -978,37 +1194,34 @@ def test_protocol_records_published_source_freeze():
     )
 
 
-def test_v19_binds_transformer_contract_and_preserves_prospective_status():
+def test_v19_contract_freeze_status_is_distinct_from_later_execution_status():
     assert TRANSFORMER_CONTRACT_V2.is_file(), (
         f"missing transformer contract: {TRANSFORMER_CONTRACT_V2}"
     )
     expected_hash = sha256(TRANSFORMER_CONTRACT_V2.read_bytes()).hexdigest()
-    bindings = (
-        (
-            PROTOCOL,
+    protocol_section = _compact(
+        _section(
+            PROTOCOL.read_text(encoding="utf-8"),
             "RQ1 transformer and cascade contract",
-            3,
-            True,
-        ),
-        (STATUS, "Current Controls", 2, True),
-        (EVIDENCE_OUTLINE, "RQ1 and H1", 2, False),
-    )
-
-    for path, heading, level, binds_hash_locally in bindings:
-        section = _compact(
-            _section(path.read_text(encoding="utf-8"), heading, level=level)
+            level=3,
         )
+    )
+    assert "rq1-transformer-cascade-v2" in protocol_section
+    assert expected_hash in protocol_section
+    assert "`frozen_not_run`" in protocol_section
+    assert "has no completed result" in protocol_section
+
+    for path, heading, binds_hash_locally in (
+        (STATUS, "Current Controls", True),
+        (EVIDENCE_OUTLINE, "RQ1 and H1", False),
+    ):
+        section = _compact(_section(path.read_text(encoding="utf-8"), heading))
         assert "rq1-transformer-cascade-v2" in section
         if binds_hash_locally:
             assert expected_hash in section
         assert "`frozen_not_run`" in section
-        assert any(
-            boundary in section
-            for boundary in (
-                "has no completed result",
-                "no completed transformer, threshold, or cascade result exists",
-            )
-        )
+        assert "completed_development_validation" in section
+        assert TRANSFORMER_SUMMARY_SHA256 in path.read_text(encoding="utf-8")
 
     for path in (STATUS, EVIDENCE_OUTLINE):
         text = path.read_text(encoding="utf-8")
@@ -1022,7 +1235,7 @@ def test_v19_binds_transformer_contract_and_preserves_prospective_status():
         )
 
 
-def test_live_records_bind_reviewed_transformer_code_without_claiming_completion():
+def test_live_records_bind_accepted_transformer_result_without_overclaiming():
     readme = _compact(README.read_text(encoding="utf-8"))
     status = _compact(STATUS.read_text(encoding="utf-8"))
     evidence = _compact(EVIDENCE_OUTLINE.read_text(encoding="utf-8"))
@@ -1033,21 +1246,37 @@ def test_live_records_bind_reviewed_transformer_code_without_claiming_completion
         "and external evaluation?"
     )
 
+    for name, record in (
+        ("README", readme),
+        ("approval status", status),
+        ("evidence outline", evidence),
+        ("research basis", basis),
+    ):
+        for required in (
+            "rq1-transformer-cascade-v2-summary.json",
+            TRANSFORMER_SUMMARY_SHA256,
+            "completed_development_validation",
+            "development validation only",
+            "3 of 32,695",
+            "recall was identical to `logistic-l1`",
+            "does not decide h1",
+            "does not establish measured http savings",
+            "h2 is not supported",
+            "h1 and h3 remain undecided",
+            "analyst-exposed but model-unscored",
+            "calibration computed transformer scores for every validation row",
+        ):
+            assert required in record, f"missing from {name}: {required}"
+
     for required in (
-        "`frozen_implemented_not_run`",
-        FINAL_TRANSFORMER_CODE_COMMIT,
-        INITIAL_TRANSFORMER_CODE_COMMIT,
-        TRANSFORMER_CONTRACT_V2_SHA256,
-        V19_MATRIX_SHA256,
-        SEPTEMBER_REPORT_SHA256,
-        "procedure code, tests, cli, and private/public artifact publication code "
-        "are complete",
-        "no completed transformer, threshold, or cascade result exists",
-        "h1, h2, and h3 remain undecided",
-        "group test remains analyst-exposed but model-unscored",
-        "the implementation and its tests did not open the phiusiil group-test "
-        "partition or phishvn",
-        "they are not performance or result runs",
+        TRANSFORMER_RETRY_EXECUTION_SHA256,
+        TRANSFORMER_VERIFIER_COMMIT,
+        "verified_artifact_bundle",
+        "no fit",
+        "no research rows were read or scored",
+        "public/private projections",
+        "best epoch 5 of 10",
+        "six stage-one warnings",
         "each destination uses a temporary path in its own parent",
         "public summary is installed last and is the completion marker",
         "caught in-process `baseexception` removes only destinations created by "
@@ -1059,37 +1288,12 @@ def test_live_records_bind_reviewed_transformer_code_without_claiming_completion
     ):
         assert required in status, f"missing from approval status: {required}"
 
-    for required in (
-        "`frozen_implemented_not_run`",
-        FINAL_TRANSFORMER_CODE_COMMIT,
-        "rq1-transformer-cascade-v2",
-        TRANSFORMER_CONTRACT_V2_SHA256,
-        "procedure code, tests, cli, and private/public artifact publication code "
-        "are complete",
-        "no completed transformer, threshold, or cascade result exists",
-        "h1, h2, and h3 remain undecided",
-        "group test remains analyst-exposed but model-unscored",
-        "no phishvn record has been accessed",
-    ):
-        assert required in readme, f"missing from README: {required}"
+    assert "verify-transformer-bundle" in readme
+    assert "--summary-sha256" in readme
+    assert "fit_performed_during_verification=false" in readme
+    assert "research_rows_scored_during_verification=false" in readme
 
     for required in (
-        "`frozen_implemented_not_run`",
-        FINAL_TRANSFORMER_CODE_COMMIT,
-        TRANSFORMER_CONTRACT_V2_SHA256,
-        "transformer/cascade procedure can produce evidence when run; it is not "
-        "itself a model result",
-        "no completed transformer, threshold, or cascade result exists",
-        "h1, h2, and h3 remain undecided",
-        "group test remains analyst-exposed but model-unscored",
-        "no phishvn record has been accessed",
-        "the implementation and its tests did not open the phiusiil group-test "
-        "partition or phishvn",
-    ):
-        assert required in evidence, f"missing from evidence outline: {required}"
-
-    for required in (
-        "`frozen_implemented_not_run`",
         _compact(question),
         "`recall(logistic-l1) - recall(length-only)`",
         "`recall(cascade) - recall(logistic-l1)`",
@@ -1099,6 +1303,11 @@ def test_live_records_bind_reviewed_transformer_code_without_claiming_completion
         "current execution record",
     ):
         assert required in basis, f"missing from research basis: {required}"
+
+    assert (
+        "at `2026-09-17t20:43:08z`, the retry was recorded as "
+        "`running_development_validation`" in status
+    )
 
 
 def test_live_records_keep_manual_review_post_hoc_and_non_interventional():
@@ -1485,12 +1694,18 @@ def test_controlled_retry_preserves_the_first_attempt_and_scientific_rules():
     status = _compact(STATUS.read_text(encoding="utf-8"))
     assert "controlled retry" in status
     assert "2026-09-17t20:42:45z" in status
+    assert "2026-09-17t22:19:28z" in status
+    assert "5,802.94 seconds" in status
     assert "e866441f2ff858472d031b8d358fd469897c6a65" in status
     assert "35272134401" in status
     assert "passed_no_fit_validation_only" in status
     assert "ba92ef7432b52e8222d30b9df71a13b04d7629ec0204a281c2f44f7eb26df3df" in status
-    assert "running_development_validation" in status
-    assert "no completed transformer, threshold, or cascade result exists" in status
+    assert "completed_development_validation" in status
+    assert TRANSFORMER_SUMMARY_SHA256 in status
+    assert TRANSFORMER_RETRY_EXECUTION_SHA256 in status
+    assert TRANSFORMER_VERIFIER_COMMIT in status
+    assert "result_accepted=true" in status
+    assert "hypotheses_decided_by_this_run=[]" in status
     assert "gmm retains its frozen portable scorer" in status
     assert "later endpoints cannot reverse this failed mandatory gate" in status
 
@@ -1550,6 +1765,33 @@ def test_public_research_records_exclude_stale_or_approval_gating_language():
         "blocked on approval",
     ):
         assert stale_phrase not in combined
+
+    status_current = STATUS.read_text(encoding="utf-8").split(
+        "## Current Controls", maxsplit=1
+    )[0]
+    evidence_current = EVIDENCE_OUTLINE.read_text(encoding="utf-8").split(
+        "## Common Audit Record", maxsplit=1
+    )[0]
+    readme_current = _section(
+        README.read_text(encoding="utf-8"),
+        "Recorded Transformer/Cascade Development Validation",
+    )
+    for current_record in (status_current, evidence_current, readme_current):
+        compact = _compact(current_record)
+        assert "running_development_validation" not in compact
+        assert "no completed transformer" not in compact
+
+    for current_record in (status_current, readme_current):
+        compact = _compact(current_record)
+        assert "h2 is not supported" in compact
+        assert "h1 and h3 remain undecided" in compact
+
+    expected_status = (
+        "| Current hypothesis status | H1 `undecided`; H2 `not_supported`; "
+        "H3 `undecided` |"
+    )
+    assert expected_status in status_current
+    assert expected_status in evidence_current
 
 
 def test_published_summary_matches_frozen_algorithms_and_count_invariants():

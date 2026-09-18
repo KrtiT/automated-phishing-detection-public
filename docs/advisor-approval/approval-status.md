@@ -12,23 +12,23 @@ completed that requested source freeze after the meeting. Protocol v1.7 froze
 `completed_development_validation`. This is development validation only.
 Protocol v1.8 froze `rq1-transformer-cascade-v1`; it was never fit and is now
 `superseded_unrun`. Protocol v1.9 freezes the publication-only amendment
-`rq1-transformer-cascade-v2` at `frozen_not_run`. The procedure code, tests,
-CLI, and private/public artifact publication code are complete, and the
-pre-execution
-implementation status was `frozen_implemented_not_run`; its first execution
-is `stopped_stage_one_integrity_check`. At the 2026-09-17T20:43:08Z
-cutoff, a controlled retry is `running_development_validation` after the
-original baseline scorer was restored and verified without fitting.
+`rq1-transformer-cascade-v2` at contract status `frozen_not_run`. The procedure
+code, tests, CLI, and private/public artifact publication code are complete.
+Its historical pre-execution implementation status was
+`frozen_implemented_not_run`, and its first execution stopped with status
+`stopped_stage_one_integrity_check`. The controlled retry from producer commit
+`e866441f2ff858472d031b8d358fd469897c6a65` subsequently completed development
+validation. Its accepted public summary has SHA-256
+`41499aa388babe60442de7231b4087f67a53f96f340568a7cc58a3268606a2fd`.
 Repository commits
 `a8ee067bda8fd45d19f5c4b794ba21f58d1947fc` and
 `0793ca3dbc36e49b561cd0ac74968a4644060426` record the initial implementation
-and review hardening; they are not performance or result runs. No completed
-transformer, threshold, or cascade result exists. The implementation and
-its tests did not open the PhiUSIIL group-test partition or PhishVN. GMM
+and review hardening; they are not performance or result runs. The implementation
+and its tests did not open the PhiUSIIL group-test partition or PhishVN. GMM
 execution is `completed_development_validation`; its independent false-alert
 audit failed the 5% gate (28/252 windows, 11.11%), without retuning.
-H1, H2, and H3 remain undecided. The group test remains
-analyst-exposed but model-unscored.
+H2 is not supported because that mandatory conjunctive gate failed. H1 and H3
+remain undecided. The group test remains analyst-exposed but model-unscored.
 
 | Field | Value |
 |---|---|
@@ -47,14 +47,20 @@ analyst-exposed but model-unscored.
 | Superseded unrun transformer/cascade contract SHA-256 | `aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54` |
 | Initial transformer/cascade implementation repository commit | `a8ee067bda8fd45d19f5c4b794ba21f58d1947fc` |
 | Review-hardening repository commit | `0793ca3dbc36e49b561cd0ac74968a4644060426` |
+| Transformer/cascade retry producer commit | `e866441f2ff858472d031b8d358fd469897c6a65` |
+| Transformer bundle verifier commit | `ef4e4567df979fef3afc91f8ad8097691f94d1ad` |
+| Accepted transformer/cascade summary | [`reports/rq1-transformer-cascade-v2-summary.json`](../../reports/rq1-transformer-cascade-v2-summary.json) |
+| Accepted transformer/cascade summary SHA-256 | `41499aa388babe60442de7231b4087f67a53f96f340568a7cc58a3268606a2fd` |
+| Accepted transformer/cascade retry receipt | [`reports/rq1-transformer-cascade-v2-retry-execution.json`](../../reports/rq1-transformer-cascade-v2-retry-execution.json) |
+| Accepted transformer/cascade retry receipt SHA-256 | `9be2519db4782fe71840235f81e58c4382e504d98a9d888512271107b16e4957` |
 | Historical RQ1 baseline contract | `rq1-baselines-v1` |
 | Historical RQ1 baseline contract SHA-256 | `594a66769dee3bf23c4133020dcf9b7d57c105590e5007832ac4249def6a33d4` |
 | Development source schema | `2` |
 | Source-freeze release tag | `phiusiil-development-v1` |
 | Source-freeze release | [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1) |
 | Development preparation | `complete` |
-| Current technical milestone | Baseline v2 development validation complete; transformer/cascade controlled retry `running_development_validation` at 2026-09-17T20:43:08Z after its first execution stopped; GMM development validation complete with failed false-alert gate (28/252 windows). Historical attempts remain recorded below. |
-| Current hypothesis status | H1 `undecided`; H2 `undecided`; H3 `undecided` |
+| Current technical milestone | Baseline v2, transformer/cascade, and GMM development validation complete. The transformer bundle is independently verified; the GMM false-alert gate failed at 28/252 windows. Historical attempts remain recorded below. |
+| Current hypothesis status | H1 `undecided`; H2 `not_supported`; H3 `undecided` |
 | Legacy base tag | `legacy-v2-clean-2026-08-16` |
 | Legacy base SHA | `a5eceecf21ad5ce29c4ab8f8d4de0edc8b73b240` |
 | Advisor report date | `2026-09-03` |
@@ -96,10 +102,12 @@ than extending the warning allowlist. No research-data fit informed this choice.
   `incomplete_not_result`; the pipeline leaves it unchanged until the operator
   verifies it is stale and removes it before rerun. V1 remains byte-preserved at
   SHA-256 `aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54`
-  with status `superseded_unrun`. V2 is `frozen_not_run`, and the implementation
-  was `frozen_implemented_not_run`; its first execution is
-  `stopped_stage_one_integrity_check`.
-  No completed transformer, threshold, or cascade result exists.
+  with status `superseded_unrun`. V2 retains its freeze-time contract status
+  `frozen_not_run`; the implementation's historical pre-execution status was
+  `frozen_implemented_not_run`, and its first execution stopped with
+  `stopped_stage_one_integrity_check`. The later retry is
+  `completed_development_validation`; its accepted summary and receipt are
+  linked above.
 - `rq2-gmm-development-v1` freezes training-only 26-column scaling, six
   diagonal-GMM fits selected by training BIC, the label-blind validation-domain
   allocation, the linear calibration quantile, and the independent audit gate.
@@ -122,8 +130,9 @@ than extending the warning allowlist. No research-data fit informed this choice.
   binds it to the archive and CSV checksums in `data/sources.json`.
 - PhishVN is reserved for one external evaluation after the protocol, data
   pipeline, models, thresholds, and analysis code are frozen.
-- H1, H2, and H3 remain undecided until their stated evidence and gates have
-  been evaluated. Exploratory v2 results do not decide them.
+- H1 and H3 remain undecided. H2 is not supported because the frozen monitor's
+  mandatory independent false-alert gate failed; later characterization cannot
+  convert that failed conjunctive gate into support.
 
 Manual review is permitted only as separately reported post hoc descriptive
 error analysis and cannot assign or override labels, change quarantine or
@@ -235,7 +244,8 @@ validation-set operating points, not group-test, external, or hypothesis
 results. The group test remains analyst-exposed but model-unscored. The
 summary's `access.group_test_accessed=false` records the process input boundary
 and does not negate the earlier analyst exposure. No PhishVN record was
-accessed, and H1, H2, and H3 remain undecided.
+accessed. At that September 4 baseline milestone, H1, H2, and H3 were
+undecided.
 
 Protocol v1.9 freezes the transformer and selective cascade procedure under
 `rq1-transformer-cascade-v2`. The contract accepts only the pinned training,
@@ -245,10 +255,10 @@ input. Repository commits `a8ee067bda8fd45d19f5c4b794ba21f58d1947fc`
 and `0793ca3dbc36e49b561cd0ac74968a4644060426` record the initial implementation
 and review hardening. The v2 amendment changes publication semantics, not the
 model or scientific procedure. The pre-execution implementation was
-`frozen_implemented_not_run`; its first execution is
+`frozen_implemented_not_run`; its first execution later stopped with
 `stopped_stage_one_integrity_check`.
-No completed transformer, threshold, or cascade result exists. The GMM
-execution is recorded separately below.
+The controlled retry completed development validation and is recorded below.
+The GMM execution is recorded separately after it.
 
 The official transformer run started on 2026-09-17 at 18:21:12 UTC from clean
 detached commit `c3a5c815b20121f1ddd06a2f316f904077c00c4f`, after its
@@ -257,7 +267,7 @@ passed. It stopped at 19:24:27 UTC with exit code 2 after 3,795.28 seconds:
 `stage-one artifact threshold does not match the supplied scores`.
 The [execution record](../../reports/rq1-transformer-cascade-v2-execution.json)
 has status `stopped_stage_one_integrity_check`. No output directory or public
-summary was produced. No completed transformer, threshold, or cascade result exists.
+summary was produced by that attempt; it was not an accepted result.
 
 A separate no-fit diagnostic read only the hash-pinned development-validation
 partition and accepted Logistic-L1 artifact. The portable scorer used `einsum`
@@ -296,9 +306,58 @@ Its only change from the first attempt promotes the already installed
 `threadpoolctl==3.6.0` from a transitive to a direct dependency; all installed
 dependency versions match the original environment.
 
-At `2026-09-17T20:43:08Z`, the retry is running and has no completed result.
-The original stopped-run record and both sets of private execution receipts
-are preserved separately. No group-test or PhishVN input is accepted.
+At `2026-09-17T20:43:08Z`, the retry was recorded as
+`running_development_validation`; that is a dated historical status, not the
+current result. The run finished at `2026-09-17T22:19:28Z` after 5,802.94
+seconds with exit code 0. The
+[retry receipt](../../reports/rq1-transformer-cascade-v2-retry-execution.json),
+SHA-256
+`9be2519db4782fe71840235f81e58c4382e504d98a9d888512271107b16e4957`,
+records `status=completed_development_validation`, `result_accepted=true`, and
+`hypotheses_decided_by_this_run=[]`. The original stopped-run record is
+preserved byte-for-byte at SHA-256
+`2440e4fef8c9035eae702fecad1afb300fe9c3c487c625c8c6e22dff6e4c7786`.
+No group-test or PhishVN input was accepted.
+
+The accepted public
+[summary](../../reports/rq1-transformer-cascade-v2-summary.json), SHA-256
+`41499aa388babe60442de7231b4087f67a53f96f340568a7cc58a3268606a2fd`,
+contains development-validation aggregates only.
+
+| Model | Validation recall | Observed FPR | One-sided 95% FPR upper bound | Logical transformer selections |
+|---|---:|---:|---:|---:|
+| `length-only` | 32.1480% | 0.6680% | 0.7702% | n/a |
+| `Logistic-L1` | 98.4222% | 0.8758% | 0.9915% | n/a |
+| transformer | 99.1030% | 0.8808% | 0.9968% | 32,695 of 32,695 |
+| fixed cascade | 98.4222% | 0.8758% | 0.9915% | 3 of 32,695 |
+
+The cascade's validation recall was identical to `Logistic-L1`; the two rows
+have the same aggregate confusion counts. Its logical routing mask selected
+escalation for 3 of 32,695 validation rows. Calibration computed transformer
+scores for every validation row. This does not decide H1 and does
+not establish measured HTTP savings. The required paired domain-clustered
+internal and external comparisons and physical selective-execution measurements
+have not run.
+
+The public summary pins the four private bundle members:
+
+| Private member | SHA-256 |
+|---|---|
+| `cascade.json` | `7ac88c784dbc299d436a029904f0c6bde5a8cf741e62028a7635e8672e55119c` |
+| `transformer-weights.npz` | `1d4cdef31cb23cb84f093ca61c0afe0318142fa45ae559acd78cf10b49ee5de7` |
+| `transformer.json` | `a13b6b7d554db6a9ee5b1689ecef44e2ad8069fcd25967f931101bdd3b256727` |
+| `vocabulary.json` | `68bda780006d07b3b849abc366fbe3ccffe8a29e8984b092396d04f4eef43579` |
+
+Reviewed verifier commit `ef4e4567df979fef3afc91f8ad8097691f94d1ad`
+passed its [CI run](https://github.com/KrtiT/automated-phishing-detection-public/actions/runs/35310546331),
+the 652-test full suite, and the 50 focused loader/CLI tests. The named-bundle
+audit returned `verified_artifact_bundle` on MPS. It verified directory mode
+`0700`, file modes `0600`, all four hashes, public/private projections,
+producer-receipt hashes, and execution-stdout equality. It also checked that
+best epoch 5 of 10 follows the frozen minimum-delta and patience rule, the
+positive class weight matches the training counts, and all six stage-one
+warnings are preserved. The verification invocation performed no fit, and no
+research rows were read or scored.
 
 ### GMM Development Execution
 
@@ -324,9 +383,9 @@ quantile, strict alert count, and gate from the stored window traces.
 The status is `completed_development_validation`, not a passed hypothesis.
 This monitor failed the required false-alert component and does not support H2.
 Later endpoints cannot reverse this failed mandatory gate for the frozen monitor.
-External detection and future-routing outcomes remain unmeasured. H1, H2, and
-H3 retain their contract status `undecided`; no group-test or PhishVN input was
-read by this execution.
+External detection and future-routing outcomes remain unmeasured and are still
+needed to characterize RQ2, not to rescue its failed support rule. H1 and H3
+remain undecided; no group-test or PhishVN input was read by this execution.
 
 ## Change Record
 

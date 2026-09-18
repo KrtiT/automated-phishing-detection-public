@@ -17,6 +17,12 @@ manuscript prose and does not contain an interpretation of results.
 | Superseded unrun transformer/cascade contract | `data/rq1-transformer-cascade-contract-v1.json` (`rq1-transformer-cascade-v1`) |
 | Superseded unrun transformer/cascade contract SHA-256 | `aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54` |
 | Review-hardening repository commit | `0793ca3dbc36e49b561cd0ac74968a4644060426` |
+| Transformer/cascade retry producer commit | `e866441f2ff858472d031b8d358fd469897c6a65` |
+| Transformer bundle verifier commit | `ef4e4567df979fef3afc91f8ad8097691f94d1ad` |
+| Accepted transformer/cascade summary | [`reports/rq1-transformer-cascade-v2-summary.json`](../reports/rq1-transformer-cascade-v2-summary.json) |
+| Accepted transformer/cascade summary SHA-256 | `41499aa388babe60442de7231b4087f67a53f96f340568a7cc58a3268606a2fd` |
+| Accepted transformer/cascade retry receipt | [`reports/rq1-transformer-cascade-v2-retry-execution.json`](../reports/rq1-transformer-cascade-v2-retry-execution.json) |
+| Accepted transformer/cascade retry receipt SHA-256 | `9be2519db4782fe71840235f81e58c4382e504d98a9d888512271107b16e4957` |
 | Historical RQ1 baseline contract | `data/rq1-baseline-contract.json` (`rq1-baselines-v1`) |
 | Historical RQ1 baseline contract SHA-256 | `594a66769dee3bf23c4133020dcf9b7d57c105590e5007832ac4249def6a33d4` |
 | Development source | PhiUSIIL, UCI dataset 967 |
@@ -26,14 +32,13 @@ manuscript prose and does not contain an interpretation of results.
 | Development preparation | `complete` |
 | Preparation record | `reports/phiusiil-preparation-summary.json` |
 | Current technical milestone | See the [current execution record](advisor-approval/approval-status.md). Frozen contracts and historical rows are not live run status. |
-| External source | PhishVN v4, reserved for the frozen external evaluation |
-| Current hypothesis status | H1 `undecided`; H2 `undecided`; H3 `undecided` |
+| External source | Mendeley Data repository Version 4 (PhishVN v3.1.0), reserved for the frozen external evaluation |
+| Current hypothesis status | H1 `undecided`; H2 `not_supported`; H3 `undecided` |
 
 An absent final artifact or denominator leaves the related item `not_run` or
-`undecided` unless an active execution is explicitly recorded as
-`running_development_validation`.
-An in-progress run is not completed evidence, and no result is inferred from
-another experiment.
+`undecided`. Frozen contracts and dated artifacts retain their own historical
+status fields; the current conclusion above incorporates the later accepted
+development records. No result is inferred from another experiment.
 
 The [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1)
 GitHub Release is the source-freeze record for the completed preparation
@@ -137,7 +142,7 @@ feature contract. It accepted no group-test or PhishVN input. The runner
 completed the length-only stage in memory before attempting `Logistic-L1`, but
 atomic publication emitted neither model and no model, threshold, or metric
 from the attempt was reviewed. This is a numerical fitting failure, not
-evidence for or against H1. H1, H2, and H3 remain undecided.
+evidence for or against H1. At that point, H1, H2, and H3 were undecided.
 
 A later exploratory local tolerance check was intended to use training data
 only and to change only the candidate tolerance to `tol=1e-4`. The console
@@ -231,8 +236,9 @@ feature importance.
 The group test remains analyst-exposed but model-unscored. The summary's
 `access.group_test_accessed=false` describes the process input boundary and
 does not negate the analyst exposure recorded above. No PhishVN record has
-been accessed. H1, H2, and H3 remain undecided. Protocol v1.7 changed the RQ1
-baseline method but no RQ/H question, evidence designation, or decision rule.
+been accessed. At that September 4 baseline milestone, H1, H2, and H3 were
+undecided. Protocol v1.7 changed the RQ1 baseline method but no RQ/H question,
+evidence designation, or decision rule.
 
 Protocol v1.8's byte-preserved `rq1-transformer-cascade-v1`, SHA-256
 `aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54`, is
@@ -251,9 +257,14 @@ implementation and its tests did not open the PhiUSIIL group-test partition or
 PhishVN.
 
 The [stopped execution](../reports/rq1-transformer-cascade-v2-execution.json)
-preserves its exact code, timing, failure, and no-fit diagnosis. The
-[current execution record](advisor-approval/approval-status.md) tracks recovery.
-No completed transformer, threshold, or cascade result exists.
+preserves its exact code, timing, failure, and no-fit diagnosis. The controlled
+retry from producer commit `e866441f2ff858472d031b8d358fd469897c6a65`
+subsequently completed development validation. Its accepted
+[summary](../reports/rq1-transformer-cascade-v2-summary.json), SHA-256
+`41499aa388babe60442de7231b4087f67a53f96f340568a7cc58a3268606a2fd`,
+and [retry receipt](../reports/rq1-transformer-cascade-v2-retry-execution.json)
+are linked in the table above. The current execution details and independent
+bundle audit are in the [execution record](advisor-approval/approval-status.md).
 
 ## RQ1 and H1
 
@@ -268,12 +279,22 @@ representation. Transformer-only remains a comparator and operational
 reference, not a third primary H1 gate. It calibrates the cascade and supports
 the H3 comparison.
 
-The immutable `rq1-transformer-cascade-v2` contract is `frozen_not_run`. The
-pre-execution implementation was `frozen_implemented_not_run`; its first
-execution is `stopped_stage_one_integrity_check`. Reviewed repository commit
-`0793ca3dbc36e49b561cd0ac74968a4644060426` records the last implementation
-hardening before this publication amendment. No completed transformer,
-threshold, or cascade result exists.
+The immutable `rq1-transformer-cascade-v2` contract retains its freeze-time
+status `frozen_not_run`. The implementation's historical pre-execution status
+was `frozen_implemented_not_run`, and its first execution stopped with
+`stopped_stage_one_integrity_check`. The accepted retry is
+`completed_development_validation`. Reviewed verifier commit
+`ef4e4567df979fef3afc91f8ad8097691f94d1ad` loaded the named bundle on MPS,
+verified the four private hashes and public/private projections, and performed
+no fit; its invocation read and scored no research rows.
+
+The [development comparison](advisor-approval/approval-status.md#controlled-retry)
+records all four models' validation operating points.
+
+The cascade's validation recall was identical to `Logistic-L1`; its logical
+routing mask selected escalation for 3 of 32,695 rows. Calibration computed
+transformer scores for every validation row. This development
+result does not decide H1 and does not establish measured HTTP savings.
 
 Required evidence:
 
@@ -297,7 +318,9 @@ v1.4 fit is `stopped_nonconverged`; the exploratory tolerance observation is
 `passed_training_only`; the rq1-baselines-v2 execution is
 `completed_development_validation`; the validation-set operating points are
 recorded above; the transformer/cascade contract is `frozen_not_run` and its
-first execution is `stopped_stage_one_integrity_check`; H1 is `undecided`.
+first execution is `stopped_stage_one_integrity_check`; the controlled retry is
+`completed_development_validation`; H1 remains `undecided` pending the paired
+domain-clustered internal and external comparisons.
 
 ## RQ2 and H2
 
@@ -368,8 +391,9 @@ retained, with their hashes in the public record.
 
 Current status: routing mechanics are `implemented`; GMM execution is
 `completed_development_validation`, with its required false-alert component
-failed. This result does not support H2. External monitoring and routing-outcome
-evidence remain `not_run`; H1, H2, and H3 remain `undecided`.
+failed. H2 is not supported. External monitoring and routing-outcome evidence
+remain `not_run` and are needed to characterize RQ2, not to rescue the failed
+conjunctive support rule. H1 and H3 remain undecided.
 
 ### Post Hoc Audit Description
 
@@ -426,18 +450,19 @@ They describe robustness but do not replace a primary decision rule.
 
 ## Remaining Executable Work
 
-The next deliverables are analyses and working inference code, not additional
-versions of this outline. No raw group-test or external partition is needed to
-implement and test the following pieces on synthetic fixtures.
+The corrected transformer/cascade development execution and reviewed no-fit
+bundle loader are complete. The next deliverables are analyses and working
+inference code, not additional versions of this outline. No raw group-test or
+external partition is needed to implement and test the following pieces on
+synthetic fixtures.
 
 | Order | Work product | What completion must demonstrate |
 |---|---|---|
-| 1 | Corrected transformer/cascade development execution | Reconstruct the accepted baseline scorer exactly, check its binding before training, preserve the stopped attempt, and verify all private artifacts against the aggregate completion marker. |
-| 2 | Portable inference loaders and paired-statistics code | Load each frozen artifact without fitting; compute paired counts and domain-clustered recall/FNR differences. Freeze RNG, domain ordering, cluster weighting, percentile interpolation, and empty-stratum handling before research-data use. |
-| 3 | Composed H2 policy replay | Join saved scores, complete-window alerts, and next-256-request routing; apply outcome-stratum filters after label-blind routing; preserve the failed development false-alert component. |
-| 4 | Selective inference service and real-HTTP harness | Actually skip transformer inference outside the band and independently count calls. Test concurrency, timeouts, errors, warm-up exclusion, and pooled latency accounting. |
-| 5 | Frozen evaluation and replay-manifest contracts | Bind models, thresholds, evaluator, population/order/denominator rules, manifest selection, environment, and hashes before any internal or external pass. |
-| 6 | Independent execution and one gate table | The single internal raw-partition pass produces paired predictions and replay manifests. Later HTTP runs use only those manifests. External schema verification, preparation, and evaluation follow the separate frozen access sequence. |
+| 1 | Paired evaluator and domain-clustered statistics | Reuse the reviewed no-fit artifact loader; compute paired counts and domain-clustered recall/FNR differences. Freeze RNG, domain ordering, cluster weighting, percentile interpolation, and empty-stratum handling before research-data use. |
+| 2 | Composed H2 policy replay | Join saved scores, complete-window alerts, and next-256-request routing; apply outcome-stratum filters after label-blind routing; preserve the failed development false-alert component. This characterizes RQ2 and cannot rescue H2. |
+| 3 | Selective inference service and real-HTTP harness | Actually skip transformer inference outside the band and independently count calls. Test concurrency, timeouts, errors, warm-up exclusion, and pooled latency accounting. |
+| 4 | Frozen evaluation and replay-manifest contracts | Bind models, thresholds, evaluator, population/order/denominator rules, manifest selection, environment, and hashes before any internal or external pass. |
+| 5 | Independent execution and one gate table | The single internal raw-partition pass produces paired predictions and replay manifests. Later HTTP runs use only those manifests. External schema verification, preparation, and evaluation follow the separate frozen access sequence. |
 
 The existing offline cascade scorer accepts transformer probabilities for every
 row and computes a logical invocation mask. That mask is useful for paired
@@ -462,9 +487,10 @@ separate from model selection and does not reopen the audit for tuning.
 
 The working manuscript remains private. Public repository evidence currently
 consists of the protocol, implementation, tests, source and environment locks,
-and aggregate data-preparation, baseline-validation, and GMM-audit records,
-including the failed false-alert gate. The stopped transformer execution and
-its diagnosed scoring mismatch are also recorded. The implemented
-transformer/cascade procedure can produce evidence when run; it is not itself a
-model result. Later result tables and figures enter this record only after their
-stated runs.
+and aggregate data-preparation, baseline-validation, transformer/cascade, and
+GMM-audit records, including the failed false-alert gate. The stopped
+transformer execution and its diagnosed scoring mismatch remain recorded beside
+the accepted retry. The accepted transformer/cascade record is development
+validation only: it does not decide H1 and does not establish measured HTTP
+savings. H2 is not supported; H1 and H3 remain undecided. Later result tables
+and figures enter this record only after their stated runs.

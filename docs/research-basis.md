@@ -21,13 +21,23 @@ development validation only. Protocol v1.8's byte-preserved
 `686c0d86b33b8a6c2e09cd6e174003db0bd2f7c30b087faf5470e6a270524213`, at
 contract status `frozen_not_run`. Version 2 changes publication semantics but no
 scientific or artifact-content rule. The implementation is unit-tested at
-pre-execution status `frozen_implemented_not_run`; its first official MPS
-execution stopped at a stage-one integrity check, without an accepted result.
-The [current execution record](advisor-approval/approval-status.md) maintains
-live status and the dated diagnosis rather than duplicating it here. H1, H2,
-and H3 remain undecided, the group test remains analyst-exposed but
-model-unscored, and no PhishVN record has been accessed. Protocol v1.10
-incorporates unchanged transformer v2 and freezes
+historical pre-execution status `frozen_implemented_not_run`; its first official
+MPS execution stopped at a stage-one integrity check. The controlled retry then
+completed development validation. Its accepted
+[summary](../reports/rq1-transformer-cascade-v2-summary.json), SHA-256
+`41499aa388babe60442de7231b4087f67a53f96f340568a7cc58a3268606a2fd`,
+records transformer recall `0.9910299535479737` and cascade recall
+`0.9842223290084895`. The cascade's logical mask selected escalation for
+3 of 32,695 validation rows, and its recall was identical to `Logistic-L1`.
+Calibration computed transformer scores for every validation row. This does not
+decide H1 and does not establish measured HTTP savings. Reviewed verifier
+commit `ef4e4567df979fef3afc91f8ad8097691f94d1ad` validated the named bundle
+without fitting and without reading or scoring research rows.
+
+The [current execution record](advisor-approval/approval-status.md) preserves
+both attempts and the full artifact audit. H1 and H3 remain undecided, the group
+test remains analyst-exposed but model-unscored, and no PhishVN record has been
+accessed. Protocol v1.10 incorporates unchanged transformer v2 and freezes
 [`rq2-gmm-development-v1`](../data/rq2-gmm-development-contract-v1.json),
 SHA-256 `22d32088b05e74432704f9671ab76ba28b4f573ead418846b23bc366315cb393`,
 before any GMM execution.
@@ -41,10 +51,13 @@ the smaller count. The calibration boundary uses NumPy's linear 0.95 quantile;
 the independent gate is `20 * alert_windows <= complete_windows` for strict
 `score > boundary` alerts. No overlapping-window binomial interval is reported,
 and the audit cannot retune the boundary. Even a failed audit gate remains
-development validation only, with H1, H2, and H3 undecided. Synthetic-only
-preflight, not research observations, established the supported NumPy 2.2.6
-`scipy-openblas` 0.3.29 runtime after Accelerate raised a fatal warning. The
-GMM rejects unsupported backends before input reads and adds no warning exemption.
+development validation only. The recorded 28 alerts in 252 audit windows exceed
+the mandatory 5% limit, so H2 is not supported. Remaining external detection
+and routing work can characterize RQ2 but cannot rescue that conjunctive support
+rule. Synthetic-only preflight, not research observations, established the
+supported NumPy 2.2.6 `scipy-openblas` 0.3.29 runtime after Accelerate raised a
+fatal warning. The GMM rejects unsupported backends before input reads and adds
+no warning exemption.
 
 ## Decisions to Defend
 
@@ -52,6 +65,7 @@ GMM rejects unsupported backends before input reads and adds no warning exemptio
 |---|---|
 | Raw-URL structural features | The 25 fixed features describe length, syntax, and character composition without fetching a page or using publisher fields. They provide a reproducible structural baseline, not a claim that this is an optimal feature set. Several features are dependent, so individual coefficients are not causal feature importance. |
 | Fixed Logistic-L1 first stage | Reuse the accepted fitted model and operating threshold. Reconstruction must preserve the authoritative scoring procedure; a mathematically equivalent formula can still change floating-point ties. No new fit is needed to diagnose that implementation discrepancy. |
+| Validation-selected fixed cascade | The development mask selected escalation for 3 of 32,695 validation rows and produced recall identical to `Logistic-L1`. Calibration scored every validation row with the transformer. That logical mask is not confirmatory H1 evidence or a measurement of transformer work saved over HTTP. |
 | One through six GMM components | Fit every prespecified candidate on training data and choose minimum training BIC. This selects among those six candidates; convergence and BIC do not establish useful drift detection or acceptable audit alerts. |
 | Separate calibration and audit domains | Use calibration to choose the boundary, then evaluate it on disjoint domains without labels, balancing, or rerolls in the allocation. Both streams come from the same development source; this is not an external or temporal evaluation. |
 | Calibration percentile and audit gate | The 95th calibration percentile defines a boundary. The separate <=5% audit gate asks whether it transfers. A percentile selected on calibration does not guarantee the audit fraction. Overlapping windows do not supply independent trials. |
@@ -65,7 +79,7 @@ whole document submission-ready.
 
 ## Source basis and limitations
 
-The [UCI record for dataset 967](https://archive.ics.uci.edu/dataset/967/phiusiil+phishing+url+dataset)
+The [UCI record for dataset 967](https://archive.ics.uci.edu/dataset/967/phiusiil+phishing+url+website+dataset)
 identifies the PhiUSIIL Phishing URL (Website) dataset, its accompanying file,
 and its CC BY 4.0 license. UCI links the dataset to Prasad and Chandra's
 [publisher article](https://doi.org/10.1016/j.cose.2023.103545), which reports
@@ -101,11 +115,20 @@ because the mapping and preparation algorithms remain version 1; source
 schema version 2 adds provenance metadata without changing the input bytes or
 row-processing rules.
 
+The reserved external release is Mendeley Data repository Version 4, named
+PhishVN v3.1.0. The publisher's
+[release comparison](https://data.mendeley.com/datasets/compare/b97hxbxtpd)
+describes a documentation-only update: the data files are byte-identical to
+Version 3, while the datasheet adds the completed label-audit results. This is
+not a corrected-data release or independent certification of every label. No
+PhishVN record has been accessed.
+
 ## Study-defined decision gates
 
 Every gate below is study-defined. Each is an operating constraint for this
-study, not literature-prescribed and not an achieved result. It must be
-evaluated under the frozen protocol before any hypothesis can be supported.
+study, not literature-prescribed or assumed to have been met. Its recorded
+status must come from the frozen protocol before any hypothesis can be
+supported.
 
 | Gate | Prespecified use | Ownership and comparison limit |
 |---|---|---|
@@ -133,10 +156,13 @@ prior alert. The independent validation-audit false-alert fraction uses the
 same complete-window numerator and denominator rule. These definitions are
 prospective. The September 17 GMM development run subsequently recorded
 28 alerts in the audit's 252 windows (11.11%), above the 5% gate. The
-calibration boundary was not retuned. This is a failed development gate, not
+calibration boundary was not retuned. Because false alerts are a mandatory
+conjunctive component, H2 is not supported. This failed development gate is not
 evidence that the monitor detects useful external shifts or improves routing.
 The [aggregate record](../reports/rq2-gmm-development-v1-summary.json) preserves
-the result; external detection and routing outcomes remain unmeasured.
+the result; external detection and routing outcomes remain unmeasured. Those
+later measurements can characterize RQ2 but cannot rescue H2 under the frozen
+decision rule.
 The [post hoc description](research-evidence-outline.md#post-hoc-audit-description)
 compares saved window-score distributions and accounts for overlapping alerts.
 It does not identify a causal explanation, select another threshold, or replace

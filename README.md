@@ -28,8 +28,9 @@ Protocol v1.7 froze the separate
 validation run. The single planned execution completed from clean commit
 `7ae6c9af85e935c551468f590a7ba43441f58def` and has status
 `completed_development_validation`. Its aggregate result is development
-validation only, not confirmatory evidence. H1, H2, and H3 remain undecided, no
-RQ/H decision rule changed, and no PhishVN record has been accessed. The public
+validation only, not confirmatory evidence. At that September 4 milestone, H1,
+H2, and H3 were undecided, no RQ/H decision rule had changed, and no PhishVN
+record had been accessed. The public
 [summary](reports/rq1-baseline-v2-summary.json) has SHA-256
 `bf5b3a6f0fc705d26852da4dd0053c6111ffc3e500d7a2e95dfba5ad859b279c`.
 The private `length-only` and `Logistic-L1` artifacts remain outside Git; the
@@ -184,7 +185,7 @@ with maximum absolute differences of `2.1316282072803006e-14` and
 artifact hashes. Coefficients and sparsity are not interpreted as feature
 importance.
 
-## Frozen Transformer/Cascade Implementation
+## Recorded Transformer/Cascade Development Validation
 
 Protocol v1.9 freezes the prospective method in
 [`rq1-transformer-cascade-v2`](data/rq1-transformer-cascade-contract-v2.json),
@@ -196,17 +197,50 @@ with status `superseded_unrun`. Version 2 changes only contract identity, schema
 version, protocol version, and publication semantics; its date, scientific rules,
 and artifact-content rules are unchanged.
 The procedure code, tests, CLI, and private/public artifact publication code
-are complete; the pre-execution status was `frozen_implemented_not_run`.
-Reviewed repository
-commit `0793ca3dbc36e49b561cd0ac74968a4644060426` identifies the implementation
-before this publication correction; it is not a performance or result run. The
-implementation is unit-tested; the first execution stopped at a stage-one
-scoring integrity check. The [execution record](reports/rq1-transformer-cascade-v2-execution.json)
-preserves the failure and its no-fit diagnosis. The portable scorer changed
-floating-point ties relative to the accepted baseline; reconstructing the
-original scikit-learn scoring path reproduces its complete threshold record.
-No completed transformer, threshold, or cascade result exists. H1, H2, and H3
-remain undecided.
+were complete at the pre-execution status `frozen_implemented_not_run`.
+Reviewed commit `0793ca3dbc36e49b561cd0ac74968a4644060426` records that
+historical implementation state. The first execution stopped at a stage-one
+scoring integrity check; its unchanged
+[execution record](reports/rq1-transformer-cascade-v2-execution.json) preserves
+the failure and no-fit diagnosis.
+
+The controlled retry from clean producer commit
+`e866441f2ff858472d031b8d358fd469897c6a65` completed development validation.
+The accepted public
+[summary](reports/rq1-transformer-cascade-v2-summary.json), SHA-256
+`41499aa388babe60442de7231b4087f67a53f96f340568a7cc58a3268606a2fd`,
+contains aggregate validation results only.
+
+The [development comparison](docs/advisor-approval/approval-status.md#controlled-retry)
+reports all four models' validation operating points.
+
+The cascade's validation recall was identical to `Logistic-L1`. Its logical
+routing mask selected escalation for 3 of 32,695 rows. Calibration computed
+transformer scores for every validation row. This development
+result does not decide H1 and does not establish measured HTTP savings; paired
+domain-clustered internal and external evaluation and a service that physically
+skips transformer work remain outstanding. H1 and H3 remain undecided. H2 is
+not supported because the frozen GMM monitor failed its mandatory false-alert
+gate.
+
+Reviewed verifier commit `ef4e4567df979fef3afc91f8ad8097691f94d1ad`
+loaded the named bundle on MPS without fitting and without reading or scoring
+research rows, and
+matched its public/private projections. To repeat the bounded bundle check on
+the pinned local artifacts:
+
+```bash
+uv run --locked phishing-research verify-transformer-bundle \
+  --bundle-dir data/processed/rq1-transformer-cascade-v2 \
+  --summary reports/rq1-transformer-cascade-v2-summary.json \
+  --summary-sha256 41499aa388babe60442de7231b4087f67a53f96f340568a7cc58a3268606a2fd \
+  --logistic-l1-artifact data/processed/rq1-baselines-v2/logistic-l1.json
+```
+
+Successful output reports `status=verified_artifact_bundle`,
+`fit_performed_during_verification=false`, and
+`research_rows_scored_during_verification=false`. This checks artifacts, not
+research performance.
 The group test remains analyst-exposed but model-unscored, and no PhishVN record
 has been accessed. Publication stages each destination in its own parent,
 installs the private directory before the public-summary completion marker, and
@@ -226,7 +260,8 @@ The September 17 [development run](reports/rq2-gmm-development-v1-summary.json)
 completed from published, CI-verified commit `9983bfd`. All six candidates
 converged; training BIC selected six components. The independent audit alerted
 on **28 of 252 windows (11.11%)**, exceeding the **5%** limit. The boundary was
-not retuned. This failed gate remains part of the result and does not support H2.
+not retuned. This failed mandatory gate remains part of the result, so H2 is not
+supported.
 See the current execution record above for transformer/cascade status.
 External evaluation has not run.
 
@@ -286,8 +321,10 @@ aggregate distributions and overlap counts:
 The [evidence outline](docs/research-evidence-outline.md) links each research
 question to the artifacts and decision rules needed to answer it. Data
 preparation is an input-control milestone, and the completed baseline run is a
-development-validation milestone. Neither is a hypothesis result. H1, H2, and
-H3 remain undecided. The [research basis](docs/research-basis.md) records the
+development-validation milestone. Neither alone is a confirmatory hypothesis
+result. H1 and H3 remain undecided; H2 is not supported because the frozen GMM
+monitor exceeded its mandatory false-alert limit. The
+[research basis](docs/research-basis.md) records the
 source-provenance limits, ownership of the study-defined gates, closest prior
 work, and narrow contribution boundary.
 

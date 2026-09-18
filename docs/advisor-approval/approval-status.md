@@ -30,6 +30,15 @@ audit failed the 5% gate (28/252 windows, 11.11%), without retuning.
 H2 is not supported because that mandatory conjunctive gate failed. H1 and H3
 remain undecided. The group test remains analyst-exposed but model-unscored.
 
+The September 18 implementation increment adds no-fit transformer/cascade
+scoring and paired domain-clustered recall intervals, checked with synthetic
+fixtures. The [evaluation contract](../../data/evaluation-contract-v1.json)
+specifies the paired-recall procedure and identifies the remaining runtime,
+manifest, operational, and secondary-analysis work. It remains
+`prospective_incomplete`; no new research predictions or hypothesis results
+are reported. The [implementation outline](../research-evidence-outline.md#remaining-executable-work)
+records the next steps without changing the frozen development results.
+
 | Field | Value |
 |---|---|
 | Protocol | `docs/advisor-approval/2026-08-16-realignment-matrix.md` |

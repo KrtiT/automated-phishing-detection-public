@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "contract_id": "paired-and-operational-evaluation-v1",
+  "status": "prospective_incomplete",
+  "protected_evaluation_ready": false,
+  "matrix_sha256": "aad6b7cf8d8416bfb37ec19503dbed031c15767ea96d9b76486ca3f3fedebe1b",
+  "scope": "The paired-recall procedure is specified below. This increment does not complete the internal/external pre-access freeze or change the matrix's hypothesis rules.",
+  "paired_recall": {
+    "estimand": "URL-weighted recall(candidate) - recall(reference)",
+    "input": "Saved binary predictions with exactly aligned unique record IDs and prepared registrable domains. Every supplied label must be integer 1. Select the declared positive outcome stratum only after any full-stream routing is complete.",
+    "domains": "Use the prepared metadata produced with the pinned public-suffix rules. The statistics function checks canonical ASCII syntax, not provenance or public-suffix extraction.",
+    "domain_order": "ascending canonical ASCII registrable domain",
+    "sampling_unit": "D distinct domains represented in the positive stratum; sample D domains uniformly with replacement per replicate, retaining all paired rows for every occurrence of a sampled domain",
+    "row_weighting": "Sum candidate-minus-reference positive decisions over sampled rows and divide by their total row count. Unequal domain sizes therefore retain URL weighting; never average per-domain recalls.",
+    "replicates": 2000,
+    "seed": 20260816,
+    "numpy_version": "2.2.6",
+    "rng": "numpy.random.Generator(numpy.random.PCG64(seed))",
+    "draw_per_replicate": "rng.integers(0, D, size=D, dtype=numpy.int64)",
+    "rng_sequence": "Construct a fresh local generator per contrast; make exactly one draw call per replicate, sequentially. Contrasts with the identical positive stratum and sorted domains therefore share draws. Do not use global RNG state, reroll, batch draws, or drop replicates.",
+    "confidence_level": 0.95,
+    "quantile_levels": [0.025, 0.975],
+    "quantile_method": "linear",
+    "empty_stratum": "not_estimable; estimate and bounds null",
+    "single_domain": "not_estimable; retain estimate, bounds null",
+    "degenerate_interval": "For at least two domains, report a constant empirical bootstrap interval as calculated, with the row/domain counts; it does not establish population certainty.",
+    "missing_evidence": "Reject invalid binary integers, missing or extra predictions, duplicate record IDs, mismatched IDs/order and invalid domain metadata. Never silently drop rows.",
+    "resample_routing": false,
+    "h2_orientation": "FNR(fixed cascade) - FNR(policy) equals recall(policy) - recall(fixed cascade) on the same NCSC gold positive rows.",
+    "limitations": "Inference is conditional on the observed positive stratum and frozen stream/order. Domain resampling does not capture cross-domain temporal dependence from shared routing activations or uncertainty over alternative stream orders. Few-domain and degenerate intervals require explicit qualification. This is not causal inference.",
+    "reporting": "Retain candidate/reference true-positive counts, positive-row and domain counts, estimate, bounds, number of completed replicates and non-estimability reason. Apply the existing gate rules to unrounded endpoints only; missing bounds cannot support a gate.",
+    "implementation_references": [
+      "https://numpy.org/doc/2.2/reference/random/bit_generators/pcg64.html",
+      "https://numpy.org/doc/2.2/reference/random/compatibility.html",
+      "https://numpy.org/doc/2.2/reference/generated/numpy.quantile.html"
+    ]
+  },
+  "remaining_freeze": {
+    "manifest_sampling": "Prevalence sampling, independent streams, stable ordering, repeats and warm-up order.",
+    "http_measurement": "Service/client versions, workers, threads, queue, batch conventions, sockets, timing, timeout/error accounting and pooled quantiles.",
+    "numerical_runtime": "Predeclare the shared inference environment and batch/reduction conventions, then test a no-fit development-validation bridge with all original cutoffs unchanged. Numerical closeness alone does not establish identical decisions or band/window membership.",
+    "secondary_analyses": "Exact tests and families, calibration metrics, comparator/probe/perturbation definitions, and prospective reconciliation of seed and Random Forest commitments.",
+    "artifact_and_execution_bindings": "Complete no-fit model interfaces, adapter, manifests, reviewed execution code, private artifacts, environment and final contract hashes. No protected-data runner is provided by this increment."
+  }
+}

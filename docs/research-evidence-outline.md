@@ -451,14 +451,36 @@ They describe robustness but do not replace a primary decision rule.
 ## Remaining Executable Work
 
 The corrected transformer/cascade development execution and reviewed no-fit
-bundle loader are complete. The next deliverables are analyses and working
-inference code, not additional versions of this outline. No raw group-test or
-external partition is needed to implement and test the following pieces on
-synthetic fixtures.
+bundle loader are complete. The current increment adds artifact-only scoring in
+`transformer_scoring.py` and paired recall inference in `paired_evaluation.py`,
+tested only on synthetic fixtures. Stage one receives the original raw URL;
+character normalization remains specific to the transformer. The offline
+cascade scores every row with both models and reports a logical routing mask,
+not skipped model work.
+
+The paired evaluator checks record identity and order before calculating
+URL-weighted differences. It resamples whole positive-stratum domains with
+paired outcomes, retaining the row counts of unequal domains. The exact RNG,
+draw sequence, percentile interpolation, and missing-stratum rules are in
+[`evaluation-contract-v1.json`](../data/evaluation-contract-v1.json). That
+contract is explicitly `prospective_incomplete`: it does not complete the
+pre-access freeze or provide a protected-data execution command. Routing must
+precede stratum selection; bootstrap resampling never reruns the policy. The
+H2 interval is conditional on the realized stream and does not capture
+cross-domain temporal dependence from shared routing activations.
+
+Synthetic runtime checks also found that backend and batch shape can change
+last-bit scores, including a threshold or band decision at exact equality.
+OpenBLAS and MPS can run together, but numerical closeness does not establish
+decision equivalence. The next runtime step is to predeclare one offline/service
+scoring convention and check it in a separately recorded, no-fit
+development-validation comparison. Original thresholds, band, GMM boundary,
+and the failed GMM audit remain unchanged. No protected input is needed for
+that comparison.
 
 | Order | Work product | What completion must demonstrate |
 |---|---|---|
-| 1 | Paired evaluator and domain-clustered statistics | Reuse the reviewed no-fit artifact loader; compute paired counts and domain-clustered recall/FNR differences. Freeze RNG, domain ordering, cluster weighting, percentile interpolation, and empty-stratum handling before research-data use. |
+| 1 | Complete paired evaluator | No-fit transformer/cascade scoring and paired clustered recall/FNR differences are implemented on fixtures. Add the length-only artifact loader, complete counts/FPR/gate reporting, and bind all saved predictions to their prepared identities and frozen runtime. |
 | 2 | Composed H2 policy replay | Join saved scores, complete-window alerts, and next-256-request routing; apply outcome-stratum filters after label-blind routing; preserve the failed development false-alert component. This characterizes RQ2 and cannot rescue H2. |
 | 3 | Selective inference service and real-HTTP harness | Actually skip transformer inference outside the band and independently count calls. Test concurrency, timeouts, errors, warm-up exclusion, and pooled latency accounting. |
 | 4 | Frozen evaluation and replay-manifest contracts | Bind models, thresholds, evaluator, population/order/denominator rules, manifest selection, environment, and hashes before any internal or external pass. |

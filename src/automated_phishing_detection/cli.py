@@ -6,7 +6,16 @@ import json
 import sys
 from pathlib import Path
 
-from . import baselines, gmm_monitor, phiusiil, protocol_preflight, transformer_pipeline
+import torch
+
+from . import (
+    baselines,
+    gmm_monitor,
+    phiusiil,
+    protocol_preflight,
+    transformer_inference,
+    transformer_pipeline,
+)
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -69,6 +78,15 @@ def _parser() -> argparse.ArgumentParser:
         "summary",
     ):
         fit_gmm.add_argument("--" + option, required=True, type=Path)
+    verify_transformer = commands.add_parser(
+        "verify-transformer-bundle",
+        description="Verify saved model artifacts without fitting or scoring research rows.",
+        allow_abbrev=False,
+    )
+    verify_transformer.add_argument("--bundle-dir", required=True, type=Path)
+    verify_transformer.add_argument("--summary", required=True, type=Path)
+    verify_transformer.add_argument("--summary-sha256", required=True)
+    verify_transformer.add_argument("--logistic-l1-artifact", required=True, type=Path)
     return parser
 
 
@@ -157,6 +175,32 @@ def main(argv=None) -> int:
             print(f"error: {exc}", file=sys.stderr)
             return 2
         print(json.dumps(summary, sort_keys=True))
+        return 0
+    if args.command == "verify-transformer-bundle":
+        try:
+            transformer_inference.load_transformer_cascade_bundle(
+                bundle_dir=args.bundle_dir,
+                public_summary_path=args.summary,
+                logistic_l1_artifact_path=args.logistic_l1_artifact,
+                expected_public_summary_sha256=args.summary_sha256,
+                device=torch.device("mps"),
+            )
+        except (OSError, transformer_inference.TransformerInferenceError) as exc:
+            print(f"error: {exc}", file=sys.stderr)
+            return 2
+        print(
+            json.dumps(
+                {
+                    "status": "verified_artifact_bundle",
+                    "analysis_stage": "development_validation_only",
+                    "summary_sha256": args.summary_sha256,
+                    "device": "mps",
+                    "fit_performed_during_verification": False,
+                    "research_rows_scored_during_verification": False,
+                },
+                sort_keys=True,
+            )
+        )
         return 0
     raise AssertionError("unreachable command")
 

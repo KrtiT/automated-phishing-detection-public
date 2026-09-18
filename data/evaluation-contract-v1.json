@@ -4,7 +4,7 @@
   "status": "prospective_incomplete",
   "protected_evaluation_ready": false,
   "matrix_sha256": "aad6b7cf8d8416bfb37ec19503dbed031c15767ea96d9b76486ca3f3fedebe1b",
-  "scope": "The paired-recall procedure is specified below. This increment does not complete the internal/external pre-access freeze or change the matrix's hypothesis rules.",
+  "scope": "The paired-recall procedure, candidate shared runtime and development compatibility comparison are specified below. This increment does not complete the internal/external pre-access freeze or change the matrix's hypothesis rules.",
   "paired_recall": {
     "estimand": "URL-weighted recall(candidate) - recall(reference)",
     "input": "Saved binary predictions with exactly aligned unique record IDs and prepared registrable domains. Every supplied label must be integer 1. Select the declared positive outcome stratum only after any full-stream routing is complete.",
@@ -35,10 +35,45 @@
       "https://numpy.org/doc/2.2/reference/generated/numpy.quantile.html"
     ]
   },
+  "runtime_candidate": {
+    "status": "specified_pending_development_compatibility",
+    "rationale": "Singleton scoring gives offline evaluation and selective serving the same per-request numerical path without microbatch formation or completion-order routing. This choice precedes bridge outcomes and is not chosen by favorable detection metrics.",
+    "device": "mps",
+    "inference_batch_size": 1,
+    "numpy_blas": {"name": "scipy-openblas", "version": "0.3.29"},
+    "threadpoolctl_limits": 1,
+    "versions": {"numpy": "2.2.6", "scipy": "1.15.3", "scikit-learn": "1.7.2", "torch": "2.7.1", "threadpoolctl": "3.6.0"},
+    "baseline_scoring": "Original raw URLs, frozen features/scalers/coefficients, float64 authoritative sklearn scoring with original column selection; one URL per call for length-only and Logistic-L1.",
+    "transformer_scoring": "Existing character normalization, frozen eval-mode weights, inference_mode, deterministic algorithms with warn_only=false, disabled autocast, float32 sigmoid on MPS before CPU transfer; every forward contains exactly one URL. Warnings and nonfinite values stop the request.",
+    "session": "One inference owner thread per process-wide numerical context. Set numerical-library limits once for the session and verify every reported pool and PyTorch intra-op count equals one. Restore settings on exit. A future service must preserve its declared request admission order through one owner queue.",
+    "monitor_feature": "Keep the separately frozen portable Logistic-L1 probability as GMM feature 26; never substitute the authoritative classifier probability.",
+    "monitor_scoring": "Score one 26-feature float64 row at a time; cache NLL in original stream order. Compute each complete 256-value window separately with the existing float64 numpy.mean and stride 64. No rolling cumulative-sum replacement.",
+    "invocation_accounting": "Count actual transformer forward entries independently of routing selection, with attempted forwards separate from successfully validated scores. A failed attempt does not establish successful GPU work. Band and drift selection are unioned before a single forward.",
+    "cutoffs": "Original thresholds, inclusive uncertainty band and strict GMM boundary are unchanged; no rounding tolerance changes a classification."
+  },
+  "compatibility_bridge": {
+    "id": "development-inference-compatibility-v1",
+    "reference": "accelerate_mps_original_validation_batch512",
+    "candidate": "openblas_mps_singleton",
+    "acceptance": "exact_decisions_band_masks_and_separate_stream_alerts",
+    "reference_counts": "accepted_four_model_validation_counts",
+    "gmm_reference": "exact_saved_calibration_and_audit_window_scores",
+    "report": "reports/inference-compatibility-v1.json",
+    "retry": false,
+    "protected_evaluation_ready": false,
+    "allowed_inputs": "Only the fixed hash-bound development-validation partition, preparation metadata, accepted artifacts, original private GMM validation trace, public summaries and frozen contracts. No training partition, internal group-test or external records.",
+    "reference_fidelity": "Restore accepted models without fitting. Baselines use original full-matrix sklearn scoring in Accelerate. Transformer uses the original _evaluate_validation no_grad/DataLoader path with batch 512, source order and final partial batch. GMM reference uses the original full feature-matrix scorer in OpenBLAS, retaining separate original calibration/audit domain allocation.",
+    "candidate_fidelity": "Use the shared singleton inference context for candidate length-only, Logistic-L1, transformer and cascade. Preserve the portable monitor feature and compare singleton GMM NLLs with the original full-matrix reference using the same frozen windows.",
+    "exact_checks": "First reproduce accepted reference validation confusion counts, the original cascade band-selection count, and saved GMM calibration/audit window scores and alerts. Require zero per-row binary-decision mismatches for all four detection models, zero inclusive-band-mask mismatches, and zero strict-window-alert mismatches separately in calibration and audit. Row identities and order must match exactly.",
+    "numerical_differences": "Report maximum absolute probability and NLL differences separately. They do not substitute for exact decision checks or authorize tolerance-based relabeling.",
+    "failure_policy": "Preserve a not-equivalent or execution-failure record with its stage. Do not retune, change the candidate, rank alternate runtimes by results, overwrite the receipt, or automatically retry. Any subsequent numerical-method amendment is explicit and prospective before protected evaluation.",
+    "scope_of_success": "A pass establishes the specified finite development comparison, not universal bitwise equivalence or generalization. The original GMM 28/252 failed audit and all historical summaries remain unchanged. The broader evaluation freeze still must be completed.",
+    "publication": "Preflight both runtime roles and bind a clean code revision and supplied contract SHA-256 before reading allowed input bytes. Keep row-level lane evidence private and temporary; publish one aggregate, no-overwrite receipt with provenance, counts, numerical differences and exact-match results."
+  },
   "remaining_freeze": {
     "manifest_sampling": "Prevalence sampling, independent streams, stable ordering, repeats and warm-up order.",
     "http_measurement": "Service/client versions, workers, threads, queue, batch conventions, sockets, timing, timeout/error accounting and pooled quantiles.",
-    "numerical_runtime": "Predeclare the shared inference environment and batch/reduction conventions, then test a no-fit development-validation bridge with all original cutoffs unchanged. Numerical closeness alone does not establish identical decisions or band/window membership.",
+    "numerical_runtime": "The candidate convention and development bridge are specified above; execute the reviewed bridge and record its outcome before accepting the runtime for protected evaluation. Numerical closeness alone does not establish identical decisions or band/window membership.",
     "secondary_analyses": "Exact tests and families, calibration metrics, comparator/probe/perturbation definitions, and prospective reconciliation of seed and Random Forest commitments.",
     "artifact_and_execution_bindings": "Complete no-fit model interfaces, adapter, manifests, reviewed execution code, private artifacts, environment and final contract hashes. No protected-data runner is provided by this increment."
   }

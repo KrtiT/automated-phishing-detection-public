@@ -451,12 +451,14 @@ They describe robustness but do not replace a primary decision rule.
 ## Remaining Executable Work
 
 The corrected transformer/cascade development execution and reviewed no-fit
-bundle loader are complete. The current increment adds artifact-only scoring in
-`transformer_scoring.py` and paired recall inference in `paired_evaluation.py`,
-tested only on synthetic fixtures. Stage one receives the original raw URL;
-character normalization remains specific to the transformer. The offline
-cascade scores every row with both models and reports a logical routing mask,
-not skipped model work.
+bundle loader are complete. Artifact-only scoring now includes length-only,
+Logistic-L1, transformer, and cascade paths. `selective_inference.py` shares one
+singleton scoring path between full paired scoring and selective requests.
+Stage one receives the original raw URL; character normalization remains
+specific to the transformer. A selective request skips the transformer outside
+the band unless a prior alert overrides routing. Forward attempts and validated
+successful scores are counted separately. These behaviors have been tested on
+synthetic fixtures, not measured as HTTP performance.
 
 The paired evaluator checks record identity and order before calculating
 URL-weighted differences. It resamples whole positive-stratum domains with
@@ -472,24 +474,33 @@ cross-domain temporal dependence from shared routing activations.
 Synthetic runtime checks also found that backend and batch shape can change
 last-bit scores, including a threshold or band decision at exact equality.
 OpenBLAS and MPS can run together, but numerical closeness does not establish
-decision equivalence. The next runtime step is to predeclare one offline/service
-scoring convention and check it in a separately recorded, no-fit
-development-validation comparison. Original thresholds, band, GMM boundary,
-and the failed GMM audit remain unchanged. No protected input is needed for
-that comparison.
+decision equivalence. The evaluation contract now specifies OpenBLAS 0.3.29,
+MPS, one numerical thread and one URL per forward as the candidate shared
+runtime. Its separately recorded, no-fit development comparison must reproduce
+the original reference results and then check exact decisions, band membership,
+and calibration/audit window alerts. That comparison has not run. Original
+thresholds, band, GMM boundary, and the failed GMM audit remain unchanged.
+
+`policy_replay.py` joins identity-aligned model and monitor scores without labels
+or source filters. Each complete 256-request window is evaluated at stride 64;
+an alert affects only the next 256 requests, with overlapping overrides unioned.
+Its cached-score routing masks are logical selections, not skipped computation.
+A synthetic integration test matches replay decisions to selective execution
+and checks that the first alert cannot change earlier requests.
 
 | Order | Work product | What completion must demonstrate |
 |---|---|---|
-| 1 | Complete paired evaluator | No-fit transformer/cascade scoring and paired clustered recall/FNR differences are implemented on fixtures. Add the length-only artifact loader, complete counts/FPR/gate reporting, and bind all saved predictions to their prepared identities and frozen runtime. |
-| 2 | Composed H2 policy replay | Join saved scores, complete-window alerts, and next-256-request routing; apply outcome-stratum filters after label-blind routing; preserve the failed development false-alert component. This characterizes RQ2 and cannot rescue H2. |
-| 3 | Selective inference service and real-HTTP harness | Actually skip transformer inference outside the band and independently count calls. Test concurrency, timeouts, errors, warm-up exclusion, and pooled latency accounting. |
+| 1 | Complete paired evaluator | All four no-fit scoring paths and paired clustered recall/FNR differences are implemented on fixtures. Complete counts/FPR/gate reporting and bind saved predictions to prepared identities and the accepted runtime. |
+| 2 | Composed H2 policy replay | Identity-aligned label-blind replay is implemented on fixtures. Integrate retained-stream inputs and apply outcome-stratum filters after routing. Preserve the failed development false-alert component; this characterizes RQ2 and cannot rescue H2. |
+| 3 | Selective inference service and real-HTTP harness | The singleton core skips and counts transformer work on fixtures. Add the owner queue, HTTP service and measurement harness; test concurrency, timeouts, errors, warm-up exclusion, and pooled latency accounting. |
 | 4 | Frozen evaluation and replay-manifest contracts | Bind models, thresholds, evaluator, population/order/denominator rules, manifest selection, environment, and hashes before any internal or external pass. |
 | 5 | Independent execution and one gate table | The single internal raw-partition pass produces paired predictions and replay manifests. Later HTTP runs use only those manifests. External schema verification, preparation, and evaluation follow the separate frozen access sequence. |
 
 The existing offline cascade scorer accepts transformer probabilities for every
 row and computes a logical invocation mask. That mask is useful for paired
 evaluation, but it is not measured transformer work saved or HTTP performance.
-The future service must prove actual selective execution independently.
+The future service must reconcile those masks with its physical forward counts
+and measure the complete HTTP path independently.
 
 The GMM's failed 5% audit gate remains a failed mandatory H2 component. Further
 external or routing measurements can explain system behavior; they cannot make

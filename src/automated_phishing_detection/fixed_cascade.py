@@ -298,7 +298,7 @@ def _validate_transformer_threshold_binding(
 
 
 def _validate_artifact(
-    value: object, *, expected_contract_sha256: str
+    value: object, *, expected_contract_sha256: str, model_name: str = "Logistic-L1"
 ) -> tuple[
     tuple[float, ...],
     tuple[float, ...],
@@ -308,6 +308,14 @@ def _validate_artifact(
     dict[str, object],
     float,
 ]:
+    if type(model_name) is not str or model_name not in {
+        "Logistic-L1",
+        "length-only",
+    }:
+        raise FixedCascadeError("artifact model_name is not a frozen baseline")
+    feature_names = (
+        FEATURE_NAMES if model_name == "Logistic-L1" else ("raw_url_codepoint_length",)
+    )
     artifact = _expect_fields(value, _TOP_LEVEL_FIELDS, "artifact")
     expected_identity = {
         "schema_version": 2,
@@ -315,15 +323,15 @@ def _validate_artifact(
         "analysis_stage": "development_validation_only",
         "contract_id": "rq1-baselines-v2",
         "contract_sha256": expected_contract_sha256,
-        "model_name": "Logistic-L1",
-        "features": list(FEATURE_NAMES),
+        "model_name": model_name,
+        "features": list(feature_names),
         "classes": [0, 1],
     }
     for field, expected in expected_identity.items():
         if not _matches_exactly(artifact[field], expected):
-            raise FixedCascadeError(f"artifact {field} does not match Logistic-L1")
+            raise FixedCascadeError(f"artifact {field} does not match {model_name}")
 
-    width = len(FEATURE_NAMES)
+    width = len(feature_names)
     scaler = _expect_fields(
         artifact["scaler"],
         frozenset({"config", "mean", "scale", "variance", "n_samples_seen"}),
@@ -349,7 +357,7 @@ def _validate_artifact(
         raise FixedCascadeError("artifact classifier configuration has changed")
     coefficients = classifier["coefficients"]
     if type(coefficients) is not list or len(coefficients) != 1:
-        raise FixedCascadeError("artifact coefficients must have shape (1, 25)")
+        raise FixedCascadeError(f"artifact coefficients must have shape (1, {width})")
     coefficient_row = _numeric_vector(
         coefficients[0], width, "artifact.classifier.coefficients"
     )

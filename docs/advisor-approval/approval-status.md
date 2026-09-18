@@ -30,11 +30,15 @@ audit failed the 5% gate (28/252 windows, 11.11%), without retuning.
 H2 is not supported because that mandatory conjunctive gate failed. H1 and H3
 remain undecided. The group test remains analyst-exposed but model-unscored.
 
-The September 18 implementation increment adds no-fit transformer/cascade
-scoring and paired domain-clustered recall intervals, checked with synthetic
-fixtures. The [evaluation contract](../../data/evaluation-contract-v1.json)
-specifies the paired-recall procedure and identifies the remaining runtime,
-manifest, operational, and secondary-analysis work. It remains
+The September 18 implementation adds no-fit scoring for all four detectors,
+paired domain-clustered recall intervals, and label-blind future-only policy
+replay, checked with synthetic fixtures. The shared singleton scoring core
+skips transformer execution outside the band unless a prior alert overrides
+routing, and counts forward attempts separately from successful scores. The
+[evaluation contract](../../data/evaluation-contract-v1.json) specifies a
+candidate offline/service runtime and a no-fit development compatibility
+comparison; that comparison has not run. Manifest, operational, and
+secondary-analysis definitions remain outstanding. The contract remains
 `prospective_incomplete`; no new research predictions or hypothesis results
 are reported. The [implementation outline](../research-evidence-outline.md#remaining-executable-work)
 records the next steps without changing the frozen development results.

@@ -29,8 +29,8 @@ jobs:
 
       - name: Check Python style
         run: |
-          uv run --locked ruff check src tests
-          uv run --locked ruff format --check src tests
+          uv run --locked ruff check src tests scripts
+          uv run --locked ruff format --check src tests scripts
 
       - name: Run tests
         run: uv run --locked pytest -q

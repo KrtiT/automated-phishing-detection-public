@@ -68,6 +68,16 @@ BRIDGE_REQUIREMENTS = {
     "retry": False,
     "protected_evaluation_ready": False,
 }
+CORRECTION_REQUIREMENTS = {
+    "id": "development-inference-compatibility-v1-preflight-correction",
+    "report": "reports/inference-compatibility-v1-preflight-correction.json",
+    "prior_receipt": REPORT,
+    "prior_receipt_sha256": "6f27b23a88e40455a186ce21cddebec0f9ab827919c663b345a6a14ca14bb670",
+    "prior_head": "6977cec7acaa5491caaad8b1bba140b4134a7fcf",
+    "prior_contract_sha256": "0a42fc0f27abc611431cbbf1263bb9c2f02264942332ed8478b8a305e0dae9b9",
+    "maximum_executions": 1,
+    "automatic_retry": False,
+}
 REFERENCE_COMMIT = "e866441f2ff858472d031b8d358fd469897c6a65"
 REFERENCE_FUNCTIONS = {
     "src/automated_phishing_detection/character_transformer.py": (
@@ -281,18 +291,103 @@ def _utc_now():
     return datetime.now(timezone.utc).isoformat()
 
 
+def _verify_preflight_correction(root, contract):
+    policy = CORRECTION_REQUIREMENTS
+    declared = contract.get("compatibility_bridge", {}).get("preflight_correction")
+    if type(declared) is not dict or any(
+        _json_bytes(declared.get(key)) != _json_bytes(value)
+        for key, value in policy.items()
+    ):
+        raise ValueError(
+            "the exact preflight correction must be prospectively declared"
+        )
+    prior = json.loads(
+        _read_verified(root / policy["prior_receipt"], policy["prior_receipt_sha256"])
+    )
+    expected = {
+        "schema_version": 1,
+        "contract_id": BRIDGE_REQUIREMENTS["id"],
+        "head": policy["prior_head"],
+        "contract_sha256": policy["prior_contract_sha256"],
+        "status": "failed",
+        "failure_stage": "candidate_environment_preflight",
+        "fit_performed": False,
+        "protected_evaluation_ready": False,
+    }
+    if any(
+        _json_bytes(prior.get(key)) != _json_bytes(value)
+        for key, value in expected.items()
+    ):
+        raise ValueError("predecessor is not the authenticated preflight-only failure")
+    processes = prior.get("processes")
+    if type(processes) is not list or len(processes) != 2:
+        raise ValueError("predecessor must contain exactly two preflight processes")
+    for process, role, code in zip(
+        processes, ("reference", "candidate"), (0, 2), strict=True
+    ):
+        expected_process = {"role": role, "phase": "preflight", "exit_code": code}
+        if role == "candidate":
+            expected_process["failure_stage"] = "environment_preflight"
+        if any(
+            _json_bytes(process.get(key)) != _json_bytes(value)
+            for key, value in expected_process.items()
+        ):
+            raise ValueError("predecessor contains a different process outcome")
+    scientific_fields = {
+        "models",
+        "gmm",
+        "row_count",
+        "comparison_execution",
+        "band_mismatch_count",
+        "reference_band_selected_count",
+        "candidate_band_selected_count",
+        "original_counts",
+        "gmm_reference",
+        "original_band_selected_count",
+        "accepted_band_selected_count",
+    }
+    if scientific_fields & prior.keys():
+        raise ValueError(
+            "preflight correction cannot follow scientific scoring or comparison"
+        )
+    return {
+        "prior_receipt": policy["prior_receipt"],
+        "prior_receipt_sha256": policy["prior_receipt_sha256"],
+        "prior_head": policy["prior_head"],
+        "prior_contract_sha256": policy["prior_contract_sha256"],
+        "change": "initialize_torch_thread_runtime_before_limiting",
+        "maximum_executions": 1,
+        "automatic_retry": False,
+    }
+
+
 def _run_bridge(
-    reference_python, candidate_python, contract_hash, *, _root=ROOT, _invoke=None
+    reference_python,
+    candidate_python,
+    contract_hash,
+    *,
+    preflight_correction=False,
+    _root=ROOT,
+    _invoke=None,
 ):
-    destination = _root / REPORT
+    if type(preflight_correction) is not bool:
+        raise ValueError("preflight correction flag must be boolean")
+    destination = _root / (
+        CORRECTION_REQUIREMENTS["report"] if preflight_correction else REPORT
+    )
     if destination.exists() or destination.is_symlink():
         raise FileExistsError("the compatibility receipt already exists")
-    _verify_contract(_root / CONTRACT, contract_hash)
+    contract = _verify_contract(_root / CONTRACT, contract_hash)
+    correction = (
+        _verify_preflight_correction(_root, contract) if preflight_correction else None
+    )
     bindings = _source_bindings(_root)
     invoke = _invoke or _invoke_child
     receipt = {
         "schema_version": 1,
-        "contract_id": BRIDGE_REQUIREMENTS["id"],
+        "contract_id": CORRECTION_REQUIREMENTS["id"]
+        if preflight_correction
+        else BRIDGE_REQUIREMENTS["id"],
         "analysis_stage": "development_validation_only",
         "protected_evaluation_ready": False,
         "fit_performed": False,
@@ -308,6 +403,8 @@ def _run_bridge(
             "scope": "this_process_and_its_children_only",
         },
     }
+    if correction is not None:
+        receipt["preflight_correction"] = correction
     start = time.monotonic()
     stage = "environment_preflight"
     try:
@@ -672,6 +769,8 @@ def _environment(role):
         or not torch.backends.mps.is_available()
     ):
         raise ValueError("bridge requires the declared Apple silicon MPS versions")
+    # PyTorch's first query can initialize OpenMP and overwrite an active limit.
+    entry_torch_threads = torch.get_num_threads()
     blas = gm._numpy_build_configuration()
     if role == "reference":
         if blas["name"] != "accelerate":
@@ -695,7 +794,7 @@ def _environment(role):
         "machine": platform.machine(),
         "numpy_blas": blas,
         "interpreter": sys.executable,
-        "torch_intraop_threads_before_scoring": torch.get_num_threads(),
+        "torch_intraop_threads_before_scoring": entry_torch_threads,
         "threadpools_before_scoring": [
             {
                 key: pool.get(key)
@@ -915,6 +1014,7 @@ def main(argv=None):
     parser.add_argument("--reference-python")
     parser.add_argument("--candidate-python")
     parser.add_argument("--contract-sha256", required=True)
+    parser.add_argument("--preflight-correction", action="store_true")
     parser.add_argument(
         "--_role", choices=("reference", "candidate"), help=argparse.SUPPRESS
     )
@@ -923,6 +1023,8 @@ def main(argv=None):
     try:
         arguments = parser.parse_args(argv)
         if arguments._role:
+            if arguments.preflight_correction:
+                raise ValueError("preflight correction is a parent execution option")
             if arguments._preflight:
                 _CHILD_STAGE = "environment_preflight"
                 print(_json_bytes(_environment(arguments._role)).decode(), end="")
@@ -948,6 +1050,7 @@ def main(argv=None):
             arguments.reference_python,
             arguments.candidate_python,
             arguments.contract_sha256,
+            preflight_correction=arguments.preflight_correction,
         )
     except (Exception, KeyboardInterrupt) as error:
         result = {

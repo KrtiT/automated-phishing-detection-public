@@ -542,6 +542,31 @@ def test_transformer_summary_is_accepted_development_only_and_immutable():
     visit(summary)
 
 
+def test_inference_compatibility_preflight_stop_is_preserved():
+    path = ROOT / "reports" / "inference-compatibility-v1.json"
+    assert sha256(path.read_bytes()).hexdigest() == (
+        "6f27b23a88e40455a186ce21cddebec0f9ab827919c663b345a6a14ca14bb670"
+    )
+    receipt = json.loads(path.read_bytes())
+    assert receipt["head"] == "6977cec7acaa5491caaad8b1bba140b4134a7fcf"
+    assert receipt["status"] == "failed"
+    assert receipt["failure_stage"] == "candidate_environment_preflight"
+    assert receipt["protected_evaluation_ready"] is False
+    assert receipt["fit_performed"] is False
+    assert receipt["access"] == {
+        "group_test_accessed": False,
+        "phishvn_accessed": False,
+        "scope": "this_process_and_its_children_only",
+    }
+    assert [
+        (process["role"], process["phase"], process["exit_code"])
+        for process in receipt["processes"]
+    ] == [("reference", "preflight", 0), ("candidate", "preflight", 2)]
+    assert "models" not in receipt
+    assert "gmm" not in receipt
+    assert "comparison_execution" not in receipt
+
+
 def test_transformer_retry_receipt_binds_result_and_invocation_scoped_audit():
     assert sha256(TRANSFORMER_RETRY_EXECUTION.read_bytes()).hexdigest() == (
         TRANSFORMER_RETRY_EXECUTION_SHA256

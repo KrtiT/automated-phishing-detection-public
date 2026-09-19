@@ -37,11 +37,21 @@ skips transformer execution outside the band unless a prior alert overrides
 routing, and counts forward attempts separately from successful scores. The
 [evaluation contract](../../data/evaluation-contract-v1.json) specifies a
 candidate offline/service runtime and a no-fit development compatibility
-comparison; that comparison has not run. Manifest, operational, and
-secondary-analysis definitions remain outstanding. The contract remains
+comparison. The [first attempt](../../reports/inference-compatibility-v1.json)
+stopped during candidate environment preflight, before model or validation
+reads. A fresh-process check identified PyTorch thread-initialization ordering;
+the contract records one explicit corrective execution with a separate receipt,
+unchanged numerical rules, and no automatic retry. No compatibility scores exist
+yet. Manifest, operational, and secondary-analysis definitions remain
+outstanding. The contract remains
 `prospective_incomplete`; no new research predictions or hypothesis results
 are reported. The [implementation outline](../research-evidence-outline.md#remaining-executable-work)
 records the next steps without changing the frozen development results.
+
+The preflight-stop receipt has SHA-256
+`6f27b23a88e40455a186ce21cddebec0f9ab827919c663b345a6a14ca14bb670`.
+Its `input_sha256` values are declared expected bindings; the stop preceded
+verification or decoding of those model and validation inputs.
 
 | Field | Value |
 |---|---|

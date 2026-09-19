@@ -478,8 +478,14 @@ decision equivalence. The evaluation contract now specifies OpenBLAS 0.3.29,
 MPS, one numerical thread and one URL per forward as the candidate shared
 runtime. Its separately recorded, no-fit development comparison must reproduce
 the original reference results and then check exact decisions, band membership,
-and calibration/audit window alerts. That comparison has not run. Original
-thresholds, band, GMM boundary, and the failed GMM audit remain unchanged.
+and calibration/audit window alerts. The first attempt stopped in candidate
+preflight before model or validation access: PyTorch's first thread-count query
+reset its OpenMP pool after the limiter had run. A fresh-interpreter regression
+now checks initialization before limiting and restoration afterward. The
+contract permits one explicitly requested corrective execution with a separate
+receipt and authenticates the original preflight-only failure. No comparison
+scores exist yet. Original thresholds, band, GMM boundary, and the failed GMM
+audit remain unchanged.
 
 `policy_replay.py` joins identity-aligned model and monitor scores without labels
 or source filters. Each complete 256-request window is evaluated at stride 64;

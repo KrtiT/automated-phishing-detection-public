@@ -1,6 +1,10 @@
 import copy
 import importlib.util
 import json
+import os
+import subprocess
+import sys
+import textwrap
 from hashlib import sha256
 from pathlib import Path
 
@@ -705,6 +709,55 @@ def test_candidate_thread_limit_failure_precedes_any_lane_input_read(
     assert reads == []
 
 
+def test_candidate_preflight_initializes_torch_before_limiting_in_fresh_process():
+    program = textwrap.dedent(
+        """
+        import importlib.util
+        import json
+        import sys
+        from types import SimpleNamespace
+
+        import torch
+        from automated_phishing_detection import gmm_monitor as gm
+
+        spec = importlib.util.spec_from_file_location("bridge", sys.argv[1])
+        bridge = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(bridge)
+        # Isolate the real thread-pool probe from hardware/version eligibility.
+        bridge.sys = SimpleNamespace(platform="darwin", executable=sys.executable)
+        bridge.platform = SimpleNamespace(python_version=lambda: "3.10.19",
+                                         machine=lambda: "arm64", platform=lambda: "synthetic")
+        torch.backends.mps.is_available = lambda: True
+        torch.__version__ = "2.7.1"
+        gm._require_runtime = lambda: None
+        gm._software_versions = lambda: {"numpy": "2.2.6", "scipy": "1.15.3",
+                                        "scikit-learn": "1.7.2", "threadpoolctl": "3.6.0"}
+        original_get = torch.get_num_threads
+        calls = []
+        def observe_get():
+            value = original_get()
+            calls.append(value)
+            return value
+        torch.get_num_threads = observe_get
+        result = bridge._environment("candidate")
+        print(json.dumps({"entry": result["torch_intraop_threads_before_scoring"],
+                          "calls": calls, "restored": original_get()}))
+        """
+    )
+    child = subprocess.run(
+        [sys.executable, "-s", "-c", program, str(SCRIPT)],
+        env=dict(os.environ, PYTHONPATH=str(SCRIPT.parents[1] / "src")),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert child.returncode == 0, child.stderr
+    result = json.loads(child.stdout)
+    assert result["entry"] >= 1
+    assert result["calls"] == [result["entry"], 1]
+    assert result["restored"] == result["entry"]
+
+
 def test_child_stage_is_sanitized_in_process_failure_record(bridge, monkeypatch):
     from types import SimpleNamespace
 
@@ -756,3 +809,207 @@ def test_unknown_child_stage_is_not_echoed(bridge, monkeypatch):
         )
     assert caught.value.process_record["failure_stage"] == "unknown_child_stage"
     assert "PRIVATE" not in json.dumps(caught.value.process_record)
+
+
+def _correction_fixture(bridge, tmp_path, monkeypatch):
+    _orchestrator_fixture(bridge, tmp_path, monkeypatch)
+    prior = {
+        "schema_version": 1,
+        "contract_id": bridge.BRIDGE_REQUIREMENTS["id"],
+        "head": "6977cec7acaa5491caaad8b1bba140b4134a7fcf",
+        "contract_sha256": "0a42fc0f27abc611431cbbf1263bb9c2f02264942332ed8478b8a305e0dae9b9",
+        "status": "failed",
+        "failure_stage": "candidate_environment_preflight",
+        "fit_performed": False,
+        "protected_evaluation_ready": False,
+        "processes": [
+            {"role": "reference", "phase": "preflight", "exit_code": 0},
+            {
+                "role": "candidate",
+                "phase": "preflight",
+                "exit_code": 2,
+                "failure_stage": "environment_preflight",
+            },
+        ],
+    }
+    content = bridge._json_bytes(prior)
+    policy = dict(
+        bridge.CORRECTION_REQUIREMENTS, prior_receipt_sha256=sha256(content).hexdigest()
+    )
+    monkeypatch.setattr(bridge, "CORRECTION_REQUIREMENTS", policy)
+    monkeypatch.setattr(
+        bridge,
+        "_verify_contract",
+        lambda *args: {"compatibility_bridge": {"preflight_correction": policy}},
+    )
+    (tmp_path / bridge.REPORT).write_bytes(content)
+    return prior, content, policy
+
+
+def test_explicit_preflight_correction_preserves_original_and_has_own_single_receipt(
+    bridge, tmp_path, monkeypatch
+):
+    _, prior_content, policy = _correction_fixture(bridge, tmp_path, monkeypatch)
+    reference, candidate, _ = _lanes()
+    calls = []
+
+    def child(role, interpreter, contract_hash, output=None):
+        calls.append((role, output is None))
+        if output is not None:
+            bridge._write_private(
+                output, reference if role == "reference" else candidate
+            )
+        return {"role": role}, {"role": role, "exit_code": 0}
+
+    result = bridge._run_bridge(
+        "python1",
+        "python2",
+        "f" * 64,
+        preflight_correction=True,
+        _root=tmp_path,
+        _invoke=child,
+    )
+    assert result["status"] == "equivalent_on_development_validation"
+    assert result["contract_id"] == policy["id"]
+    assert (
+        result["preflight_correction"]["prior_receipt_sha256"]
+        == policy["prior_receipt_sha256"]
+    )
+    assert (
+        result["preflight_correction"]["change"]
+        == "initialize_torch_thread_runtime_before_limiting"
+    )
+    assert (tmp_path / policy["report"]).exists()
+    assert (tmp_path / bridge.REPORT).read_bytes() == prior_content
+    for correction in (False, True):
+        with pytest.raises(FileExistsError):
+            bridge._run_bridge(
+                "python1",
+                "python2",
+                "f" * 64,
+                preflight_correction=correction,
+                _root=tmp_path,
+                _invoke=child,
+            )
+    assert len(calls) == 4
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        "hash",
+        "stage",
+        "head",
+        "contract",
+        "phase",
+        "process_count",
+        "comparison",
+        "fit",
+        "contract_exception",
+    ],
+)
+def test_correction_rejects_invalid_predecessor_before_any_environment_or_data_call(
+    bridge, tmp_path, monkeypatch, mutation
+):
+    prior, _, policy = _correction_fixture(bridge, tmp_path, monkeypatch)
+    if mutation in ("hash", "stage"):
+        prior["failure_stage"] = "candidate_scoring"
+    elif mutation == "head":
+        prior["head"] = "1" * 40
+    elif mutation == "contract":
+        prior["contract_sha256"] = "1" * 64
+    elif mutation == "phase":
+        prior["processes"][1]["phase"] = "scoring"
+    elif mutation == "process_count":
+        prior["processes"].append(prior["processes"][1])
+    elif mutation == "comparison":
+        prior["models"] = {}
+    elif mutation == "fit":
+        prior["fit_performed"] = True
+    else:
+        monkeypatch.setattr(bridge, "_verify_contract", lambda *args: {})
+    content = bridge._json_bytes(prior)
+    (tmp_path / bridge.REPORT).write_bytes(content)
+    if mutation != "hash":
+        policy["prior_receipt_sha256"] = sha256(content).hexdigest()
+    calls = []
+    with pytest.raises(ValueError):
+        bridge._run_bridge(
+            "python1",
+            "python2",
+            "f" * 64,
+            preflight_correction=True,
+            _root=tmp_path,
+            _invoke=lambda *args: calls.append(args),
+        )
+    assert calls == []
+    assert not (tmp_path / policy["report"]).exists()
+
+
+def test_correction_failure_is_preserved_and_never_automatically_retried(
+    bridge, tmp_path, monkeypatch
+):
+    _, prior_content, policy = _correction_fixture(bridge, tmp_path, monkeypatch)
+    calls = []
+
+    def child(*args):
+        calls.append(args)
+        raise ValueError("synthetic failure")
+
+    result = bridge._run_bridge(
+        "python1",
+        "python2",
+        "f" * 64,
+        preflight_correction=True,
+        _root=tmp_path,
+        _invoke=child,
+    )
+    assert result["status"] == "failed"
+    assert len(calls) == 1
+    with pytest.raises(FileExistsError):
+        bridge._run_bridge(
+            "python1",
+            "python2",
+            "f" * 64,
+            preflight_correction=True,
+            _root=tmp_path,
+            _invoke=child,
+        )
+    assert len(calls) == 1
+    assert (tmp_path / bridge.REPORT).read_bytes() == prior_content
+
+
+def test_public_correction_flag_is_explicit_and_parent_only(
+    bridge, monkeypatch, capsys
+):
+    calls = []
+
+    def execute(*args, **kwargs):
+        calls.append(kwargs)
+        return {"status": "equivalent_on_development_validation"}
+
+    monkeypatch.setattr(bridge, "_run_bridge", execute)
+    arguments = [
+        "--reference-python",
+        "python1",
+        "--candidate-python",
+        "python2",
+        "--contract-sha256",
+        "f" * 64,
+    ]
+    assert bridge.main(arguments + ["--preflight-correction"]) == 0
+    assert calls == [{"preflight_correction": True}]
+    capsys.readouterr()
+
+
+def test_correction_contract_may_include_hash_bound_explanatory_prose(
+    bridge, tmp_path, monkeypatch
+):
+    _, _, policy = _correction_fixture(bridge, tmp_path, monkeypatch)
+    contract = {
+        "compatibility_bridge": {
+            "preflight_correction": dict(policy, reason="Synthetic explanation")
+        }
+    }
+    result = bridge._verify_preflight_correction(tmp_path, contract)
+    assert result["prior_receipt_sha256"] == policy["prior_receipt_sha256"]

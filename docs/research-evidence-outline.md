@@ -482,10 +482,27 @@ and calibration/audit window alerts. The first attempt stopped in candidate
 preflight before model or validation access: PyTorch's first thread-count query
 reset its OpenMP pool after the limiter had run. A fresh-interpreter regression
 now checks initialization before limiting and restoration afterward. The
-contract permits one explicitly requested corrective execution with a separate
-receipt and authenticates the original preflight-only failure. No comparison
-scores exist yet. Original thresholds, band, GMM boundary, and the failed GMM
-audit remain unchanged.
+contract permitted one explicitly requested corrective execution with a separate
+receipt and authenticated the original preflight-only failure. That comparison
+has completed; its
+[aggregate receipt](../reports/inference-compatibility-v1-preflight-correction.json)
+records `not_equivalent` on 32,695 validation rows. The original reference
+reproduced all accepted counts, the original band-selection count of three,
+and the saved GMM calibration/audit window scores. The candidate produced zero decision
+mismatches for length-only, Logistic-L1 and cascade, zero band mismatches, and
+zero GMM alert mismatches in either stream. Transformer-only had one mismatch:
+12,373 rather than 12,374 true positives, with false positives unchanged at 178.
+Its maximum absolute probability difference was `7.152557373046875e-7`.
+
+The zero-mismatch acceptance rule therefore rejects the candidate runtime;
+numerical closeness does not waive that rule. This is a finite development
+comparison of the two full scoring paths, not isolation of a particular kernel
+or a new hypothesis test. Original thresholds, band, GMM boundary, and the
+28/252 failed GMM audit remain unchanged. The comparison evaluated the
+transformer for every validation row and is not a selective-work or HTTP
+measurement. No further run or alternate-runtime search follows automatically.
+Any numerical-method amendment must be explicit before protected evaluation;
+saved-evidence evaluation and HTTP interfaces can continue on synthetic fixtures.
 
 `policy_replay.py` joins identity-aligned model and monitor scores without labels
 or source filters. Each complete 256-request window is evaluated at stride 64;
@@ -496,7 +513,7 @@ and checks that the first alert cannot change earlier requests.
 
 | Order | Work product | What completion must demonstrate |
 |---|---|---|
-| 1 | Complete paired evaluator | All four no-fit scoring paths and paired clustered recall/FNR differences are implemented on fixtures. Complete counts/FPR/gate reporting and bind saved predictions to prepared identities and the accepted runtime. |
+| 1 | Complete paired evaluator | All four no-fit scoring paths and paired clustered recall/FNR differences are implemented on fixtures. Complete counts/FPR/gate reporting and identity binding. Runtime acceptance is unresolved after the recorded one-decision mismatch. |
 | 2 | Composed H2 policy replay | Identity-aligned label-blind replay is implemented on fixtures. Integrate retained-stream inputs and apply outcome-stratum filters after routing. Preserve the failed development false-alert component; this characterizes RQ2 and cannot rescue H2. |
 | 3 | Selective inference service and real-HTTP harness | The singleton core skips and counts transformer work on fixtures. Add the owner queue, HTTP service and measurement harness; test concurrency, timeouts, errors, warm-up exclusion, and pooled latency accounting. |
 | 4 | Frozen evaluation and replay-manifest contracts | Bind models, thresholds, evaluator, population/order/denominator rules, manifest selection, environment, and hashes before any internal or external pass. |

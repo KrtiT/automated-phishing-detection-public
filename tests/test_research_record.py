@@ -567,6 +567,58 @@ def test_inference_compatibility_preflight_stop_is_preserved():
     assert "comparison_execution" not in receipt
 
 
+def test_inference_compatibility_retains_the_measured_non_equivalence():
+    path = ROOT / "reports" / "inference-compatibility-v1-preflight-correction.json"
+    assert sha256(path.read_bytes()).hexdigest() == (
+        "66272dceee640f6b1a7f42f90a5776db4f30673df09660003a4b4250cd286eb5"
+    )
+    receipt = json.loads(path.read_bytes())
+    assert receipt["status"] == "not_equivalent"
+    assert receipt["head"] == "e7483f05ef245da4eeed713342bb41f8b4a4ab13"
+    assert receipt["contract_sha256"] == (
+        "d55e504c4f2f89dff93de9fbf121460c02e5175fefcf206a3a74d37de4c0ab6f"
+    )
+    assert receipt["preflight_correction"]["prior_receipt_sha256"] == (
+        "6f27b23a88e40455a186ce21cddebec0f9ab827919c663b345a6a14ca14bb670"
+    )
+    assert receipt["protected_evaluation_ready"] is False
+    assert receipt["fit_performed"] is False
+    assert receipt["row_count"] == 32695
+    assert all(process["exit_code"] == 0 for process in receipt["processes"])
+    assert len(receipt["processes"]) == 4
+    assert receipt["band_mismatch_count"] == 0
+    assert receipt["reference_band_selected_count"] == 3
+    assert receipt["candidate_band_selected_count"] == 3
+    for name, result in receipt["models"].items():
+        assert result["reference_reproduces_accepted_counts"] is True
+        assert result["decision_mismatch_count"] == int(name == "transformer")
+        if name != "transformer":
+            assert result["candidate_counts"] == result["reference_counts"]
+    transformer = receipt["models"]["transformer"]
+    assert transformer["reference_counts"]["true_positive"] == 12374
+    assert transformer["candidate_counts"]["true_positive"] == 12373
+    assert transformer["reference_counts"]["false_negative"] == 112
+    assert transformer["candidate_counts"]["false_negative"] == 113
+    assert transformer["reference_counts"]["false_positive"] == 178
+    assert transformer["candidate_counts"]["false_positive"] == 178
+    assert transformer["max_absolute_probability_difference"] == 7.152557373046875e-7
+    assert receipt["gmm"]["reference_reproduces_saved_traces"] is True
+    for name, count in (("calibration", 13), ("audit", 28)):
+        stream = receipt["gmm"]["streams"][name]
+        assert stream["window_count"] == 252
+        assert stream["alert_mismatch_count"] == 0
+        assert stream["reference_alert_count"] == count
+        assert stream["candidate_alert_count"] == count
+    execution = receipt["comparison_execution"]
+    assert execution["transformer_evaluated_for_every_validation_row"] is True
+    assert execution["candidate"] == {
+        "completed_requests": 32695,
+        "failed_requests": 0,
+        "successful_transformer_scores": 32695,
+        "transformer_forward_attempts": 32695,
+    }
+
+
 def test_transformer_retry_receipt_binds_result_and_invocation_scoped_audit():
     assert sha256(TRANSFORMER_RETRY_EXECUTION.read_bytes()).hexdigest() == (
         TRANSFORMER_RETRY_EXECUTION_SHA256

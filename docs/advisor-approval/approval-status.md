@@ -41,17 +41,29 @@ comparison. The [first attempt](../../reports/inference-compatibility-v1.json)
 stopped during candidate environment preflight, before model or validation
 reads. A fresh-process check identified PyTorch thread-initialization ordering;
 the contract records one explicit corrective execution with a separate receipt,
-unchanged numerical rules, and no automatic retry. No compatibility scores exist
-yet. Manifest, operational, and secondary-analysis definitions remain
-outstanding. The contract remains
-`prospective_incomplete`; no new research predictions or hypothesis results
-are reported. The [implementation outline](../research-evidence-outline.md#remaining-executable-work)
+unchanged numerical rules, and no automatic retry. That
+[comparison](../../reports/inference-compatibility-v1-preflight-correction.json)
+completed with status `not_equivalent`: one transformer decision differed among
+32,695 validation records. Length-only, Logistic-L1, cascade decisions, inclusive
+band membership, and all calibration/audit GMM alerts matched. The candidate
+runtime does not satisfy the frozen zero-mismatch requirement and is not
+accepted. No threshold or original result changed; no further execution is
+authorized by this correction. Manifest, operational, and secondary-analysis
+definitions remain outstanding. The contract remains `prospective_incomplete`;
+this development comparison supplies no group-test, external, HTTP, or new
+hypothesis result. The [implementation outline](../research-evidence-outline.md#remaining-executable-work)
 records the next steps without changing the frozen development results.
 
 The preflight-stop receipt has SHA-256
 `6f27b23a88e40455a186ce21cddebec0f9ab827919c663b345a6a14ca14bb670`.
 Its `input_sha256` values are declared expected bindings; the stop preceded
 verification or decoding of those model and validation inputs.
+
+The completed comparison receipt has SHA-256
+`66272dceee640f6b1a7f42f90a5776db4f30673df09660003a4b4250cd286eb5`.
+It ran from clean commit `e7483f05ef245da4eeed713342bb41f8b4a4ab13` after
+CI run `35424248455` passed. Both scoring processes exited successfully; the
+parent returned code 2 because exact compatibility was not established.
 
 | Field | Value |
 |---|---|

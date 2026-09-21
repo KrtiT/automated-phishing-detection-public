@@ -19,12 +19,13 @@ from dataclasses import dataclass
 from hashlib import sha256
 from pathlib import Path, PurePosixPath
 
-_CONTRACT_PATH = "data/execution-binding-contract-v1.json"
+_CONTRACT_PATH = "data/execution-binding-contract-v2.json"
 _PACKAGE_ROOT = "src/automated_phishing_detection"
 _PUBLIC_PATHS = frozenset(
     {
         "data/evaluation-contract-v1.json",
         "data/evaluation-manifest-contract-v1.json",
+        "data/execution-binding-contract-v1.json",
         "data/http-replay-contract-v1.json",
         "data/operational-workloads-v1.json",
         "data/rq1-baseline-contract-v2.json",
@@ -32,6 +33,8 @@ _PUBLIC_PATHS = frozenset(
         "data/rq1-transformer-cascade-contract-v1.json",
         "data/rq1-transformer-cascade-contract-v2.json",
         "data/rq2-gmm-development-contract-v1.json",
+        "data/secondary-analysis-contract-v1.json",
+        "data/shift-execution-contract-v1.json",
         "data/singleton-inference-amendment-v1.json",
         "data/sources.json",
         "docs/advisor-approval/2026-08-16-realignment-matrix.md",
@@ -288,8 +291,8 @@ def _contract(content: bytes) -> dict:
         type(value) is not dict
         or set(value) != required
         or type(value["schema_version"]) is not int
-        or value["schema_version"] != 1
-        or value["contract_id"] != "execution-binding-v1"
+        or value["schema_version"] != 2
+        or value["contract_id"] != "execution-binding-v2"
         or value["status"] != "specified_synthetic_preflight"
         or value["protected_evaluation_ready"] is not False
     ):

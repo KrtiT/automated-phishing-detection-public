@@ -7,6 +7,13 @@ authority for run status; contracts and the matrix retain their freeze-time
 status. The [remaining evaluation work](docs/research-evidence-outline.md#remaining-executable-work)
 distinguishes implemented utilities from scientific analyses not yet run.
 
+Current code includes the selective HTTP service, serialized live GMM routing,
+internal saved-evidence production, normalized external preparation, and
+secondary score metrics. Tests use invented fixtures, including real loopback
+HTTP requests. The authenticated source-to-results command and remaining
+development-only secondary procedures are still being integrated before the
+complete pre-access freeze. No group-test or external result is claimed.
+
 ## Source and Baseline Record
 
 This branch contains the active research implementation governed by protocol
@@ -218,8 +225,9 @@ The cascade's validation recall was identical to `Logistic-L1`. Its logical
 routing mask selected escalation for 3 of 32,695 rows. Calibration computed
 transformer scores for every validation row. This development
 result does not decide H1 and does not establish measured HTTP savings; paired
-domain-clustered internal and external evaluation and a service that physically
-skips transformer work remain outstanding. H1 and H3 remain undecided. H2 is
+domain-clustered internal and external evaluation and measured HTTP savings
+remain outstanding. The service now physically skips unselected transformer
+forwards in synthetic tests. H1 and H3 remain undecided. H2 is
 not supported because the frozen GMM monitor failed its mandatory false-alert
 gate.
 

@@ -13,9 +13,56 @@ import pytest
 
 from automated_phishing_detection import execution_preflight as preflight
 
-CONTRACT_PATH = "data/execution-binding-contract-v1.json"
+CONTRACT_PATH = "data/execution-binding-contract-v2.json"
 PACKAGE = "src/automated_phishing_detection"
 TEMPLATE = Path(__file__).resolve().parents[1] / CONTRACT_PATH
+HISTORICAL_CONTRACT_PATH = "data/execution-binding-contract-v1.json"
+HISTORICAL_CONTRACT_SHA256 = (
+    "9170e4f4b5530784d98b1bbbbf63404ffaa0203bee83827293a3970e9e2d4572"
+)
+NEW_PUBLIC_PATHS = {
+    "data/shift-execution-contract-v1.json",
+    "data/secondary-analysis-contract-v1.json",
+}
+
+
+def test_historical_v1_contract_bytes_are_preserved():
+    historical = TEMPLATE.parents[1] / HISTORICAL_CONTRACT_PATH
+    assert sha256(historical.read_bytes()).hexdigest() == HISTORICAL_CONTRACT_SHA256
+
+
+def test_binding_uses_only_the_fixed_v2_contract_path():
+    assert preflight._CONTRACT_PATH == "data/execution-binding-contract-v2.json"
+
+
+def test_new_code_rejects_historical_v1_contract_schema():
+    historical = TEMPLATE.parents[1] / HISTORICAL_CONTRACT_PATH
+    with pytest.raises(preflight.ExecutionPreflightError, match="contract schema"):
+        preflight._contract(historical.read_bytes())
+
+
+def test_v2_profile_preserves_historical_runtime_and_all_public_pins():
+    assert TEMPLATE.is_file(), "the prospective v2 profile must exist"
+    historical = json.loads(
+        (TEMPLATE.parents[1] / HISTORICAL_CONTRACT_PATH).read_bytes()
+    )
+    current = json.loads(TEMPLATE.read_bytes())
+    assert current["schema_version"] == 2
+    assert current["contract_id"] == "execution-binding-v2"
+    assert current["protected_evaluation_ready"] is False
+    assert current["runtime"] == historical["runtime"]
+    previous_pins = historical["public_file_sha256"]
+    current_pins = current["public_file_sha256"]
+    assert len(previous_pins) == 23
+    assert current_pins == {
+        **previous_pins,
+        HISTORICAL_CONTRACT_PATH: HISTORICAL_CONTRACT_SHA256,
+        **{
+            name: sha256((TEMPLATE.parents[1] / name).read_bytes()).hexdigest()
+            for name in NEW_PUBLIC_PATHS
+        },
+    }
+    assert preflight._contract(TEMPLATE.read_bytes()) == current
 
 
 def canonical(value):
@@ -189,6 +236,23 @@ def test_wrong_contract_hash_is_rejected_before_runtime_probe(repository, monkey
         bind(repository, expected_contract_sha256="0" * 64)
 
 
+def test_historical_expected_hash_is_rejected_before_runtime_or_models(
+    repository, monkeypatch
+):
+    monkeypatch.setattr(
+        preflight,
+        "_probe_runtime",
+        lambda: pytest.fail("runtime preceded v2 authentication"),
+    )
+    monkeypatch.setattr(
+        preflight.importlib,
+        "import_module",
+        lambda name: pytest.fail("module import preceded v2 authentication"),
+    )
+    with pytest.raises(preflight.ExecutionPreflightError, match="contract"):
+        bind(repository, expected_contract_sha256=HISTORICAL_CONTRACT_SHA256)
+
+
 @pytest.mark.parametrize("kind", ["untracked", "modified", "staged", "deleted"])
 def test_dirty_checkouts_are_rejected(repository, kind):
     if kind == "untracked":
@@ -319,8 +383,37 @@ def test_committed_public_summary_still_must_match_contract_digest(repository):
         bind(repository)
 
 
+@pytest.mark.parametrize("name", sorted(NEW_PUBLIC_PATHS | {HISTORICAL_CONTRACT_PATH}))
+def test_changed_v2_public_pin_is_rejected_before_runtime_or_models(
+    repository, monkeypatch, name
+):
+    write(repository.root, name, b'{"changed":"public metadata"}')
+    repository.revision = commit(repository.root)
+    monkeypatch.setattr(
+        preflight,
+        "_probe_runtime",
+        lambda: pytest.fail("runtime preceded public pin authentication"),
+    )
+    monkeypatch.setattr(
+        preflight.importlib,
+        "import_module",
+        lambda module: pytest.fail("module import preceded public pin authentication"),
+    )
+    with pytest.raises(preflight.ExecutionPreflightError, match="public.*SHA-256"):
+        bind(repository)
+
+
 @pytest.mark.parametrize(
-    "change", ["ready", "schema", "identity", "duplicate", "nonfinite"]
+    "change",
+    [
+        "ready",
+        "schema",
+        "legacy_schema",
+        "identity",
+        "legacy_identity",
+        "duplicate",
+        "nonfinite",
+    ],
 )
 def test_contract_schema_is_strict(repository, change):
     payload = copy.deepcopy(repository.contract)
@@ -328,8 +421,12 @@ def test_contract_schema_is_strict(repository, change):
         payload["protected_evaluation_ready"] = True
     elif change == "schema":
         payload["schema_version"] = True
+    elif change == "legacy_schema":
+        payload["schema_version"] = 1
     elif change == "identity":
         payload["contract_id"] = "unknown"
+    elif change == "legacy_identity":
+        payload["contract_id"] = "execution-binding-v1"
     raw = canonical(payload)
     if change == "duplicate":
         raw = '{"schema_version":1,' + raw[1:]

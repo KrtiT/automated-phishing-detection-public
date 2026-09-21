@@ -63,7 +63,9 @@ class _Barrier:
 _STOP = object()
 
 
-def _public_response(job: _Scan, scores: RequestScores) -> ScanResponse:
+def _public_response(
+    job: _Scan, scores: RequestScores, *, allow_drift=False
+) -> ScanResponse:
     flags = (
         scores.band_selected,
         scores.drift_override,
@@ -74,14 +76,18 @@ def _public_response(job: _Scan, scores: RequestScores) -> ScanResponse:
         raise ValueError("invalid scorer flags")
     selected = scores.logical_stage2_selected
     if (
-        scores.drift_override
-        or selected != scores.band_selected
+        (scores.drift_override and not allow_drift)
+        or selected != (scores.band_selected or scores.drift_override)
         or selected != scores.transformer_evaluated
         or selected != (scores.transformer_probability is not None)
         or type(scores.decision) is not int
         or scores.decision not in (0, 1)
         or type(scores.fixed_decision) is not int
-        or scores.fixed_decision != scores.decision
+        or scores.fixed_decision not in (0, 1)
+        or (
+            (not scores.drift_override or scores.band_selected)
+            and scores.fixed_decision != scores.decision
+        )
         or scores.stage1_probability is None
     ):
         raise ValueError("inconsistent scorer output")
@@ -275,23 +281,10 @@ class ScoringOwner:
                 return
             try:
                 if isinstance(job, _Barrier):
-                    counts = scorer.counts
-                    result = DrainResponse(
-                        admitted_requests=job.admitted,
-                        completed_requests=self._completed,
-                        failed_requests=self._failed,
-                        transformer_forward_attempts=counts.transformer_forward_attempts,
-                        successful_transformer_scores=counts.successful_transformer_scores,
-                    )
+                    result = self._barrier_response(scorer, job)
                 else:
                     try:
-                        if self._workload == "transformer_only":
-                            result = _public_transformer_response(
-                                job, scorer.scan_transformer(job.request.url)
-                            )
-                        else:
-                            scores = scorer.scan(job.request.url, drift_override=False)
-                            result = _public_response(job, scores)
+                        result = self._score_request(scorer, job)
                     except Exception:
                         with self._condition:
                             if not job.future.done():
@@ -310,6 +303,23 @@ class ScoringOwner:
             except BaseException:
                 self._fatal()
                 raise
+
+    def _score_request(self, scorer, job):
+        if self._workload == "transformer_only":
+            return _public_transformer_response(
+                job, scorer.scan_transformer(job.request.url)
+            )
+        return _public_response(job, scorer.scan(job.request.url, drift_override=False))
+
+    def _barrier_response(self, scorer, job):
+        counts = scorer.counts
+        return DrainResponse(
+            admitted_requests=job.admitted,
+            completed_requests=self._completed,
+            failed_requests=self._failed,
+            transformer_forward_attempts=counts.transformer_forward_attempts,
+            successful_transformer_scores=counts.successful_transformer_scores,
+        )
 
     def _run(self) -> None:
         try:
@@ -336,6 +346,10 @@ def create_app(
     owner = ScoringOwner(
         scorer_factory, queue_capacity=queue_capacity, workload=workload
     )
+    return _base_app(owner, workload)
+
+
+def _base_app(owner, workload):
 
     @asynccontextmanager
     async def lifespan(app):

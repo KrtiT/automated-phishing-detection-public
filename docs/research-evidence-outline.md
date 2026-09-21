@@ -593,6 +593,40 @@ records survive failure; acceptance requires successful producer exit and
 verification of all installed evidence, not merely the presence of a marker.
 The official source-to-results producer is still an integration task.
 
+`evaluation_producer.parse_internal_partition` checks the supplied bytes against
+an expected hash before parsing, then validates canonical rows, source IDs,
+domains, split membership and counts. `produce_internal_evidence` requires a
+fresh owner-thread session before any scoring and makes one in-memory pass for
+all four detectors, portable monitor features and NLLs. It returns paired
+evidence, private payloads, primary evaluation and the three replay manifests,
+or an explicit capacity shortfall. Caller-supplied hashes do not authenticate a
+file by themselves. The official wrapper still needs to reserve an attempt
+before reading, authenticate the source bindings, hash and parse the same
+bytes, enforce process exit and publish verified results.
+
+`phishvn.prepare_external_rows` implements the frozen mapping and preparation
+rules on normalized records. Declared all-split coverage and file positions are
+checked before whole-group quarantine, domain exclusions and stable-ID duplicate
+selection. Retained test records keep source-file order; no duplicate is chosen
+because it has a more favorable confidence tier. Published labels, routing
+roles and Tranco's label-free role remain distinct. These are synthetic tests
+of the normalized interface, not verification of actual PhishVN columns, a
+complete source inventory or the PhiUSIIL overlap set. Those inputs must be
+authenticated in the staged external preparation and producer integration.
+
+`secondary_metrics.py` implements AP, ROC AUC, observed recall at FPR <= 1%,
+confusion metrics, Brier score, ten-bin ECE and prevalence projections. Probability
+scores and binary operating-point decisions remain separate, which matters for
+a cascade with different stage thresholds. Exact two-sided McNemar tests and
+the fixed four-contrast Holm family are secondary, dependence-limited summaries;
+they do not replace the primary domain-clustered intervals. Missing strata stay
+explicit and retain their place in the multiplicity family. The
+[secondary supplement](../data/secondary-analysis-contract-v1.json) also specifies
+MMD, PSI, perturbations and shortcut checks. Their remaining implementation,
+secondary seed/RF fit contracts, calibration and development execution must be
+completed before protected evaluation. The supplement is development-informed,
+not a retroactive claim that these details preceded all development observations.
+
 The metadata-only preflight accepts no model or dataset paths:
 
 ```sh
@@ -605,24 +639,42 @@ Use independently reviewed literal identities, not values discovered and
 accepted automatically at execution time. The command checks readiness of
 public code and runtime only; its output explicitly reports no research
 measurement and no protected-evaluation readiness.
+Current code accepts only `data/execution-binding-contract-v2.json`, SHA-256
+`887f771381927dfe1b9268a45f4e605baf3e9a7caee2b7005cdfe68b1be516e1`.
+Its 26 public pins retain all 23 v1 pins and add the original v1 profile and the
+shift and secondary supplements. Runtime requirements are unchanged. The v1
+command remains reproducible at commit `d119443b928f9c23840ad7fd9ee1f67d882a8108`;
+current code does not fall back to it.
 
 The [workload specification](../data/operational-workloads-v1.json) separates
 three measurements. Fixed cascade retains its original primary H3 rules.
 The implemented transformer-only path runs character encoding and one physical
-forward without structural, logistic or monitor inference. The specified live
-shift workload will include monitor work and preserve full-stream order with
-one unresolved request at a time, including after timeouts. It is not yet
-implemented and is not a concurrency-64 result. The client now records measured
-phase wall time and final drain time separately, allowing closed-loop rates
-without concealing work that completes after client timeout. Caller workload
-labels are not service provenance; the eventual producer must bind both sides.
+forward without structural, logistic or monitor inference. The live shift
+workload is now implemented through `live_monitor`, `shift_service` and
+`shift_replay`, composed with bound loading by `create_bound_shift_app`.
+One unresolved request preserves planned order, including after timeouts.
+Warmup drains before a one-time monitor reset; physical counters are not reset.
+The live monitor uses the original portable feature and float64 window mean,
+256-row windows at stride 64, strict threshold exceedance and future-only
+256-request overrides. A computation failure permanently invalidates that run.
+
+The shift client retains request outcomes if controls fail, checks admission
+order and complete traces, and keeps inline timeout-drain time within measured
+phase wall time. Final drain and trace export are separate. Live traces can be
+checked against offline replay, including NLLs, windows, alerts and decisions.
+A temporary CPU-model TCP test exercises the real monitor, reset and first
+future-only override. These tests are not operational research measurements.
+Shift summaries are separate from primary H3 summaries; caller plan hashes and
+reference parameters still need authentication by the official producer. The
+[shift supplement](../data/shift-execution-contract-v1.json) fixes the executable
+conventions without changing the frozen workload or H3 definition.
 
 | Order | Work product | What completion must demonstrate |
 |---|---|---|
-| 1 | Complete paired evaluator integration | Counts, exact FPR bounds, six paired contrasts and all primary gates are implemented on fixtures. Bind saved predictions to complete prepared streams and authenticated artifacts. The singleton convention is adopted by explicit amendment, not equivalence acceptance. |
-| 2 | Composed H2 policy replay | Full-stream routing followed by outcome-stratum selection is implemented on fixtures. Authenticate the prepared source and saved-score inputs. Preserve the failed development false-alert component; this characterizes RQ2 and cannot rescue H2. |
-| 3 | Selective inference service and real-HTTP harness | Owner queue, phase fencing, bound model composition and transformer-only scoring are tested on fixtures. Implement the specified serialized live-monitor workload and bind both service and client in the official producer before measurements. |
-| 4 | Frozen evaluation and replay-manifest contracts | Sampling, stream integration, runtime identity and all three workload conventions have prospective supplements. Complete source/execution integration and exact secondary procedures before internal or external access; explicitly reconcile additional secondary fitting with the no-fit amendment. |
+| 1 | Complete paired evaluator integration | Internal parsing and single-pass in-memory production are implemented on fixtures. Finish authenticated file/process execution, secondary-output composition and atomic publication. The singleton convention is adopted by explicit amendment, not equivalence acceptance. |
+| 2 | Composed H2 policy replay | Full-stream routing followed by outcome-stratum selection and normalized external preparation are implemented on fixtures. Bind the verified publisher schema, complete source inventory and saved-score inputs. Preserve the failed development false-alert component; this characterizes RQ2 and cannot rescue H2. |
+| 3 | Selective inference service and real-HTTP harness | Fixed cascade, transformer-only and serialized live-monitor modes are tested, including real TCP, phase reset and offline trace agreement. Bind service, client, process lifecycle and saved outputs in the official producer before measurements. |
+| 4 | Frozen evaluation and replay-manifest contracts | Sampling, stream integration, runtime identity and all three workloads have supplements. Secondary score metrics are implemented; remaining development procedures and fit/calibration contracts must precede the complete pre-access freeze. |
 | 5 | Independent execution and one gate table | The single internal raw-partition pass produces paired predictions and replay manifests. Later HTTP runs use only those manifests. External schema verification, preparation, and evaluation follow the separate frozen access sequence. |
 
 The existing offline cascade scorer accepts transformer probabilities for every

@@ -17,8 +17,11 @@ from automated_phishing_detection.execution_preflight import (
     ExecutionBinding,
     recheck_binding,
 )
+from automated_phishing_detection.live_monitor import LiveMonitor
 from automated_phishing_detection.selective_inference import SelectiveCascade
 from automated_phishing_detection.selective_service import create_app
+from automated_phishing_detection.shift_schema import ShiftPlan
+from automated_phishing_detection.shift_service import create_shift_app
 
 
 @dataclass(frozen=True)
@@ -60,3 +63,19 @@ def create_bound_app(
     workload: str = "fixed_cascade",
 ):
     return create_app(make_bound_cascade_factory(binding, paths), workload=workload)
+
+
+def create_bound_shift_app(
+    binding: ExecutionBinding, paths: ArtifactPaths, plan: ShiftPlan
+):
+    @contextmanager
+    def factory():
+        with open_bound_session(binding, paths) as session:
+            yield LiveMonitor(
+                session.scorer,
+                stage1_model=session.models.cascade.stage1_model,
+                gmm=session.models.gmm,
+                boundary=session.models.monitor_boundary,
+            )
+
+    return create_shift_app(factory, plan)

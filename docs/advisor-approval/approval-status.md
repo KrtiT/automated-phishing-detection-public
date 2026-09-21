@@ -48,8 +48,8 @@ completed with status `not_equivalent`: one transformer decision differed among
 band membership, and all calibration/audit GMM alerts matched. The candidate
 runtime does not satisfy the frozen zero-mismatch requirement and is not
 accepted as equivalent. No threshold or original result changed; no further execution is
-authorized by this correction. Manifest, operational, and secondary-analysis
-definitions remain outstanding. The contract remains `prospective_incomplete`;
+authorized by this correction. Later supplements specify manifest, operational,
+and secondary-analysis conventions. The original contract remains `prospective_incomplete`;
 this development comparison supplies no group-test, external, HTTP, or new
 hypothesis result. The [implementation outline](../research-evidence-outline.md#remaining-executable-work)
 records the next steps without changing the frozen development results.
@@ -107,14 +107,40 @@ them. These controls do not themselves constitute a research execution.
 The [workload supplement](../../data/operational-workloads-v1.json) specifies
 the separate transformer-only comparator and serialized live-monitor workload.
 Transformer-only HTTP scoring is implemented and tested without stage-one
-inference. Live shift-period HTTP scoring is specified but not yet implemented.
-Strict serialization preserves the published stream order and ensures that
-an alert changes only future requests; concurrent dispatch order alone cannot
-establish this. Neither workload replaces the fixed-cascade H3 benchmark.
-Remaining pre-access work is the authenticated single-pass source producer,
-live-monitor integration, exact secondary procedures and complete execution
-freeze. Seeds 42-46 and Random Forest remain declared work; the singleton
-amendment does not authorize those additional fits.
+inference. The September 21 live-monitor increment implements the separate
+serialized shift workload, including actual singleton GMM computation, warmup
+state reset, timeout drains, physical counters and private traces. An alert
+ending at position t affects only t+1 through t+256. A real-socket synthetic
+test matches live decisions and windows to offline replay. Neither workload
+replaces the fixed-cascade concurrency-64 H3 benchmark. The
+[shift supplement](../../data/shift-execution-contract-v1.json) records these
+controls and the remaining process-level checks.
+
+The internal producer now validates supplied partition bytes and constructs
+paired scores, monitor features, primary evaluation and all three replay
+manifests in memory. It rejects unopened, closed or wrong-thread scoring
+sessions before inference. The external adapter applies publisher-label,
+duplicate, domain-overlap and quarantine rules to normalized synthetic rows.
+Neither utility authenticates the actual source files or the publisher schema;
+they are components of the pending source-to-results command, not that command.
+
+The [secondary-analysis supplement](../../data/secondary-analysis-contract-v1.json)
+fixes score metrics, calibration bins, low-FPR recall, exact McNemar contrasts
+and the four-comparison Holm family. Those calculations are implemented and
+tested. MMD, PSI, perturbation and shortcut procedures are specified; their
+remaining implementation and development-only fits precede protected scoring.
+Seeds 42-46 and Random Forest remain declared work, with fit/runtime/calibration
+contracts still required. No additional fitting follows from the no-fit
+singleton amendment.
+
+Execution binding now uses the fixed
+[v2 profile](../../data/execution-binding-contract-v2.json), SHA-256
+`887f771381927dfe1b9268a45f4e605baf3e9a7caee2b7005cdfe68b1be516e1`,
+which adds both supplements and the unchanged v1 profile to its public pins.
+The runtime and historical pins are unchanged. The authenticated single-pass
+runner, remaining secondary development procedures and final pre-access review
+remain outstanding. This increment accessed no protected records, loaded no
+research models and produced no research measurements.
 
 The preflight-stop receipt has SHA-256
 `6f27b23a88e40455a186ce21cddebec0f9ab827919c663b345a6a14ca14bb670`.

@@ -30,7 +30,7 @@ def fixture_composition(runtime, monkeypatch, tmp_path):
         root=tmp_path, revision="a" * 40, contract_sha256="b" * 64
     )
     paths = object()
-    model = object()
+    model = SimpleNamespace(stage1_model=object())
 
     def check(value):
         assert value is binding
@@ -39,7 +39,7 @@ def fixture_composition(runtime, monkeypatch, tmp_path):
     def load(root, supplied_paths):
         assert root == tmp_path and supplied_paths is paths
         events.append(("load", threading.get_ident()))
-        return SimpleNamespace(cascade=model)
+        return SimpleNamespace(cascade=model, gmm={}, monitor_boundary=0.0)
 
     @contextmanager
     def scorer(loaded):
@@ -126,6 +126,39 @@ def test_shift_workload_cannot_be_mislabeled_as_implemented_http(
     with pytest.raises(ValueError, match="workload"):
         runtime.create_bound_app(binding, paths, workload="shift_period")
     assert events == []
+
+
+def test_bound_shift_app_constructs_monitor_inside_bound_owner(
+    runtime, monkeypatch, tmp_path
+):
+    from test_shift_service import SyntheticMonitor, make_plan
+
+    from automated_phishing_detection import shift_schema
+
+    binding, paths, events = fixture_composition(runtime, monkeypatch, tmp_path)
+    assert hasattr(runtime, "create_bound_shift_app"), "missing bound shift composition"
+
+    def monitor(scorer, **kwargs):
+        assert isinstance(scorer, SyntheticScorer)
+        assert kwargs["gmm"] == {} and kwargs["boundary"] == 0.0
+        events.append(("monitor", threading.get_ident()))
+        return SyntheticMonitor()
+
+    monkeypatch.setattr(runtime, "LiveMonitor", monitor)
+    app = runtime.create_bound_shift_app(binding, paths, make_plan(shift_schema))
+    assert events == []
+    with loopback_server(app):
+        assert app.state.owner.healthy
+    assert [name for name, _ in events] == [
+        "check",
+        "load",
+        "check",
+        "enter",
+        "monitor",
+        "exit",
+        "check",
+    ]
+    assert len({thread for _, thread in events}) == 1
 
 
 @pytest.fixture

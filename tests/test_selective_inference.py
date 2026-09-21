@@ -218,16 +218,23 @@ def test_fresh_owner_initializes_threads_before_limiting_and_restores(exit_kind)
         exit_kind = sys.argv[1]
         original_get = torch.get_num_threads
         original_mode = torch.use_deterministic_algorithms
+        original_limits = threadpoolctl.threadpool_limits
         calls = []
+        events = []
         entry_pools = []
         mode_calls = []
 
         def observe_get():
+            events.append("query")
             value = original_get()
             if not calls:
                 entry_pools.extend(pools())
             calls.append(value)
             return value
+
+        def observe_limits(*args, **kwargs):
+            events.append("limit")
+            return original_limits(*args, **kwargs)
 
         def fail_once(*args, **kwargs):
             mode_calls.append(True)
@@ -239,6 +246,7 @@ def test_fresh_owner_initializes_threads_before_limiting_and_restores(exit_kind)
             before_mode = (torch.are_deterministic_algorithms_enabled(),
                            torch.is_deterministic_algorithms_warn_only_enabled())
             torch.get_num_threads = observe_get
+            threadpoolctl.threadpool_limits = observe_limits
             if exit_kind == "enter_failure":
                 torch.use_deterministic_algorithms = fail_once
             try:
@@ -254,16 +262,20 @@ def test_fresh_owner_initializes_threads_before_limiting_and_restores(exit_kind)
                 }.get(exit_kind), str(exc)
             else:
                 assert exit_kind == "normal"
-            assert calls == [4, 1], calls
-            assert original_get() == 4
+            assert len(calls) == 2 and calls[1] == 1, calls
+            assert events == ["query", "limit", "query"], events
+            entry_threads = calls[0]
+            assert original_get() == entry_threads
             assert pools() == entry_pools
             assert before_mode == (torch.are_deterministic_algorithms_enabled(),
                                    torch.is_deterministic_algorithms_warn_only_enabled())
             # A fresh session proves ownership and the process lock were released.
             with SelectiveCascade(loaded, _fixture_cpu=True):
                 assert original_get() == 1
-            assert original_get() == 4
-            return {"calls": calls, "restored_threads": original_get()}
+            assert original_get() == entry_threads
+            assert events == ["query", "limit", "query"] * 2, events
+            return {"calls": calls, "entry_threads": entry_threads,
+                    "restored_threads": original_get()}
 
         with TemporaryDirectory() as directory:
             loaded = _load_fixture(_build_fixture(Path(directory)))
@@ -287,10 +299,11 @@ def test_fresh_owner_initializes_threads_before_limiting_and_restores(exit_kind)
         timeout=60,
     )
     assert child.returncode == 0, child.stderr
-    assert json.loads(child.stdout) == {
-        "calls": [4, 1, 4, 1],
-        "restored_threads": 4,
-    }
+    result = json.loads(child.stdout)
+    entry_threads = result["entry_threads"]
+    assert entry_threads >= 1
+    assert result["calls"] == [entry_threads, 1, entry_threads, 1]
+    assert result["restored_threads"] == entry_threads
 
 
 @pytest.mark.parametrize("reported", ["pool", "torch"])

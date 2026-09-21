@@ -72,8 +72,28 @@ invalid labels and overlapping external outcome strata. Missing or
 non-estimable evidence cannot pass; the original 28/252 audit still establishes
 H2 non-support while its remaining measurements are incomplete. These are
 tested implementation rules, not newly observed hypothesis results. The
-standalone scorer also has a synthetic fresh-owner-thread startup regression;
-the HTTP service and real-socket measurements remain separate work.
+standalone scorer also has a synthetic fresh-owner-thread startup regression.
+
+The September 21 HTTP increment adds the owner-thread FastAPI service and a
+real-TCP replay client. Synthetic tests cover queue capacity, late arrivals,
+timeouts, failed forwards, cleanup and separate warmup/measured counters.
+The client retains failed attempts and pools individual measured latencies;
+small fixture runs cannot produce a primary H3 summary. The
+[HTTP supplement](../../data/http-replay-contract-v1.json) fixes the queue,
+deadline, error, phase-fence and run-order conventions. The first primary
+concurrency-1 run is the designated physical-invocation reference, so a later
+repeat cannot be chosen for a more favorable count.
+
+The [manifest supplement](../../data/evaluation-manifest-contract-v1.json)
+specifies deterministic classwise selection, independent sampling streams,
+fixed replay order and private-payload hashing. The saved-score integration now
+routes every retained external row before selecting gold, certified and
+label-free Tranco outcomes; secondary rows remain in the routing denominator.
+These paths have been tested with synthetic inputs only. Source adapters,
+authenticated execution/artifact/hardware bindings, separate worst-case loads
+and secondary analyses still precede research execution. No protected record
+was opened, no compatibility run was repeated and no operational result is
+claimed. The original hypothesis status is unchanged.
 
 The preflight-stop receipt has SHA-256
 `6f27b23a88e40455a186ce21cddebec0f9ab827919c663b345a6a14ca14bb670`.

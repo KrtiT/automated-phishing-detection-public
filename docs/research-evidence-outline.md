@@ -551,19 +551,49 @@ Its cached-score routing masks are logical selections, not skipped computation.
 A synthetic integration test matches replay decisions to selective execution
 and checks that the first alert cannot change earlier requests.
 
+`evaluation_stream.build_external_evidence` now validates complete aligned
+metadata and saved scores, calls that replay once, then selects the outcome
+strata. Gold and certified populations retain all five detector/policy outputs;
+Tranco retains label-free cascade and transformer controls. Secondary records
+remain in the window and routing population. This establishes the ordering
+boundary in code, not the authenticity or completeness of future source inputs.
+
+`evaluation_manifest.build_manifest` validates prepared candidates and selects
+the three 10,000-row prevalence references without replacement. Purpose-specific
+PCG64 streams separate negative selection, positive selection and final order.
+All repeats use the same order; warmup reuses the first 1,000 rows under separate
+request IDs. Insufficient capacity is explicit, with no fallback sample.
+The [manifest supplement](../data/evaluation-manifest-contract-v1.json) defines
+the exact draw sequence and private-payload hash; no real manifest exists from
+this increment.
+
+`selective_service.create_app` constructs and runs the scorer on one dedicated
+owner thread. A bounded FIFO preserves admission order. Once admitted, a request
+finishes even if the client disconnects. A drain closes the previous phase's
+IDs before queuing a counter snapshot, preventing a late warmup body from
+entering measured work. `http_replay.replay_run` uses real HTTP, bounded
+concurrency, no retries and a total 2,000 ms deadline including response
+validation. It keeps terminal failures, verifies physical counters and excludes
+warmup by phase rather than resetting the model. Its primary summary requires
+five complete matching concurrency-64 runs and pools all 50,000 individual
+latencies. The [HTTP supplement](../data/http-replay-contract-v1.json) fixes
+these choices before measurements. Real-loopback tests use temporary synthetic
+CPU scorers, including forwards that succeed or fail after client timeout;
+they are integration checks, not latency or detection results.
+
 | Order | Work product | What completion must demonstrate |
 |---|---|---|
 | 1 | Complete paired evaluator integration | Counts, exact FPR bounds, six paired contrasts and all primary gates are implemented on fixtures. Bind saved predictions to complete prepared streams and authenticated artifacts. The singleton convention is adopted by explicit amendment, not equivalence acceptance. |
-| 2 | Composed H2 policy replay | Identity-aligned label-blind replay is implemented on fixtures. Integrate retained-stream inputs and apply outcome-stratum filters after routing. Preserve the failed development false-alert component; this characterizes RQ2 and cannot rescue H2. |
-| 3 | Selective inference service and real-HTTP harness | The singleton core skips and counts transformer work on fixtures. Add the owner queue, HTTP service and measurement harness; test concurrency, timeouts, errors, warm-up exclusion, and pooled latency accounting. |
-| 4 | Frozen evaluation and replay-manifest contracts | Bind models, thresholds, evaluator, population/order/denominator rules, manifest selection, environment, and hashes before any internal or external pass. |
+| 2 | Composed H2 policy replay | Full-stream routing followed by outcome-stratum selection is implemented on fixtures. Authenticate the prepared source and saved-score inputs. Preserve the failed development false-alert component; this characterizes RQ2 and cannot rescue H2. |
+| 3 | Selective inference service and real-HTTP harness | Owner queue, service, phase fencing and real-socket accounting are tested on fixtures. Bind the official artifact loader and hardware, then measure. Define separate transformer-only worst-case and shift-period workloads; score_all is not a transformer-only workload. |
+| 4 | Frozen evaluation and replay-manifest contracts | Sampling, stream integration and HTTP conventions have prospective supplements. Complete secondary procedures and authenticated source/model/environment/code bindings before internal or external access. |
 | 5 | Independent execution and one gate table | The single internal raw-partition pass produces paired predictions and replay manifests. Later HTTP runs use only those manifests. External schema verification, preparation, and evaluation follow the separate frozen access sequence. |
 
 The existing offline cascade scorer accepts transformer probabilities for every
 row and computes a logical invocation mask. That mask is useful for paired
 evaluation, but it is not measured transformer work saved or HTTP performance.
-The future service must reconcile those masks with its physical forward counts
-and measure the complete HTTP path independently.
+The service and client now reconcile responses with physical forward counts on
+fixtures; research execution must still measure the complete HTTP path independently.
 
 The GMM's failed 5% audit gate remains a failed mandatory H2 component. Further
 external or routing measurements can explain system behavior; they cannot make

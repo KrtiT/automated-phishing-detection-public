@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "contract_id": "http-replay-v1",
+  "status": "specified_synthetic_integration",
+  "protected_evaluation_ready": false,
+  "scope": "Fixed-cascade loopback HTTP measurement. This supplement specifies implementation choices left open by the evaluation contract; it changes no scientific gate and reports no research performance.",
+  "matrix_sha256": "aad6b7cf8d8416bfb37ec19503dbed031c15767ea96d9b76486ca3f3fedebe1b",
+  "evaluation_contract_sha256": "d55e504c4f2f89dff93de9fbf121460c02e5175fefcf206a3a74d37de4c0ab6f",
+  "singleton_amendment_sha256": "2a2aeb0e97260dec9b38530f8609f088e72ee3102d24c547f75c13b0a0a0002c",
+  "runtime": {
+    "python": "3.10",
+    "versions": {"fastapi": "0.141.1", "uvicorn": "0.53.0", "httpx": "0.28.1", "pydantic": "2.13.5", "numpy": "2.2.6"},
+    "uv_lock_sha256": "6b1ce90ae56dbdb87ff955bc05ca236de65b2dc6373f26c0bd7343de7a404167",
+    "numerical_method": "Unchanged singleton amendment: MPS, OpenBLAS 0.3.29, one numerical thread and one URL per forward. Synthetic CPU fixtures do not establish MPS performance. The HTTP dependencies do not replace historical experiment environments or authorize another compatibility execution."
+  },
+  "service": {
+    "protocol": "HTTP/1.1 over 127.0.0.1 TCP; no TLS or network-gateway claim",
+    "uvicorn": {"workers": 1, "loop": "asyncio", "http": "h11", "ws": "none", "lifespan": "on", "reload": false, "access_log": false, "proxy_headers": false, "timeout_keep_alive_seconds": 5, "backlog": 2048, "timeout_graceful_shutdown_seconds": 60},
+    "owner": "One non-daemon thread constructs, enters, uses and exits one synchronous SelectiveCascade. The event loop never scores or changes process-wide numerical limits. No executor pool or microbatching.",
+    "waiting_queue_capacity": 128,
+    "admission": "After strict request validation, atomically assign a monotonically increasing sequence and enqueue FIFO. Capacity excludes the active job. Reject unready, full, stopping, duplicate or phase-closed IDs with 503; rejection consumes no sequence. No automatic restart or fallback.",
+    "scan": "POST /v1/scan accepts exactly request_id and url. ID is nonempty printable text without whitespace. URL is a nonempty raw string, preserved without normalization or invented length limit. Fixed cascade only; drift_override=false.",
+    "success": "Exactly HTTP 200 with exactly request_id, admission_sequence (integer >=1), action (allow or alert), probability (finite number in [0,1], not bool), and stage2_invoked (boolean). Response echoes the occurrence ID and exposes no features or source labels.",
+    "failure": "Invalid request schema returns 422; ordinary scoring/output-validation failure returns sanitized 500 and does not stop later work. Startup, fatal owner or cleanup failure invalidates the service. Pending futures complete exceptionally; no traceback or URL is returned.",
+    "cancellation": "Once admitted, work continues after client cancellation or disconnect. Physical forward attempts and validated scores remain counted. A client timeout does not prove that GPU work stopped.",
+    "phase_fence": "POST /v1/drain accepts request_ids (unique validated IDs; empty/bodyless allowed). Under the admission lock it closes those IDs to future admission, then queues a FIFO snapshot barrier. This includes prior admitted jobs and rejects warmup bodies arriving late. The barrier reports admission count at enqueue and counters at execution, outside measured latencies.",
+    "shutdown": "Close admission, drain accepted jobs, exit the scorer on its owner and join it. Bound cleanup at 60 seconds; a live owner or cleanup failure is an unsuccessful shutdown, never silently killed or reported as clean."
+  },
+  "client": {
+    "load": "Closed loop with exactly concurrency workers and at most that many requests in flight; no offered-rate claim, retries, redirects, HTTP/2, environment proxies, or unbounded task creation.",
+    "connection_pool": "max_connections=max_keepalive_connections=concurrency; keepalive_expiry=5 seconds; one fresh client per service run",
+    "request_occurrence_id": "{manifest_sha256}.{concurrency}.{run_index}.{phase}.{zero_based_position}; phase is warmup or measured",
+    "total_deadline_ms": 2000,
+    "timing": "perf_counter_ns from after acquiring a worker slot immediately before HTTP submission through full response-body reading and JSON/schema/correlation validation, or terminal failure. Includes pool wait, connect, write, server queue/inference and read; excludes local unsent backlog. Use an outer total deadline plus elapsed-time check after synchronous validation, not only HTTPX per-phase timeouts.",
+    "json": "Reject malformed/undecodable JSON, nonfinite constants, duplicate keys, excessive decoder nesting and any missing/extra/wrong-type response field. Wrong correlation ID is an error. Classification correctness is a separate detection outcome, not an HTTP request error.",
+    "latency_on_error": "Retain observed terminal elapsed milliseconds for every attempt. Do not drop failures or clamp values to 2000 ms; cancellation/validation overhead can exceed the deadline.",
+    "warmup": "Record every warmup outcome, then fence all warmup occurrence IDs and await the drained counters. Continue to measurement after ordinary warmup request failures; do not rerun until success or reset the scorer. Warmup requests and forwards are excluded by phase and counter differences.",
+    "final_drain": "Fence all measured IDs and drain within a separate 60-second control deadline, including work completed after client timeout. Missing/invalid drain, cancellation or accounting inconsistency makes the run incomplete; no partial successful run is returned.",
+    "accounting": "Each attempted request has one ordered outcome. Reconcile unique success admission sequences, response invocation flags and monotonic drained counters. Forwards are physical attempts, not cached routing masks. Unadmitted requests remain in the client denominator, and scorer failures cannot disappear."
+  },
+  "runs": {
+    "prevalence_order_basis_points": [100, 10, 500],
+    "concurrency_order": [1, 8, 16, 32, 64, 128],
+    "run_indices": [1, 2, 3, 4, 5],
+    "execution_order": "Prevalence outermost, then concurrency, then run index, in the listed order. Each run uses a fresh service/scorer and client. The same ordered manifest is replayed at every concurrency and repeat. No result-based run selection or replacement.",
+    "warmup_requests_per_run": 1000,
+    "measured_requests_per_run": 10000,
+    "primary_http": {"prevalence_basis_points": 100, "concurrency": 64, "runs": 5, "measured_denominator": 50000, "p95_limit_ms": 200, "request_error_rate_strict_upper_limit": 0.001},
+    "pooled_p95": "numpy.quantile(float64 individual measured latencies across all five primary runs, 0.95, method='linear'); never mean run quantiles; include failed requests",
+    "reference_invocations": {"prevalence_basis_points": 100, "concurrency": 1, "run_index": 1, "denominator": 10000, "maximum_fraction": 0.3},
+    "reference_failure": "Use only this prospectively designated reference run, not a more favorable repeat. If any measured request was not admitted, retain its client outcome but reject the incomplete physical-reference summary; do not invent a scorer failure or submit inconsistent counts to the evaluator. For a fully admitted and drained reference, recorded scorer/forward failures yield non-estimability under the existing evaluator. Do not substitute the logical selection rate."
+  },
+  "remaining_bindings": [
+    "Reviewed no-fit official artifact loader and execution runner, complete final code/artifact/contract hashes, hardware/OS/device and process-isolation record, realized private manifest hashes, and no-overwrite evidence publication",
+    "Separate transformer-only worst-case and shift-period workload definitions; score_all also executes stage one and is not a transformer-only service",
+    "Remaining secondary-analysis definitions and the complete internal/external staged pre-access freeze"
+  ],
+  "references": [
+    "https://fastapi.tiangolo.com/advanced/events/",
+    "https://www.python-httpx.org/advanced/timeouts/",
+    "https://docs.python.org/3.10/library/asyncio-task.html"
+  ]
+}

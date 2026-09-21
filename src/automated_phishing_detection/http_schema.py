@@ -12,6 +12,8 @@ from pydantic import (
     field_validator,
 )
 
+HTTP_WORKLOADS = ("fixed_cascade", "transformer_only")
+
 
 def _request_id(value: str) -> str:
     if not value or not value.isprintable() or any(char.isspace() for char in value):

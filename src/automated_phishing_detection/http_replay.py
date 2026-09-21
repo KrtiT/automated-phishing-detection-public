@@ -20,7 +20,7 @@ import httpx
 import numpy as np
 from pydantic import ValidationError
 
-from .http_schema import DrainResponse, ScanRequest, ScanResponse
+from .http_schema import HTTP_WORKLOADS, DrainResponse, ScanRequest, ScanResponse
 from .hypothesis_evaluation import PrimaryHttpSummary, ReferenceInvocations
 
 DEADLINE_SECONDS = 2.0
@@ -69,6 +69,9 @@ class HttpRun:
     initial: DrainResponse
     after_warmup: DrainResponse
     after_measured: DrainResponse
+    workload: str = "fixed_cascade"
+    measured_elapsed_ms: float | None = None
+    measured_drain_ms: float | None = None
 
 
 def _metadata(sha, prevalence, concurrency, run_index):
@@ -224,6 +227,7 @@ async def replay_run(
     concurrency: int,
     run_index: int,
     warmup_count: int = 1000,
+    workload: str = "fixed_cascade",
 ) -> HttpRun:
     """Measure one fresh service session. Cancelled/incomplete runs raise.
 
@@ -232,6 +236,8 @@ async def replay_run(
     by this label-free client. Fixture-sized inputs cannot form primary evidence.
     """
     _metadata(manifest_sha256, prevalence_basis_points, concurrency, run_index)
+    if type(workload) is not str or workload not in HTTP_WORKLOADS:
+        raise ReplayError("unsupported HTTP workload")
     base_url = _loopback_url(base_url)
     if type(requests) not in (tuple, list) or not requests:
         raise ReplayError("use a nonempty materialized request sequence")
@@ -278,10 +284,14 @@ async def replay_run(
             "warmup",
         )
         after_warmup = await _drain(client, (r.request_id for r in warmup))
+        measured_started = time.perf_counter_ns()
         measured = await _phase(
             client, rows, manifest_sha256, concurrency, run_index, "measured"
         )
+        measured_elapsed_ms = (time.perf_counter_ns() - measured_started) / 1_000_000
+        drain_started = time.perf_counter_ns()
         after_measured = await _drain(client, (r.request_id for r in measured))
+        measured_drain_ms = (time.perf_counter_ns() - drain_started) / 1_000_000
     result = HttpRun(
         manifest_sha256,
         prevalence_basis_points,
@@ -292,6 +302,9 @@ async def replay_run(
         initial,
         after_warmup,
         after_measured,
+        workload,
+        measured_elapsed_ms,
+        measured_drain_ms,
     )
     _validate_run(result)
     return result
@@ -377,12 +390,48 @@ def _check_phase(run, phase, before, after):
         raise ReplayError(
             "client responses disagree with the drained physical counters"
         )
+    if run.workload == "transformer_only" and (
+        invoked != successful
+        or delta["completed_requests"] > delta["successful_transformer_scores"]
+    ):
+        raise ReplayError(
+            "transformer-only completions require successful physical forwards"
+        )
     return delta
+
+
+def _validate_timings(run):
+    timings = (run.measured_elapsed_ms, run.measured_drain_ms)
+    if all(value is None for value in timings):
+        return
+    try:
+        if any(
+            isinstance(value, bool)
+            or not isinstance(value, (float, int))
+            or not math.isfinite(value)
+            or value <= 0
+            for value in timings
+        ):
+            raise ReplayError("invalid measured phase/drain interval")
+        slots = min(run.concurrency, len(run.measured))
+        minimum = max(
+            max(row.elapsed_ms for row in run.measured),
+            math.fsum(row.elapsed_ms for row in run.measured) / slots,
+        )
+    except OverflowError as exc:
+        raise ReplayError("invalid measured phase/drain interval") from exc
+    # Closed-loop slots bound total request occupancy; allow only rounding noise.
+    if run.measured_elapsed_ms < minimum and not math.isclose(
+        run.measured_elapsed_ms, minimum, rel_tol=1e-12, abs_tol=1e-6
+    ):
+        raise ReplayError("measured phase interval is shorter than closed-loop work")
 
 
 def _validate_run(run):
     if type(run) is not HttpRun:
         raise ReplayError("use typed HTTP runs")
+    if type(run.workload) is not str or run.workload not in HTTP_WORKLOADS:
+        raise ReplayError("unsupported HTTP workload")
     _metadata(
         run.manifest_sha256, run.prevalence_basis_points, run.concurrency, run.run_index
     )
@@ -398,11 +447,49 @@ def _validate_run(run):
         r.record_id for r in run.measured[: len(run.warmup)]
     ):
         raise ReplayError("warmup must reuse the manifest prefix in the same order")
+    _validate_timings(run)
+
+
+def summarize_run(run: HttpRun) -> dict:
+    """Descriptive client rates and physical counts, never a primary gate decision."""
+    _validate_run(run)
+    if run.measured_elapsed_ms is None:
+        raise ReplayError("throughput requires measured wall-clock intervals")
+    counts = _check_phase(run, "measured", run.after_warmup, run.after_measured)
+    total = len(run.measured)
+    errors = sum(row.error is not None for row in run.measured)
+    quantiles = np.quantile(
+        np.asarray([row.elapsed_ms for row in run.measured], dtype=np.float64),
+        [0.5, 0.95, 0.99],
+        method="linear",
+    )
+    return {
+        "workload": run.workload,
+        "manifest_sha256": run.manifest_sha256,
+        "prevalence_basis_points": run.prevalence_basis_points,
+        "concurrency": run.concurrency,
+        "run_index": run.run_index,
+        "request_count": total,
+        "request_errors": errors,
+        "request_error_rate": errors / total,
+        "p50_ms": float(quantiles[0]),
+        "p95_ms": float(quantiles[1]),
+        "p99_ms": float(quantiles[2]),
+        "measured_elapsed_ms": run.measured_elapsed_ms,
+        "measured_drain_ms": run.measured_drain_ms,
+        "client_attempts_per_second": total * 1000 / run.measured_elapsed_ms,
+        "successful_responses_per_second": (total - errors)
+        * 1000
+        / run.measured_elapsed_ms,
+        **counts,
+    }
 
 
 def reference_invocations(run: HttpRun) -> ReferenceInvocations:
     """Read actual measured counters, including forwards after client timeouts."""
     _validate_run(run)
+    if run.workload != "fixed_cascade":
+        raise ReplayError("primary reference requires fixed_cascade workload")
     if (
         run.prevalence_basis_points != 100
         or run.concurrency != 1
@@ -435,6 +522,8 @@ def primary_http_summary(
         raise ReplayError("primary summary requires five complete runs")
     for run in runs:
         _validate_run(run)
+        if run.workload != "fixed_cascade":
+            raise ReplayError("primary summary requires fixed_cascade workload")
         if (
             run.concurrency != 64
             or run.prevalence_basis_points != 100

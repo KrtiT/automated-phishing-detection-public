@@ -41,6 +41,12 @@ class RequestScores:
     stage1_scoring_audit: dict[str, object]
 
 
+@dataclass(frozen=True)
+class TransformerOnlyScores:
+    probability: float
+    decision: int
+
+
 class SelectiveCascade:
     """One owner thread and one process-wide numerical context per session.
 
@@ -217,3 +223,18 @@ class SelectiveCascade:
     def score_all(self, raw_url: str) -> RequestScores:
         """Obtain both model scores through the same singleton inference path."""
         return self._score(raw_url, drift_override=False, force_transformer=True)
+
+    def scan_transformer(self, raw_url: str) -> TransformerOnlyScores:
+        """Measure transformer-only work without structural scoring or monitoring."""
+        self._require_owner()
+        try:
+            transformer_scoring._validate_model(self._loaded)
+            probability = self._score_transformer(raw_url)
+            result = TransformerOnlyScores(
+                probability, int(probability >= self._loaded.transformer_threshold)
+            )
+        except BaseException:
+            self._failed += 1
+            raise
+        self._completed += 1
+        return result

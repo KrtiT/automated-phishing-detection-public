@@ -1,4 +1,4 @@
-"""Single-owner loopback HTTP scaffold, without an official artifact loader."""
+"""Single-owner loopback service; bound_runtime supplies authenticated loading."""
 
 from __future__ import annotations
 
@@ -14,10 +14,20 @@ from typing import TYPE_CHECKING, Protocol
 
 from fastapi import FastAPI, HTTPException
 
-from .http_schema import DrainRequest, DrainResponse, ScanRequest, ScanResponse
+from .http_schema import (
+    HTTP_WORKLOADS,
+    DrainRequest,
+    DrainResponse,
+    ScanRequest,
+    ScanResponse,
+)
 
 if TYPE_CHECKING:
-    from .selective_inference import InferenceCounts, RequestScores
+    from .selective_inference import (
+        InferenceCounts,
+        RequestScores,
+        TransformerOnlyScores,
+    )
 
 
 class Scorer(Protocol):
@@ -25,6 +35,8 @@ class Scorer(Protocol):
     def counts(self) -> InferenceCounts: ...
 
     def scan(self, raw_url: str, *, drift_override: bool = False) -> RequestScores: ...
+
+    def scan_transformer(self, raw_url: str) -> TransformerOnlyScores: ...
 
 
 class OwnerUnavailable(RuntimeError):
@@ -101,6 +113,18 @@ async def _shielded(future: Future):
     return await asyncio.shield(wrapped)
 
 
+def _public_transformer_response(job, scores):
+    if type(scores.decision) is not int or scores.decision not in (0, 1):
+        raise ValueError("invalid transformer-only decision")
+    return ScanResponse(
+        request_id=job.request.request_id,
+        admission_sequence=job.sequence,
+        action="alert" if scores.decision else "allow",
+        probability=scores.probability,
+        stage2_invoked=True,
+    )
+
+
 class ScoringOwner:
     """Own one synchronous scorer and serialize admissions, barriers, and shutdown."""
 
@@ -109,10 +133,14 @@ class ScoringOwner:
         scorer_factory: Callable[[], AbstractContextManager[Scorer]],
         *,
         queue_capacity: int,
+        workload: str = "fixed_cascade",
     ) -> None:
+        if type(workload) is not str or workload not in HTTP_WORKLOADS:
+            raise ValueError("unsupported HTTP workload")
         if type(queue_capacity) is not int or queue_capacity < 1:
             raise ValueError("queue_capacity must be a positive integer")
         self._factory = scorer_factory
+        self._workload = workload
         self._capacity = queue_capacity
         self._condition = threading.Condition()
         self._queue: deque = deque()
@@ -257,8 +285,13 @@ class ScoringOwner:
                     )
                 else:
                     try:
-                        scores = scorer.scan(job.request.url, drift_override=False)
-                        result = _public_response(job, scores)
+                        if self._workload == "transformer_only":
+                            result = _public_transformer_response(
+                                job, scorer.scan_transformer(job.request.url)
+                            )
+                        else:
+                            scores = scorer.scan(job.request.url, drift_override=False)
+                            result = _public_response(job, scores)
                     except Exception:
                         with self._condition:
                             if not job.future.done():
@@ -297,9 +330,12 @@ def create_app(
     scorer_factory: Callable[[], AbstractContextManager[Scorer]],
     *,
     queue_capacity: int = 128,
+    workload: str = "fixed_cascade",
 ) -> FastAPI:
     """Build one single-use app; the supplied context is created only on its owner."""
-    owner = ScoringOwner(scorer_factory, queue_capacity=queue_capacity)
+    owner = ScoringOwner(
+        scorer_factory, queue_capacity=queue_capacity, workload=workload
+    )
 
     @asynccontextmanager
     async def lifespan(app):
@@ -311,6 +347,7 @@ def create_app(
 
     app = FastAPI(lifespan=lifespan, docs_url=None, redoc_url=None, openapi_url=None)
     app.state.owner = owner
+    app.state.workload = workload
 
     @app.post("/v1/scan", response_model=ScanResponse)
     async def scan(request: ScanRequest) -> ScanResponse:

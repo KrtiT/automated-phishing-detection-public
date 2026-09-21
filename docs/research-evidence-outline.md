@@ -581,12 +581,48 @@ these choices before measurements. Real-loopback tests use temporary synthetic
 CPU scorers, including forwards that succeed or fail after client timeout;
 they are integration checks, not latency or detection results.
 
+`execution_preflight.bind_execution` checks an externally supplied reviewed
+commit and binding-contract hash against the clean nested checkout, committed
+and working source bytes, loaded package origins, public evidence pins and
+declared hardware/runtime. `bound_models.load_bound_models` accepts only the
+previously recorded artifact identities. `bound_runtime` composes these checks
+with the service owner lifecycle, including a post-restoration identity check.
+`execution_receipt` reserves an attempt and publishes private evidence before
+the public completion marker without replacing existing records. Installed
+records survive failure; acceptance requires successful producer exit and
+verification of all installed evidence, not merely the presence of a marker.
+The official source-to-results producer is still an integration task.
+
+The metadata-only preflight accepts no model or dataset paths:
+
+```sh
+python scripts/verify_execution_binding.py --repo-root . \
+  --expected-revision REVIEWED_COMMIT \
+  --expected-contract-sha256 REVIEWED_BINDING_CONTRACT_SHA256
+```
+
+Use independently reviewed literal identities, not values discovered and
+accepted automatically at execution time. The command checks readiness of
+public code and runtime only; its output explicitly reports no research
+measurement and no protected-evaluation readiness.
+
+The [workload specification](../data/operational-workloads-v1.json) separates
+three measurements. Fixed cascade retains its original primary H3 rules.
+The implemented transformer-only path runs character encoding and one physical
+forward without structural, logistic or monitor inference. The specified live
+shift workload will include monitor work and preserve full-stream order with
+one unresolved request at a time, including after timeouts. It is not yet
+implemented and is not a concurrency-64 result. The client now records measured
+phase wall time and final drain time separately, allowing closed-loop rates
+without concealing work that completes after client timeout. Caller workload
+labels are not service provenance; the eventual producer must bind both sides.
+
 | Order | Work product | What completion must demonstrate |
 |---|---|---|
 | 1 | Complete paired evaluator integration | Counts, exact FPR bounds, six paired contrasts and all primary gates are implemented on fixtures. Bind saved predictions to complete prepared streams and authenticated artifacts. The singleton convention is adopted by explicit amendment, not equivalence acceptance. |
 | 2 | Composed H2 policy replay | Full-stream routing followed by outcome-stratum selection is implemented on fixtures. Authenticate the prepared source and saved-score inputs. Preserve the failed development false-alert component; this characterizes RQ2 and cannot rescue H2. |
-| 3 | Selective inference service and real-HTTP harness | Owner queue, service, phase fencing and real-socket accounting are tested on fixtures. Bind the official artifact loader and hardware, then measure. Define separate transformer-only worst-case and shift-period workloads; score_all is not a transformer-only workload. |
-| 4 | Frozen evaluation and replay-manifest contracts | Sampling, stream integration and HTTP conventions have prospective supplements. Complete secondary procedures and authenticated source/model/environment/code bindings before internal or external access. |
+| 3 | Selective inference service and real-HTTP harness | Owner queue, phase fencing, bound model composition and transformer-only scoring are tested on fixtures. Implement the specified serialized live-monitor workload and bind both service and client in the official producer before measurements. |
+| 4 | Frozen evaluation and replay-manifest contracts | Sampling, stream integration, runtime identity and all three workload conventions have prospective supplements. Complete source/execution integration and exact secondary procedures before internal or external access; explicitly reconcile additional secondary fitting with the no-fit amendment. |
 | 5 | Independent execution and one gate table | The single internal raw-partition pass produces paired predictions and replay manifests. Later HTTP runs use only those manifests. External schema verification, preparation, and evaluation follow the separate frozen access sequence. |
 
 The existing offline cascade scorer accepts transformer probabilities for every

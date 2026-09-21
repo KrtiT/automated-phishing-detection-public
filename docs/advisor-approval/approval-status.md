@@ -89,11 +89,32 @@ specifies deterministic classwise selection, independent sampling streams,
 fixed replay order and private-payload hashing. The saved-score integration now
 routes every retained external row before selecting gold, certified and
 label-free Tranco outcomes; secondary rows remain in the routing denominator.
-These paths have been tested with synthetic inputs only. Source adapters,
-authenticated execution/artifact/hardware bindings, separate worst-case loads
-and secondary analyses still precede research execution. No protected record
+These paths have been tested with synthetic inputs only. No protected record
 was opened, no compatibility run was repeated and no operational result is
 claimed. The original hypothesis status is unchanged.
+
+The execution-binding increment authenticates the reviewed clean commit,
+working-tree source bytes, imported package paths, accepted public summaries,
+dependency versions and declared Mac/MPS hardware before loading artifacts.
+The fixed artifact loader checks the accepted length-only, Logistic-L1,
+transformer/cascade and GMM identities; it exposes no refit or alternate-device
+option. The HTTP composition loads and checks them on its single owner thread,
+then checks the binding again after numerical settings are restored. A separate
+metadata-only command performs no model or data read. Durable attempt records
+reserve identities before execution and preserve failures instead of overwriting
+them. These controls do not themselves constitute a research execution.
+
+The [workload supplement](../../data/operational-workloads-v1.json) specifies
+the separate transformer-only comparator and serialized live-monitor workload.
+Transformer-only HTTP scoring is implemented and tested without stage-one
+inference. Live shift-period HTTP scoring is specified but not yet implemented.
+Strict serialization preserves the published stream order and ensures that
+an alert changes only future requests; concurrent dispatch order alone cannot
+establish this. Neither workload replaces the fixed-cascade H3 benchmark.
+Remaining pre-access work is the authenticated single-pass source producer,
+live-monitor integration, exact secondary procedures and complete execution
+freeze. Seeds 42-46 and Random Forest remain declared work; the singleton
+amendment does not authorize those additional fits.
 
 The preflight-stop receipt has SHA-256
 `6f27b23a88e40455a186ce21cddebec0f9ab827919c663b345a6a14ca14bb670`.

@@ -47,12 +47,33 @@ completed with status `not_equivalent`: one transformer decision differed among
 32,695 validation records. Length-only, Logistic-L1, cascade decisions, inclusive
 band membership, and all calibration/audit GMM alerts matched. The candidate
 runtime does not satisfy the frozen zero-mismatch requirement and is not
-accepted. No threshold or original result changed; no further execution is
+accepted as equivalent. No threshold or original result changed; no further execution is
 authorized by this correction. Manifest, operational, and secondary-analysis
 definitions remain outstanding. The contract remains `prospective_incomplete`;
 this development comparison supplies no group-test, external, HTTP, or new
 hypothesis result. The [implementation outline](../research-evidence-outline.md#remaining-executable-work)
 records the next steps without changing the frozen development results.
+
+The September 21 [inference-method amendment](../../data/singleton-inference-amendment-v1.json)
+adopts that same singleton convention for future evaluation and serving, rather
+than seeking a different runtime that passes the comparison. This is a
+development-informed method change, not a passed bridge. Historically selected
+weights, thresholds and band are carried forward without recalibration; their
+optimality under singleton scoring is not claimed. The executed contract,
+both comparison receipts and original development summaries remain unchanged.
+The full pre-access freeze remains incomplete, and no new scoring run follows
+from this amendment.
+
+Saved-evidence evaluation now computes the six primary paired contrasts and
+all 22 H1/H2/H3 component gates. It reports class-specific counts, exact FPR
+upper bounds and separate label-free Tranco control-alert rates. Final rate
+gates use observed rates, not the upper bounds. It rejects misaligned records,
+invalid labels and overlapping external outcome strata. Missing or
+non-estimable evidence cannot pass; the original 28/252 audit still establishes
+H2 non-support while its remaining measurements are incomplete. These are
+tested implementation rules, not newly observed hypothesis results. The
+standalone scorer also has a synthetic fresh-owner-thread startup regression;
+the HTTP service and real-socket measurements remain separate work.
 
 The preflight-stop receipt has SHA-256
 `6f27b23a88e40455a186ce21cddebec0f9ab827919c663b345a6a14ca14bb670`.

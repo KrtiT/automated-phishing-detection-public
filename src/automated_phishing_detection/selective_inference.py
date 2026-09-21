@@ -1,6 +1,7 @@
 """Singleton scoring shared by paired evaluation and future selective serving.
 
-The prospective runtime still requires its development compatibility check.
+The singleton convention is adopted by singleton-inference-amendment-v1;
+the original compatibility comparison remains not_equivalent.
 This module neither reads research inputs nor supplies an HTTP measurement.
 """
 
@@ -92,6 +93,8 @@ class SelectiveCascade:
                 gmm_monitor._require_runtime()
             except gmm_monitor.GMMMonitorError as exc:
                 raise TransformerInferenceError(str(exc)) from exc
+            # The first query initializes this owner's OpenMP state before limiting.
+            torch.get_num_threads()
             stack.enter_context(threadpoolctl.threadpool_limits(limits=1))
             pools = threadpoolctl.threadpool_info()
             if (

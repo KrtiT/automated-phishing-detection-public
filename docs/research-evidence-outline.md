@@ -501,8 +501,48 @@ or a new hypothesis test. Original thresholds, band, GMM boundary, and the
 28/252 failed GMM audit remain unchanged. The comparison evaluated the
 transformer for every validation row and is not a selective-work or HTTP
 measurement. No further run or alternate-runtime search follows automatically.
-Any numerical-method amendment must be explicit before protected evaluation;
-saved-evidence evaluation and HTTP interfaces can continue on synthetic fixtures.
+The September 21 [inference-method amendment](../data/singleton-inference-amendment-v1.json)
+adopts this same singleton convention for future paired evaluation and serving.
+It explicitly replaces the future equivalence prerequisite, not the failed
+historical comparison. The choice is development-informed. Historically
+selected weights, thresholds and band are carried forward without recalibration;
+their optimizer/tie-break optimality under singleton scoring is not claimed.
+No further compatibility execution, alternate-runtime search or protected-data
+access is authorized. The historical contract and receipts remain byte-identical.
+
+`saved_metrics.py` now calculates aligned binary counts and exact one-sided
+95% upper bounds. Tranco controls use a separate label-free alert-rate API.
+`hypothesis_evaluation.evaluate_primary` assembles the six frozen contrasts and
+22 component gates. It rejects overlapping gold/certified/Tranco record IDs,
+uses integer comparisons for observed-rate gates, and keeps missing evidence
+distinct from zero-denominator or insufficient-domain non-estimability. A
+measured failed conjunct yields `not_supported` with `complete=false` when
+other components remain unmeasured. The four H3 confidence bounds are reported,
+not substituted for the observed-rate gates. Overlapping monitor windows do
+not receive binomial intervals.
+
+The evaluator accepts typed physical-reference and HTTP summaries but does not
+establish their provenance or perform a benchmark. Its producer must verify
+the complete manifest, actual forward counters, warm-up exclusion, total
+2,000 ms deadline, response validity and pooling of individual latencies.
+The pure evaluator requires exactly five measured concurrency-64 runs of
+10,000 requests for H3. Summary construction is not measurement evidence.
+
+For example, the existing public audit can be evaluated without opening data
+or loading a model:
+
+```python
+import json
+from pathlib import Path
+from automated_phishing_detection.hypothesis_evaluation import WindowCounts, evaluate_primary
+
+audit = json.loads(Path("reports/rq2-gmm-development-v1-summary.json").read_text())
+result = evaluate_primary(audit_windows=WindowCounts(
+    audit["audit_alert_count"], audit["audit_window_count"]
+))
+assert result.hypotheses["H2"].decision == "not_supported"
+assert result.hypotheses["H2"].complete is False
+```
 
 `policy_replay.py` joins identity-aligned model and monitor scores without labels
 or source filters. Each complete 256-request window is evaluated at stride 64;
@@ -513,7 +553,7 @@ and checks that the first alert cannot change earlier requests.
 
 | Order | Work product | What completion must demonstrate |
 |---|---|---|
-| 1 | Complete paired evaluator | All four no-fit scoring paths and paired clustered recall/FNR differences are implemented on fixtures. Complete counts/FPR/gate reporting and identity binding. Runtime acceptance is unresolved after the recorded one-decision mismatch. |
+| 1 | Complete paired evaluator integration | Counts, exact FPR bounds, six paired contrasts and all primary gates are implemented on fixtures. Bind saved predictions to complete prepared streams and authenticated artifacts. The singleton convention is adopted by explicit amendment, not equivalence acceptance. |
 | 2 | Composed H2 policy replay | Identity-aligned label-blind replay is implemented on fixtures. Integrate retained-stream inputs and apply outcome-stratum filters after routing. Preserve the failed development false-alert component; this characterizes RQ2 and cannot rescue H2. |
 | 3 | Selective inference service and real-HTTP harness | The singleton core skips and counts transformer work on fixtures. Add the owner queue, HTTP service and measurement harness; test concurrency, timeouts, errors, warm-up exclusion, and pooled latency accounting. |
 | 4 | Frozen evaluation and replay-manifest contracts | Bind models, thresholds, evaluator, population/order/denominator rules, manifest selection, environment, and hashes before any internal or external pass. |

@@ -1,4 +1,8 @@
 import json
+import os
+import subprocess
+import sys
+import textwrap
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import replace
 from importlib import import_module
@@ -190,6 +194,103 @@ def test_session_pins_threads_once_and_restores_them(module, loaded):
     with module.SelectiveCascade(loaded, _fixture_cpu=True):
         assert torch.get_num_threads() == 1
     assert torch.get_num_threads() == before
+
+
+@pytest.mark.parametrize("exit_kind", ["normal", "request_failure", "enter_failure"])
+def test_fresh_owner_initializes_threads_before_limiting_and_restores(exit_kind):
+    program = textwrap.dedent(
+        """
+        import json
+        import sys
+        from concurrent.futures import ThreadPoolExecutor
+        from pathlib import Path
+        from tempfile import TemporaryDirectory
+
+        import threadpoolctl
+        import torch
+        from test_transformer_inference import _build_fixture, _load_fixture
+        from automated_phishing_detection.selective_inference import SelectiveCascade
+
+        def pools():
+            return [(pool["filepath"], pool["num_threads"])
+                    for pool in threadpoolctl.threadpool_info()]
+
+        exit_kind = sys.argv[1]
+        original_get = torch.get_num_threads
+        original_mode = torch.use_deterministic_algorithms
+        calls = []
+        entry_pools = []
+        mode_calls = []
+
+        def observe_get():
+            value = original_get()
+            if not calls:
+                entry_pools.extend(pools())
+            calls.append(value)
+            return value
+
+        def fail_once(*args, **kwargs):
+            mode_calls.append(True)
+            original_mode(*args, **kwargs)
+            if len(mode_calls) == 1:
+                raise RuntimeError("synthetic enter failure")
+
+        def owner(loaded):
+            before_mode = (torch.are_deterministic_algorithms_enabled(),
+                           torch.is_deterministic_algorithms_warn_only_enabled())
+            torch.get_num_threads = observe_get
+            if exit_kind == "enter_failure":
+                torch.use_deterministic_algorithms = fail_once
+            try:
+                with SelectiveCascade(loaded, _fixture_cpu=True):
+                    assert original_get() == 1
+                    assert all(count == 1 for _, count in pools())
+                    if exit_kind == "request_failure":
+                        raise RuntimeError("synthetic request failure")
+            except RuntimeError as exc:
+                assert str(exc) == {
+                    "enter_failure": "synthetic enter failure",
+                    "request_failure": "synthetic request failure",
+                }.get(exit_kind), str(exc)
+            else:
+                assert exit_kind == "normal"
+            assert calls == [4, 1], calls
+            assert original_get() == 4
+            assert pools() == entry_pools
+            assert before_mode == (torch.are_deterministic_algorithms_enabled(),
+                                   torch.is_deterministic_algorithms_warn_only_enabled())
+            # A fresh session proves ownership and the process lock were released.
+            with SelectiveCascade(loaded, _fixture_cpu=True):
+                assert original_get() == 1
+            assert original_get() == 4
+            return {"calls": calls, "restored_threads": original_get()}
+
+        with TemporaryDirectory() as directory:
+            loaded = _load_fixture(_build_fixture(Path(directory)))
+            with ThreadPoolExecutor(max_workers=1) as executor:
+                result = executor.submit(owner, loaded).result()
+        print(json.dumps(result))
+        """
+    )
+    root = Path(__file__).resolve().parents[1]
+    child = subprocess.run(
+        [sys.executable, "-s", "-c", program, exit_kind],
+        env=dict(
+            os.environ,
+            OMP_NUM_THREADS="4",
+            OPENBLAS_NUM_THREADS="4",
+            PYTHONPATH=os.pathsep.join((str(root / "src"), str(root / "tests"))),
+        ),
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=60,
+    )
+    assert child.returncode == 0, child.stderr
+    assert json.loads(child.stdout) == {
+        "calls": [4, 1, 4, 1],
+        "restored_threads": 4,
+    }
 
 
 @pytest.mark.parametrize("reported", ["pool", "torch"])

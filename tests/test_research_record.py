@@ -7,6 +7,7 @@ from pathlib import Path
 from automated_phishing_detection import phiusiil
 
 ROOT = Path(__file__).resolve().parents[1]
+INFERENCE_AMENDMENT = ROOT / "data" / "singleton-inference-amendment-v1.json"
 PROTOCOL = ROOT / "docs" / "advisor-approval" / "2026-08-16-realignment-matrix.md"
 STATUS = ROOT / "docs" / "advisor-approval" / "approval-status.md"
 EVIDENCE_OUTLINE = ROOT / "docs" / "research-evidence-outline.md"
@@ -64,6 +65,48 @@ def _section(text: str, heading: str, level: int = 2) -> str:
 
 def _compact(text: str) -> str:
     return " ".join(text.lower().split())
+
+
+def test_singleton_amendment_preserves_failed_bridge_and_historical_calibration():
+    amendment = json.loads(INFERENCE_AMENDMENT.read_text())
+    assert amendment["status"] == "adopted_method_pending_complete_evaluation_freeze"
+    assert amendment["protected_evaluation_ready"] is False
+    assert (
+        amendment["adoption_timing"]
+        == "development_informed_before_protected_evaluation"
+    )
+    assert amendment["compatibility_result"] == "not_equivalent"
+    assert amendment["calibration"]["recalibration"] is False
+    assert amendment["calibration"]["singleton_selection_optimality_claimed"] is False
+    assert amendment["additional_compatibility_executions"] == 0
+    for path, expected in amendment["preserved_sha256"].items():
+        assert sha256((ROOT / path).read_bytes()).hexdigest() == expected
+    original = json.loads((ROOT / "data/evaluation-contract-v1.json").read_text())
+    assert amendment["runtime_source"] == {
+        "path": "data/evaluation-contract-v1.json",
+        "section": "runtime_candidate",
+    }
+    assert original["runtime_candidate"]["inference_batch_size"] == 1
+    assert amendment["fitted_artifacts_changed"] is False
+    assert amendment["hypothesis_gates_changed"] is False
+
+
+def test_primary_evaluator_preserves_actual_gmm_audit_non_support():
+    from automated_phishing_detection.hypothesis_evaluation import (
+        WindowCounts,
+        evaluate_primary,
+    )
+
+    summary = json.loads(GMM_SUMMARY.read_text())
+    result = evaluate_primary(
+        audit_windows=WindowCounts(
+            summary["audit_alert_count"], summary["audit_window_count"]
+        )
+    )
+    assert result.hypotheses["H2"].decision == "not_supported"
+    assert result.hypotheses["H2"].complete is False
+    assert result.hypotheses["H1"].decision == "undecided"
+    assert result.hypotheses["H3"].decision == "undecided"
 
 
 def test_recorded_protocol_hash_matches_current_protocol():

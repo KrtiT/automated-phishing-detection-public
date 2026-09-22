@@ -741,10 +741,37 @@ predictions differ by `5.551115123125783e-17`, and the exact-parity guard stops
 publication. Direct ordered summation of the stored leaves agrees exactly with
 the estimator. This establishes a code/method defect, not the specific cause of
 the research stop. Its receipt contains only the error class, not the failed
-check. Next: freeze the arithmetic correction prospectively, retain failed-fit
-state and safe check identifiers, and independently account for the saved
-evidence before a separate execution. No fit is rerun to reconstruct missing
-evidence.
+check. No fit is rerun to reconstruct missing evidence.
+
+### Prospective RF Correction and Retained Audit
+
+The [correction profile](../data/development-correction-contract-v1.json) fixes
+`secondary-rf-v2` before a separate execution: cast features to float32, compare
+to double-precision thresholds, accumulate each tree's stored leaf probabilities
+in fitted-tree order using float64, and divide once by 100. Do not renormalize
+leaves or relax exact parity. Model parameters, rows and seed 42 stay unchanged.
+Legacy artifacts keep their original scoring rule and are not accepted as v2.
+
+`run_secondary_correction.py --check` is metadata-only. The supervised command
+requires reviewed literal revision/profile pins and a fresh output reservation.
+Its first worker authenticates the old failed receipts and all seven retained
+children. It checks validation IDs/labels against the unchanged source rows,
+rescores all six saved tabular models exactly, recomputes AP/AUC and CP cutoffs,
+and reconstructs each declared PCG64 permutation from ordered training labels.
+Historical consumed-label digests were not retained; reconstruction cannot prove
+what the original fit consumed. The five controls remain jointly reported and
+unresolved. Drift checks cover authenticated membership and saved-score
+arithmetic, not an independent URL-to-drift-score recomputation.
+
+Only an accepted audit permits the one new RF fit. Its ordered input/label
+digests are saved before fitting and fitted state before subsequent checks.
+Diagnostic checkpoints cannot be loaded as accepted models; nonfinite state is
+tagged rather than lost. Actual worker exits, including signal exits, precede
+acceptance checks. Failure records use safe check identifiers, not exception
+text. Both stages' files remain pinned through final verification. No retry,
+resume, control refit or protected input is permitted. This development-informed
+correction is implemented; research execution follows reviewed-code publication
+and exact-commit CI, and has not yet occurred.
 
 The metadata-only preflight accepts no model or dataset paths:
 

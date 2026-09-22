@@ -379,3 +379,313 @@ def test_permutation_result_retains_target_not_met_without_fallback(tabular):
         result.scoring_audit["threshold_role"]
         == "secondary_descriptive_operating_point"
     )
+
+
+def test_rf_v2_matches_sklearn_without_leaf_renormalization(tabular):
+    urls = tuple(
+        "https://invented.example/" + "".join(path)
+        for path in islice(permutations("abcde"), 19)
+    )
+    checkpoints = []
+    result = tabular.fit_random_forest_v2(
+        urls[:17],
+        (0,) * 11 + (1,) * 6,
+        urls[17:],
+        (0, 1),
+        checkpoint=checkpoints.append,
+    )
+    model = tabular.load_secondary_model_bytes(result.artifact_bytes)
+    assert model.score_urls(urls[17:]) == result.validation_scores
+    artifact = json.loads(result.artifact_bytes)
+    assert artifact["contract_id"] == "secondary-development-correction-v1"
+    assert artifact["method_version"] == "secondary-rf-v2"
+    assert result.scoring_audit["portable_exact_parity"] is True
+    assert len(checkpoints) == 1
+    checkpoint = tabular.validate_fit_checkpoint_bytes(
+        checkpoints[0], model_bytes=result.artifact_bytes
+    )
+    assert checkpoint["artifact_type"] == "secondary-fit-checkpoint"
+    assert checkpoint["classes"] == [0, 1]
+    assert checkpoint["state"] == artifact["state"]
+    with pytest.raises(tabular.SecondaryTabularError):
+        tabular.load_secondary_model_bytes(checkpoints[0])
+    legacy = dict(artifact)
+    legacy.update(
+        contract_id="secondary-development-v1",
+        method_version="secondary-tabular-v1",
+        scoring=tabular._RF_SCORING,
+    )
+    assert (
+        tabular.load_secondary_model_bytes(canonical(legacy)).score_urls(urls[17:])
+        != result.validation_scores
+    )
+
+
+@pytest.mark.parametrize("kind", ["formatting", "permutation", "random_forest_v2"])
+def test_fit_checkpoint_precedes_validation_scoring(tabular, monkeypatch, kind):
+    checkpoints = []
+
+    def fail(*args, **kwargs):
+        assert len(checkpoints) == 1
+        raise FloatingPointError("private fixture details")
+
+    monkeypatch.setattr(
+        RandomForestClassifier if kind == "random_forest_v2" else LogisticRegression,
+        "predict_proba",
+        fail,
+    )
+    fit = getattr(
+        tabular, "fit_label_permutation" if kind == "permutation" else f"fit_{kind}"
+    )
+    options = {"seed": 42} if kind == "permutation" else {}
+    with pytest.raises(tabular.SecondaryTabularError) as error:
+        fit(*inputs(), checkpoint=checkpoints.append, **options)
+    assert error.value.check_id == "validation_score"
+    assert len(checkpoints) == 1
+    assert "private fixture" not in str(error.value)
+
+
+def test_fit_checkpoint_failure_stops_before_scoring(tabular, monkeypatch):
+    calls = []
+
+    def fail(content):
+        calls.append(content)
+        raise OSError("/private/fixture/path")
+
+    def no_score(*args, **kwargs):
+        pytest.fail("scoring followed failed checkpoint")
+
+    monkeypatch.setattr(RandomForestClassifier, "predict_proba", no_score)
+    with pytest.raises(tabular.SecondaryTabularError) as error:
+        tabular.fit_random_forest_v2(*inputs(), checkpoint=fail)
+    assert error.value.check_id == "checkpoint_write"
+    assert "/private/" not in str(error.value)
+    assert len(calls) == 1
+
+
+def test_fit_failure_does_not_fabricate_checkpoint(tabular, monkeypatch):
+    checkpoints = []
+
+    def fail(*args, **kwargs):
+        raise FloatingPointError("invented fit failure")
+
+    monkeypatch.setattr(RandomForestClassifier, "fit", fail)
+    with pytest.raises(tabular.SecondaryTabularError) as error:
+        tabular.fit_random_forest_v2(*inputs(), checkpoint=checkpoints.append)
+    assert error.value.check_id == "fit"
+    assert checkpoints == []
+
+
+@pytest.mark.parametrize(
+    "value,tag",
+    [
+        (float("nan"), "nan"),
+        (float("inf"), "positive_infinity"),
+        (-float("inf"), "negative_infinity"),
+    ],
+)
+def test_checkpoint_retains_nonfinite_state_before_rejection(
+    tabular, monkeypatch, value, tag
+):
+    original = LogisticRegression.fit
+    checkpoints = []
+
+    def corrupt(self, *args, **kwargs):
+        result = original(self, *args, **kwargs)
+        self.coef_[0, 0] = value
+        return result
+
+    monkeypatch.setattr(LogisticRegression, "fit", corrupt)
+    with pytest.raises(tabular.SecondaryTabularError) as error:
+        tabular.fit_formatting(*inputs(), checkpoint=checkpoints.append)
+    assert error.value.check_id == "fitted_state"
+    snapshot = tabular.validate_fit_checkpoint_bytes(checkpoints[0])
+    assert snapshot["state"]["coefficients"][0][0] == {"nonfinite": tag}
+
+
+def test_checkpoint_precedes_class_validation(tabular, monkeypatch):
+    original = RandomForestClassifier.fit
+    checkpoints = []
+
+    def corrupt(self, *args, **kwargs):
+        result = original(self, *args, **kwargs)
+        self.classes_ = np.array([1, 0])
+        return result
+
+    monkeypatch.setattr(RandomForestClassifier, "fit", corrupt)
+    with pytest.raises(tabular.SecondaryTabularError) as error:
+        tabular.fit_random_forest_v2(*inputs(), checkpoint=checkpoints.append)
+    assert error.value.check_id == "fitted_classes"
+    assert json.loads(checkpoints[0])["classes"] == [1, 0]
+
+
+@pytest.mark.parametrize("phase", ["portable_exact_parity", "threshold_selection"])
+def test_late_failure_preserves_checkpoint_and_static_check_id(
+    tabular, monkeypatch, phase
+):
+    checkpoints = []
+    if phase == "portable_exact_parity":
+        original = tabular._score_state
+
+        def differ(*args):
+            values, audit = original(*args)
+            values[0] = np.nextafter(values[0], np.float64(2))
+            return values, audit
+
+        monkeypatch.setattr(tabular, "_score_state", differ)
+    else:
+
+        def fail(*args):
+            raise ValueError("private threshold fixture")
+
+        monkeypatch.setattr(baselines, "select_validation_threshold", fail)
+    with pytest.raises(tabular.SecondaryTabularError) as error:
+        tabular.fit_random_forest_v2(*inputs(), checkpoint=checkpoints.append)
+    assert error.value.check_id == phase
+    assert len(checkpoints) == 1
+
+
+def test_check_id_rejects_unrecognized_or_private_strings(tabular):
+    with pytest.raises(ValueError):
+        tabular.SecondaryTabularError("safe", check_id="https://private.example")
+    assert tabular.SecondaryTabularError("original message").check_id is None
+    assert str(tabular.SecondaryTabularError("original message")) == "original message"
+    assert tabular.SecondaryTabularError().args == ()
+    assert tabular.SecondaryTabularError("first", "second").args == ("first", "second")
+
+
+def test_checkpoint_callback_secondary_error_is_sanitized(tabular):
+    def fail(content):
+        raise tabular.SecondaryTabularError("https://private.example/model")
+
+    with pytest.raises(tabular.SecondaryTabularError) as error:
+        tabular.fit_random_forest_v2(*inputs(), checkpoint=fail)
+    assert error.value.check_id == "checkpoint_write"
+    assert "private" not in str(error.value)
+
+
+def test_rf_checkpoint_precedes_nonfinite_tree_validation(tabular, monkeypatch):
+    original = RandomForestClassifier.fit
+    checkpoints = []
+
+    def corrupt(self, *args, **kwargs):
+        result = original(self, *args, **kwargs)
+        self.estimators_[0].tree_.value[0, 0, 0] = float("nan")
+        return result
+
+    def no_score(*args, **kwargs):
+        pytest.fail("validation scoring preceded tree-state validation")
+
+    monkeypatch.setattr(RandomForestClassifier, "fit", corrupt)
+    monkeypatch.setattr(RandomForestClassifier, "predict_proba", no_score)
+    with pytest.raises(tabular.SecondaryTabularError) as error:
+        tabular.fit_random_forest_v2(*inputs(), checkpoint=checkpoints.append)
+    assert error.value.check_id == "fitted_state"
+    assert len(checkpoints) == 1
+    assert json.loads(checkpoints[0])["state"]["trees"][0]["value"][0][0] == {
+        "nonfinite": "nan"
+    }
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        lambda x: x.update(contract_id="secondary-development-v1"),
+        lambda x: x.update(method_version="secondary-tabular-v1"),
+        lambda x: x.update(model_kind="formatting"),
+        lambda x: x["scoring"].update(
+            probability="sequential_float64_sum_of_normalized_leaf_values_divided_by_100"
+        ),
+    ],
+)
+def test_rf_v2_loader_rejects_mixed_version_identity(tabular, mutation):
+    result = tabular.fit_random_forest_v2(*inputs(), checkpoint=lambda content: None)
+    artifact = json.loads(result.artifact_bytes)
+    mutation(artifact)
+    with pytest.raises(tabular.SecondaryTabularError):
+        tabular.load_secondary_model_bytes(canonical(artifact))
+
+
+def test_checkpoint_verifier_rejects_model_difference_and_unrecognized_tag(tabular):
+    checkpoints = []
+    fitted = tabular.fit_formatting(*inputs(), checkpoint=checkpoints.append)
+    snapshot = json.loads(checkpoints[0])
+    snapshot["state"]["intercept"][0] += 0.1
+    with pytest.raises(tabular.SecondaryTabularError, match="checkpoint differs"):
+        tabular.validate_fit_checkpoint_bytes(
+            canonical(snapshot), model_bytes=fitted.artifact_bytes
+        )
+    snapshot["state"]["intercept"][0] = {"nonfinite": "private"}
+    with pytest.raises(tabular.SecondaryTabularError):
+        tabular.validate_fit_checkpoint_bytes(canonical(snapshot))
+
+
+def test_rf_v2_requires_checkpoint_before_fit(tabular, monkeypatch):
+    def no_fit(*args, **kwargs):
+        pytest.fail("fit started without checkpoint callback")
+
+    monkeypatch.setattr(RandomForestClassifier, "fit", no_fit)
+    with pytest.raises(TypeError):
+        tabular.fit_random_forest_v2(*inputs())
+    with pytest.raises(tabular.SecondaryTabularError) as error:
+        tabular.fit_random_forest_v2(*inputs(), checkpoint=None)
+    assert error.value.check_id == "input_validation"
+
+
+def test_checkpoint_does_not_coerce_nonfinite_scaler_count(tabular, monkeypatch):
+    original = StandardScaler.fit_transform
+    checkpoints = []
+
+    def corrupt(self, *args, **kwargs):
+        result = original(self, *args, **kwargs)
+        self.n_samples_seen_ = np.float64("nan")
+        return result
+
+    monkeypatch.setattr(StandardScaler, "fit_transform", corrupt)
+    with pytest.raises(tabular.SecondaryTabularError) as error:
+        tabular.fit_formatting(*inputs(), checkpoint=checkpoints.append)
+    assert error.value.check_id == "fitted_state"
+    assert json.loads(checkpoints[0])["state"]["scaler"]["n_samples_seen"] == {
+        "nonfinite": "nan"
+    }
+
+
+def test_invalid_permutation_seed_has_input_check_id(tabular):
+    with pytest.raises(tabular.SecondaryTabularError) as error:
+        tabular.fit_label_permutation(*inputs(), seed=47)
+    assert error.value.check_id == "input_validation"
+
+
+@pytest.mark.parametrize("values", [[0.0, 1.0000000000005], [1.0000000000005, 0.0]])
+def test_rf_v2_rejects_out_of_range_stored_leaf_probabilities_without_clamping(
+    tabular, monkeypatch, values
+):
+    def forbidden(*args, **kwargs):
+        pytest.fail("loaded synthetic state attempted a fit")
+
+    monkeypatch.setattr(RandomForestClassifier, "fit", forbidden)
+    tree = {
+        "children_left": [-1],
+        "children_right": [-1],
+        "feature": [-2],
+        "threshold": [-2.0],
+        "value": [values],
+        "random_state": 42,
+    }
+    artifact = tabular._artifact(
+        "random_forest", 2, {"trees": [tree] * 100}, None, rf_v2=True
+    )
+    model = tabular.load_secondary_model_bytes(canonical(artifact))
+    with pytest.raises(
+        tabular.SecondaryTabularError, match="forest probabilities are invalid"
+    ):
+        model.score_urls(("https://invented.example/path",))
+    artifact.update(
+        contract_id="secondary-development-v1",
+        method_version="secondary-tabular-v1",
+        scoring=tabular._RF_SCORING,
+    )
+    legacy = tabular.load_secondary_model_bytes(canonical(artifact))
+    assert legacy.score_urls(("https://invented.example/path",)) == (
+        1.0 if values[1] else 0.0,
+    )

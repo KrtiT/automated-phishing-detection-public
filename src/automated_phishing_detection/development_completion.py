@@ -174,7 +174,16 @@ def _vector(values, count):
     )
 
 
-def _tabular(contents, path, member, result, binding, prepared):
+def _tabular(
+    contents,
+    path,
+    member,
+    result,
+    binding,
+    prepared,
+    *,
+    expected_method_version="secondary-tabular-v1",
+):
     _require(
         _keys(
             result,
@@ -212,6 +221,17 @@ def _tabular(contents, path, member, result, binding, prepared):
     model_bytes = contents[path / "model.json"]
     secondary_tabular.load_secondary_model_bytes(model_bytes)
     model = source_runner._json(model_bytes)
+    expected_contract = {
+        "secondary-tabular-v1": "secondary-development-v1",
+        "secondary-rf-v2": "secondary-development-correction-v1",
+    }.get(expected_method_version)
+    _require(
+        expected_contract is not None
+        and (expected_method_version != "secondary-rf-v2" or kind == "random_forest")
+        and model["method_version"] == expected_method_version
+        and model["contract_id"] == expected_contract,
+        "model_method_mismatch",
+    )
     _require(
         model["model_kind"] == kind
         and model["training_row_count"] == prepared["splits"]["train"]["row_count"],

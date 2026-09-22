@@ -13,7 +13,7 @@ import json
 import math
 import platform
 import warnings
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from contextlib import contextmanager
 from dataclasses import dataclass
 
@@ -69,10 +69,53 @@ _RF_SCORING = {
     "warnings": "fatal",
     "numerical_threads": 1,
 }
+_RF_SCORING_V2 = {
+    **_RF_SCORING,
+    "probability": "sequential_float64_sum_of_stored_leaf_values_divided_by_100",
+}
+_CHECK_IDS = frozenset(
+    {
+        "input_validation",
+        "fit",
+        "checkpoint_write",
+        "fitted_classes",
+        "fitted_state",
+        "validation_score",
+        "portable_exact_parity",
+        "threshold_selection",
+    }
+)
+_NONFINITE_TAGS = {"nan", "positive_infinity", "negative_infinity"}
 
 
 class SecondaryTabularError(ValueError):
     """A secondary input, fixed runtime or portable model is invalid."""
+
+    def __init__(self, *args, check_id: str | None = None):
+        if check_id is not None and (
+            type(check_id) is not str or check_id not in _CHECK_IDS
+        ):
+            raise ValueError("unknown secondary check identifier")
+        super().__init__(*args)
+        self._check_id = check_id
+
+    @property
+    def check_id(self) -> str | None:
+        return self._check_id
+
+
+@contextmanager
+def _check_phase(check_id):
+    try:
+        yield
+    except SecondaryTabularError as exc:
+        if exc.check_id is None:
+            exc._check_id = check_id
+        raise
+    except Exception as exc:
+        raise SecondaryTabularError(
+            "secondary fitting failed", check_id=check_id
+        ) from exc
 
 
 @dataclass(frozen=True)
@@ -351,11 +394,14 @@ def _decode_model(content):
     )
     _require(_json_bytes(artifact) == content, "model must use canonical JSON")
     _keys(artifact, _FIELDS)
+    rf_v2 = artifact["method_version"] == "secondary-rf-v2"
     fixed = {
         "schema_version": 1,
-        "contract_id": "secondary-development-v1",
+        "contract_id": "secondary-development-correction-v1"
+        if rf_v2
+        else "secondary-development-v1",
         "artifact_type": "secondary-tabular-model",
-        "method_version": "secondary-tabular-v1",
+        "method_version": "secondary-rf-v2" if rf_v2 else "secondary-tabular-v1",
         "analysis_stage": "development_validation_only",
         "protected_evaluation_authorized": False,
         "classes": [0, 1],
@@ -370,6 +416,7 @@ def _decode_model(content):
     )
     kind = artifact["model_kind"]
     _require(type(kind) is str and kind in _KINDS, "unknown secondary model kind")
+    _require(not rf_v2 or kind == "random_forest", "v2 is restricted to Random Forest")
     _require(
         artifact["features"] == _feature_names(kind), "invalid secondary feature order"
     )
@@ -377,7 +424,11 @@ def _decode_model(content):
         fixed_cascade._matches_exactly(artifact["parameters"], _parameters(kind)),
         "secondary parameters differ",
     )
-    scoring = _RF_SCORING if kind == "random_forest" else _LOGISTIC_SCORING
+    scoring = (
+        (_RF_SCORING_V2 if rf_v2 else _RF_SCORING)
+        if kind == "random_forest"
+        else _LOGISTIC_SCORING
+    )
     _require(
         fixed_cascade._matches_exactly(artifact["scoring"], scoring),
         "secondary scoring convention differs",
@@ -418,6 +469,128 @@ def load_secondary_model_bytes(content: bytes) -> SecondaryModel:
         raise
     except Exception as exc:
         raise SecondaryTabularError("invalid secondary model") from exc
+
+
+def _diagnostic_numbers(value):
+    if type(value) is float and not math.isfinite(value):
+        return {
+            "nonfinite": "nan"
+            if math.isnan(value)
+            else "positive_infinity"
+            if value > 0
+            else "negative_infinity"
+        }
+    if type(value) is list:
+        return [_diagnostic_numbers(item) for item in value]
+    if type(value) is dict:
+        return {key: _diagnostic_numbers(item) for key, item in value.items()}
+    return value
+
+
+def _diagnostic_numeric_array(value):
+    if type(value) is list:
+        for item in value:
+            _diagnostic_numeric_array(item)
+    elif type(value) is dict:
+        _require(
+            set(value) == {"nonfinite"}
+            and type(value["nonfinite"]) is str
+            and value["nonfinite"] in _NONFINITE_TAGS,
+            "invalid diagnostic numeric tag",
+        )
+    else:
+        _require(
+            type(value) in (int, float) and math.isfinite(value),
+            "invalid diagnostic numeric state",
+        )
+
+
+def validate_fit_checkpoint_bytes(
+    content: bytes, *, model_bytes: bytes | None = None
+) -> dict:
+    """Read diagnostic state only; it is never an accepted scoring artifact."""
+    try:
+        _require(type(content) is bytes, "checkpoint must be exact bytes")
+        value = json.loads(
+            content,
+            object_pairs_hook=fixed_cascade._object_without_duplicate_keys,
+            parse_constant=fixed_cascade._reject_json_constant,
+        )
+        _require(_json_bytes(value) == content, "checkpoint must use canonical JSON")
+        _keys(value, _FIELDS | {"seed"})
+        _require(
+            value["artifact_type"] == "secondary-fit-checkpoint",
+            "invalid checkpoint type",
+        )
+        kind = value["model_kind"]
+        _require(type(kind) is str and kind in _KINDS, "invalid checkpoint kind")
+        seed = value["seed"]
+        _require(
+            type(seed) is int
+            and (seed in range(42, 47) if kind == "permutation" else seed == 42),
+            "invalid checkpoint seed",
+        )
+        expected = _artifact(
+            kind,
+            value["training_row_count"],
+            {},
+            seed if kind == "permutation" else None,
+            rf_v2=value["method_version"] == "secondary-rf-v2",
+        )
+        for key in _FIELDS - {"artifact_type", "state", "classes"}:
+            _require(
+                fixed_cascade._matches_exactly(value[key], expected[key]),
+                "invalid checkpoint metadata",
+            )
+        _require(
+            type(value["training_row_count"]) is int
+            and value["training_row_count"] >= 2
+            and (
+                value["method_version"] != "secondary-rf-v2" or kind == "random_forest"
+            ),
+            "invalid checkpoint identity",
+        )
+        _require(type(value["classes"]) is list, "invalid checkpoint classes")
+        _diagnostic_numeric_array(value["classes"])
+        state = value["state"]
+        if kind == "random_forest":
+            _keys(state, {"trees"})
+            _require(type(state["trees"]) is list, "invalid diagnostic forest")
+            for tree in state["trees"]:
+                _keys(
+                    tree,
+                    {
+                        "children_left",
+                        "children_right",
+                        "feature",
+                        "threshold",
+                        "value",
+                        "random_state",
+                    },
+                )
+                for item in tree.values():
+                    _diagnostic_numeric_array(item)
+        else:
+            _keys(state, {"scaler", "coefficients", "intercept", "n_iter"})
+            _keys(state["scaler"], {"mean", "scale", "variance", "n_samples_seen"})
+            for key in ("coefficients", "intercept", "n_iter"):
+                _diagnostic_numeric_array(state[key])
+            for item in state["scaler"].values():
+                _diagnostic_numeric_array(item)
+        if model_bytes is not None:
+            model = _decode_model(model_bytes)
+            _require(
+                all(
+                    fixed_cascade._matches_exactly(value[key], model[key])
+                    for key in _FIELDS - {"artifact_type"}
+                ),
+                "checkpoint differs from accepted model",
+            )
+        return value
+    except SecondaryTabularError:
+        raise
+    except Exception as exc:
+        raise SecondaryTabularError("invalid fit checkpoint") from exc
 
 
 def _logistic_scores(classifier, scaled):
@@ -473,10 +646,39 @@ def _forest_scores(state, matrix):
     return total[:, 1]
 
 
+def _forest_scores_v2(state, matrix):
+    matrix = np.ascontiguousarray(matrix, dtype=np.float32)
+    _require(np.all(np.isfinite(matrix)), "forest float32 input is nonfinite")
+    total = np.zeros((len(matrix), 2), dtype=np.float64)
+    for tree in state["trees"]:
+        probabilities = np.asarray(tree["value"], dtype=np.float64)
+        for row_index, row in enumerate(matrix):
+            node = 0
+            while tree["children_left"][node] != -1:
+                node = (
+                    tree["children_left"][node]
+                    if float(row[tree["feature"][node]]) <= tree["threshold"][node]
+                    else tree["children_right"][node]
+                )
+            # sklearn 1.7.2 stores class proportions; normalizing again changes bits.
+            total[row_index] += probabilities[node]
+    total /= len(state["trees"])
+    _require(
+        np.all(np.isfinite(total)) and np.all((total >= 0) & (total <= 1)),
+        "forest probabilities are invalid",
+    )
+    return total[:, 1]
+
+
 def _score_state(artifact, matrix):
     state = artifact["state"]
     if artifact["model_kind"] == "random_forest":
-        return _forest_scores(state, matrix), {"batch_size": 1, "warning_records": []}
+        score = (
+            _forest_scores_v2
+            if artifact["method_version"] == "secondary-rf-v2"
+            else _forest_scores
+        )
+        return score(state, matrix), {"batch_size": 1, "warning_records": []}
     scaler = state["scaler"]
     scaled = matrix.copy(order="C")
     scaled -= np.asarray(scaler["mean"], dtype=np.float64)
@@ -491,31 +693,48 @@ def _score_state(artifact, matrix):
     return _logistic_scores(classifier, scaled)
 
 
-def _fit_logistic(train, labels, validation):
-    scaler = _scaler()
-    scaled = np.ascontiguousarray(scaler.fit_transform(train), dtype=np.float64)
-    _require(np.all(np.isfinite(scaled)), "training scaler is nonfinite")
-    classifier = _logistic().fit(scaled, labels)
+def _fit_logistic(train, labels, validation, *, checkpoint=None):
+    with _check_phase("fit"):
+        scaler = _scaler()
+        scaled = np.ascontiguousarray(scaler.fit_transform(train), dtype=np.float64)
+        _require(np.all(np.isfinite(scaled)), "training scaler is nonfinite")
+        classifier = _logistic().fit(scaled, labels)
     state = {
         "scaler": {
             "mean": scaler.mean_.tolist(),
             "scale": scaler.scale_.tolist(),
             "variance": scaler.var_.tolist(),
-            "n_samples_seen": int(scaler.n_samples_seen_),
+            "n_samples_seen": scaler.n_samples_seen_.item()
+            if isinstance(scaler.n_samples_seen_, np.generic)
+            else scaler.n_samples_seen_,
         },
         "coefficients": classifier.coef_.tolist(),
         "intercept": classifier.intercept_.tolist(),
         "n_iter": classifier.n_iter_.tolist(),
     }
-    _require(classifier.classes_.tolist() == [0, 1], "fitted logistic classes differ")
-    _validate_logistic_state(state, train.shape[1], len(train))
-    scores, audit = _logistic_scores(classifier, scaler.transform(validation))
+    if checkpoint is not None:
+        checkpoint(
+            state,
+            classifier.classes_.tolist(),
+            {
+                "classifier": classifier.get_params(deep=False),
+                "scaler": scaler.get_params(deep=False),
+            },
+        )
+    with _check_phase("fitted_classes"):
+        _require(
+            classifier.classes_.tolist() == [0, 1], "fitted logistic classes differ"
+        )
+    with _check_phase("fitted_state"):
+        _validate_logistic_state(state, train.shape[1], len(train))
+    with _check_phase("validation_score"):
+        scores, audit = _logistic_scores(classifier, scaler.transform(validation))
     return state, scores, audit
 
 
-def _fit_forest(train, labels, validation):
-    forest = _forest().fit(train, labels)
-    _require(forest.classes_.tolist() == [0, 1], "fitted forest classes differ")
+def _fit_forest(train, labels, validation, *, checkpoint=None):
+    with _check_phase("fit"):
+        forest = _forest().fit(train, labels)
     state = {
         "trees": [
             {
@@ -529,60 +748,120 @@ def _fit_forest(train, labels, validation):
             for tree in forest.estimators_
         ]
     }
-    scores = np.array(
-        [forest.predict_proba(row.reshape(1, -1))[0, 1] for row in validation],
-        dtype=np.float64,
-    )
+    if checkpoint is not None:
+        checkpoint(state, forest.classes_.tolist(), forest.get_params(deep=False))
+    with _check_phase("fitted_classes"):
+        _require(forest.classes_.tolist() == [0, 1], "fitted forest classes differ")
+    if checkpoint is not None:
+        with _check_phase("fitted_state"):
+            _require(len(state["trees"]) == 100, "forest must contain 100 trees")
+            for tree in state["trees"]:
+                _validate_tree(tree, train.shape[1])
+    with _check_phase("validation_score"):
+        scores = np.array(
+            [forest.predict_proba(row.reshape(1, -1))[0, 1] for row in validation],
+            dtype=np.float64,
+        )
     return state, scores, {"batch_size": 1, "warning_records": []}
 
 
-def _fit(kind, train_urls, train_labels, validation_urls, validation_labels, seed=None):
+def _artifact(kind, training_count, state, seed, *, rf_v2=False):
+    return {
+        "schema_version": 1,
+        "contract_id": "secondary-development-correction-v1"
+        if rf_v2
+        else "secondary-development-v1",
+        "artifact_type": "secondary-tabular-model",
+        "method_version": "secondary-rf-v2" if rf_v2 else "secondary-tabular-v1",
+        "analysis_stage": "development_validation_only",
+        "protected_evaluation_authorized": False,
+        "model_kind": kind,
+        "features": _feature_names(kind),
+        "classes": [0, 1],
+        "parameters": _parameters(kind),
+        "state": state,
+        "scoring": (_RF_SCORING_V2 if rf_v2 else _RF_SCORING)
+        if kind == "random_forest"
+        else _LOGISTIC_SCORING,
+        "permutation": {"bit_generator": "PCG64", "seed": seed}
+        if seed is not None
+        else None,
+        "training_row_count": training_count,
+        "software_versions": _VERSIONS,
+    }
+
+
+def _fit(
+    kind,
+    train_urls,
+    train_labels,
+    validation_urls,
+    validation_labels,
+    seed=None,
+    *,
+    checkpoint=None,
+    rf_v2=False,
+):
     try:
         with _numerical_runtime():
-            train = _features(train_urls, kind)
-            validation = _features(validation_urls, kind)
-            train_labels = _labels(train_labels, len(train))
-            validation_labels = _labels(validation_labels, len(validation))
-            if kind == "permutation":
-                train_labels = np.random.Generator(np.random.PCG64(seed)).permutation(
-                    train_labels
+            with _check_phase("input_validation"):
+                _require(
+                    checkpoint is None or callable(checkpoint),
+                    "invalid checkpoint callback",
                 )
+                train = _features(train_urls, kind)
+                validation = _features(validation_urls, kind)
+                train_labels = _labels(train_labels, len(train))
+                validation_labels = _labels(validation_labels, len(validation))
+                if kind == "permutation":
+                    train_labels = np.random.Generator(
+                        np.random.PCG64(seed)
+                    ).permutation(train_labels)
+
+            def retain(state, classes, parameters):
+                try:
+                    snapshot = _artifact(kind, len(train), state, seed, rf_v2=rf_v2)
+                    snapshot.update(
+                        artifact_type="secondary-fit-checkpoint",
+                        classes=classes,
+                        parameters=parameters,
+                        seed=seed if seed is not None else 42,
+                    )
+                    checkpoint(_json_bytes(_diagnostic_numbers(snapshot)))
+                except Exception as exc:
+                    raise SecondaryTabularError(
+                        "fit checkpoint write failed", check_id="checkpoint_write"
+                    ) from exc
+
             state, scores, audit = (
                 _fit_forest if kind == "random_forest" else _fit_logistic
-            )(train, train_labels, validation)
-            artifact = {
-                "schema_version": 1,
-                "contract_id": "secondary-development-v1",
-                "artifact_type": "secondary-tabular-model",
-                "method_version": "secondary-tabular-v1",
-                "analysis_stage": "development_validation_only",
-                "protected_evaluation_authorized": False,
-                "model_kind": kind,
-                "features": _feature_names(kind),
-                "classes": [0, 1],
-                "parameters": _parameters(kind),
-                "state": state,
-                "scoring": _RF_SCORING
-                if kind == "random_forest"
-                else _LOGISTIC_SCORING,
-                "permutation": {"bit_generator": "PCG64", "seed": seed}
-                if seed is not None
-                else None,
-                "training_row_count": len(train),
-                "software_versions": _VERSIONS,
-            }
-            content = _json_bytes(artifact)
-            checked = _decode_model(content)
-            restored_scores, _ = _score_state(checked, validation)
-            _require(
-                np.array_equal(scores, restored_scores),
-                "portable scores differ from fitted estimator",
+            )(
+                train,
+                train_labels,
+                validation,
+                **({"checkpoint": retain} if checkpoint is not None else {}),
             )
-            _require(
-                np.all(np.isfinite(scores)) and np.all((scores >= 0) & (scores <= 1)),
-                "secondary probabilities are invalid",
-            )
-            threshold = baselines.select_validation_threshold(scores, validation_labels)
+            with _check_phase("fitted_state"):
+                content = _json_bytes(
+                    _artifact(kind, len(train), state, seed, rf_v2=rf_v2)
+                )
+                checked = _decode_model(content)
+            with _check_phase("portable_exact_parity"):
+                restored_scores, _ = _score_state(checked, validation)
+                _require(
+                    np.array_equal(scores, restored_scores),
+                    "portable scores differ from fitted estimator",
+                )
+            with _check_phase("validation_score"):
+                _require(
+                    np.all(np.isfinite(scores))
+                    and np.all((scores >= 0) & (scores <= 1)),
+                    "secondary probabilities are invalid",
+                )
+            with _check_phase("threshold_selection"):
+                threshold = baselines.select_validation_threshold(
+                    scores, validation_labels
+                )
             audit["portable_exact_parity"] = True
             audit["threshold_role"] = "secondary_descriptive_operating_point"
             return SecondaryFitResult(
@@ -598,22 +877,39 @@ def _fit(kind, train_urls, train_labels, validation_urls, validation_labels, see
 
 
 def fit_formatting(
-    train_urls, train_labels, validation_urls, validation_labels
+    train_urls,
+    train_labels,
+    validation_urls,
+    validation_labels,
+    *,
+    checkpoint: Callable[[bytes], None] | None = None,
 ) -> SecondaryFitResult:
     """Fit one fixed five-indicator scaler/SAGA model; no tuning or retry."""
     return _fit(
-        "formatting", train_urls, train_labels, validation_urls, validation_labels
+        "formatting",
+        train_urls,
+        train_labels,
+        validation_urls,
+        validation_labels,
+        checkpoint=checkpoint,
     )
 
 
 def fit_label_permutation(
-    train_urls, train_labels, validation_urls, validation_labels, *, seed: int
+    train_urls,
+    train_labels,
+    validation_urls,
+    validation_labels,
+    *,
+    seed: int,
+    checkpoint: Callable[[bytes], None] | None = None,
 ) -> SecondaryFitResult:
     """Fit one independently permuted negative control; solver seed stays 42."""
-    _require(
-        type(seed) is int and seed in range(42, 47),
-        "permutation seed must be 42 through 46",
-    )
+    with _check_phase("input_validation"):
+        _require(
+            type(seed) is int and seed in range(42, 47),
+            "permutation seed must be 42 through 46",
+        )
     return _fit(
         "permutation",
         train_urls,
@@ -621,13 +917,46 @@ def fit_label_permutation(
         validation_urls,
         validation_labels,
         seed,
+        checkpoint=checkpoint,
     )
 
 
 def fit_random_forest(
-    train_urls, train_labels, validation_urls, validation_labels
+    train_urls,
+    train_labels,
+    validation_urls,
+    validation_labels,
+    *,
+    checkpoint: Callable[[bytes], None] | None = None,
 ) -> SecondaryFitResult:
     """Fit the fixed 100-tree unscaled structural benchmark, never a cascade stage."""
     return _fit(
-        "random_forest", train_urls, train_labels, validation_urls, validation_labels
+        "random_forest",
+        train_urls,
+        train_labels,
+        validation_urls,
+        validation_labels,
+        checkpoint=checkpoint,
+    )
+
+
+def fit_random_forest_v2(
+    train_urls,
+    train_labels,
+    validation_urls,
+    validation_labels,
+    *,
+    checkpoint: Callable[[bytes], None],
+) -> SecondaryFitResult:
+    """Fit the corrected direct-leaf scorer, retaining state before later checks."""
+    with _check_phase("input_validation"):
+        _require(callable(checkpoint), "v2 requires a fitted-state checkpoint")
+    return _fit(
+        "random_forest",
+        train_urls,
+        train_labels,
+        validation_urls,
+        validation_labels,
+        checkpoint=checkpoint,
+        rf_v2=True,
     )

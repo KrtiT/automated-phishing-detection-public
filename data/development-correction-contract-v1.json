@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "contract_id": "secondary-development-correction-v1",
+  "date": "2026-09-22",
+  "development_execution_ready": true,
+  "protected_evaluation_ready": false,
+  "base_development_profile_sha256": "67146228d636c16f02484998741c7a1545da68b209e693620efab22b2676cd43",
+  "base_methods_sha256": "f592352593ae64b178a468d5800e780267275a62046a05b31b952f69e424f44f",
+  "original_accounting_sha256": "c372aa5d6563a0c75d297d0178154588bfbcd93451a3f14fa06a064a84cbd02e",
+  "stages": [
+    "retained_audit",
+    "random_forest"
+  ],
+  "retained_members": [
+    "drift",
+    "formatting",
+    "permutation_42",
+    "permutation_43",
+    "permutation_44",
+    "permutation_45",
+    "permutation_46"
+  ],
+  "input_roles": [
+    "train",
+    "validation"
+  ],
+  "new_fits": [
+    "random_forest"
+  ],
+  "maximum_new_fits": 1,
+  "rf_artifact_method_version": "secondary-rf-v2",
+  "rf_probability": "ordered_float64_sum_of_stored_leaf_probabilities_divided_by_100",
+  "rf_input_comparison": "float32_feature_promoted_to_float64_threshold",
+  "rf_parameters": "unchanged_secondary_development_v1",
+  "exact_parity": true,
+  "primary_changes": false,
+  "retry_or_resume": false,
+  "original_aggregate_accepted": false,
+  "additional_transformer_fits": 0,
+  "perturbation_runs": 0,
+  "audit": "authenticate_original_failed_receipts_and_seven_completed_children_then_exact_no_fit_rescore_of_six_tabular_models",
+  "permutation_audit": "fresh_PCG64_seeds_42_through_46_from_original_ordered_training_labels_no_refit_or_selection",
+  "historical_fit_label_digest": "unavailable_do_not_infer_actual_consumed_vector",
+  "drift_audit": "retained_score_arithmetic_and_authenticated_membership_not_independent_drift_score_recomputation",
+  "new_fit_input_record": "ordered_training_ids_and_actual_labels_sha256_before_fit",
+  "fitted_checkpoint": "exactly_once_after_fit_state_extraction_before_later_checks_tagged_nonfinite_diagnostic_only",
+  "failure_details": "allowlisted_check_id_and_causal_class_no_exception_text",
+  "worker_exit": "supervisor_records_observed_return_code_including_signals_before_verification",
+  "acceptance": "audit_worker_zero_exit_and_retained_audit_verified_then_RF_worker_zero_exit_checkpoint_model_parity_and_saved_metrics_verified",
+  "preservation": "original_attempt_and_every_historical_contract_byte_unchanged_separate_output_reservations",
+  "research_scope": "Development-informed correction after the stopped v1 attempt. Reuse only the audited retained members; never declare the failed original root successful or refit those members to recover missing history. The corrected RF is one separate attempt with unchanged data, hyperparameters and exact parity. Fail-stop without retry or resume. Training/validation only; no protected evaluation, primary-model change, transformer seed fit or perturbation execution."
+}

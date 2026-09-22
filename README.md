@@ -24,7 +24,11 @@ preliminary child summaries and the failed receipts. Some permutation controls
 have validation ROC AUC above 0.5, an unresolved observation rather than a clean
 negative-control result. An invented-input diagnostic also reproduces an RF
 leaf-normalization defect. The frozen v1 method is not to be retried; its
-correction and improved failure diagnostics precede a separate execution.
+correction now has a separate [prospective profile](data/development-correction-contract-v1.json).
+The new command, `python scripts/run_secondary_correction.py --help`, audits the
+seven retained members without fitting, then permits one corrected RF fit only
+after that audit passes. It saves fitted state before later checks, safe failure
+identifiers and actual worker exits. The new execution has not yet run.
 Additional transformer seed procedures, perturbation replay and external source
 integration remain. No group-test or external result is claimed.
 

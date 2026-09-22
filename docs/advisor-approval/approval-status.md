@@ -172,6 +172,16 @@ the full five-seed results remain visible. This is an unresolved control
 observation, not proof of leakage or successful negative-control validation.
 It changes no primary model, cutoff, hypothesis gate or original GMM result.
 
+The separate [correction profile](../../data/development-correction-contract-v1.json),
+SHA-256 `61739fa0638ae822bf54639cf3a485c0b7b8a3a236a80221d824df7f79a090a9`,
+records direct stored-leaf RF arithmetic with the same exact-parity requirement.
+The correction runner first audits the seven retained members without refitting,
+then allows one RF fit in a fresh attempt. Fitted state precedes later checks;
+safe check identifiers and actual worker exits remain in failed-attempt records.
+Historical fit-label digests remain unavailable. This correction is implemented
+and under verification; its research execution has not yet run. It neither
+changes the original failed root nor accepts the controls as successful negatives.
+
 Additional transformer seeds 43-46 still
 need their training runtime, checkpoint-scoring and comparable secondary
 calibration contract; seed 42 primary weights and cutoffs remain unchanged.

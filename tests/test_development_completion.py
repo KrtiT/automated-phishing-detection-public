@@ -454,6 +454,21 @@ def test_recomputes_rank_metrics_from_retained_predictions(verifier, published, 
         verifier.verify_development_completion(binding, paths, producer_exit_code=0)
 
 
+def test_legacy_family_rejects_corrected_rf_with_repaired_hashes(verifier, published):
+    binding, paths, _ = published
+    path = paths.attempt / "random_forest/evidence/model.json"
+    model = _load(path)
+    model.update(
+        contract_id="secondary-development-correction-v1",
+        method_version="secondary-rf-v2",
+        scoring=secondary_tabular._RF_SCORING_V2,
+    )
+    path.write_bytes(secondary_tabular._json_bytes(model))
+    _relink(paths)
+    with pytest.raises(verifier.DevelopmentCompletionError, match="model_method"):
+        verifier.verify_development_completion(binding, paths, producer_exit_code=0)
+
+
 @pytest.mark.parametrize("change", ["seed", "kind", "training_count", "noncanonical"])
 def test_saved_model_identity_and_state_checked(verifier, published, change):
     binding, paths, _ = published

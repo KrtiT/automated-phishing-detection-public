@@ -10,9 +10,11 @@ distinguishes implemented utilities from scientific analyses not yet run.
 Current code includes the selective HTTP service, serialized live GMM routing,
 internal saved-evidence production, normalized external preparation, and
 secondary score metrics. Tests use invented fixtures, including real loopback
-HTTP requests. The authenticated source-to-results command and remaining
-development-only secondary procedures are still being integrated before the
-complete pre-access freeze. No group-test or external result is claimed.
+HTTP requests. Internal file/process execution now connects the public source
+record to saved evidence, with its research entry closed until the complete
+pre-access freeze. MMD/PSI and URL-probe code is implemented; remaining secondary
+fits, development calibration and external source integration precede research
+execution. No group-test or external result is claimed.
 
 ## Source and Baseline Record
 

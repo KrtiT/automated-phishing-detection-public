@@ -1,0 +1,388 @@
+"""Authenticated internal file-to-evidence composition, with a closed access gate.
+
+The current execution profile is not a complete pre-access freeze. The public
+entry therefore stops before inspecting any supplied input/output path. The
+private composition is exercised on temporary fixtures, not research records.
+Secondary models and external schema/process integration remain separate work.
+"""
+
+from __future__ import annotations
+
+import json
+import os
+import stat
+import subprocess
+import sys
+from dataclasses import asdict, dataclass
+from hashlib import sha256
+from pathlib import Path
+
+from . import (
+    baselines,
+    evaluation_producer,
+    execution_receipt,
+    fixed_cascade,
+    phiusiil,
+    protocol_preflight,
+    secondary_metrics,
+)
+from .bound_models import ArtifactPaths
+from .bound_runtime import open_bound_session
+from .execution_preflight import ExecutionBinding, bind_execution, recheck_binding
+from .execution_receipt import publish_completion, record_failure, reserve_attempt
+
+_SOURCE = "data/sources.json"
+_PREPARATION = "reports/phiusiil-preparation-summary.json"
+_PUBLIC_FIELDS = frozenset(
+    {
+        "schema_version",
+        "status",
+        "protected_evaluation_authorized",
+        "source_binding",
+        "row_count",
+        "domain_count",
+        "class_counts",
+        "offline_inference_counts",
+        "manifests",
+        "primary",
+        "private_sha256",
+    }
+)
+
+
+class SourceExecutionError(ValueError):
+    """A symbolic execution failure; never includes private URLs or error text."""
+
+
+@dataclass(frozen=True)
+class InternalRunPaths:
+    partition: Path
+    suffix_rules: Path
+    artifacts: ArtifactPaths
+    attempt: Path
+    public_summary: Path
+
+
+def _json(content):
+    return json.loads(
+        content,
+        object_pairs_hook=fixed_cascade._object_without_duplicate_keys,
+        parse_constant=fixed_cascade._reject_json_constant,
+    )
+
+
+def _file_state(value):
+    return (
+        value.st_dev,
+        value.st_ino,
+        value.st_size,
+        value.st_mtime_ns,
+        value.st_ctime_ns,
+        value.st_nlink,
+        value.st_mode,
+    )
+
+
+def _read_file_once(path: Path, *, expected_state: tuple | None = None) -> bytes:
+    """Read one pinned descriptor, checking the pathname without reopening bytes."""
+    try:
+        path = execution_receipt._absolute_path(path)
+        with execution_receipt._directory(path.parent) as parent:
+            before_path = execution_receipt._entry(parent, path.name)
+            descriptor = os.open(
+                path.name,
+                os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK,
+                dir_fd=parent.descriptor,
+            )
+            try:
+                before = os.fstat(descriptor)
+                if (
+                    before_path is None
+                    or not stat.S_ISREG(before.st_mode)
+                    or before.st_nlink != 1
+                    or _file_state(before_path) != _file_state(before)
+                    or (
+                        expected_state is not None
+                        and _file_state(before) != expected_state
+                    )
+                ):
+                    raise SourceExecutionError("unsafe_input_file")
+                with os.fdopen(descriptor, "rb", closefd=False) as stream:
+                    content = stream.read()
+                after = os.fstat(descriptor)
+                after_path = execution_receipt._entry(parent, path.name)
+                parent.check()
+                if (
+                    after_path is None
+                    or _file_state(before) != _file_state(after)
+                    or _file_state(before) != _file_state(after_path)
+                    or len(content) != before.st_size
+                ):
+                    raise SourceExecutionError("input_changed_during_read")
+                return content
+            finally:
+                os.close(descriptor)
+    except (OSError, execution_receipt.ExecutionReceiptError):
+        raise SourceExecutionError("unsafe_input_path") from None
+
+
+def _public_sources(binding):
+    pins = dict(binding.source_hashes)
+    contents = {}
+    for relative in (_SOURCE, _PREPARATION):
+        content = _read_file_once(binding.root / relative)
+        if relative not in pins or sha256(content).hexdigest() != pins[relative]:
+            raise SourceExecutionError("public_source_hash_mismatch")
+        contents[relative] = content
+    source = phiusiil._load_source_spec(contents[_SOURCE])
+    summary = _json(contents[_PREPARATION])
+    preparation = baselines._validate_preparation_summary(summary)
+    if summary["source_spec_sha256"] != pins[_SOURCE] or not phiusiil._matches_exactly(
+        summary["declared_sources"], source
+    ):
+        raise SourceExecutionError("public_source_chain_mismatch")
+    split = preparation["splits"]["group_test"]
+    if split["domain_count"] > split["row_count"]:
+        raise SourceExecutionError("invalid_domain_count")
+    return {
+        "expected_sha256": preparation["output_hashes"]["group_test.jsonl"],
+        "source_csv_sha256": preparation["source_csv_sha256"],
+        "suffix_rules_sha256": source["public_suffix_list"]["sha256"],
+        "expected_row_count": split["row_count"],
+        "expected_domain_count": split["domain_count"],
+        "expected_class_counts": dict(split["class_counts"]),
+    }
+
+
+def _output_paths(binding, paths):
+    if (
+        type(paths) is not InternalRunPaths
+        or type(paths.artifacts) is not ArtifactPaths
+    ):
+        raise SourceExecutionError("invalid_run_paths")
+    for path in (paths.attempt, paths.public_summary):
+        absolute = execution_receipt._absolute_path(path)
+        if absolute.is_relative_to(binding.root):
+            raise SourceExecutionError("outputs_must_be_outside_checkout")
+        with execution_receipt._directory(absolute.parent) as parent:
+            execution_receipt._require_absent(parent, absolute.name)
+    if paths.public_summary.absolute().is_relative_to(paths.attempt.absolute()):
+        raise SourceExecutionError("public_summary_inside_attempt")
+
+
+def _secondary(produced):
+    population = produced.population
+    columns = {
+        "length_only": "length_probability",
+        "logistic_l1": "stage1_probability",
+        "transformer": "transformer_probability",
+        "cascade": "cascade_probability",
+    }
+    metrics = {
+        model: asdict(
+            secondary_metrics.secondary_metrics(
+                population.records,
+                tuple(
+                    secondary_metrics.ScorePrediction(
+                        row.record.record_id, getattr(row, column)
+                    )
+                    for row in produced.rows
+                ),
+                population.predictions[model],
+            )
+        )
+        for model, column in columns.items()
+    }
+    positives = tuple(row for row in population.records if row.label == 1)
+    positive_ids = {row.record_id for row in positives}
+    predictions = {
+        model: tuple(row for row in values if row.record_id in positive_ids)
+        for model, values in population.predictions.items()
+    }
+    contrasts = {
+        "internal_logistic_minus_length": secondary_metrics.exact_mcnemar(
+            positives, predictions["logistic_l1"], predictions["length_only"]
+        ),
+        "internal_cascade_minus_logistic": secondary_metrics.exact_mcnemar(
+            positives, predictions["cascade"], predictions["logistic_l1"]
+        ),
+        "external_gold_logistic_minus_length": None,
+        "external_gold_cascade_minus_logistic": None,
+    }
+    return {
+        "schema_version": 1,
+        "metrics": metrics,
+        "mcnemar": {
+            key: asdict(value) if value is not None else None
+            for key, value in contrasts.items()
+        },
+        "holm": asdict(secondary_metrics.holm_ablation_family(contrasts)),
+    }
+
+
+def _run_bound_internal(binding: ExecutionBinding, paths: InternalRunPaths) -> Path:
+    """Compose the boundary on fixtures; this helper grants no research access."""
+    attempt = None
+    publishing = False
+    stage = "public_preflight"
+    try:
+        recheck_binding(binding)
+        source = _public_sources(binding)
+        _output_paths(binding, paths)
+        pins = dict(binding.source_hashes)
+        identity = {
+            "kind": "internal_evaluation",
+            "revision": binding.revision,
+            "execution_contract_sha256": binding.contract_sha256,
+            "source_spec_sha256": pins[_SOURCE],
+            "preparation_summary_sha256": pins[_PREPARATION],
+            "runtime_sha256": sha256(binding.runtime_json.encode()).hexdigest(),
+            "partition_sha256": source["expected_sha256"],
+            "source_csv_sha256": source["source_csv_sha256"],
+            "suffix_rules_sha256": source["suffix_rules_sha256"],
+        }
+        stage = "reservation"
+        attempt = reserve_attempt(paths.attempt, identity=identity)
+        stage = "suffix_rules"
+        suffix_bytes = _read_file_once(paths.suffix_rules)
+        if sha256(suffix_bytes).hexdigest() != source["suffix_rules_sha256"]:
+            raise SourceExecutionError("suffix_hash_mismatch")
+        rules = protocol_preflight.parse_suffix_rules(suffix_bytes.decode("utf-8"))
+        stage = "model_loading"
+        with open_bound_session(binding, paths.artifacts) as session:
+            stage = "partition"
+            content = _read_file_once(paths.partition)
+            prepared = evaluation_producer.parse_internal_partition(
+                content,
+                suffix_rules=rules,
+                **source,
+            )
+            stage = "scoring"
+            produced = evaluation_producer.produce_internal_evidence(prepared, session)
+            secondary = _secondary(produced)
+        stage = "final_binding"
+        recheck_binding(binding)
+        stage = "summary"
+        if set(produced.public_summary) != _PUBLIC_FIELDS or set(
+            produced.private_outputs
+        ) != {"predictions.jsonl", "manifests.json", "bindings.json"}:
+            raise SourceExecutionError("unexpected_public_fields")
+        private = dict(produced.private_outputs)
+        private["secondary.json"] = evaluation_producer._json_bytes(secondary)
+        public = {
+            "schema_version": 1,
+            "row_count": len(produced.rows),
+            "domain_count": prepared.domain_count,
+            "class_counts": dict(zip(("0", "1"), prepared.class_counts)),
+            "offline_inference_counts": asdict(produced.inference_counts),
+            "manifests": {
+                str(bp): evaluation_producer._manifest_summary(value)
+                for bp, value in produced.manifests.items()
+            },
+            "primary": asdict(produced.primary),
+        }
+        public.update(
+            {
+                "status": "internal_evidence_published",
+                "source_binding": "authenticated_public_preparation",
+                "protected_evaluation_authorized": binding.protected_evaluation_ready,
+                "execution": {
+                    **identity,
+                    "reservation_sha256": attempt.reservation_sha256,
+                },
+                "secondary": secondary,
+                "private_sha256": {
+                    name: sha256(value).hexdigest() for name, value in private.items()
+                },
+            }
+        )
+        public = _json(evaluation_producer._json_bytes(public))
+        stage = "publication"
+        publishing = True
+        return publish_completion(
+            attempt,
+            private_outputs=private,
+            public_summary=public,
+            public_path=paths.public_summary,
+        )
+    except Exception as exc:
+        if attempt is not None and not publishing:
+            try:
+                record_failure(attempt, stage=stage, error_type=type(exc).__name__)
+            except Exception:
+                # A reservation still records an incomplete attempt if finalization fails.
+                raise SourceExecutionError(
+                    f"{stage}: failure_record_incomplete"
+                ) from None
+        raise SourceExecutionError(f"{stage}: {type(exc).__name__}") from None
+
+
+def run_internal_evaluation(
+    root: Path,
+    *,
+    expected_revision: str,
+    expected_contract_sha256: str,
+    paths: InternalRunPaths,
+) -> Path:
+    """Require a complete frozen profile before any supplied-path inspection.
+
+    The current profile always returns False. There is no override parameter;
+    adding secondary artifacts and complete output coverage requires a separately
+    reviewed execution-profile change before this command can process records.
+    """
+    binding = bind_execution(
+        root,
+        expected_revision=expected_revision,
+        expected_contract_sha256=expected_contract_sha256,
+    )
+    if not binding.protected_evaluation_ready:
+        raise SourceExecutionError("pre_access_freeze_incomplete")
+    return _run_bound_internal(binding, paths)
+
+
+def run_internal_process(
+    root: Path,
+    *,
+    expected_revision: str,
+    expected_contract_sha256: str,
+    paths: InternalRunPaths,
+) -> dict:
+    """Accept evidence only after a fresh worker exits successfully and verifies."""
+    binding = bind_execution(
+        root,
+        expected_revision=expected_revision,
+        expected_contract_sha256=expected_contract_sha256,
+    )
+    if not binding.protected_evaluation_ready:
+        raise SourceExecutionError("pre_access_freeze_incomplete")
+    from .source_completion import verify_internal_completion
+
+    command = [
+        sys.executable,
+        str(binding.root / "scripts/run_internal_evaluation.py"),
+        "--worker",
+        "--repo-root",
+        str(binding.root),
+        "--expected-revision",
+        expected_revision,
+        "--expected-contract-sha256",
+        expected_contract_sha256,
+    ]
+    for name, path in (
+        ("partition", paths.partition),
+        ("suffix-rules", paths.suffix_rules),
+        ("length-only", paths.artifacts.length_only),
+        ("logistic-l1", paths.artifacts.logistic_l1),
+        ("transformer-bundle", paths.artifacts.transformer_bundle),
+        ("gmm", paths.artifacts.gmm),
+        ("attempt", paths.attempt),
+        ("public-summary", paths.public_summary),
+    ):
+        command.extend((f"--{name}", str(path)))
+    try:
+        result = subprocess.run(command, capture_output=True, check=False)
+    except OSError:
+        raise SourceExecutionError("worker_launch_failed") from None
+    return verify_internal_completion(
+        binding, paths, producer_exit_code=result.returncode
+    )

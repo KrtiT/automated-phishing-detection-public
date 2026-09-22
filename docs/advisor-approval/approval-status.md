@@ -121,14 +121,25 @@ paired scores, monitor features, primary evaluation and all three replay
 manifests in memory. It rejects unopened, closed or wrong-thread scoring
 sessions before inference. The external adapter applies publisher-label,
 duplicate, domain-overlap and quarantine rules to normalized synthetic rows.
-Neither utility authenticates the actual source files or the publisher schema;
-they are components of the pending source-to-results command, not that command.
+The September 22 internal runner adds public source/preparation authentication,
+durable reservation before supplied PSL, model-artifact or partition access,
+safe single-read handling of PSL and partition bytes, and publication after owner
+teardown and final binding checks. The parent process
+accepts outputs only after the worker exits successfully and its receipt and
+saved files verify. Synthetic tests exercise these boundaries. Both process
+entry points remain closed under the current incomplete execution profile;
+there is no override flag. External publisher-schema verification and complete
+secondary-output integration remain separate work.
 
 The [secondary-analysis supplement](../../data/secondary-analysis-contract-v1.json)
 fixes score metrics, calibration bins, low-FPR recall, exact McNemar contrasts
 and the four-comparison Holm family. Those calculations are implemented and
-tested. MMD, PSI, perturbation and shortcut procedures are specified; their
-remaining implementation and development-only fits precede protected scoring.
+tested. MMD and PSI reference, window, calibration and audit calculations are
+now implemented on standardized synthetic arrays. The three independent URL
+perturbations and five formatting indicators also have executable known-answer
+tests. No research reference, comparator boundary or secondary model was fitted.
+Training provenance, fixed calibration/audit allocation and remaining secondary
+fits must be connected before protected scoring.
 Seeds 42-46 and Random Forest remain declared work, with fit/runtime/calibration
 contracts still required. No additional fitting follows from the no-fit
 singleton amendment.
@@ -137,10 +148,10 @@ Execution binding now uses the fixed
 [v2 profile](../../data/execution-binding-contract-v2.json), SHA-256
 `887f771381927dfe1b9268a45f4e605baf3e9a7caee2b7005cdfe68b1be516e1`,
 which adds both supplements and the unchanged v1 profile to its public pins.
-The runtime and historical pins are unchanged. The authenticated single-pass
-runner, remaining secondary development procedures and final pre-access review
-remain outstanding. This increment accessed no protected records, loaded no
-research models and produced no research measurements.
+The runtime and historical pins are unchanged. External file/schema integration,
+remaining secondary development procedures and complete output coverage still
+precede the final pre-access review. This increment accessed no protected records,
+loaded no research models and produced no research measurements.
 
 The preflight-stop receipt has SHA-256
 `6f27b23a88e40455a186ce21cddebec0f9ab827919c663b345a6a14ca14bb670`.

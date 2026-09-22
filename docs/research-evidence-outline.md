@@ -591,7 +591,8 @@ with the service owner lifecycle, including a post-restoration identity check.
 the public completion marker without replacing existing records. Installed
 records survive failure; acceptance requires successful producer exit and
 verification of all installed evidence, not merely the presence of a marker.
-The official source-to-results producer is still an integration task.
+The internal file/process composition is now implemented; complete secondary
+output coverage and external source execution remain integration tasks.
 
 `evaluation_producer.parse_internal_partition` checks the supplied bytes against
 an expected hash before parsing, then validates canonical rows, source IDs,
@@ -600,9 +601,28 @@ fresh owner-thread session before any scoring and makes one in-memory pass for
 all four detectors, portable monitor features and NLLs. It returns paired
 evidence, private payloads, primary evaluation and the three replay manifests,
 or an explicit capacity shortfall. Caller-supplied hashes do not authenticate a
-file by themselves. The official wrapper still needs to reserve an attempt
-before reading, authenticate the source bindings, hash and parse the same
-bytes, enforce process exit and publish verified results.
+file by themselves. `source_runner` now derives those pins from the authenticated
+public source and preparation records, checks their exact cross-binding, and
+reserves an attempt before reading PSL, models or partition bytes. It hashes the
+same PSL and partition buffers that it parses, rejecting aliases and changes to
+the open file or its pathname. It composes primary evidence and secondary score
+metrics, closes the owner, and rechecks the execution binding before publishing.
+Outputs stay outside the clean authenticated checkout. Failure after publication
+starts does not replace the installed claim or imply successful completion.
+
+`scripts/run_internal_evaluation.py` uses a fresh worker process. Its parent
+requires a successful worker exit and independent completion verification,
+including the reservation, claim, outcome and saved-file hashes. Captured child
+diagnostics are not forwarded into public records. Both parent and worker stop
+before supplied-input path access under the current profile, whose readiness
+remains false. The private composition is tested on temporary invented files;
+there is no flag to enable protected access. Completing the remaining secondary
+models and one-pass outputs requires a reviewed future profile, not a command-line
+bypass. Receipt verification establishes execution consistency, not scientific
+truth or a replacement for recomputing analyses from saved evidence. It checks
+fixed gate and role semantics but does not recompute prediction or manifest
+contents; model identities and carried-forward cutoffs remain authenticated by
+the worker's loader, not by a second artifact read in the parent.
 
 `phishvn.prepare_external_rows` implements the frozen mapping and preparation
 rules on normalized records. Declared all-split coverage and file positions are
@@ -622,8 +642,22 @@ the fixed four-contrast Holm family are secondary, dependence-limited summaries;
 they do not replace the primary domain-clustered intervals. Missing strata stay
 explicit and retain their place in the multiplicity family. The
 [secondary supplement](../data/secondary-analysis-contract-v1.json) also specifies
-MMD, PSI, perturbations and shortcut checks. Their remaining implementation,
-secondary seed/RF fit contracts, calibration and development execution must be
+MMD, PSI, perturbations and shortcut checks. `secondary_drift.py` implements
+training-reference selection, biased RBF MMD, featurewise PSI, complete 256/64
+windows and independent strict-boundary calibration/audit functions. It receives
+already standardized arrays; callers must bind training provenance and the
+original calibration/audit allocation. No reference or boundary has been fitted
+on research records in this increment.
+
+`secondary_probes.py` preserves original URL spelling and returns three separate
+operator outputs with eligibility and changed status. Inputs retain the primary
+canonical-url acceptance rules. Uppercase indicators mean presence of at least
+one ASCII uppercase letter; the host excludes userinfo and port. Explicit default
+ports compare numerically, including leading zeros. Path encoding skips existing
+percent escapes; percent-case inspection covers every raw component. Eligible
+no-ops remain distinct from ineligible unchanged inputs. Probes inherit no label.
+The five formatting indicators are implemented, but their classifier is not fit.
+Secondary fit/runtime/calibration contracts and development execution must be
 completed before protected evaluation. The supplement is development-informed,
 not a retroactive claim that these details preceded all development observations.
 
@@ -671,10 +705,10 @@ conventions without changing the frozen workload or H3 definition.
 
 | Order | Work product | What completion must demonstrate |
 |---|---|---|
-| 1 | Complete paired evaluator integration | Internal parsing and single-pass in-memory production are implemented on fixtures. Finish authenticated file/process execution, secondary-output composition and atomic publication. The singleton convention is adopted by explicit amendment, not equivalence acceptance. |
+| 1 | Complete paired evaluator integration | Internal file/process execution, primary/score-metric composition and receipt verification are implemented on fixtures behind the closed readiness gate. Complete remaining secondary-model outputs and external execution before opening that gate. The singleton convention is adopted by explicit amendment, not equivalence acceptance. |
 | 2 | Composed H2 policy replay | Full-stream routing followed by outcome-stratum selection and normalized external preparation are implemented on fixtures. Bind the verified publisher schema, complete source inventory and saved-score inputs. Preserve the failed development false-alert component; this characterizes RQ2 and cannot rescue H2. |
 | 3 | Selective inference service and real-HTTP harness | Fixed cascade, transformer-only and serialized live-monitor modes are tested, including real TCP, phase reset and offline trace agreement. Bind service, client, process lifecycle and saved outputs in the official producer before measurements. |
-| 4 | Frozen evaluation and replay-manifest contracts | Sampling, stream integration, runtime identity and all three workloads have supplements. Secondary score metrics are implemented; remaining development procedures and fit/calibration contracts must precede the complete pre-access freeze. |
+| 4 | Frozen evaluation and replay-manifest contracts | Sampling, stream integration, runtime identity and all three workloads have supplements. Secondary score, MMD/PSI and probe calculations are implemented. Complete development provenance/calibration, secondary fits and their contracts before the pre-access freeze. |
 | 5 | Independent execution and one gate table | The single internal raw-partition pass produces paired predictions and replay manifests. Later HTTP runs use only those manifests. External schema verification, preparation, and evaluation follow the separate frozen access sequence. |
 
 The existing offline cascade scorer accepts transformer probabilities for every

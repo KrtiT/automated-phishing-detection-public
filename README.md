@@ -16,7 +16,15 @@ pre-access freeze. Secondary development code connects MMD/PSI to the original
 monitor representation and implements the fixed formatting, label-permutation
 and Random Forest models. A separate authenticated development runner now saves
 each comparison before starting the next and verifies the complete worker output.
-These paths are tested on invented examples, not yet run on research data.
+The first development-only attempt ran on September 22 and stopped at Random
+Forest. Drift, formatting and all five permutation controls retained their
+outputs; the family was not accepted and no retry occurred. The
+[attempt record](reports/secondary-development-v1-attempt-1.json) includes all
+preliminary child summaries and the failed receipts. Some permutation controls
+have validation ROC AUC above 0.5, an unresolved observation rather than a clean
+negative-control result. An invented-input diagnostic also reproduces an RF
+leaf-normalization defect. The frozen v1 method is not to be retried; its
+correction and improved failure diagnostics precede a separate execution.
 Additional transformer seed procedures, perturbation replay and external source
 integration remain. No group-test or external result is claimed.
 

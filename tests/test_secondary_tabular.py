@@ -3,6 +3,7 @@
 import importlib.util
 import json
 from dataclasses import FrozenInstanceError
+from itertools import islice, permutations
 
 import numpy as np
 import pytest
@@ -70,6 +71,42 @@ def test_real_secondary_fit_roundtrip_and_frozen_validation_threshold(tabular, k
     assert "validation_labels" not in artifact
     with pytest.raises(FrozenInstanceError):
         result.artifact_bytes = b"replaced"
+
+
+def test_frozen_v1_diagnostic_rf_leaf_renormalization(tabular, monkeypatch):
+    # Characterize the known v1 rejection, not a fix or a research-failure diagnosis.
+    urls = tuple(
+        "https://invented.example/" + "".join(path)
+        for path in islice(permutations("abcde"), 19)
+    )
+    assert len(set(urls)) == 19
+    assert len(set(map(tuple, tabular._features(urls, "random_forest")))) == 1
+    original = tabular._fit_forest
+    observed = []
+
+    def capture(train, labels, validation):
+        result = original(train, labels, validation)
+        observed.append((result[0], result[1].copy(), validation.copy()))
+        return result
+
+    monkeypatch.setattr(tabular, "_fit_forest", capture)
+    with pytest.raises(
+        tabular.SecondaryTabularError,
+        match="^portable scores differ from fitted estimator$",
+    ):
+        tabular.fit_random_forest(urls[:17], (0,) * 11 + (1,) * 6, urls[17:], (0, 1))
+    assert len(observed) == 1
+    state, sklearn_scores, validation = observed[0]
+    with tabular._numerical_runtime():
+        direct = np.zeros((len(validation), 2), dtype=np.float64)
+        for tree in state["trees"]:
+            tabular._validate_tree(tree, validation.shape[1])
+            assert tree["children_left"] == [-1]
+            direct += np.asarray(tree["value"][0], dtype=np.float64)
+        direct /= len(state["trees"])
+        renormalized = tabular._forest_scores(state, validation)
+    np.testing.assert_array_equal(direct[:, 1], sklearn_scores)
+    assert not np.array_equal(renormalized, sklearn_scores)
 
 
 def test_formatting_feature_order_and_baseline_settings_are_carried_forward(tabular):

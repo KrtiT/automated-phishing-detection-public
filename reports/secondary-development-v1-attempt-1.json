@@ -1,0 +1,548 @@
+{
+  "schema_version": 1,
+  "record_kind": "secondary_development_attempt_accounting",
+  "analysis_stage": "development_validation_only",
+  "date": "2026-09-22",
+  "status": "failed_partial_evidence_retained",
+  "aggregate_accepted": false,
+  "execution": {
+    "development_profile_sha256": "67146228d636c16f02484998741c7a1545da68b209e693620efab22b2676cd43",
+    "execution_contract_sha256": "887f771381927dfe1b9268a45f4e605baf3e9a7caee2b7005cdfe68b1be516e1",
+    "kind": "secondary_development",
+    "methods_contract_sha256": "f592352593ae64b178a468d5800e780267275a62046a05b31b952f69e424f44f",
+    "ordered_steps": [
+      "drift",
+      "formatting",
+      "permutation_42",
+      "permutation_43",
+      "permutation_44",
+      "permutation_45",
+      "permutation_46",
+      "random_forest"
+    ],
+    "pins": {
+      "baseline_contract_sha256": "05d6d0831def7d26448c8dbdc8117800ea2448cdfc2aca2ad95489f22d2d11ba",
+      "gmm_artifact_sha256": "a01a8b143c2423df57a153462cc47e79822ad1c6768213dc69e03683d4009745",
+      "gmm_contract_sha256": "22d32088b05e74432704f9671ab76ba28b4f573ead418846b23bc366315cb393",
+      "logistic_l1_artifact_sha256": "71a3e24a0283a31ba188bc7dd60b18c1b708370b9ca275d5ab1a1004680c968a",
+      "preparation_summary_sha256": "1a85a7eecc0f5baa7c59e03a0cbde63fd4595409feb918dc5ff916ead7cd5c9e",
+      "source_csv_sha256": "a236549cd369cd80bd478ff8e1779cbf44c58d5c3f79f7a51a1adbed7d06d1c6",
+      "suffix_rules_sha256": "65365c4c9a4a6f746d53aadc758ab6b08aa10bb1379fea8ac353e381bca4b62e",
+      "train_sha256": "575f2fb13a0766020e29d78bf8e633a185b381abde7060bdd1ed04cc4a5e38a0",
+      "validation_sha256": "970c6568a6400a1fc265b7809ef7bd9d1c297632799cbb88801313bc34ac415a"
+    },
+    "revision": "61ec4f74716ecfb76fed0638a0f7b3defef6bfb6",
+    "runtime_sha256": "f60e3c1486996dab72f10090de1ac615806fe53244ceb92dd571a40341803d86"
+  },
+  "execution_observation": {
+    "command": "scripts/run_secondary_development.py (parent process)",
+    "start_observed_utc": "2026-09-22 22:46:53 UTC",
+    "exit_observed_utc": "2026-09-22 22:54:12 UTC",
+    "parent_exit_code": 2,
+    "parent_error_type": "DevelopmentCompletionError",
+    "worker_exit_code": null,
+    "worker_exit_note": "The parent observed the worker exit internally, but the numeric worker exit was not retained by the command interface. The public record does not infer it from the parent exit.",
+    "successful_public_marker_present": false,
+    "retries": 0,
+    "resumes": 0
+  },
+  "failure": {
+    "member": "random_forest",
+    "error_type": "SecondaryTabularError",
+    "specific_check": "not_recorded",
+    "fitted_state_retained": false,
+    "root_outcome": {
+      "error_type": "SecondaryTabularError",
+      "reservation_sha256": "d5637cf8b7dad3f5106a1b060e24014b62e83ab9a8b94de7f73d68dea195426f",
+      "schema_version": 1,
+      "stage": "random_forest",
+      "status": "failed"
+    },
+    "member_outcome": {
+      "error_type": "SecondaryTabularError",
+      "reservation_sha256": "7e2b6d702d48f965e25ddf35f49c44a228e374fb46fcf07230f754fc13a36cd5",
+      "schema_version": 1,
+      "stage": "random_forest",
+      "status": "failed"
+    }
+  },
+  "completed_children": [
+    {
+      "member": "drift",
+      "acceptance": "producer_completed_preliminary_not_independently_accepted",
+      "public_summary_sha256": "3baf8c07f44fa6a5f545ea2615f53025135fcb2cadcf584af43668a42534f1ed",
+      "summary": {
+        "member": "drift",
+        "private_sha256": {
+          "training-reference.json": "3b15ac8a8e32960e15ecb3dc83c23261d9f811a9b76f21ca56f863e369133304",
+          "validation-audit.json": "6d74e25bf6b86e6a09d30f94c9ad4d18531209dc2e50d499a8253d693cb4126d"
+        },
+        "reservation_sha256": "273a3991b5c65ccabfaaf4c93d414508794465c65d8d17bccd9c1ce08b224fb8",
+        "result": {
+          "analysis_role": "secondary_descriptive_only",
+          "analysis_stage": "development_validation_only",
+          "contract_id": "secondary-development-v1",
+          "input_binding": "caller_supplied_expected_pins_not_authorization",
+          "input_counts": {
+            "audit_rows": 16370,
+            "calibration_rows": 16325,
+            "training_domain_count": 137973,
+            "training_rows": 166248,
+            "validation_domain_count": 29566,
+            "validation_rows": 32695
+          },
+          "input_hashes": {
+            "baseline_contract_sha256": "05d6d0831def7d26448c8dbdc8117800ea2448cdfc2aca2ad95489f22d2d11ba",
+            "gmm_artifact_sha256": "a01a8b143c2423df57a153462cc47e79822ad1c6768213dc69e03683d4009745",
+            "gmm_contract_sha256": "22d32088b05e74432704f9671ab76ba28b4f573ead418846b23bc366315cb393",
+            "logistic_l1_artifact_sha256": "71a3e24a0283a31ba188bc7dd60b18c1b708370b9ca275d5ab1a1004680c968a",
+            "preparation_summary_sha256": "1a85a7eecc0f5baa7c59e03a0cbde63fd4595409feb918dc5ff916ead7cd5c9e",
+            "source_csv_sha256": "a236549cd369cd80bd478ff8e1779cbf44c58d5c3f79f7a51a1adbed7d06d1c6",
+            "suffix_rules_sha256": "65365c4c9a4a6f746d53aadc758ab6b08aa10bb1379fea8ac353e381bca4b62e",
+            "train_sha256": "575f2fb13a0766020e29d78bf8e633a185b381abde7060bdd1ed04cc4a5e38a0",
+            "validation_sha256": "970c6568a6400a1fc265b7809ef7bd9d1c297632799cbb88801313bc34ac415a"
+          },
+          "methods": {
+            "mmd": {
+              "audit_alert_count": 8,
+              "audit_alert_fraction": 0.031746031746031744,
+              "audit_window_count": 252,
+              "calibration_window_count": 252,
+              "reason": null,
+              "status": "estimated",
+              "threshold": 0.01662655786449553
+            },
+            "psi": {
+              "audit_alert_count": 11,
+              "audit_alert_fraction": 0.04365079365079365,
+              "audit_window_count": 252,
+              "calibration_window_count": 252,
+              "reason": null,
+              "status": "estimated",
+              "threshold": 0.12001239829542137
+            }
+          },
+          "private_sha256": {
+            "training-reference.json": "3b15ac8a8e32960e15ecb3dc83c23261d9f811a9b76f21ca56f863e369133304",
+            "validation-audit.json": "6d74e25bf6b86e6a09d30f94c9ad4d18531209dc2e50d499a8253d693cb4126d"
+          },
+          "protected_evaluation_authorized": false,
+          "schema_version": 1,
+          "status": "completed_development_validation"
+        },
+        "root_reservation_sha256": "d5637cf8b7dad3f5106a1b060e24014b62e83ab9a8b94de7f73d68dea195426f",
+        "schema_version": 1,
+        "status": "development_member_completed"
+      }
+    },
+    {
+      "member": "formatting",
+      "acceptance": "producer_completed_preliminary_not_independently_accepted",
+      "public_summary_sha256": "de00a88003e02542f9e0d8e866d46e976bbb8ce82ab0faf783f0302776674165",
+      "summary": {
+        "member": "formatting",
+        "private_sha256": {
+          "model.json": "f7d9b6623e116c11a270ab51e60126e0b9685bd7958c3870e4030ba2ebb58119",
+          "scoring-audit.json": "8817189f5b443b47ca784abd49420b242b090679115411dcc6f488786927aa57",
+          "threshold.json": "bdc92faa3ddff27348f3a5e2e74dc37c4102eec36e3c147ae1768a3aeb9b25b0",
+          "validation-predictions.jsonl": "350cffc38d1ac5d54fdfddb2a61c060352e3d63a861dfe2ee381cc2f8a5f214c"
+        },
+        "reservation_sha256": "ea852f52ad661ee3e4415d54329e058e2ce0c341f7b96d7da7ec4b955497eee9",
+        "result": {
+          "analysis_role": "descriptive_secondary_not_primary",
+          "class_counts": {
+            "0": 20209,
+            "1": 12486
+          },
+          "model_kind": "formatting",
+          "row_count": 32695,
+          "score_metrics": {
+            "average_precision": 0.7276290800643961,
+            "roc_auc": 0.7796732340221048
+          },
+          "scoring_audit": {
+            "batch_size": 1,
+            "max_absolute_decision_difference": 0,
+            "max_absolute_probability_difference": 0,
+            "platform_identity": {
+              "numpy_blas_name": "scipy-openblas",
+              "platform_machine": "arm64",
+              "sys_platform": "darwin"
+            },
+            "portable_exact_parity": true,
+            "threshold_role": "secondary_descriptive_operating_point",
+            "warning_records": []
+          },
+          "seed": 42,
+          "validation_threshold": {
+            "candidate_count": 4,
+            "counts": {
+              "false_negative": 5502,
+              "false_positive": 0,
+              "negative": 20209,
+              "positive": 12486,
+              "true_negative": 20209,
+              "true_positive": 6984
+            },
+            "fpr_upper_95": 0.00014822654483381375,
+            "observed_fpr": 0,
+            "recall": 0.5593464680442095,
+            "status": "selected",
+            "threshold": 0.999925571711023
+          }
+        },
+        "root_reservation_sha256": "d5637cf8b7dad3f5106a1b060e24014b62e83ab9a8b94de7f73d68dea195426f",
+        "schema_version": 1,
+        "status": "development_member_completed"
+      }
+    },
+    {
+      "member": "permutation_42",
+      "acceptance": "producer_completed_preliminary_not_independently_accepted",
+      "public_summary_sha256": "c0f3c66410636b23b96ff161a4f79dbeb02b1277005cc1b17718ae6f42e5eb4a",
+      "summary": {
+        "member": "permutation_42",
+        "private_sha256": {
+          "model.json": "b6f28d37c59575ffc42cc08dd6b942f4831256280ceea0c3094c5a3460215792",
+          "scoring-audit.json": "c729ec27d6d5c3d48f3c07bcaf830c0efa0358f793eb3f54d775fe760677845b",
+          "threshold.json": "4cbca2f0b593463b2ccd21f56e87cb5673d35406e2b7f71bbe289c26dbfc2333",
+          "validation-predictions.jsonl": "42f16e0dd01bc0beca9f8e4a91db0850abb5573aff37838e1d2b67438f75463c"
+        },
+        "reservation_sha256": "99d7d590ac1f5c69907704bf71385c910fbab300a94ea71bc24479fde06d2ea5",
+        "result": {
+          "analysis_role": "descriptive_secondary_not_primary",
+          "class_counts": {
+            "0": 20209,
+            "1": 12486
+          },
+          "model_kind": "permutation",
+          "row_count": 32695,
+          "score_metrics": {
+            "average_precision": 0.4870988200440637,
+            "roc_auc": 0.4717998513325275
+          },
+          "scoring_audit": {
+            "batch_size": 1,
+            "max_absolute_decision_difference": 2.220446049250313e-16,
+            "max_absolute_probability_difference": 2.220446049250313e-16,
+            "platform_identity": {
+              "numpy_blas_name": "scipy-openblas",
+              "platform_machine": "arm64",
+              "sys_platform": "darwin"
+            },
+            "portable_exact_parity": true,
+            "threshold_role": "secondary_descriptive_operating_point",
+            "warning_records": []
+          },
+          "seed": 42,
+          "validation_threshold": {
+            "candidate_count": 12880,
+            "counts": {
+              "false_negative": 10863,
+              "false_positive": 178,
+              "negative": 20209,
+              "positive": 12486,
+              "true_negative": 20031,
+              "true_positive": 1623
+            },
+            "fpr_upper_95": 0.00996796597890856,
+            "observed_fpr": 0.008807956850908011,
+            "recall": 0.1299855838539164,
+            "status": "selected",
+            "threshold": 0.5042071644591366
+          }
+        },
+        "root_reservation_sha256": "d5637cf8b7dad3f5106a1b060e24014b62e83ab9a8b94de7f73d68dea195426f",
+        "schema_version": 1,
+        "status": "development_member_completed"
+      }
+    },
+    {
+      "member": "permutation_43",
+      "acceptance": "producer_completed_preliminary_not_independently_accepted",
+      "public_summary_sha256": "c0090c6a9daf0cccd47664f5f7c3e9c15ed74ecee02a8f91931e23db8105af0b",
+      "summary": {
+        "member": "permutation_43",
+        "private_sha256": {
+          "model.json": "f3cf518d102f4719be2b9b86519358c131a0b1619b2af298a5811a40ae884d16",
+          "scoring-audit.json": "2259362e7c5ff778e5ce46b78634e56fa83ec513cdd3fc83e5b21dbd3ac6abb4",
+          "threshold.json": "b1ca9a87da50601588e809e10c0a89bdfeed3c08f0b17cb4d696e5e05793fa0f",
+          "validation-predictions.jsonl": "25cbd03f9114f1aea8093a2d9eda73025fd12f763703b4d92cd0e95472b14350"
+        },
+        "reservation_sha256": "8cbd189cad01dca149894133af46f480890bd6e29c94f20b7d99d06d44079cb3",
+        "result": {
+          "analysis_role": "descriptive_secondary_not_primary",
+          "class_counts": {
+            "0": 20209,
+            "1": 12486
+          },
+          "model_kind": "permutation",
+          "row_count": 32695,
+          "score_metrics": {
+            "average_precision": 0.6717988219418739,
+            "roc_auc": 0.6418615936790667
+          },
+          "scoring_audit": {
+            "batch_size": 1,
+            "max_absolute_decision_difference": 4.440892098500626e-16,
+            "max_absolute_probability_difference": 2.220446049250313e-16,
+            "platform_identity": {
+              "numpy_blas_name": "scipy-openblas",
+              "platform_machine": "arm64",
+              "sys_platform": "darwin"
+            },
+            "portable_exact_parity": true,
+            "threshold_role": "secondary_descriptive_operating_point",
+            "warning_records": []
+          },
+          "seed": 43,
+          "validation_threshold": {
+            "candidate_count": 12880,
+            "counts": {
+              "false_negative": 8026,
+              "false_positive": 175,
+              "negative": 20209,
+              "positive": 12486,
+              "true_negative": 20034,
+              "true_positive": 4460
+            },
+            "fpr_upper_95": 0.009810484431152821,
+            "observed_fpr": 0.008659508139937652,
+            "recall": 0.35720006407176036,
+            "status": "selected",
+            "threshold": 0.5031540848581733
+          }
+        },
+        "root_reservation_sha256": "d5637cf8b7dad3f5106a1b060e24014b62e83ab9a8b94de7f73d68dea195426f",
+        "schema_version": 1,
+        "status": "development_member_completed"
+      }
+    },
+    {
+      "member": "permutation_44",
+      "acceptance": "producer_completed_preliminary_not_independently_accepted",
+      "public_summary_sha256": "b38fb6ca4e0d85222a1432870ae31827719fa22335bfccecc0b6a35db6ed8fe6",
+      "summary": {
+        "member": "permutation_44",
+        "private_sha256": {
+          "model.json": "6fd1f0218b8e667d274bb0d7c11859d4fc3ff764776990dbd8dd603c9573de67",
+          "scoring-audit.json": "309af938a2bfa7fb0fa6968404bb29bfe531832c0b34735fbebae5bd07261d34",
+          "threshold.json": "207ac8019c1f57d62cce229dec2db8fb96405d60ccbc0b0f4ed7c3cf75f8b590",
+          "validation-predictions.jsonl": "a91c8374e0f74fd2f13beadb08df367017a48eaff3ca33a7cfa531a9fe44775d"
+        },
+        "reservation_sha256": "f519af8ce20573872bd07641155351ab4619efbf0cf5f3d5eb1f296e052c6109",
+        "result": {
+          "analysis_role": "descriptive_secondary_not_primary",
+          "class_counts": {
+            "0": 20209,
+            "1": 12486
+          },
+          "model_kind": "permutation",
+          "row_count": 32695,
+          "score_metrics": {
+            "average_precision": 0.5205932202303077,
+            "roc_auc": 0.5486743202760688
+          },
+          "scoring_audit": {
+            "batch_size": 1,
+            "max_absolute_decision_difference": 1.1102230246251565e-16,
+            "max_absolute_probability_difference": 2.220446049250313e-16,
+            "platform_identity": {
+              "numpy_blas_name": "scipy-openblas",
+              "platform_machine": "arm64",
+              "sys_platform": "darwin"
+            },
+            "portable_exact_parity": true,
+            "threshold_role": "secondary_descriptive_operating_point",
+            "warning_records": []
+          },
+          "seed": 44,
+          "validation_threshold": {
+            "candidate_count": 12880,
+            "counts": {
+              "false_negative": 11236,
+              "false_positive": 176,
+              "negative": 20209,
+              "positive": 12486,
+              "true_negative": 20033,
+              "true_positive": 1250
+            },
+            "fpr_upper_95": 0.009862987029358838,
+            "observed_fpr": 0.008708991043594438,
+            "recall": 0.10011212558065033,
+            "status": "selected",
+            "threshold": 0.5058518481954868
+          }
+        },
+        "root_reservation_sha256": "d5637cf8b7dad3f5106a1b060e24014b62e83ab9a8b94de7f73d68dea195426f",
+        "schema_version": 1,
+        "status": "development_member_completed"
+      }
+    },
+    {
+      "member": "permutation_45",
+      "acceptance": "producer_completed_preliminary_not_independently_accepted",
+      "public_summary_sha256": "eebfdfbc772ffb59e2f5b1613ca4a7f30c43d2a3184d263688eea369c016a6be",
+      "summary": {
+        "member": "permutation_45",
+        "private_sha256": {
+          "model.json": "8aba0d802558a3d3c29f0b3ff457e8157353078b47c0783e82c570c605c79ac6",
+          "scoring-audit.json": "2259362e7c5ff778e5ce46b78634e56fa83ec513cdd3fc83e5b21dbd3ac6abb4",
+          "threshold.json": "10ef8e9cb6d822b84c8b9a95de5121d0883467b64289ee3660a2c8b0e80425fe",
+          "validation-predictions.jsonl": "28d3d1cb73f93f597f36062c7e68a4572bfa60f8afedc2ef7aee37894391579d"
+        },
+        "reservation_sha256": "a582ba9b3e193a7b46bb68ab0f7b6de4581091855bc377616374f307d7f5e648",
+        "result": {
+          "analysis_role": "descriptive_secondary_not_primary",
+          "class_counts": {
+            "0": 20209,
+            "1": 12486
+          },
+          "model_kind": "permutation",
+          "row_count": 32695,
+          "score_metrics": {
+            "average_precision": 0.40269829431318366,
+            "roc_auc": 0.39400472534384734
+          },
+          "scoring_audit": {
+            "batch_size": 1,
+            "max_absolute_decision_difference": 4.440892098500626e-16,
+            "max_absolute_probability_difference": 2.220446049250313e-16,
+            "platform_identity": {
+              "numpy_blas_name": "scipy-openblas",
+              "platform_machine": "arm64",
+              "sys_platform": "darwin"
+            },
+            "portable_exact_parity": true,
+            "threshold_role": "secondary_descriptive_operating_point",
+            "warning_records": []
+          },
+          "seed": 45,
+          "validation_threshold": {
+            "candidate_count": 12880,
+            "counts": {
+              "false_negative": 11756,
+              "false_positive": 178,
+              "negative": 20209,
+              "positive": 12486,
+              "true_negative": 20031,
+              "true_positive": 730
+            },
+            "fpr_upper_95": 0.00996796597890856,
+            "observed_fpr": 0.008807956850908011,
+            "recall": 0.05846548133909979,
+            "status": "selected",
+            "threshold": 0.5087053417015189
+          }
+        },
+        "root_reservation_sha256": "d5637cf8b7dad3f5106a1b060e24014b62e83ab9a8b94de7f73d68dea195426f",
+        "schema_version": 1,
+        "status": "development_member_completed"
+      }
+    },
+    {
+      "member": "permutation_46",
+      "acceptance": "producer_completed_preliminary_not_independently_accepted",
+      "public_summary_sha256": "a8be2472104285d871ef71ac8daa2bebc8a2ae11c1bbba9b2b6befe64c69a2a0",
+      "summary": {
+        "member": "permutation_46",
+        "private_sha256": {
+          "model.json": "6cd9d33e49da967a558c6e74e061dbf812d5313642f28955d41dd491d58d1fb9",
+          "scoring-audit.json": "2259362e7c5ff778e5ce46b78634e56fa83ec513cdd3fc83e5b21dbd3ac6abb4",
+          "threshold.json": "bd608634fbb27886054296d9651ec0a471b4e32ae5cd08937d622b0c90c1292e",
+          "validation-predictions.jsonl": "1b7289b1f2911f281d810f7641e76751f3f698f5faa6deb6a0611bddf4655f92"
+        },
+        "reservation_sha256": "b6bd20c5dc5430c968d8da9e6168d90c3eed9676c2da85fefaad2b1b1a649a7f",
+        "result": {
+          "analysis_role": "descriptive_secondary_not_primary",
+          "class_counts": {
+            "0": 20209,
+            "1": 12486
+          },
+          "model_kind": "permutation",
+          "row_count": 32695,
+          "score_metrics": {
+            "average_precision": 0.7683120689451126,
+            "roc_auc": 0.696523061938035
+          },
+          "scoring_audit": {
+            "batch_size": 1,
+            "max_absolute_decision_difference": 4.440892098500626e-16,
+            "max_absolute_probability_difference": 2.220446049250313e-16,
+            "platform_identity": {
+              "numpy_blas_name": "scipy-openblas",
+              "platform_machine": "arm64",
+              "sys_platform": "darwin"
+            },
+            "portable_exact_parity": true,
+            "threshold_role": "secondary_descriptive_operating_point",
+            "warning_records": []
+          },
+          "seed": 46,
+          "validation_threshold": {
+            "candidate_count": 12881,
+            "counts": {
+              "false_negative": 5604,
+              "false_positive": 177,
+              "negative": 20209,
+              "positive": 12486,
+              "true_negative": 20032,
+              "true_positive": 6882
+            },
+            "fpr_upper_95": 0.009915480854183582,
+            "observed_fpr": 0.008758473947251225,
+            "recall": 0.5511773185968285,
+            "status": "selected",
+            "threshold": 0.5014918824187501
+          }
+        },
+        "root_reservation_sha256": "d5637cf8b7dad3f5106a1b060e24014b62e83ab9a8b94de7f73d68dea195426f",
+        "schema_version": 1,
+        "status": "development_member_completed"
+      }
+    }
+  ],
+  "unattempted_members": [],
+  "receipt_and_summary_sha256": {
+    "reservation.json": "d5637cf8b7dad3f5106a1b060e24014b62e83ab9a8b94de7f73d68dea195426f",
+    "outcome.json": "3d8a04e7799c693f6d462a4efd03e5e8b28742017e69bb732cad11d5ed9d1287",
+    "drift.json": "3baf8c07f44fa6a5f545ea2615f53025135fcb2cadcf584af43668a42534f1ed",
+    "formatting.json": "de00a88003e02542f9e0d8e866d46e976bbb8ce82ab0faf783f0302776674165",
+    "permutation_42.json": "c0f3c66410636b23b96ff161a4f79dbeb02b1277005cc1b17718ae6f42e5eb4a",
+    "permutation_43.json": "c0090c6a9daf0cccd47664f5f7c3e9c15ed74ecee02a8f91931e23db8105af0b",
+    "permutation_44.json": "b38fb6ca4e0d85222a1432870ae31827719fa22335bfccecc0b6a35db6ed8fe6",
+    "permutation_45.json": "eebfdfbc772ffb59e2f5b1613ca4a7f30c43d2a3184d263688eea369c016a6be",
+    "permutation_46.json": "a8be2472104285d871ef71ac8daa2bebc8a2ae11c1bbba9b2b6befe64c69a2a0",
+    "random_forest/reservation.json": "7e2b6d702d48f965e25ddf35f49c44a228e374fb46fcf07230f754fc13a36cd5",
+    "random_forest/outcome.json": "ea6378d988a23a64c9e2be438951ad4ef99332842f2d6ef65c6caa22a0e8721e"
+  },
+  "verification": {
+    "aggregate_completion": "rejected",
+    "completed_child_scientific_verification": "not_performed_after_failed_worker_exit",
+    "accounting_review": "Reviewed redacted receipts and every completed child summary, linked reservations and hashes; not an independent recomputation or acceptance of scientific outputs.",
+    "no_refit_or_original_input_reread_during_review": true
+  },
+  "access": {
+    "roles": [
+      "train",
+      "validation"
+    ],
+    "accepted_input_models": [
+      "logistic_l1",
+      "gmm"
+    ],
+    "group_test_accessed": false,
+    "external_accessed": false,
+    "additional_transformer_fits": 0,
+    "perturbation_runs": 0,
+    "primary_changes": false
+  },
+  "interpretation": [
+    "Retained summaries are preliminary evidence from a stopped family, not accepted aggregate research results.",
+    "MMD and PSI counts describe alerts among complete, overlapping development audit windows; they are not per-URL FPR or external detection results.",
+    "Original GMM audit 28/252 and H2 non-support remain unchanged. H1 and H3 remain undecided.",
+    "Formatting predictiveness is an association, not established source causation.",
+    "All five label-permutation controls remain visible. Their variation and above-chance discrimination in some members are unresolved observations, not proof of leakage, a permutation-test p-value, or validation of a clean negative control.",
+    "Validation cutoff selection and CP bounds on that same selection set do not establish deployment FPR or protected-test performance."
+  ]
+}

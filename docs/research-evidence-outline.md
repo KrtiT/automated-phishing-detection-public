@@ -651,8 +651,9 @@ Its training constructor uses the existing portable monitor probability and GMM
 scaler and receives no validation rows. The later evaluator preserves the original
 calibration/audit allocation and row order. References, bins, window membership
 and traces remain private; aggregate summaries carry their hashes. The separate
-development runner now authenticates those expected pins. No reference or
-boundary has been fitted on research records in this increment.
+development runner now authenticates those expected pins. Its first research
+attempt retained the drift comparison but stopped later at Random Forest;
+the family has not passed independent completion verification.
 
 `secondary_probes.py` preserves original URL spelling and returns three separate
 operator outputs with eligibility and changed status. Inputs retain the primary
@@ -678,8 +679,7 @@ comparison matches scikit-learn outside ordinary validation points. Threshold
 records and audits are separate outputs bound by the development runner. Fixture
 fits do not establish a research result or authenticate caller data provenance.
 
-No secondary research fitting or comparator calibration has run. The
-[development execution profile](../data/development-execution-contract-v1.json)
+The [development execution profile](../data/development-execution-contract-v1.json)
 adds the new methods binding while preserving the v2 profile. The runner reserves
 the root attempt before reading any private input and a child attempt before
 each comparison. It reads the five accepted inputs once, constructs training
@@ -698,6 +698,53 @@ Synthetic tests include actual subprocess execution and retained partial failure
 Additional transformer seed runtime/checkpoint/calibration choices and complete
 perturbation replay remain separate work. These details are development-informed,
 not a retroactive claim that they preceded all development observations.
+
+### First Secondary Development Attempt
+
+The September 22 [attempt record](../reports/secondary-development-v1-attempt-1.json)
+preserves the execution identity, failure receipts and all seven completed child
+summaries. The run used CI-passed commit `61ec4f74716ecfb76fed0638a0f7b3defef6bfb6`
+and stopped at the final Random Forest member with `SecondaryTabularError`.
+The parent exited 2; its interface did not retain the numeric worker exit.
+No aggregate was accepted, no retry occurred, and there is no unattempted tail.
+The failed RF check and fitted state were not retained. Root and child failure
+receipts remain immutable; the generic error class is not a diagnosis.
+
+These are **preliminary producer summaries from an unaccepted family**, not
+independently verified results. MMD recorded 8/252 audit-window alerts and PSI
+11/252, with 252 calibration windows each. Their boundaries were respectively
+0.01662655786449553 and 0.12001239829542137. These overlapping-window alert
+fractions are not per-URL FPR, and no independent-binomial interval is assigned.
+The original GMM 28/252 audit and H2 non-support remain unchanged.
+
+| Member | Validation AP | ROC AUC | Detected positives / 12,486 | False positives / 20,209 |
+|---|---:|---:|---:|---:|
+| Formatting | 0.727629 | 0.779673 | 6,984 | 0 |
+| Permutation 42 | 0.487099 | 0.471800 | 1,623 | 178 |
+| Permutation 43 | 0.671799 | 0.641862 | 4,460 | 175 |
+| Permutation 44 | 0.520593 | 0.548674 | 1,250 | 176 |
+| Permutation 45 | 0.402698 | 0.394005 | 730 | 178 |
+| Permutation 46 | 0.768312 | 0.696523 | 6,882 | 177 |
+| Random Forest | Not published | Not published | Not published | Not published |
+
+Counts use each member's selected CP validation cutoff; they are not independent
+test estimates or guarantees of deployment FPR. The permutation controls are not
+uniformly chance-like. Their variation is an unresolved observation, not proof
+of leakage or a permutation-test p-value. No seed is selected or discarded.
+Formatting predictiveness establishes an association, not source causation.
+H1 and H3 remain undecided.
+
+A diagnostic with 19 unique invented URLs reproduces an RF portability defect.
+The frozen v1 scorer normalizes stored leaf probabilities again; scikit-learn
+1.7.2 uses the stored probabilities directly. The fixture's fitted and portable
+predictions differ by `5.551115123125783e-17`, and the exact-parity guard stops
+publication. Direct ordered summation of the stored leaves agrees exactly with
+the estimator. This establishes a code/method defect, not the specific cause of
+the research stop. Its receipt contains only the error class, not the failed
+check. Next: freeze the arithmetic correction prospectively, retain failed-fit
+state and safe check identifiers, and independently account for the saved
+evidence before a separate execution. No fit is rerun to reconstruct missing
+evidence.
 
 The metadata-only preflight accepts no model or dataset paths:
 
@@ -746,7 +793,7 @@ conventions without changing the frozen workload or H3 definition.
 | 1 | Complete paired evaluator integration | Internal file/process execution, primary/score-metric composition and receipt verification are implemented on fixtures behind the closed readiness gate. Complete remaining secondary-model outputs and external execution before opening that gate. The singleton convention is adopted by explicit amendment, not equivalence acceptance. |
 | 2 | Composed H2 policy replay | Full-stream routing followed by outcome-stratum selection and normalized external preparation are implemented on fixtures. Bind the verified publisher schema, complete source inventory and saved-score inputs. Preserve the failed development false-alert component; this characterizes RQ2 and cannot rescue H2. |
 | 3 | Selective inference service and real-HTTP harness | Fixed cascade, transformer-only and serialized live-monitor modes are tested, including real TCP, phase reset and offline trace agreement. Bind service, client, process lifecycle and saved outputs in the official producer before measurements. |
-| 4 | Frozen evaluation and replay-manifest contracts | Sampling, stream integration, runtime identity and all three workloads have supplements. Secondary drift development and fixed tabular fits are implemented on fixtures under a separate contract. Complete authenticated development execution, transformer seed conventions and perturbation replay before the pre-access freeze. |
+| 4 | Frozen evaluation and replay-manifest contracts | Sampling, stream integration, runtime identity and all three workloads have supplements. The first authenticated secondary development attempt stopped at Random Forest; preceding outputs remain preliminary. Resolve that attempt and the control observations, transformer seed conventions and perturbation replay before the pre-access freeze. |
 | 5 | Independent execution and one gate table | The single internal raw-partition pass produces paired predictions and replay manifests. Later HTTP runs use only those manifests. External schema verification, preparation, and evaluation follow the separate frozen access sequence. |
 
 The existing offline cascade scorer accepts transformer probabilities for every

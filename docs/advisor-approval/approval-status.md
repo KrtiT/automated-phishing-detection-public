@@ -141,8 +141,8 @@ separate validation cutoffs. Its SHA-256 is
 `f592352593ae64b178a468d5800e780267275a62046a05b31b952f69e424f44f`.
 Synthetic tests exercise these paths, portable
 model round trips, training-reference separation and the original calibration/
-audit allocation. No research reference, comparator boundary or secondary model
-has been fitted. The three independent URL transformations are implemented;
+audit allocation. The first research attempt is recorded below. The three
+independent URL transformations are implemented;
 their full detector/monitor comparison remains to be connected.
 
 The separate [development execution profile](../../data/development-execution-contract-v1.json),
@@ -155,8 +155,22 @@ preserves earlier outputs and the failed or incomplete attempt; later members
 remain unattempted. There is no automatic retry or partial-success marker.
 The parent checks the actual worker exit, receipts, output identities and hashes,
 and recomputes CP thresholds, AP/AUC and drift calibration/alerts from retained
-evidence. It does not refit models or reopen source records. These execution
-paths have passed invented-input tests; no secondary research run is claimed.
+evidence. It does not refit models or reopen source records.
+
+The September 22 [first attempt](../../reports/secondary-development-v1-attempt-1.json)
+ran once from CI-passed commit `61ec4f74716ecfb76fed0638a0f7b3defef6bfb6`.
+Drift, formatting and all five permutation controls wrote their child evidence.
+Random Forest then stopped with `SecondaryTabularError`; the parent exited 2,
+and no aggregate success marker was published. No retry or resume occurred.
+The specific failed check and fitted RF state were not retained, so the receipt
+alone does not establish the cause. The public record preserves every completed
+child summary as preliminary, not independently accepted scientific output.
+
+Those summaries report MMD 8/252 and PSI 11/252 audit-window alerts, not URL FPR.
+Formatting and some permutation controls show appreciable validation ranking;
+the full five-seed results remain visible. This is an unresolved control
+observation, not proof of leakage or successful negative-control validation.
+It changes no primary model, cutoff, hypothesis gate or original GMM result.
 
 Additional transformer seeds 43-46 still
 need their training runtime, checkpoint-scoring and comparable secondary
@@ -171,8 +185,9 @@ to its public pins. It remains unchanged; the separate development profile adds
 the secondary-development binding without enabling protected evaluation.
 The runtime and historical pins are unchanged. External file/schema integration,
 remaining secondary development procedures and complete output coverage still
-precede the final pre-access review. This increment accessed no protected records,
-loaded no research models and produced no research measurements.
+precede the final pre-access review. The development attempt read only the
+accepted training/validation, PSL, Logistic-L1 and GMM inputs. It accessed no
+protected records and produced no accepted family result.
 
 The preflight-stop receipt has SHA-256
 `6f27b23a88e40455a186ce21cddebec0f9ab827919c663b345a6a14ca14bb670`.

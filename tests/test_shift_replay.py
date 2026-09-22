@@ -1,7 +1,7 @@
 """Real-socket tests use invented URLs and an instrumented synthetic monitor."""
 
 import asyncio
-import time
+import threading
 from dataclasses import replace
 from pathlib import Path
 
@@ -40,15 +40,33 @@ def test_real_socket_run_retains_order_and_excludes_warmup(replay):
 
 
 def test_timeout_is_drained_before_next_row_without_retry(replay, monkeypatch):
+    blocked, release = threading.Event(), threading.Event()
+
     class SlowMonitor(SyntheticMonitor):
         def scan_shift(self, raw_url):
             if self.position == 0:
-                time.sleep(0.08)
+                blocked.set()
+                assert release.wait(10), "client did not drain the timed-out row"
+                release.clear()
+                blocked.clear()
             return super().scan_shift(raw_url)
 
-    monkeypatch.setattr(http_replay, "DEADLINE_SECONDS", 0.04)
     plan = make_plan(shift_schema)
-    holder = []
+    holder, released_ids = [], []
+    original_drain = http_replay._drain
+
+    async def release_on_drain(client, request_ids):
+        request_ids = tuple(request_ids)
+        if blocked.is_set():
+            # The real request deadline must expire before scoring can finish.
+            assert request_ids == (
+                plan.request_id("warmup" if not released_ids else "measured", 0),
+            )
+            released_ids.extend(request_ids)
+            release.set()
+        return await original_drain(client, request_ids)
+
+    monkeypatch.setattr(http_replay, "_drain", release_on_drain)
 
     def factory():
         holder.append(SlowMonitor())
@@ -56,12 +74,16 @@ def test_timeout_is_drained_before_next_row_without_retry(replay, monkeypatch):
 
     app = shift_service.create_shift_app(factory, plan)
     with loopback_server(app) as url:
-        run = asyncio.run(replay.replay_shift_run(url, plan))
+        try:
+            run = asyncio.run(replay.replay_shift_run(url, plan))
+        finally:
+            release.set()
     assert run.warmup[0].error == "timeout"
     assert run.measured[0].error == "timeout"
     assert sum(row.error is not None for row in run.measured) == 1
     assert len(run.trace.rows) == 3
     assert run.after_measured.admitted_requests == 4
+    assert len(released_ids) == 2
     assert run.measured_timeout_drain_ms > 0
     assert len([event for event, _ in holder[0].events if event == "scan"]) == 4
 

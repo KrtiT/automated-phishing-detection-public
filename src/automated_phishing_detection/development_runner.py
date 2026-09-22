@@ -13,6 +13,8 @@ from dataclasses import asdict, dataclass
 from hashlib import sha256
 from pathlib import Path
 
+from sklearn.exceptions import ConvergenceWarning
+
 from . import (
     execution_receipt,
     fixed_cascade,
@@ -27,12 +29,50 @@ from .development_execution import (
     bind_development_execution,
     recheck_development_binding,
 )
+from .development_execution import DevelopmentExecutionError as DevelopmentBindingError
 from .execution_receipt import publish_completion, record_failure, reserve_attempt
-from .source_runner import _json, _read_file_once
+from .source_runner import SourceExecutionError, _json, _read_file_once
 
 
 class DevelopmentExecutionError(ValueError):
     """A symbolic failure without private inputs, paths, or exception details."""
+
+
+_ERROR_SYMBOLS = {
+    ConvergenceWarning: "ConvergenceWarning",
+    FloatingPointError: "FloatingPointError",
+    OverflowError: "OverflowError",
+    RuntimeWarning: "RuntimeWarning",
+    ValueError: "ValueError",
+    TypeError: "TypeError",
+    RuntimeError: "RuntimeError",
+    OSError: "OSError",
+    MemoryError: "MemoryError",
+    UnicodeError: "UnicodeError",
+    UnicodeDecodeError: "UnicodeDecodeError",
+    KeyError: "KeyError",
+    AssertionError: "AssertionError",
+    DevelopmentExecutionError: "DevelopmentExecutionError",
+    DevelopmentBindingError: "DevelopmentExecutionError",
+    SourceExecutionError: "SourceExecutionError",
+    execution_receipt.ExecutionReceiptError: "ExecutionReceiptError",
+    fixed_cascade.FixedCascadeError: "FixedCascadeError",
+    gmm_monitor.GMMMonitorError: "GMMMonitorError",
+    secondary_development.SecondaryDevelopmentError: "SecondaryDevelopmentError",
+    secondary_tabular.SecondaryTabularError: "SecondaryTabularError",
+    secondary_metrics.SecondaryMetricsError: "SecondaryMetricsError",
+}
+
+
+def _failure_symbol(error: BaseException) -> str:
+    """Retain a known causal class without copying names or messages from errors."""
+    symbol, seen = "Exception", set()
+    while isinstance(error, BaseException) and id(error) not in seen:
+        seen.add(id(error))
+        symbol = _ERROR_SYMBOLS.get(type(error), symbol)
+        # Suppressed display context still carries the original numerical failure.
+        error = error.__cause__ if error.__cause__ is not None else error.__context__
+    return symbol
 
 
 @dataclass(frozen=True)
@@ -257,6 +297,7 @@ def _run_bound_development(
             public_path=paths.public_summary,
         )
     except Exception as exc:
+        error_symbol = _failure_symbol(exc)
         failed_receipt = False
         for attempt, publishing in (
             (child_attempt, child_publishing),
@@ -264,10 +305,10 @@ def _run_bound_development(
         ):
             if attempt is not None and not publishing:
                 try:
-                    record_failure(attempt, stage=stage, error_type=type(exc).__name__)
+                    record_failure(attempt, stage=stage, error_type=error_symbol)
                 except Exception:
                     failed_receipt = True
-        reason = "failure_record_incomplete" if failed_receipt else type(exc).__name__
+        reason = "failure_record_incomplete" if failed_receipt else error_symbol
         raise DevelopmentExecutionError(f"{stage}: {reason}") from None
 
 

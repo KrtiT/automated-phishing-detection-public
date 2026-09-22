@@ -10,6 +10,7 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
+from sklearn.exceptions import ConvergenceWarning
 from test_fixed_cascade import _artifact
 from test_secondary_development import _bytes, _fixture
 
@@ -383,6 +384,66 @@ def test_child_failure_record_error_still_consumes_root_attempt(
         json.loads((paths.attempt / "outcome.json").read_bytes())["status"] == "failed"
     )
     assert not (paths.attempt / "permutation_42").exists()
+
+
+@pytest.mark.parametrize(
+    ("cause_type", "suppress_context"),
+    [(ConvergenceWarning, False), (FloatingPointError, True)],
+)
+def test_failure_receipts_retain_allowlisted_cause_without_private_details(
+    runner, inputs, monkeypatch, cause_type, suppress_context
+):
+    binding, paths, _, _ = inputs
+
+    def broken_fit(*args):
+        try:
+            raise cause_type("https://private.example/never-retain")
+        except cause_type as exc:
+            if suppress_context:
+                raise secondary_tabular.SecondaryTabularError(
+                    "private wrapper"
+                ) from None
+            raise secondary_tabular.SecondaryTabularError("private wrapper") from exc
+
+    monkeypatch.setattr(secondary_tabular, "fit_formatting", broken_fit)
+    with pytest.raises(runner.DevelopmentExecutionError) as caught:
+        runner._run_bound_development(binding, paths)
+    for directory in (paths.attempt, paths.attempt / "formatting"):
+        content = (directory / "outcome.json").read_text()
+        assert json.loads(content)["error_type"] == cause_type.__name__
+        assert "private" not in content
+    assert "private" not in str(caught.value)
+    assert not (paths.attempt / "permutation_42").exists()
+
+
+def test_unknown_exception_class_and_cyclic_chain_are_redacted(
+    runner, inputs, monkeypatch
+):
+    binding, paths, _, _ = inputs
+    private_type = type("https://private.example/unsafe-class", (Exception,), {})
+    first, second = private_type("private one"), private_type("private two")
+    first.__cause__, second.__context__ = second, first
+
+    def broken_fit(*args):
+        raise first
+
+    monkeypatch.setattr(secondary_tabular, "fit_formatting", broken_fit)
+    with pytest.raises(runner.DevelopmentExecutionError) as caught:
+        runner._run_bound_development(binding, paths)
+    for directory in (paths.attempt, paths.attempt / "formatting"):
+        content = (directory / "outcome.json").read_text()
+        assert json.loads(content)["error_type"] == "Exception"
+        assert "private" not in content
+    assert str(caught.value) == "formatting: Exception"
+
+
+def test_explicit_cause_takes_precedence_and_unknown_cause_keeps_safe_outer(runner):
+    outer = secondary_tabular.SecondaryTabularError("private wrapper")
+    outer.__cause__ = ConvergenceWarning("private cause")
+    outer.__context__ = FloatingPointError("private context")
+    assert runner._failure_symbol(outer) == "ConvergenceWarning"
+    outer.__cause__ = type("unsafe-class", (Exception,), {})("private")
+    assert runner._failure_symbol(outer) == "SecondaryTabularError"
 
 
 def test_interrupt_leaves_unfinished_reservations_without_claiming_failure(

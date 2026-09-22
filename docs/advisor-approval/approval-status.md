@@ -134,20 +134,29 @@ secondary-output integration remain separate work.
 The [secondary-analysis supplement](../../data/secondary-analysis-contract-v1.json)
 fixes score metrics, calibration bins, low-FPR recall, exact McNemar contrasts
 and the four-comparison Holm family. Those calculations are implemented and
-tested. MMD and PSI reference, window, calibration and audit calculations are
-now implemented on standardized synthetic arrays. The three independent URL
-perturbations and five formatting indicators also have executable known-answer
-tests. No research reference, comparator boundary or secondary model was fitted.
-Training provenance, fixed calibration/audit allocation and remaining secondary
-fits must be connected before protected scoring.
-Seeds 42-46 and Random Forest remain declared work, with fit/runtime/calibration
-contracts still required. No additional fitting follows from the no-fit
-singleton amendment.
+tested. The [secondary-development contract](../../data/secondary-development-contract-v1.json)
+now specifies the original-scaler MMD/PSI composition and the fixed formatting,
+label-permutation and Random Forest fits, including numerical scoring and
+separate validation cutoffs. Its SHA-256 is
+`f592352593ae64b178a468d5800e780267275a62046a05b31b952f69e424f44f`.
+Synthetic tests exercise these paths, portable
+model round trips, training-reference separation and the original calibration/
+audit allocation. No research reference, comparator boundary or secondary model
+has been fitted. The three independent URL transformations are implemented;
+their full detector/monitor comparison remains to be connected.
+
+The seven tabular members need authenticated development execution and output
+acceptance before protected scoring. Additional transformer seeds 43-46 still
+need their training runtime, checkpoint-scoring and comparable secondary
+calibration contract; seed 42 primary weights and cutoffs remain unchanged.
+No additional fitting follows from the no-fit singleton amendment.
 
 Execution binding now uses the fixed
 [v2 profile](../../data/execution-binding-contract-v2.json), SHA-256
 `887f771381927dfe1b9268a45f4e605baf3e9a7caee2b7005cdfe68b1be516e1`,
-which adds both supplements and the unchanged v1 profile to its public pins.
+which adds the shift/secondary-analysis supplements and the unchanged v1 profile
+to its public pins. It does not yet bind the new secondary-development contract;
+that addition belongs in the reviewed development execution profile.
 The runtime and historical pins are unchanged. External file/schema integration,
 remaining secondary development procedures and complete output coverage still
 precede the final pre-access review. This increment accessed no protected records,

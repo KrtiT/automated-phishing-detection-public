@@ -12,9 +12,12 @@ internal saved-evidence production, normalized external preparation, and
 secondary score metrics. Tests use invented fixtures, including real loopback
 HTTP requests. Internal file/process execution now connects the public source
 record to saved evidence, with its research entry closed until the complete
-pre-access freeze. MMD/PSI and URL-probe code is implemented; remaining secondary
-fits, development calibration and external source integration precede research
-execution. No group-test or external result is claimed.
+pre-access freeze. Secondary development code connects MMD/PSI to the original
+monitor representation and implements the fixed formatting, label-permutation
+and Random Forest models. These paths are tested on invented examples, not run
+on research data. Authenticated development execution, additional transformer
+seed procedures and external source integration remain. No group-test or external
+result is claimed.
 
 ## Source and Baseline Record
 
@@ -81,10 +84,11 @@ than receiving imputed values.
 
 ## Reproduce the Preparation
 
-Python 3.10 and [uv](https://docs.astral.sh/uv/) are required.
+Python 3.10.19 and [uv](https://docs.astral.sh/uv/) are required for the recorded
+research runtime and test suite.
 
 ```bash
-uv sync --locked
+uv sync --locked --python 3.10.19
 mkdir -p data/raw/phiusiil data/processed reports
 
 curl --fail --location \
@@ -292,10 +296,10 @@ The runtime rejects non-OpenBLAS NumPy builds before reading inputs. Synthetic
 preflight encountered a fatal Accelerate warning; the same NumPy 2.2.6 with
 `scipy-openblas` 0.3.29 passed all six synthetic fits. No research data informed
 this backend pin, and no warning exemption was added. The macOS arm64 CPython
-3.10 setup is:
+3.10.19 setup is:
 
 ```bash
-uv sync --locked
+uv sync --locked --python 3.10.19
 uv pip install --python .venv/bin/python --no-deps --reinstall-package numpy \
   'numpy @ https://files.pythonhosted.org/packages/22/c2/4b9221495b2a132cc9d2eb862e21d42a009f5a60e45fc44b00118c174bff/numpy-2.2.6-cp310-cp310-macosx_11_0_arm64.whl#sha256=8e41fd67c52b86603a91c1a505ebaef50b3314de0213461c7a6e99c9a3beff90'
 ```

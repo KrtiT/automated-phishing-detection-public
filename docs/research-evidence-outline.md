@@ -645,9 +645,14 @@ explicit and retain their place in the multiplicity family. The
 MMD, PSI, perturbations and shortcut checks. `secondary_drift.py` implements
 training-reference selection, biased RBF MMD, featurewise PSI, complete 256/64
 windows and independent strict-boundary calibration/audit functions. It receives
-already standardized arrays; callers must bind training provenance and the
-original calibration/audit allocation. No reference or boundary has been fitted
-on research records in this increment.
+already standardized arrays. `secondary_development.py` now validates supplied
+development partition bytes, identities, domains and model/source pins in memory.
+Its training constructor uses the existing portable monitor probability and GMM
+scaler and receives no validation rows. The later evaluator preserves the original
+calibration/audit allocation and row order. References, bins, window membership
+and traces remain private; aggregate summaries carry their hashes. Expected pins
+still require authentication by the future file/process caller. No reference or
+boundary has been fitted on research records in this increment.
 
 `secondary_probes.py` preserves original URL spelling and returns three separate
 operator outputs with eligibility and changed status. Inputs retain the primary
@@ -656,10 +661,30 @@ one ASCII uppercase letter; the host excludes userinfo and port. Explicit defaul
 ports compare numerically, including leading zeros. Path encoding skips existing
 percent escapes; percent-case inspection covers every raw component. Eligible
 no-ops remain distinct from ineligible unchanged inputs. Probes inherit no label.
-The five formatting indicators are implemented, but their classifier is not fit.
-Secondary fit/runtime/calibration contracts and development execution must be
-completed before protected evaluation. The supplement is development-informed,
-not a retroactive claim that these details preceded all development observations.
+The [secondary-development contract](../data/secondary-development-contract-v1.json)
+specifies the five-indicator classifier, five independent training-label
+permutation controls and fixed Random Forest. `secondary_tabular.py` implements
+these seven members with training-only scaling, fixed solver/forest settings,
+strict CPU numeric checks and separate CP validation operating points. Each
+permutation starts from the original training labels with its own PCG64 seed;
+the Logistic-L1 solver seed stays 42. Validation labels are unchanged. The
+controls have no permutation-test p-value or primary-model selection role.
+
+Fitted state uses distinct secondary JSON artifacts rather than pickle or the
+primary baseline schema. Singleton probabilities must agree exactly between
+the fitted estimator and its serialized no-fit scorer on the supplied validation
+rows. An adjacent-float32 tree regression additionally checks that RF threshold
+comparison matches scikit-learn outside ordinary validation points. Threshold
+records and audits are separate outputs for the future runner to bind. Fixture
+fits do not establish a research result or authenticate caller data provenance.
+
+No secondary research fitting or comparator calibration has run. The next
+development runner must authenticate this new contract and source roles, preserve
+attempts/failures for every member, bind all private outputs and verify completion.
+The unchanged v2 execution profile does not yet pin the new development supplement.
+Additional transformer seed runtime/checkpoint/calibration choices and complete
+perturbation replay remain separate work. These details are development-informed,
+not a retroactive claim that they preceded all development observations.
 
 The metadata-only preflight accepts no model or dataset paths:
 
@@ -708,7 +733,7 @@ conventions without changing the frozen workload or H3 definition.
 | 1 | Complete paired evaluator integration | Internal file/process execution, primary/score-metric composition and receipt verification are implemented on fixtures behind the closed readiness gate. Complete remaining secondary-model outputs and external execution before opening that gate. The singleton convention is adopted by explicit amendment, not equivalence acceptance. |
 | 2 | Composed H2 policy replay | Full-stream routing followed by outcome-stratum selection and normalized external preparation are implemented on fixtures. Bind the verified publisher schema, complete source inventory and saved-score inputs. Preserve the failed development false-alert component; this characterizes RQ2 and cannot rescue H2. |
 | 3 | Selective inference service and real-HTTP harness | Fixed cascade, transformer-only and serialized live-monitor modes are tested, including real TCP, phase reset and offline trace agreement. Bind service, client, process lifecycle and saved outputs in the official producer before measurements. |
-| 4 | Frozen evaluation and replay-manifest contracts | Sampling, stream integration, runtime identity and all three workloads have supplements. Secondary score, MMD/PSI and probe calculations are implemented. Complete development provenance/calibration, secondary fits and their contracts before the pre-access freeze. |
+| 4 | Frozen evaluation and replay-manifest contracts | Sampling, stream integration, runtime identity and all three workloads have supplements. Secondary drift development and fixed tabular fits are implemented on fixtures under a separate contract. Complete authenticated development execution, transformer seed conventions and perturbation replay before the pre-access freeze. |
 | 5 | Independent execution and one gate table | The single internal raw-partition pass produces paired predictions and replay manifests. Later HTTP runs use only those manifests. External schema verification, preparation, and evaluation follow the separate frozen access sequence. |
 
 The existing offline cascade scorer accepts transformer probabilities for every

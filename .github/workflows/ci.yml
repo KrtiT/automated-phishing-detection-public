@@ -18,14 +18,14 @@ jobs:
         uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d
         with:
           version: 0.11.29
-          python-version: "3.10"
+          python-version: "3.10.19"
           enable-cache: true
 
       - name: Check dependency lock
         run: uv lock --check
 
       - name: Install project
-        run: uv sync --locked --python 3.10
+        run: uv sync --locked --python 3.10.19
 
       - name: Check Python style
         run: |

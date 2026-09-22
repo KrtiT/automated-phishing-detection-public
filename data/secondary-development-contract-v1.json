@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "contract_id": "secondary-development-v1",
+  "date": "2026-09-22",
+  "status": "specified_synthetic_implementation",
+  "protected_evaluation_ready": false,
+  "research_execution_ready": false,
+  "research_fits_run": false,
+  "scope": "Prospective development-only composition of the previously declared MMD/PSI comparators, formatting model, label-permutation controls and Random Forest. These details are development-informed, not retroactively preregistered. Implementations are checked on invented fixtures; this contract does not claim research execution, resolve additional transformer fits, or open protected evaluation.",
+  "primary_changes": {"artifacts": false, "cutoffs": false, "hypothesis_gates": false, "gmm_audit": false},
+  "additional_transformer_fits": 0,
+  "public_file_sha256": {
+    "data/secondary-analysis-contract-v1.json": "a0483074c94c90a0ad1829fbbcc36d10561065d7f5acaeece44f8f75136e015e",
+    "data/rq1-baseline-contract-v2.json": "05d6d0831def7d26448c8dbdc8117800ea2448cdfc2aca2ad95489f22d2d11ba",
+    "data/rq2-gmm-development-contract-v1.json": "22d32088b05e74432704f9671ab76ba28b4f573ead418846b23bc366315cb393",
+    "data/execution-binding-contract-v2.json": "887f771381927dfe1b9268a45f4e605baf3e9a7caee2b7005cdfe68b1be516e1",
+    "data/sources.json": "314ea940494c70cf15aa4a5db05063402eec1629ee99b4c96522cf57dfd12229",
+    "reports/phiusiil-preparation-summary.json": "1a85a7eecc0f5baa7c59e03a0cbde63fd4595409feb918dc5ff916ead7cd5c9e",
+    "reports/rq1-baseline-v2-summary.json": "bf5b3a6f0fc705d26852da4dd0053c6111ffc3e500d7a2e95dfba5ad859b279c",
+    "reports/rq2-gmm-development-v1-summary.json": "6f695138a302e854e1e5af590152e289486affe8ccdf75510ca9a5dcaad3b523",
+    "docs/advisor-approval/2026-08-16-realignment-matrix.md": "aad6b7cf8d8416bfb37ec19503dbed031c15767ea96d9b76486ca3f3fedebe1b"
+  },
+  "inputs": {
+    "partitions": {
+      "train": "575f2fb13a0766020e29d78bf8e633a185b381abde7060bdd1ed04cc4a5e38a0",
+      "validation": "970c6568a6400a1fc265b7809ef7bd9d1c297632799cbb88801313bc34ac415a"
+    },
+    "accepted_model_bytes": {
+      "logistic_l1": "71a3e24a0283a31ba188bc7dd60b18c1b708370b9ca275d5ab1a1004680c968a",
+      "gmm": "a01a8b143c2423df57a153462cc47e79822ad1c6768213dc69e03683d4009745"
+    },
+    "forbidden_roles": ["group_test", "external", "PhishVN"],
+    "binding": "Before research execution, authenticate the reviewed clean revision, this contract, runtime, public preparation record, source/PSL and exact development partition/artifact bytes. Check partition roles, complete counts, stable IDs, canonical URL hashes, source row order and domain disjointness. In-memory fit helpers do not authenticate caller-supplied URLs as development records. No test/external path is accepted by the prospective development runner."
+  },
+  "runtime": {
+    "device": "cpu",
+    "dtype": "float64",
+    "versions": {"python": "3.10.19", "numpy": "2.2.6", "scipy": "1.15.3", "scikit-learn": "1.7.2", "threadpoolctl": "3.6.0"},
+    "numpy_blas": {"name": "scipy-openblas", "version": "0.3.29"},
+    "blas_version_match": "release_or_build_suffix",
+    "host_binding": "Use the unchanged hardware and numerical distribution identity in execution-binding-v2. These secondary computations use CPU, not MPS; no primary inference convention changes.",
+    "numerical_threads": 1,
+    "scoring_batch_size": 1,
+    "scoring_batch_scope": "Secondary tabular probabilities only. Drift representation uses the original portable monitor vector path; MMD/PSI operate on their fixed 256-row window matrices.",
+    "warnings": "fatal_without_Accelerate_allowlist",
+    "nonfinite": "fatal",
+    "numpy_errors": "Secondary tabular fit/score uses numpy.errstate(all='raise'), including underflow. Drift retains each existing primitive's policy: portable Logistic-L1/scaling are strict; secondary_drift distance/kernel/PSI computations preserve their explicit underflow allowance and reject nonfinite outputs.",
+    "training_matrix_layout": "C_contiguous_float64",
+    "random_forest_input_conversion": "sklearn_float32_before_tree_traversal",
+    "failure_policy": "Preserve each attempted model/seed failure. Do not skip a failed member, reroll a permutation, relax convergence, change parameters or silently retry. No aggregate completion without accounting for every prespecified member."
+  },
+  "drift": {
+    "research_input_access": "separate_authenticated_runner_required",
+    "probability_source": "PortableLogisticL1.score_urls",
+    "feature_representation": "The existing 25 raw-URL features followed by the portable Logistic-L1 probability; not the authoritative detector probability. Preserve original record order and do not use labels for representation, allocation, references or calibration.",
+    "scaler_refit": false,
+    "gmm_refit": false,
+    "standardization": "Reuse the accepted GMM artifact's training mean and scale, applying float64 (matrix - mean) / scale with the original arithmetic. Match the accepted training row count and artifact/source bindings; never fit a second StandardScaler.",
+    "training_boundary": "Build an immutable training reference from training identities, features and accepted model state before supplying validation rows. Choose MMD rows and PSI bins exactly as secondary-analysis-v1 specifies. Validation changes cannot alter reference membership, bandwidth, bins or training proportions.",
+    "validation_allocation": {
+      "unit": "unique_normalized_ascii_registrable_domain",
+      "namespace": "rq2-gmm-validation-v1",
+      "seed": 20260816,
+      "hash": "sha256",
+      "hash_input": "namespace_utf8 + NUL + seed_ascii + NUL + domain_ascii",
+      "sort_key": ["digest_bytes", "domain_ascii_bytes"],
+      "calibration": "first_floor_domain_count_divided_by_2",
+      "audit": "remaining_domains",
+      "stream_row_order": "preserve_pinned_validation_input_order",
+      "uses_labels": false,
+      "uses_class_counts": false,
+      "reroll": false
+    },
+    "window_length": 256,
+    "window_stride": 64,
+    "calibration": "One boundary per comparator, the linear 95th percentile of complete calibration-stream window scores. Alerts use score > boundary. Apply that exact boundary to original audit windows; do not use audit scores to choose a reference or threshold.",
+    "non_estimability": "Preserve explicit reasons for too few training domains, no positive MMD reference distance or absent complete calibration/audit windows. Do not replace missing estimates with zero or count them as successful gates.",
+    "private_outputs": "Retain training reference identities/vectors, bandwidth, PSI bins/training counts/proportions, accepted-model/source identities, calibration/audit row order and window membership, per-window aggregate and PSI feature scores, boundaries and alert indicators. Public outputs contain aggregate counts/statuses and private-byte hashes, not URL/ID/domain lists.",
+    "hypothesis_role": "secondary_descriptive_only",
+    "h2_interpretation": "No pass/fail H2 result is assigned to either comparator. Original GMM 28/252 false-alert audit, boundary and conjunctive H2 non-support remain unchanged."
+  },
+  "tabular": {
+    "research_input_access": "separate_authenticated_runner_required",
+    "members": ["formatting", "permutation_42", "permutation_43", "permutation_44", "permutation_45", "permutation_46", "random_forest"],
+    "formatting_features": ["has_uppercase_ascii_scheme", "has_uppercase_ascii_host", "has_lowercase_hex_percent_escape", "has_explicit_scheme_default_port", "has_empty_path"],
+    "structural_features": ["raw_url_codepoint_length", "raw_url_utf8_byte_length", "hostname_ascii_length", "path_codepoint_length", "query_codepoint_length", "fragment_codepoint_length", "hostname_label_count", "hostname_ascii_digit_count", "hostname_hyphen_count", "hostname_punycode_label_count", "path_segment_count", "query_parameter_count", "raw_url_ascii_letter_count", "raw_url_ascii_digit_count", "raw_url_other_codepoint_count", "raw_url_ascii_digit_ratio", "raw_url_other_codepoint_ratio", "raw_url_unique_codepoint_count", "raw_url_utf8_byte_entropy_bits", "percent_escape_count", "is_https", "has_userinfo", "has_explicit_port", "has_query_delimiter", "has_fragment_delimiter"],
+    "scaler_parameters": {"copy": true, "with_mean": true, "with_std": true},
+    "scaling": "For formatting and permutation Logistic-L1, fit StandardScaler on that training feature matrix only, with population variance and scale=1 for constant columns. Apply its saved state to validation and later inputs. Random Forest uses the unscaled structural vector.",
+    "logistic_parameters": {"C": 1.0, "class_weight": "balanced", "dual": false, "fit_intercept": true, "intercept_scaling": 1, "l1_ratio": null, "max_iter": 5000, "multi_class": "deprecated", "n_jobs": null, "penalty": "l1", "random_state": 42, "solver": "saga", "tol": 0.0001, "verbose": 0, "warm_start": false},
+    "logistic_scoring": "Score each row separately with numeric-state reconstruction of sklearn StandardScaler and LogisticRegression. Audit against the baseline einsum/expit reference with rtol=atol=1e-12, but allow no warning exception. Require exact singleton probability equality between fitted and serialized/reloaded implementations on every supplied validation row; use these authoritative singleton probabilities for the separate secondary cutoff. No claim of equality to historical primary batch scores.",
+    "convergence": "Every Logistic-L1 fit must have finite state, classes [0,1], valid scaler counts and 0 < n_iter < 5000. Convergence warnings or any other warning stop that call without retry.",
+    "permutation": {
+      "seeds": [42, 43, 44, 45, 46],
+      "generator": "PCG64",
+      "procedure": "For each seed instantiate a fresh numpy.random.Generator(numpy.random.PCG64(seed)) and permute the original training label vector in pinned row order. Never permute the previous seed's result. Features/order and class totals remain unchanged.",
+      "solver_seed": 42,
+      "validation_labels_permuted": false,
+      "permutation_test_pvalue": false,
+      "interpretation": "Negative-control fits with AP/AUC and separate CP-cutoff counts on unchanged validation labels. The validation cutoff is a descriptive secondary operating point, not evidence of permutation-test significance or a model selected for primary use."
+    },
+    "random_forest_parameters": {"bootstrap": true, "ccp_alpha": 0.0, "class_weight": "balanced", "criterion": "gini", "max_depth": null, "max_features": "sqrt", "max_leaf_nodes": null, "max_samples": null, "min_impurity_decrease": 0.0, "min_samples_leaf": 1, "min_samples_split": 2, "min_weight_fraction_leaf": 0.0, "monotonic_cst": null, "n_estimators": 100, "n_jobs": 1, "oob_score": false, "random_state": 42, "verbose": 0, "warm_start": false},
+    "random_forest_scoring": "Convert the raw structural vector to float32 as sklearn does, then promote each traversed value to a Python float before comparing it with the float64 tree threshold; do not let NumPy weak scalar promotion round the threshold to float32. Traverse the serialized trees in fitted estimator order with <= going left; normalize the reached leaf's two-class values, add class-1 probabilities sequentially in float64 and divide by 100. Validate topology, indices, finite thresholds/probabilities and class order. Require exact agreement with fitted sklearn singleton predict_proba on every supplied validation row; never silently substitute a different arithmetic path.",
+    "threshold_selection": "Reuse baselines.select_validation_threshold unchanged: probability>=cutoff, unique validation probabilities plus finite nextafter(max,+infinity), maximize recall subject to one-sided 95% Clopper-Pearson FPR upper<=1%, ties by smaller upper bound then higher cutoff. Each member has its own cutoff. target_not_met remains explicit and supplies no deployable threshold; no 0.5 fallback.",
+    "artifact_format": "Canonical ASCII JSON, sorted keys, compact separators, allow_nan=False and terminal newline. schema_version=1, contract_id=secondary-development-v1, artifact_type=secondary-tabular-model, method_version=secondary-tabular-v1. Distinct model kind, exact feature order/classes, all effective estimator parameters, scoring convention and permutation seed; numeric scaler/coefficient or ordered tree state only. No pickle, estimator deserialization, URL lists or label vectors. Loader validation does not authenticate file origin.",
+    "result_binding": "Return fitted artifact bytes, ordered validation probabilities, separate CP threshold record and scoring audit. Before any research execution, the authenticated runner must bind their hashes to the source partition, contract, code/runtime identity and durable attempt; keep record-level predictions and model state private. No public aggregate success based only on a file marker.",
+    "role": "secondary_descriptive_only_no_primary_promotion"
+  },
+  "remaining_work": [
+    "Authenticated development file/process runner with source/record identity checks, durable attempts, all seven member accounting and independent output verification; bind this supplement in a reviewed future execution profile rather than silently extending the unchanged v2 public pins",
+    "Research execution and acceptance of these fixed secondary models and comparator references/boundaries before protected scoring",
+    "Additional transformer seeds43-46: explicit runtime, checkpoint scoring and comparable secondary cutoff/band calibration across all five seeds; primary seed42 artifacts unchanged",
+    "Perturbation detector/monitor replay and stream/reset conventions; transformed URLs inherit no verified outcome labels",
+    "External source/schema execution wiring, complete retained-output integration and staged pre-access review"
+  ],
+  "references": [
+    "https://scikit-learn.org/1.7/modules/generated/sklearn.ensemble.RandomForestClassifier.html",
+    "https://scikit-learn.org/1.7/modules/generated/sklearn.linear_model.LogisticRegression.html"
+  ]
+}

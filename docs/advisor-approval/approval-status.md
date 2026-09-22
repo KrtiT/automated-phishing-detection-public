@@ -145,8 +145,20 @@ audit allocation. No research reference, comparator boundary or secondary model
 has been fitted. The three independent URL transformations are implemented;
 their full detector/monitor comparison remains to be connected.
 
-The seven tabular members need authenticated development execution and output
-acceptance before protected scoring. Additional transformer seeds 43-46 still
+The separate [development execution profile](../../data/development-execution-contract-v1.json),
+SHA-256 `67146228d636c16f02484998741c7a1545da68b209e693620efab22b2676cd43`,
+now binds the accepted training/validation sources and the secondary-development
+contract to the unchanged runtime. Its runner reserves an attempt before input
+access, freezes training references before reading validation, and saves the
+drift comparison and each of the seven tabular fits individually. A failure
+preserves earlier outputs and the failed or incomplete attempt; later members
+remain unattempted. There is no automatic retry or partial-success marker.
+The parent checks the actual worker exit, receipts, output identities and hashes,
+and recomputes CP thresholds, AP/AUC and drift calibration/alerts from retained
+evidence. It does not refit models or reopen source records. These execution
+paths have passed invented-input tests; no secondary research run is claimed.
+
+Additional transformer seeds 43-46 still
 need their training runtime, checkpoint-scoring and comparable secondary
 calibration contract; seed 42 primary weights and cutoffs remain unchanged.
 No additional fitting follows from the no-fit singleton amendment.
@@ -155,8 +167,8 @@ Execution binding now uses the fixed
 [v2 profile](../../data/execution-binding-contract-v2.json), SHA-256
 `887f771381927dfe1b9268a45f4e605baf3e9a7caee2b7005cdfe68b1be516e1`,
 which adds the shift/secondary-analysis supplements and the unchanged v1 profile
-to its public pins. It does not yet bind the new secondary-development contract;
-that addition belongs in the reviewed development execution profile.
+to its public pins. It remains unchanged; the separate development profile adds
+the secondary-development binding without enabling protected evaluation.
 The runtime and historical pins are unchanged. External file/schema integration,
 remaining secondary development procedures and complete output coverage still
 precede the final pre-access review. This increment accessed no protected records,

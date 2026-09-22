@@ -14,10 +14,18 @@ HTTP requests. Internal file/process execution now connects the public source
 record to saved evidence, with its research entry closed until the complete
 pre-access freeze. Secondary development code connects MMD/PSI to the original
 monitor representation and implements the fixed formatting, label-permutation
-and Random Forest models. These paths are tested on invented examples, not run
-on research data. Authenticated development execution, additional transformer
-seed procedures and external source integration remain. No group-test or external
-result is claimed.
+and Random Forest models. A separate authenticated development runner now saves
+each comparison before starting the next and verifies the complete worker output.
+These paths are tested on invented examples, not yet run on research data.
+Additional transformer seed procedures, perturbation replay and external source
+integration remain. No group-test or external result is claimed.
+
+The [development-only execution profile](data/development-execution-contract-v1.json)
+binds the existing methods and accepts only the training and validation roles.
+`python scripts/run_secondary_development.py --help` lists its required inputs
+and reviewed revision/profile pins. The command reserves a new attempt before
+input access and stops on failure without retrying or replacing earlier outputs.
+It does not open the protected-evaluation gate.
 
 ## Source and Baseline Record
 

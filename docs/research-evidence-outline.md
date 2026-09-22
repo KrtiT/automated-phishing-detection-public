@@ -650,8 +650,8 @@ development partition bytes, identities, domains and model/source pins in memory
 Its training constructor uses the existing portable monitor probability and GMM
 scaler and receives no validation rows. The later evaluator preserves the original
 calibration/audit allocation and row order. References, bins, window membership
-and traces remain private; aggregate summaries carry their hashes. Expected pins
-still require authentication by the future file/process caller. No reference or
+and traces remain private; aggregate summaries carry their hashes. The separate
+development runner now authenticates those expected pins. No reference or
 boundary has been fitted on research records in this increment.
 
 `secondary_probes.py` preserves original URL spelling and returns three separate
@@ -675,13 +675,26 @@ primary baseline schema. Singleton probabilities must agree exactly between
 the fitted estimator and its serialized no-fit scorer on the supplied validation
 rows. An adjacent-float32 tree regression additionally checks that RF threshold
 comparison matches scikit-learn outside ordinary validation points. Threshold
-records and audits are separate outputs for the future runner to bind. Fixture
+records and audits are separate outputs bound by the development runner. Fixture
 fits do not establish a research result or authenticate caller data provenance.
 
-No secondary research fitting or comparator calibration has run. The next
-development runner must authenticate this new contract and source roles, preserve
-attempts/failures for every member, bind all private outputs and verify completion.
-The unchanged v2 execution profile does not yet pin the new development supplement.
+No secondary research fitting or comparator calibration has run. The
+[development execution profile](../data/development-execution-contract-v1.json)
+adds the new methods binding while preserving the v2 profile. The runner reserves
+the root attempt before reading any private input and a child attempt before
+each comparison. It reads the five accepted inputs once, constructs training
+references before validation access, and saves drift evidence followed by the
+fixed seven-model family. Completed models retain numeric state, ordered
+validation predictions, threshold records and scoring audits. Public summaries
+include AP/AUC and counts, not URLs or record identifiers.
+
+On failure the run stops without retry or resume; earlier outputs remain, and
+the declared tail is unattempted rather than silently skipped. A parent process
+accepts the aggregate only after a successful worker exit and independent checks
+of every member, receipt, identity and output hash. It recomputes CP thresholds,
+AP/AUC and drift boundary/alert arithmetic from saved evidence. This verifies
+publication and arithmetic, not an independent refit or URL-scoring replication.
+Synthetic tests include actual subprocess execution and retained partial failures.
 Additional transformer seed runtime/checkpoint/calibration choices and complete
 perturbation replay remain separate work. These details are development-informed,
 not a retroactive claim that they preceded all development observations.

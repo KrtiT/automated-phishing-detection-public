@@ -710,8 +710,9 @@ No aggregate was accepted, no retry occurred, and there is no unattempted tail.
 The failed RF check and fitted state were not retained. Root and child failure
 receipts remain immutable; the generic error class is not a diagnosis.
 
-These are **preliminary producer summaries from an unaccepted family**, not
-independently verified results. MMD recorded 8/252 audit-window alerts and PSI
+At the original stop, these were **preliminary producer summaries from an
+unaccepted family**. The separate September 23 audit below subsequently checked
+the retained members without accepting the failed original root. MMD recorded 8/252 audit-window alerts and PSI
 11/252, with 252 calibration windows each. Their boundaries were respectively
 0.01662655786449553 and 0.12001239829542137. These overlapping-window alert
 fractions are not per-URL FPR, and no independent-binomial interval is assigned.
@@ -784,7 +785,38 @@ binds this failure, fixes only that accounting comparison and its diagnostics,
 and leaves the RF method and all scientific rules unchanged. Original marker
 bytes remain hash-authenticated and authoritative. Both failed attempts remain
 immutable. One fresh audit and conditional RF fit are specified; no RF fit has
-yet occurred under either correction profile.
+yet occurred when that amendment was frozen.
+
+### Accepted Secondary Development Evidence
+
+The September 23 [accepted execution](../reports/secondary-development-correction-v2-summary.json)
+ran from reviewed, CI-passed `f1bebca93aba38b19a208026242c14c8285c27eb`.
+Both fresh workers and the parent exited 0. Root publication and exact
+stage-summary linkage were checked after completion. The no-fit audit accepted
+the seven retained members within its declared scope. Saved tabular predictions
+matched reconstructed model scores exactly on the authenticated validation IDs
+and labels; saved AP/AUC and CP calculations reproduced. Each declared PCG64
+permutation preserved the 94,373 negative and 71,875 positive training labels.
+Historical consumed-label digests remain unavailable.
+
+The one new RF fit used the unchanged 166,248 training and 32,695 validation
+rows, parameters and seed 42. Fitted/portable scores matched exactly; its
+diagnostic checkpoint matches the accepted model. At selected cutoff 0.2, RF
+detected 12,349/12,486 positives with 157/20,209 false positives. Recall is
+98.9028%, observed FPR 0.7769% and its one-sided 95% CP upper bound 0.8864%.
+AP is 0.995444 and ROC AUC 0.995279. This cutoff was selected on the same
+validation partition; these are descriptive development results, not independent
+test performance or a deployment-FPR guarantee.
+
+The five permutation score means are 0.499827-0.500107, with population standard
+deviations 0.004802-0.006540. The public record also retains their extremes and
+all earlier ranking metrics. Ranking depends on order, not distance from 0.5;
+these summaries do not identify the cause of the observed rankings. The audit
+does not establish leakage, successful negative controls or a permutation-test
+p-value. No seed was discarded or refitted. Drift acceptance remains limited
+to authenticated membership and retained-score arithmetic. Original GMM 28/252,
+H2 non-support, all primary models and H1/H3's undecided status are unchanged.
+No protected records or operational workloads were accessed.
 
 The metadata-only preflight accepts no model or dataset paths:
 
@@ -833,7 +865,7 @@ conventions without changing the frozen workload or H3 definition.
 | 1 | Complete paired evaluator integration | Internal file/process execution, primary/score-metric composition and receipt verification are implemented on fixtures behind the closed readiness gate. Complete remaining secondary-model outputs and external execution before opening that gate. The singleton convention is adopted by explicit amendment, not equivalence acceptance. |
 | 2 | Composed H2 policy replay | Full-stream routing followed by outcome-stratum selection and normalized external preparation are implemented on fixtures. Bind the verified publisher schema, complete source inventory and saved-score inputs. Preserve the failed development false-alert component; this characterizes RQ2 and cannot rescue H2. |
 | 3 | Selective inference service and real-HTTP harness | Fixed cascade, transformer-only and serialized live-monitor modes are tested, including real TCP, phase reset and offline trace agreement. Bind service, client, process lifecycle and saved outputs in the official producer before measurements. |
-| 4 | Frozen evaluation and replay-manifest contracts | Sampling, stream integration, runtime identity and all three workloads have supplements. The first authenticated secondary development attempt stopped at Random Forest; preceding outputs remain preliminary. Resolve that attempt and the control observations, transformer seed conventions and perturbation replay before the pre-access freeze. |
+| 4 | Frozen evaluation and replay-manifest contracts | Sampling, stream integration, runtime identity and all three workloads have supplements. The separate September 23 execution accepted the retained audit and corrected RF; both earlier stops remain preserved. Complete transformer seed conventions, perturbation replay, secondary output coverage and external/operational integration before the pre-access freeze. Control interpretation and missing historical label digests remain explicit limitations. |
 | 5 | Independent execution and one gate table | The single internal raw-partition pass produces paired predictions and replay manifests. Later HTTP runs use only those manifests. External schema verification, preparation, and evaluation follow the separate frozen access sequence. |
 
 The existing offline cascade scorer accepts transformer probabilities for every

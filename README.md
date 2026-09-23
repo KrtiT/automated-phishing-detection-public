@@ -16,33 +16,31 @@ pre-access freeze. Secondary development code connects MMD/PSI to the original
 monitor representation and implements the fixed formatting, label-permutation
 and Random Forest models. A separate authenticated development runner now saves
 each comparison before starting the next and verifies the complete worker output.
-The first development-only attempt ran on September 22 and stopped at Random
-Forest. Drift, formatting and all five permutation controls retained their
-outputs; the family was not accepted and no retry occurred. The
-[attempt record](reports/secondary-development-v1-attempt-1.json) includes all
-preliminary child summaries and the failed receipts. Some permutation controls
-have validation ROC AUC above 0.5, an unresolved observation rather than a clean
-negative-control result. An invented-input diagnostic also reproduces an RF
-leaf-normalization defect. The frozen v1 method is not to be retried; its
-correction now has a separate [prospective profile](data/development-correction-contract-v1.json).
-The new command, `python scripts/run_secondary_correction.py --help`, audits the
-seven retained members without fitting, then permits one corrected RF fit only
-after that audit passes. It saves fitted state before later checks, safe failure
-identifiers and actual worker exits. Its [first attempt](reports/secondary-development-correction-v1-attempt-1.json)
-stopped before the scientific audit or any fit: three `0.0` values in an original
-summary had become `0` in its public accounting copy. The exact original marker
-hash confirms this representation-only difference. A separate
-[execution correction](data/development-correction-contract-v2.json) preserves
-that stop and the scientific method; its subsequent execution has not yet run.
+The September 23 [accepted development execution](reports/secondary-development-correction-v2-summary.json)
+audited the seven retained drift/formatting/permutation members without refitting,
+then completed one corrected RF fit with exact fitted/portable parity. RF
+validation AP is 0.995444 and ROC AUC 0.995279; its selected cutoff detects
+12,349/12,486 positives with 157/20,209 false positives. These are development
+selection-set observations, not new hypothesis or deployment results.
+
+All five permutation controls retain their original results. Source alignment,
+saved-model predictions and metric arithmetic passed audit, but the original
+fits did not save consumed-label digests. Their varying rankings remain
+unresolved, establishing neither leakage nor successful negative controls.
+The [original RF stop](reports/secondary-development-v1-attempt-1.json) and later
+[receipt-comparison stop](reports/secondary-development-correction-v1-attempt-1.json)
+remain failed and unchanged. The separate
+[execution correction](data/development-correction-contract-v2.json) records
+the repaired receipt handling without changing the corrected RF method.
 Additional transformer seed procedures, perturbation replay and external source
 integration remain. No group-test or external result is claimed.
 
-The [development-only execution profile](data/development-execution-contract-v1.json)
-binds the existing methods and accepts only the training and validation roles.
-`python scripts/run_secondary_development.py --help` lists its required inputs
-and reviewed revision/profile pins. The command reserves a new attempt before
-input access and stops on failure without retrying or replacing earlier outputs.
-It does not open the protected-evaluation gate.
+The correction's public record binds its reviewed code, runtime, receipts and
+private artifact hashes. `python scripts/run_secondary_correction.py --help`
+documents the command; `--check` with the required revision/profile pins verifies
+metadata without reading research inputs. The completed fits are not to be
+repeated. Only training and validation were used; protected evaluation remains
+closed pending the remaining seed/probe and source/output integration work.
 
 ## Source and Baseline Record
 

@@ -164,7 +164,8 @@ Random Forest then stopped with `SecondaryTabularError`; the parent exited 2,
 and no aggregate success marker was published. No retry or resume occurred.
 The specific failed check and fitted RF state were not retained, so the receipt
 alone does not establish the cause. The public record preserves every completed
-child summary as preliminary, not independently accepted scientific output.
+child summary as preliminary at that stop, not independently accepted output
+from the failed original family.
 
 Those summaries report MMD 8/252 and PSI 11/252 audit-window alerts, not URL FPR.
 Formatting and some permutation controls show appreciable validation ranking;
@@ -192,6 +193,20 @@ and uses original summaries for all scientific checks. Specific audit identifier
 are now retained. A fresh audit and conditional RF fit follow verification;
 neither failed attempt is resumed or promoted to success.
 
+The September 23 [v2 execution](../../reports/secondary-development-correction-v2-summary.json)
+completed from CI-passed `f1bebca93aba38b19a208026242c14c8285c27eb`.
+Both workers and the parent exited 0, and the final receipt/stage linkage passed
+verification. The seven retained members passed their specified no-fit audit.
+The single corrected RF fit passed exact parity and retained its fitted-state
+checkpoint. At its selected validation cutoff 0.2, RF detected 12,349/12,486
+positives with 157/20,209 false positives: recall 98.9028%, observed FPR 0.7769%,
+and one-sided 95% CP upper bound 0.8864%. AP was 0.995444 and ROC AUC 0.995279.
+These are selected development operating-point results, not held-out or
+deployment guarantees. Control provenance limits and the unresolved ranking
+variation remain; the failed original aggregate is not retrospectively accepted.
+The public execution report SHA-256 is
+`663f1117cd33f949b70c35c56810764193f69cae3a37505004d0db27641d829d`.
+
 Additional transformer seeds 43-46 still
 need their training runtime, checkpoint-scoring and comparable secondary
 calibration contract; seed 42 primary weights and cutoffs remain unchanged.
@@ -207,7 +222,9 @@ The runtime and historical pins are unchanged. External file/schema integration,
 remaining secondary development procedures and complete output coverage still
 precede the final pre-access review. The development attempt read only the
 accepted training/validation, PSL, Logistic-L1 and GMM inputs. It accessed no
-protected records and produced no accepted family result.
+protected records. Its original family result remains unaccepted; the separate
+September 23 execution accepts the audited members and corrected RF as
+development evidence, with the limitations stated above.
 
 The preflight-stop receipt has SHA-256
 `6f27b23a88e40455a186ce21cddebec0f9ab827919c663b345a6a14ca14bb670`.

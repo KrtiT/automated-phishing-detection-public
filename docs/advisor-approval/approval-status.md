@@ -178,9 +178,19 @@ records direct stored-leaf RF arithmetic with the same exact-parity requirement.
 The correction runner first audits the seven retained members without refitting,
 then allows one RF fit in a fresh attempt. Fitted state precedes later checks;
 safe check identifiers and actual worker exits remain in failed-attempt records.
-Historical fit-label digests remain unavailable. This correction is implemented
-and under verification; its research execution has not yet run. It neither
-changes the original failed root nor accepts the controls as successful negatives.
+Historical fit-label digests remain unavailable. The [first correction attempt](../../reports/secondary-development-correction-v1-attempt-1.json)
+exited 2 in the audit worker and parent before scientific checks or fitting.
+Three original formatting-summary floats `0.0` had become integers `0` in the
+pinned accounting copy. A receipt-only diagnosis reproduced the exact original
+marker hash by restoring just those representations. The failed receipt itself
+retained only a generic audit identifier; its diagnosis is reported separately.
+The [v2 execution profile](../../data/development-correction-contract-v2.json),
+SHA-256 `1d806d536dc77b5a085264950e64b2bde3db4ab02afa33c6adb827d8b7a07f73`,
+binds that failure and the unchanged v1 method. It authenticates original marker
+bytes, permits only the three declared real-zero normalizations in accounting,
+and uses original summaries for all scientific checks. Specific audit identifiers
+are now retained. A fresh audit and conditional RF fit follow verification;
+neither failed attempt is resumed or promoted to success.
 
 Additional transformer seeds 43-46 still
 need their training runtime, checkpoint-scoring and comparable secondary

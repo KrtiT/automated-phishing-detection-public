@@ -15,11 +15,15 @@ from .development_execution import (
 )
 from .source_runner import _json
 
-PROFILE_PATH = "data/development-correction-contract-v1.json"
-PROFILE_SHA256 = "61739fa0638ae822bf54639cf3a485c0b7b8a3a236a80221d824df7f79a090a9"
+PROFILE_PATH = "data/development-correction-contract-v2.json"
+PROFILE_SHA256 = "1d806d536dc77b5a085264950e64b2bde3db4ab02afa33c6adb827d8b7a07f73"
 BASE_PROFILE_SHA256 = "67146228d636c16f02484998741c7a1545da68b209e693620efab22b2676cd43"
 ACCOUNTING_PATH = "reports/secondary-development-v1-attempt-1.json"
 ACCOUNTING_SHA256 = "c372aa5d6563a0c75d297d0178154588bfbcd93451a3f14fa06a064a84cbd02e"
+HISTORY_PINS = {
+    "data/development-correction-contract-v1.json": "61739fa0638ae822bf54639cf3a485c0b7b8a3a236a80221d824df7f79a090a9",
+    "reports/secondary-development-correction-v1-attempt-1.json": "aa9aac8b02d611ed362069abd5b8103d863f8d01acd39d0f99292830b725ddee",
+}
 
 
 class CorrectionError(ValueError):
@@ -71,6 +75,7 @@ def bind_correction(
     expected = {
         PROFILE_PATH: expected_profile_sha256,
         ACCOUNTING_PATH: ACCOUNTING_SHA256,
+        **HISTORY_PINS,
     }
     execution_preflight._committed_files(base.root, base.revision, expected)
     accounting = execution_preflight._read_regular(base.root, ACCOUNTING_PATH)

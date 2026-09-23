@@ -9,6 +9,7 @@ It cannot recover the original producer's missing fit-label digest or worker exi
 from __future__ import annotations
 
 from contextlib import ExitStack, contextmanager
+from copy import deepcopy
 from dataclasses import asdict
 from hashlib import sha256
 from pathlib import Path
@@ -58,10 +59,58 @@ _TABULAR_CHECKS = {
     "metrics_and_cp_arithmetic": True,
 }
 _DRIFT_SCOPE = "retained_score_arithmetic_and_authenticated_membership_not_independent_drift_score_recomputation"
+CHECK_IDS = frozenset(
+    {
+        "accounting_requires_bytes",
+        "audit_summary_mismatch",
+        "authenticated_training_validation_overlap",
+        "invalid_accounting_record",
+        "invalid_audit_binding",
+        "invalid_audit_summary",
+        "invalid_original_execution",
+        "invalid_original_receipt_hashes",
+        "invalid_original_revision",
+        "invalid_permutation_agreement_count",
+        "invalid_permutation_diagnostics",
+        "invalid_permutation_label_digest",
+        "missing_retained_file",
+        "original_attempt_inside_checkout",
+        "original_attempt_status_mismatch",
+        "original_completed_members_mismatch",
+        "original_execution_binding_mismatch",
+        "original_failed_reservation_mismatch",
+        "original_failure_claim_mismatch",
+        "original_failure_mismatch",
+        "original_failure_outcome_mismatch",
+        "original_label_digest_mismatch",
+        "original_member_receipt_mismatch",
+        "original_process_observation_mismatch",
+        "original_receipt_hash_mismatch",
+        "permutation_class_count_mismatch",
+        "permutation_diagnostic_identity_mismatch",
+        "retained_audit_failed",
+        "retained_file_changed_during_audit",
+        "retained_validation_alignment_mismatch",
+        "saved_model_score_mismatch",
+        "training_membership_mismatch",
+        "validation_label_mismatch",
+        "validation_membership_mismatch",
+    }
+)
 
 
 class DevelopmentAuditError(ValueError):
     """A safe check identifier without private paths or exception details."""
+
+    def __init__(self, check_id: str):
+        if type(check_id) is not str or check_id not in CHECK_IDS:
+            raise ValueError("unknown audit check identifier")
+        super().__init__(check_id)
+        self._check_id = check_id
+
+    @property
+    def check_id(self) -> str:
+        return self._check_id
 
 
 def _require(condition, symbol):
@@ -224,6 +273,31 @@ def _failed_receipt(contents, path, identity, expected_outcome):
     return digest
 
 
+def _accounting_summary_matches(original, reported, member):
+    if member == "drift":
+        return completion._same(original, reported)
+    values = (deepcopy(original), deepcopy(reported))
+    # The public accounting copy encoded three declared real-valued zeros as 0.
+    # This comparison never changes producer bytes or integer/boolean fields.
+    for value in values:
+        if type(value) is not dict or type(value.get("result")) is not dict:
+            continue
+        result = value["result"]
+        for parent, name in (
+            ("scoring_audit", "max_absolute_decision_difference"),
+            ("scoring_audit", "max_absolute_probability_difference"),
+            ("validation_threshold", "observed_fpr"),
+        ):
+            record = result.get(parent)
+            if (
+                type(record) is dict
+                and type(record.get(name)) is int
+                and record[name] == 0
+            ):
+                record[name] = 0.0
+    return completion._same(*values)
+
+
 def _receipts(report, path, contents):
     for name, expected in report["receipt_and_summary_sha256"].items():
         _require(
@@ -273,7 +347,7 @@ def _receipts(report, path, contents):
                     "private_sha256": hashes,
                 },
             )
-            and completion._same(summary, child["summary"])
+            and _accounting_summary_matches(summary, child["summary"], member)
             and sha256(contents[marker]).hexdigest() == child["public_summary_sha256"],
             "original_member_receipt_mismatch",
         )
@@ -477,7 +551,8 @@ def audit_retained(
             )
             members = []
             for child in report["completed_children"]:
-                member, summary = child["member"], child["summary"]
+                member = child["member"]
+                summary = source_runner._json(contents[path / f"{member}.json"])
                 evidence = path / member / "evidence"
                 entry = {
                     "member": member,
@@ -611,7 +686,8 @@ def validate_audit_summary(
             path = execution_receipt._absolute_path(original_attempt)
             members, drift_ids, previous = [], None, None
             for child in report["completed_children"]:
-                member, original = child["member"], child["summary"]
+                member = child["member"]
+                original = source_runner._json(contents[path / f"{member}.json"])
                 evidence = path / member / "evidence"
                 entry = {
                     "member": member,

@@ -28,7 +28,12 @@ correction now has a separate [prospective profile](data/development-correction-
 The new command, `python scripts/run_secondary_correction.py --help`, audits the
 seven retained members without fitting, then permits one corrected RF fit only
 after that audit passes. It saves fitted state before later checks, safe failure
-identifiers and actual worker exits. The new execution has not yet run.
+identifiers and actual worker exits. Its [first attempt](reports/secondary-development-correction-v1-attempt-1.json)
+stopped before the scientific audit or any fit: three `0.0` values in an original
+summary had become `0` in its public accounting copy. The exact original marker
+hash confirms this representation-only difference. A separate
+[execution correction](data/development-correction-contract-v2.json) preserves
+that stop and the scientific method; its subsequent execution has not yet run.
 Additional transformer seed procedures, perturbation replay and external source
 integration remain. No group-test or external result is claimed.
 

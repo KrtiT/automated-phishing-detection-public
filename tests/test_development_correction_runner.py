@@ -339,3 +339,46 @@ def test_final_verification_pins_both_stages_together(api, execution, monkeypatc
         api._supervise(execution.binding, execution.paths)
     assert len(rf_checks) == 2
     assert not execution.paths.public_summary.exists()
+
+
+@pytest.mark.parametrize("wrapped", [False, True])
+def test_known_audit_failure_retains_specific_check_and_class(api, tmp_path, wrapped):
+    from automated_phishing_detection.development_audit import DevelopmentAuditError
+
+    error = DevelopmentAuditError("original_member_receipt_mismatch")
+    if wrapped:
+        outer = api.CorrectionError("worker_failed")
+        outer.__cause__ = error
+        error = outer
+    parent = execution_receipt.reserve_attempt(
+        tmp_path / "attempt", identity={"fixture": True}
+    )
+    api._failure(parent, "retained_audit", error)
+    details = json.loads((parent.directory / "failure-details.json").read_bytes())
+    assert details["check_id"] == "original_member_receipt_mismatch"
+    assert details["error_type"] == "DevelopmentAuditError"
+
+
+def test_failure_chain_keeps_safe_completion_check_and_terminates_cycles(api, tmp_path):
+    error = api.completion.DevelopmentCompletionError("score_metrics_mismatch")
+    outer = api.CorrectionError("verification")
+    outer.__cause__ = error
+    error.__context__ = outer
+    parent = execution_receipt.reserve_attempt(
+        tmp_path / "attempt", identity={"fixture": True}
+    )
+    api._failure(parent, "verification", outer)
+    details = json.loads((parent.directory / "failure-details.json").read_bytes())
+    assert details["check_id"] == "score_metrics_mismatch"
+    assert details["error_type"] == "DevelopmentCompletionError"
+
+
+def test_unknown_failure_name_and_message_never_escape(api, tmp_path):
+    error = type("https://private.example", (Exception,), {})("private record")
+    parent = execution_receipt.reserve_attempt(
+        tmp_path / "attempt", identity={"fixture": True}
+    )
+    api._failure(parent, "retained_audit", error)
+    details = (parent.directory / "failure-details.json").read_text()
+    assert "private" not in details
+    assert json.loads(details)["error_type"] == "Exception"

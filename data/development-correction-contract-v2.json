@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "contract_id": "secondary-development-correction-v2",
+  "date": "2026-09-22",
+  "base_correction_profile_sha256": "61739fa0638ae822bf54639cf3a485c0b7b8a3a236a80221d824df7f79a090a9",
+  "stopped_correction_accounting_sha256": "aa9aac8b02d611ed362069abd5b8103d863f8d01acd39d0f99292830b725ddee",
+  "development_execution_ready": true,
+  "protected_evaluation_ready": false,
+  "scientific_method_changes": false,
+  "rf_artifact_method_version": "secondary-rf-v2",
+  "maximum_new_fits": 1,
+  "previous_correction_rf_fits": 0,
+  "retry_or_resume": false,
+  "receipt_policy": "Authenticate exact original marker bytes by unchanged recorded SHA256; permit only schema-declared float-zero versus integer-zero normalization in the accounting copy; use original marker summary for all scientific checks.",
+  "diagnostics": "Retain allowlisted audit check identifiers and known correction/audit error classes without exception text.",
+  "execution_policy": "One new complete audit followed conditionally by one RF fit in a fresh reservation. The prior correction stopped before scientific audit calculations or any fit; this repeats its audit procedure after a receipt-handling correction, not a resumed or successful prior attempt. No automatic retry.",
+  "preservation": "Both failed attempts, their public accounting and all earlier profiles remain unchanged. RF arithmetic, exact parity, data, seeds, model parameters and hypothesis gates are inherited unchanged from the base correction profile."
+}

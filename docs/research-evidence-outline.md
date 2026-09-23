@@ -770,8 +770,21 @@ tagged rather than lost. Actual worker exits, including signal exits, precede
 acceptance checks. Failure records use safe check identifiers, not exception
 text. Both stages' files remain pinned through final verification. No retry,
 resume, control refit or protected input is permitted. This development-informed
-correction is implemented; research execution follows reviewed-code publication
-and exact-commit CI, and has not yet occurred.
+correction is implemented; execution requires reviewed-code publication and
+exact-commit CI.
+
+The [first correction attempt](../reports/secondary-development-correction-v1-attempt-1.json)
+stopped at receipt comparison before scientific audit calculations or any fit.
+Both exits were 2. Three real zeros in the formatting summary were `0.0` in the
+original marker and `0` in the pinned accounting copy. Restoring those three
+representations alone reproduces the exact original marker hash. This post-stop
+diagnosis used receipts/public summaries only; the worker did not retain its
+specific check. The [v2 execution amendment](../data/development-correction-contract-v2.json)
+binds this failure, fixes only that accounting comparison and its diagnostics,
+and leaves the RF method and all scientific rules unchanged. Original marker
+bytes remain hash-authenticated and authoritative. Both failed attempts remain
+immutable. One fresh audit and conditional RF fit are specified; no RF fit has
+yet occurred under either correction profile.
 
 The metadata-only preflight accepts no model or dataset paths:
 

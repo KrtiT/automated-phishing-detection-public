@@ -47,6 +47,10 @@ def material():
 
 @pytest.fixture
 def retained(material, tmp_path, monkeypatch):
+    return _retained(material, tmp_path, monkeypatch)
+
+
+def _retained(material, tmp_path, monkeypatch):
     data, drift = material
     root = tmp_path / "checkout"
     root.mkdir()
@@ -121,7 +125,10 @@ def retained(material, tmp_path, monkeypatch):
                 "model_kind": "formatting" if member == "formatting" else "permutation",
                 "seed": 42 if member == "formatting" else int(member[-2:]),
                 "row_count": len(rows),
-                "class_counts": {"0": 16, "1": 16},
+                "class_counts": {
+                    str(label): sum(row["label"] == label for row in rows)
+                    for label in (0, 1)
+                },
                 "validation_threshold": threshold,
                 "scoring_audit": audit,
                 "analysis_role": "descriptive_secondary_not_primary",
@@ -557,3 +564,159 @@ def test_parent_rejects_changed_public_audit_claims(retained, change):
             accounting_bytes=_bytes(retained.accounting),
             original_attempt=retained.original,
         )
+
+
+@pytest.fixture
+def zero_real_fields(tmp_path, monkeypatch):
+    data = _fixture(secondary_development, validation_count=640)
+    reference = secondary_development.build_training_reference(**data["arguments"])
+    drift = secondary_development.evaluate_validation(
+        reference, data["validation_content"]
+    )
+    retained = _retained((data, drift), tmp_path, monkeypatch)
+    result = retained.accounting["completed_children"][1]["summary"]["result"]
+    fields = (
+        ("scoring_audit", "max_absolute_decision_difference"),
+        ("scoring_audit", "max_absolute_probability_difference"),
+        ("validation_threshold", "observed_fpr"),
+    )
+    for parent, name in fields:
+        assert type(result[parent][name]) is float and result[parent][name] == 0.0
+        result[parent][name] = 0
+    return retained
+
+
+def test_accounting_float_zero_normalization_preserves_original_marker_bytes_and_types(
+    zero_real_fields,
+):
+    fixture = zero_real_fields
+    marker = fixture.original / "formatting.json"
+    original_bytes = marker.read_bytes()
+    original_hash = sha256(original_bytes).hexdigest()
+    original_summary = _load(marker)
+    result = _audit(fixture)
+    audited = result["members"][1]
+    assert audited["public_summary_sha256"] == original_hash
+    assert _bytes(audited["summary"]) == original_bytes
+    assert audited["summary"] == original_summary
+    actual = audited["summary"]["result"]
+    assert type(actual["scoring_audit"]["max_absolute_decision_difference"]) is float
+    assert type(actual["scoring_audit"]["max_absolute_probability_difference"]) is float
+    assert type(actual["validation_threshold"]["observed_fpr"]) is float
+    assert marker.read_bytes() == original_bytes
+    module = _module()
+    assert (
+        module.validate_audit_summary(
+            result,
+            binding=fixture.binding,
+            accounting_bytes=_bytes(fixture.accounting),
+            original_attempt=fixture.original,
+        )
+        == result
+    )
+
+
+@pytest.mark.parametrize(
+    "field",
+    [
+        ("scoring_audit", "max_absolute_decision_difference"),
+        ("scoring_audit", "max_absolute_probability_difference"),
+        ("validation_threshold", "observed_fpr"),
+    ],
+)
+@pytest.mark.parametrize("value", [False, 1, 0.25])
+def test_accounting_zero_compatibility_does_not_hide_changed_values_or_booleans(
+    zero_real_fields, field, value
+):
+    fixture = zero_real_fields
+    result = fixture.accounting["completed_children"][1]["summary"]["result"]
+    result[field[0]][field[1]] = value
+    module = _module()
+    with pytest.raises(module.DevelopmentAuditError) as error:
+        with module.audited_snapshot(
+            fixture.binding,
+            accounting_bytes=_bytes(fixture.accounting),
+            original_attempt=fixture.original,
+        ):
+            pytest.fail("changed accounting value was accepted")
+    assert error.value.check_id == "original_member_receipt_mismatch"
+
+
+@pytest.mark.parametrize("value", [0.0, False])
+def test_accounting_zero_compatibility_never_normalizes_counts(zero_real_fields, value):
+    fixture = zero_real_fields
+    result = fixture.accounting["completed_children"][1]["summary"]["result"]
+    result["validation_threshold"]["counts"]["false_positive"] = value
+    module = _module()
+    with pytest.raises(module.DevelopmentAuditError) as error:
+        with module.audited_snapshot(
+            fixture.binding,
+            accounting_bytes=_bytes(fixture.accounting),
+            original_attempt=fixture.original,
+        ):
+            pytest.fail("changed accounting count type was accepted")
+    assert error.value.check_id == "original_member_receipt_mismatch"
+
+
+def test_normalized_accounting_does_not_waive_original_marker_hash(zero_real_fields):
+    fixture = zero_real_fields
+    marker = fixture.original / "formatting.json"
+    content = marker.read_bytes()
+    marker.write_bytes(content.replace(b'"observed_fpr":0.0', b'"observed_fpr":0'))
+    assert marker.read_bytes() != content
+    with pytest.raises(_module().DevelopmentAuditError) as error:
+        _audit(fixture)
+    assert error.value.check_id == "original_receipt_hash_mismatch"
+
+
+@pytest.mark.parametrize(
+    "filename,parent,field,value",
+    [
+        (
+            "scoring-audit.json",
+            "scoring_audit",
+            "max_absolute_decision_difference",
+            False,
+        ),
+        (
+            "scoring-audit.json",
+            "scoring_audit",
+            "max_absolute_probability_difference",
+            1,
+        ),
+        ("threshold.json", "validation_threshold", "observed_fpr", 0.25),
+    ],
+)
+def test_accounting_compatibility_keeps_scientific_checks_after_hash_repair(
+    zero_real_fields, filename, parent, field, value
+):
+    fixture = zero_real_fields
+    evidence = fixture.original / "formatting/evidence" / filename
+    record = _load(evidence)
+    record[field] = value
+    evidence.write_bytes(secondary_tabular._json_bytes(record))
+    marker = fixture.original / "formatting.json"
+    summary = _load(marker)
+    summary["result"][parent] = record
+    _write(marker, summary)
+    _relink(fixture)
+    reported = fixture.accounting["completed_children"][1]["summary"]["result"]
+    for section, name in (
+        ("scoring_audit", "max_absolute_decision_difference"),
+        ("scoring_audit", "max_absolute_probability_difference"),
+        ("validation_threshold", "observed_fpr"),
+    ):
+        if type(reported[section][name]) is float and reported[section][name] == 0.0:
+            reported[section][name] = 0
+    with pytest.raises(_module().DevelopmentAuditError):
+        _audit(fixture)
+
+
+def test_audit_error_exposes_only_allowlisted_check_ids():
+    module = _module()
+    error = module.DevelopmentAuditError("original_member_receipt_mismatch")
+    assert error.check_id == "original_member_receipt_mismatch"
+    with pytest.raises(ValueError):
+        module.DevelopmentAuditError("https://private.example/record")
+    with pytest.raises(AttributeError):
+        error.check_id = "replacement"

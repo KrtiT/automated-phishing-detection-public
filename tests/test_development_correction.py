@@ -23,8 +23,15 @@ def api():
 
 
 def test_correction_policy_preserves_history_and_limits_new_fits(api):
+    assert api.PROFILE_PATH == "data/development-correction-contract-v2.json"
     profile = json.loads((ROOT / api.PROFILE_PATH).read_bytes())
     api.validate_profile(profile)
+    assert profile["scientific_method_changes"] is False
+    assert profile["previous_correction_rf_fits"] == 0
+    assert profile["maximum_new_fits"] == 1
+    profile = json.loads(
+        (ROOT / "data/development-correction-contract-v1.json").read_bytes()
+    )
     assert profile["new_fits"] == ["random_forest"]
     assert profile["maximum_new_fits"] == 1
     assert profile["stages"] == ["retained_audit", "random_forest"]
@@ -66,7 +73,7 @@ def test_binding_checks_supplementary_committed_bytes_and_rechecks_base(
     api, tmp_path, monkeypatch
 ):
     root = tmp_path / "repo"
-    for name in (api.PROFILE_PATH, api.ACCOUNTING_PATH):
+    for name in (api.PROFILE_PATH, api.ACCOUNTING_PATH, *api.HISTORY_PINS):
         path = root / name
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes((ROOT / name).read_bytes())
@@ -90,7 +97,11 @@ def test_binding_checks_supplementary_committed_bytes_and_rechecks_base(
     assert bound.profile_sha256 == digest
     assert sha256(bound.accounting_bytes).hexdigest() == api.ACCOUNTING_SHA256
     assert calls == [
-        {api.PROFILE_PATH: digest, api.ACCOUNTING_PATH: api.ACCOUNTING_SHA256},
+        {
+            api.PROFILE_PATH: digest,
+            api.ACCOUNTING_PATH: api.ACCOUNTING_SHA256,
+            **api.HISTORY_PINS,
+        },
         "recheck",
     ]
     api.recheck_correction(bound)
@@ -111,4 +122,20 @@ def test_binding_rejects_wrong_caller_hash(api, tmp_path, monkeypatch):
     with pytest.raises(api.CorrectionError, match="profile_hash"):
         api.bind_correction(
             root, expected_revision=base.revision, expected_profile_sha256="0" * 64
+        )
+
+
+def test_old_correction_profile_is_not_current_execution_authority(
+    api, tmp_path, monkeypatch
+):
+    monkeypatch.setattr(
+        api,
+        "bind_development_execution",
+        lambda *a, **k: pytest.fail("bound retired profile"),
+    )
+    with pytest.raises(api.CorrectionError, match="profile_hash_mismatch"):
+        api.bind_correction(
+            tmp_path,
+            expected_revision="a" * 40,
+            expected_profile_sha256="61739fa0638ae822bf54639cf3a485c0b7b8a3a236a80221d824df7f79a090a9",
         )

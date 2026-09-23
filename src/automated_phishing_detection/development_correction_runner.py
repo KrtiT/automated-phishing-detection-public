@@ -22,7 +22,7 @@ from .development_correction import (
     bind_correction,
     recheck_correction,
 )
-from .development_runner import _failure_symbol
+from .development_runner import _ERROR_SYMBOLS
 
 STAGES = ("retained_audit", "random_forest")
 _RECORDS = {
@@ -48,6 +48,18 @@ _CHECKS = {
     "verification",
     "reservation",
     "final_binding",
+    "worker_exit_not_successful",
+    "process_observation_mismatch",
+    "stage_summary_mismatch",
+    "checkpoint_hash_mismatch",
+    "fit_input_mismatch",
+    "wrong_rf_method",
+    "audit_payload_mismatch",
+    "accepted_stage_changed",
+    "stage_output_changed",
+    "score_metrics_mismatch",
+    "validation_threshold_mismatch",
+    "model_method_mismatch",
 }
 _RECEIPTS = {"reservation.json", "finalize.claim", "outcome.json"}
 _TABULAR = {
@@ -308,10 +320,30 @@ def _rf(binding, attempt, inputs):
 
 
 def _failure(attempt, stage, error):
-    check = getattr(error, "check_id", None)
-    check = check if type(check) is str and check in _CHECKS else stage
-    check = check if check in _CHECKS else "verification"
-    symbol = _failure_symbol(error)
+    from .development_audit import CHECK_IDS, DevelopmentAuditError
+
+    classes = {
+        **_ERROR_SYMBOLS,
+        DevelopmentAuditError: "DevelopmentAuditError",
+        CorrectionError: "CorrectionError",
+        completion.DevelopmentCompletionError: "DevelopmentCompletionError",
+    }
+    allowed = _CHECKS | CHECK_IDS
+    check = stage if stage in _CHECKS else "verification"
+    symbol, seen = "Exception", set()
+    while isinstance(error, BaseException) and id(error) not in seen:
+        seen.add(id(error))
+        if type(error) in classes:
+            symbol = classes[type(error)]
+            candidate = getattr(error, "check_id", None)
+            if candidate is None and type(error) in (
+                CorrectionError,
+                completion.DevelopmentCompletionError,
+            ):
+                candidate = error.args[0] if len(error.args) == 1 else None
+            if type(candidate) is str and candidate in allowed:
+                check = candidate
+        error = error.__cause__ if error.__cause__ is not None else error.__context__
     _record(
         attempt,
         "failure-details.json",

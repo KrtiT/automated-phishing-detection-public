@@ -704,8 +704,8 @@ specifies the remaining development methods. `secondary_transformer.py` provides
 a separate seed-43--46 entry while the primary entry stays fixed at 42. Training
 keeps the original batch-512 checkpoint AP and stopping rule. Each epoch exposes
 its ordered validation probabilities and AP, and each qualifying checkpoint is
-captured before a later epoch or verification check can fail. Callbacks still
-need durable, create-only writers in the supervised research runner.
+captured before a later epoch or verification check can fail. The separate
+seed/probe runner now supplies create-only writers and one fresh worker per stage.
 
 All five weight sets will use singleton secondary calibration with the same
 accepted stage-one model and historical cutoff. Only each transformer's secondary
@@ -726,6 +726,24 @@ allocation and model/scaler identities before replay. Neither fits a reference
 or recalibrates a boundary. Tests use invented records only. These choices are
 informed by completed development work, and no seed/probe research result is
 claimed from this implementation.
+
+The [seed/probe execution profile](../data/seed-probe-execution-contract-v1.json)
+fixes the order: seed-42 calibration without fitting, seeds 43-46, then probes.
+The runner reserves each worker before reading its inputs and preserves actual
+process exits, including signals. Later seeds reuse one authenticated copy of
+the seed-42 stage-one scores. Epoch probabilities, consumed training identities
+and labels, qualifying checkpoints, and restored weights survive later failures.
+The saved-evidence verifier checks label digests, checkpoint selection, numeric
+archives, calibration and decisions without another fit. Token/mask descriptors
+are checked; their contents are not re-encoded without source URLs.
+
+Probe snapshots distinguish scored rows from completed routing/window results.
+A stopped worker retains its installed prefix, not a partial success. The
+verifier reproduces transformations, monitor and routing arithmetic and aggregate
+comparisons from saved evidence; it does not independently rescore the primary
+models or reread source records. Subprocess, kill and tamper tests use invented
+data. Research execution and the remaining primary-study integration are separate
+from these software checks.
 
 ### First Secondary Development Attempt
 
@@ -894,7 +912,7 @@ conventions without changing the frozen workload or H3 definition.
 | 1 | Complete paired evaluator integration | Internal file/process execution, primary/score-metric composition and receipt verification are implemented on fixtures behind the closed readiness gate. Complete remaining secondary-model outputs and external execution before opening that gate. The singleton convention is adopted by explicit amendment, not equivalence acceptance. |
 | 2 | Composed H2 policy replay | Full-stream routing followed by outcome-stratum selection and normalized external preparation are implemented on fixtures. Bind the verified publisher schema, complete source inventory and saved-score inputs. Preserve the failed development false-alert component; this characterizes RQ2 and cannot rescue H2. |
 | 3 | Selective inference service and real-HTTP harness | Fixed cascade, transformer-only and serialized live-monitor modes are tested, including real TCP, phase reset and offline trace agreement. Bind service, client, process lifecycle and saved outputs in the official producer before measurements. |
-| 4 | Frozen evaluation and replay-manifest contracts | Sampling, stream integration, runtime identity and all three workloads have supplements. The separate September 23 execution accepted the retained audit and corrected RF; both earlier stops remain preserved. Complete transformer seed conventions, perturbation replay, secondary output coverage and external/operational integration before the pre-access freeze. Control interpretation and missing historical label digests remain explicit limitations. |
+| 4 | Frozen evaluation and replay-manifest contracts | Sampling, stream integration, runtime identity and all three workloads have supplements. The separate September 23 execution accepted the retained audit and corrected RF; both earlier stops remain preserved. Seed/probe methods are implemented. Complete their supervised execution and retained-output verification, secondary output coverage and external/operational integration before the pre-access freeze. Control interpretation and missing historical label digests remain explicit limitations. |
 | 5 | Independent execution and one gate table | The single internal raw-partition pass produces paired predictions and replay manifests. Later HTTP runs use only those manifests. External schema verification, preparation, and evaluation follow the separate frozen access sequence. |
 
 The existing offline cascade scorer accepts transformer probabilities for every

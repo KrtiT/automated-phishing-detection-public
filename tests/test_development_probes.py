@@ -163,3 +163,73 @@ def test_model_reference_mismatch_stops_before_detector_call(api, evidence, fiel
             gmm_artifact=fixture["arguments"]["gmm_state"],
             operating_points=probe_replay.OperatingPoints(0.5, 0.5, 0.5, 0.1, 0.0),
         )
+
+
+def test_development_adapter_forwards_optional_callbacks_unchanged(
+    api, evidence, monkeypatch
+):
+    from automated_phishing_detection import probe_replay
+
+    fixture, _ = evidence
+    sentinel = object()
+
+    def row_callback(name, row):
+        pass
+
+    def stream_callback(stream):
+        pass
+
+    def replay_rows(rows, **kwargs):
+        assert kwargs["row_callback"] is row_callback
+        assert kwargs["stream_callback"] is stream_callback
+        return sentinel
+
+    monkeypatch.setattr(probe_replay, "replay_probes", replay_rows)
+    result = api.replay_development_probes(
+        **arguments(evidence),
+        primary_scorer=lambda row: pytest.fail("forwarding test unexpectedly scored"),
+        stage1_model=fixture["arguments"]["logistic_l1"],
+        gmm_artifact=fixture["arguments"]["gmm_state"],
+        operating_points=probe_replay.OperatingPoints(0.5, 0.5, 0.5, 0.1, 0.0),
+        row_callback=row_callback,
+        stream_callback=stream_callback,
+    )
+    assert result is sentinel
+
+
+def test_development_callback_failure_keeps_prefix_without_later_work(api, evidence):
+    from automated_phishing_detection import probe_replay
+
+    fixture, retained = evidence
+    scored, saved = [], []
+
+    def score(row):
+        assert len(scored) == len(saved)
+        scored.append(row)
+        return probe_replay.PrimaryScores(
+            row.record_id, row.raw_url, 0.2, 0.3, 0.4, "{}", "{}"
+        )
+
+    def retain(name, row):
+        saved.append((name, row))
+        if len(saved) == 2:
+            raise RuntimeError("invented sink failure")
+
+    with pytest.raises(
+        api.DevelopmentProbeError, match="development_probe_replay_failed"
+    ):
+        api.replay_development_probes(
+            **arguments(evidence),
+            primary_scorer=score,
+            stage1_model=fixture["arguments"]["logistic_l1"],
+            gmm_artifact=fixture["arguments"]["gmm_state"],
+            operating_points=probe_replay.OperatingPoints(0.5, 0.5, 0.5, 0.1, 0.0),
+            row_callback=retain,
+            stream_callback=lambda stream: pytest.fail("failed stream was completed"),
+        )
+    assert len(scored) == len(saved) == 2
+    assert (
+        tuple(row.mapping.record_id for _, row in saved)
+        == retained.audit_record_ids[:2]
+    )
+    assert [name for name, _ in saved] == ["original", "original"]

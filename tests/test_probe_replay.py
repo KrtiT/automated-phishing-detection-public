@@ -655,3 +655,162 @@ def test_reference_nonfinite_bandwidth_is_rejected_even_when_unavailable(replay)
     )
     with pytest.raises(replay.ProbeReplayError):
         replay.replay_probes((), **options)
+
+
+def test_callbacks_precede_next_work_and_preserve_existing_arithmetic(
+    replay, monkeypatch
+):
+    inputs = records(replay, 257)
+    options = kwargs(replay)
+    baseline = replay.replay_probes(inputs, **options)
+    saved_rows, saved_streams, calls = [], [], []
+    score = options["primary_scorer"]
+    replay_stream = replay._replay_stream
+    summarize = replay._summary
+
+    def tracked_score(row):
+        assert len(saved_rows) == len(calls)
+        assert len(saved_streams) == len(calls) // len(inputs)
+        calls.append(row)
+        return score(row)
+
+    def tracked_replay_stream(name, rows, *args):
+        assert len(saved_rows) == len(calls)
+        assert saved_rows[-len(rows) :] == [(name, row) for row in rows]
+        return replay_stream(name, rows, *args)
+
+    def tracked_summary(streams):
+        assert tuple(saved_streams) == streams
+        return summarize(streams)
+
+    monkeypatch.setattr(replay, "_replay_stream", tracked_replay_stream)
+    monkeypatch.setattr(replay, "_summary", tracked_summary)
+    options["primary_scorer"] = tracked_score
+    result = replay.replay_probes(
+        inputs,
+        **options,
+        row_callback=lambda name, row: saved_rows.append((name, row)),
+        stream_callback=saved_streams.append,
+    )
+    assert result == baseline
+    assert result.public_summary == baseline.public_summary
+    assert len(calls) == len(saved_rows) == 4 * len(inputs)
+    assert tuple(saved_streams) == result.streams
+    assert all(not row.drift_override for _, row in saved_rows)
+    for stream_index, stream in enumerate(result.streams):
+        provisional = saved_rows[(stream_index + 1) * len(inputs) - 1][1]
+        authoritative = stream.rows[-1]
+        assert provisional.probabilities[4] == provisional.probabilities[1]
+        assert authoritative.drift_override is True
+        assert authoritative.probabilities[4] == authoritative.probabilities[2]
+        assert (
+            replace(
+                provisional,
+                probabilities=authoritative.probabilities,
+                decisions=authoritative.decisions,
+                drift_override=authoritative.drift_override,
+                logical_stage2_mask=authoritative.logical_stage2_mask,
+            )
+            == authoritative
+        )
+
+
+@pytest.mark.parametrize(
+    ("failure", "scored_count", "saved_row_count", "saved_stream_count"),
+    [
+        ("scorer", 6, 5, 1),
+        ("monitor", 8, 8, 1),
+        ("row_callback", 6, 6, 1),
+        ("stream_callback", 8, 8, 2),
+        ("aggregate", 16, 16, 4),
+    ],
+)
+def test_callbacks_preserve_prefixes_and_fail_stop_without_extra_scoring(
+    replay, monkeypatch, failure, scored_count, saved_row_count, saved_stream_count
+):
+    options = kwargs(replay)
+    saved_rows, saved_streams, calls, monitor_calls = [], [], [], []
+    score = options["primary_scorer"]
+    mmd_windows = drift.mmd_window_scores
+
+    def tracked_score(row):
+        assert len(saved_rows) == len(calls)
+        calls.append(row)
+        if failure == "scorer" and len(calls) == 6:
+            raise RuntimeError("scorer failure")
+        return score(row)
+
+    def retain_row(name, row):
+        saved_rows.append((name, row))
+        if failure == "row_callback" and len(saved_rows) == 6:
+            raise RuntimeError("row_callback failure")
+
+    def retain_stream(stream):
+        saved_streams.append(stream)
+        if failure == "stream_callback" and len(saved_streams) == 2:
+            raise RuntimeError("stream_callback failure")
+
+    def tracked_monitor(*args):
+        assert len(saved_rows) == len(calls)
+        monitor_calls.append(len(calls))
+        if failure == "monitor" and len(monitor_calls) == 2:
+            raise RuntimeError("monitor failure")
+        return mmd_windows(*args)
+
+    def fail_summary(streams):
+        assert tuple(saved_streams) == streams
+        raise RuntimeError("aggregate failure")
+
+    options["primary_scorer"] = tracked_score
+    monkeypatch.setattr(drift, "mmd_window_scores", tracked_monitor)
+    if failure == "aggregate":
+        monkeypatch.setattr(replay, "_summary", fail_summary)
+    with pytest.raises(replay.ProbeReplayError, match=f"{failure} failure"):
+        replay.replay_probes(
+            records(replay),
+            **options,
+            row_callback=retain_row,
+            stream_callback=retain_stream,
+        )
+    assert len(calls) == scored_count
+    assert len(saved_rows) == saved_row_count
+    assert len(saved_streams) == saved_stream_count
+    assert [name for name, _ in saved_rows] == [
+        name for name in replay.STREAM_NAMES for _ in range(4)
+    ][:saved_row_count]
+    assert [row.mapping.record_id for _, row in saved_rows] == [
+        f"row-{i}" for _ in replay.STREAM_NAMES for i in range(4)
+    ][:saved_row_count]
+    assert [stream.name for stream in saved_streams] == list(
+        replay.STREAM_NAMES[:saved_stream_count]
+    )
+    assert monitor_calls == list(range(4, (saved_row_count // 4) * 4 + 1, 4))
+
+
+@pytest.mark.parametrize("name", ["row_callback", "stream_callback"])
+def test_noncallable_retention_sink_rejected_before_scoring(replay, name):
+    options = kwargs(replay)
+    options[name] = False
+    options["primary_scorer"] = lambda row: pytest.fail(
+        "invalid callback reached scorer"
+    )
+    with pytest.raises(replay.ProbeReplayError, match="callback"):
+        replay.replay_probes(records(replay), **options)
+
+
+def test_empty_streams_still_reach_stream_callbacks_before_summary(replay, monkeypatch):
+    saved = []
+    summary = replay._summary
+
+    def tracked_summary(streams):
+        assert tuple(saved) == streams
+        return summary(streams)
+
+    monkeypatch.setattr(replay, "_summary", tracked_summary)
+    result = replay.replay_probes(
+        (),
+        **kwargs(replay),
+        row_callback=lambda *args: pytest.fail("empty stream produced a row"),
+        stream_callback=saved.append,
+    )
+    assert tuple(saved) == result.streams

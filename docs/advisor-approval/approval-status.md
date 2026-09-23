@@ -215,10 +215,13 @@ retains epoch predictions and qualifying checkpoints through callbacks; primary
 seed-42 weights and cutoffs remain unchanged. Probe replay and its saved-reference
 loader preserve the original audit rows, fixed boundaries and label-free
 transformations. The development adapter checks input bytes and model/scaler
-identities before replay. These paths have only been exercised on invented
-fixtures. Durable attempt writers, process supervision and output verification
-must be connected before new research execution. No additional fitting follows
-from the no-fit singleton amendment.
+identities before replay. Implementation tests use invented fixtures. The separate
+[execution profile](../../data/seed-probe-execution-contract-v1.json),
+SHA-256 `cf18fa8c35039c63f896cc62c7aaac8b0847a1abf55676ba67ee65b42340381d`,
+now connects create-only evidence, fresh worker processes and saved-output
+verification. It covers seed-42 calibration without a fit, seeds 43-46, then
+probes, stopping at the first failed stage. No research result under this profile
+has been accepted yet. No additional fitting follows from the no-fit singleton amendment.
 
 Execution binding now uses the fixed
 [v2 profile](../../data/execution-binding-contract-v2.json), SHA-256

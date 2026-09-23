@@ -41,15 +41,17 @@ model unchanged and exposes each epoch's predictions and fitted checkpoints for
 retention. Probe replay compares four independent URL streams using saved
 references and boundaries, without assigning labels to transformed URLs. The
 development adapter checks the original audit rows and model/scaler identities.
-These procedures still need durable, supervised research execution; no new seed,
-probe, group-test or external result is claimed.
+The separate [execution profile](data/seed-probe-execution-contract-v1.json)
+connects these procedures to fresh workers and create-only evidence. Saved-output
+checks cover consumed labels, checkpoints, calibration and probe arithmetic.
+Implementation tests use invented inputs. Research results will be reported
+separately; no new seed, probe, group-test or external result is claimed here.
 
-The correction's public record identifies the reviewed code, runtime, receipts
-and private artifact hashes. `python scripts/run_secondary_correction.py --help`
-documents the command; `--check` with the required revision/profile pins verifies
-metadata without reading research inputs. The completed fits must not be
-repeated. Only training and validation were used. Protected evaluation remains
-closed until the seed/probe procedures and source/output integration are complete.
+`python scripts/run_secondary_seed_probes.py --help` documents the next run.
+Its `--check` mode accepts revision/profile pins but no data paths; `--verify`
+checks saved evidence against the observed producer exit. Do not repeat completed
+fits. Protected evaluation remains closed until secondary development and the
+remaining prediction/source/HTTP integration are complete.
 
 ## Source and Baseline Record
 

@@ -762,6 +762,39 @@ def _load_transformer_cascade_bundle(
     bundle, summary_bytes, stage1_bytes = _snapshot_files(
         bundle_path, summary_path, stage1_path
     )
+    return _load_transformer_cascade_bytes(
+        bundle,
+        summary_bytes,
+        stage1_bytes,
+        _hash_policy=_hash_policy,
+        _device=device,
+        _fixture_cpu=_fixture_cpu,
+    )
+
+
+def _load_transformer_cascade_bytes(
+    bundle: dict[str, bytes],
+    summary_bytes: bytes,
+    stage1_bytes: bytes,
+    *,
+    _hash_policy: _BundleHashPolicy,
+    _device: torch.device,
+    _fixture_cpu: bool = False,
+) -> LoadedTransformerCascade:
+    """Validate supplied immutable bytes without filesystem reads or fitting.
+
+    This internal seam does not authenticate paths or authorize research reads.
+    Callers bind the supplied bytes before loading; all existing scientific,
+    metadata, public-projection, model-state and device checks remain in force.
+    """
+    _validate_hash_policy(_hash_policy)
+    device = _validate_device(_device, _fixture_cpu)
+    bundle = dict(_expect_fields(bundle, _BUNDLE_FILENAMES, "bundle"))
+    if any(
+        type(content) is not bytes
+        for content in (*bundle.values(), summary_bytes, stage1_bytes)
+    ):
+        raise TransformerInferenceError("all inference inputs must be immutable bytes")
     if sha256(summary_bytes).hexdigest() != _hash_policy.public_summary_sha256:
         raise TransformerInferenceError("public summary SHA-256 mismatch")
     if sha256(stage1_bytes).hexdigest() != _hash_policy.logistic_l1_artifact_sha256:

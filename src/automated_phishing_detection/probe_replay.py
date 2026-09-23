@@ -608,6 +608,8 @@ def replay_probes(
     mmd_calibration: secondary_drift.DriftCalibration,
     psi_reference: secondary_drift.PSIReference,
     psi_calibration: secondary_drift.DriftCalibration,
+    row_callback: Callable[[str, ProbeRow], None] | None = None,
+    stream_callback: Callable[[ProbeStream], None] | None = None,
 ) -> ProbeReplay:
     """Score exactly four independent streams, in fixed order, or raise.
 
@@ -615,6 +617,13 @@ def replay_probes(
     ``stage1_model.score_urls`` is only the accepted portable monitor scorer.
     Artifact/source binding and authorization remain the caller's responsibility.
     Supplied records, artifact dictionaries, and frozen references are unchanged.
+
+    Optional callbacks run synchronously and exceptions stop replay immediately.
+    ``row_callback(stream_name, row)`` receives each scored-row snapshot before
+    the next score or any policy/window replay. Its policy routing fields are
+    provisional: they mirror the fixed cascade with no drift override.
+    ``stream_callback(stream)`` receives authoritative routing and windows before
+    the next stream or final aggregation. Neither callback changes the result.
     """
     try:
         mappings = _prepare_mappings(records)
@@ -629,25 +638,34 @@ def replay_probes(
             getattr(stage1_model, "score_urls", None)
         ):
             raise ProbeReplayError("primary and portable scorers are required")
+        for name, callback in (
+            ("row_callback", row_callback),
+            ("stream_callback", stream_callback),
+        ):
+            if callback is not None and not callable(callback):
+                raise ProbeReplayError(f"{name} must be callable or None")
         streams = []
         for name, stream_mappings in zip(STREAM_NAMES, mappings, strict=True):
-            rows = tuple(
-                _score_mapping(
+            rows = []
+            for mapping in stream_mappings:
+                row = _score_mapping(
                     mapping, primary_scorer, stage1_model, artifact, operating_points
                 )
-                for mapping in stream_mappings
+                if row_callback is not None:
+                    row_callback(name, row)
+                rows.append(row)
+            stream = _replay_stream(
+                name,
+                tuple(rows),
+                operating_points,
+                mmd_reference,
+                mmd_calibration,
+                psi_reference,
+                psi_calibration,
             )
-            streams.append(
-                _replay_stream(
-                    name,
-                    rows,
-                    operating_points,
-                    mmd_reference,
-                    mmd_calibration,
-                    psi_reference,
-                    psi_calibration,
-                )
-            )
+            if stream_callback is not None:
+                stream_callback(stream)
+            streams.append(stream)
         result = ProbeReplay(tuple(streams))
         result.public_summary  # Fail stop if finite row scores overflow aggregation.
         return result

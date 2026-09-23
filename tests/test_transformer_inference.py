@@ -839,3 +839,188 @@ def test_preserves_synthetic_predictions_without_fitting(fixture_bundle, monkeyp
     torch.testing.assert_close(after, before, rtol=0.0, atol=0.0)
     assert loaded._model.training is False
     assert all(not parameter.requires_grad for parameter in loaded._model.parameters())
+
+
+def _fixture_byte_arguments(fixture):
+    bundle, summary, stage1 = transformer_inference._snapshot_files(
+        fixture.bundle_dir, fixture.summary_path, fixture.stage1_path
+    )
+    return {
+        "bundle": bundle,
+        "summary_bytes": summary,
+        "stage1_bytes": stage1,
+        "_hash_policy": transformer_inference._BundleHashPolicy(**fixture.policy),
+        "_device": torch.device("cpu"),
+        "_fixture_cpu": True,
+    }
+
+
+def test_byte_loader_matches_path_loader_without_reading_or_fitting(
+    fixture_bundle, monkeypatch
+):
+    arguments = _fixture_byte_arguments(fixture_bundle)
+    original_bundle = dict(arguments["bundle"])
+    expected = _load_fixture(fixture_bundle)
+
+    def forbidden(*args, **kwargs):
+        pytest.fail("byte-only loading attempted filesystem access or fitting")
+
+    monkeypatch.setattr(transformer_inference, "_snapshot_files", forbidden)
+    monkeypatch.setattr(transformer_inference, "_read_regular_file", forbidden)
+    monkeypatch.setattr(character_transformer, "fit_character_transformer", forbidden)
+    actual = transformer_inference._load_transformer_cascade_bytes(**arguments)
+    assert actual == expected
+    assert arguments["bundle"] == original_bundle
+    for name, value in expected._model.state_dict().items():
+        torch.testing.assert_close(
+            actual._model.state_dict()[name], value, rtol=0, atol=0
+        )
+    encoded = tuple(
+        character_sequence.encode_character_url(url, actual.vocabulary)
+        for url in ("https://safe.example/account", "https://signin.example/verify")
+    )
+    tokens = torch.tensor([row.token_ids for row in encoded], dtype=torch.int64)
+    mask = torch.tensor([row.padding_mask for row in encoded], dtype=torch.bool)
+    with torch.inference_mode():
+        torch.testing.assert_close(
+            actual._model(tokens, mask), expected._model(tokens, mask), rtol=0, atol=0
+        )
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        lambda args: args["bundle"].pop("vocabulary.json"),
+        lambda args: args["bundle"].update({"extra.json": b"{}\n"}),
+        lambda args: args.update(bundle=list(args["bundle"].items())),
+        lambda args: args["bundle"].update(
+            {"vocabulary.json": bytearray(args["bundle"]["vocabulary.json"])}
+        ),
+        lambda args: args.update(summary_bytes=bytearray(args["summary_bytes"])),
+        lambda args: args.update(stage1_bytes=args["stage1_bytes"].decode()),
+        lambda args: args.update(summary_bytes=args["summary_bytes"] + b" "),
+        lambda args: args.update(stage1_bytes=args["stage1_bytes"] + b" "),
+        lambda args: args["bundle"].update({"SHA256SUMS": b"bad manifest"}),
+        lambda args: args["bundle"].update({"transformer-weights.npz": b"bad weights"}),
+    ],
+)
+def test_byte_loader_rejects_invalid_shape_types_or_tampering_before_weights(
+    fixture_bundle, monkeypatch, mutation
+):
+    arguments = _fixture_byte_arguments(fixture_bundle)
+    mutation(arguments)
+    monkeypatch.setattr(
+        transformer_inference,
+        "_load_model",
+        lambda *args: pytest.fail("invalid bytes reached weight loading"),
+    )
+    with pytest.raises(transformer_inference.TransformerInferenceError):
+        transformer_inference._load_transformer_cascade_bytes(**arguments)
+
+
+@pytest.mark.parametrize(
+    "override",
+    [
+        {"_hash_policy": None},
+        {"_device": "cpu"},
+        {"_device": torch.device("cpu:0")},
+        {"_fixture_cpu": False},
+        {"_fixture_cpu": 1},
+    ],
+)
+def test_byte_loader_preserves_hash_policy_and_device_gates(
+    fixture_bundle, monkeypatch, override
+):
+    arguments = _fixture_byte_arguments(fixture_bundle)
+    arguments.update(override)
+    monkeypatch.setattr(
+        transformer_inference,
+        "_load_model",
+        lambda *args: pytest.fail("invalid policy/device reached weight loading"),
+    )
+    with pytest.raises(transformer_inference.TransformerInferenceError):
+        transformer_inference._load_transformer_cascade_bytes(**arguments)
+
+
+def test_byte_loader_retains_public_private_projection_validation(fixture_bundle):
+    summary = _read_json(fixture_bundle.summary_path)
+    summary["transformer"]["fit"]["best_epoch"] = 2
+    fixture_bundle = _rewrite_bound_bundle(fixture_bundle, summary=summary)
+    with pytest.raises(
+        transformer_inference.TransformerInferenceError,
+        match="transformer fit projection differs",
+    ):
+        transformer_inference._load_transformer_cascade_bytes(
+            **_fixture_byte_arguments(fixture_bundle)
+        )
+
+
+def test_path_loader_validates_before_snapshot_then_delegates_exact_bytes(
+    fixture_bundle, monkeypatch
+):
+    arguments = _fixture_byte_arguments(fixture_bundle)
+    events = []
+    sentinel = object()
+    validate_policy = transformer_inference._validate_hash_policy
+    validate_device = transformer_inference._validate_device
+
+    def policy(value):
+        events.append("policy")
+        return validate_policy(value)
+
+    def device(value, fixture_cpu):
+        events.append("device")
+        return validate_device(value, fixture_cpu)
+
+    def snapshot(*paths):
+        assert paths == (
+            fixture_bundle.bundle_dir,
+            fixture_bundle.summary_path,
+            fixture_bundle.stage1_path,
+        )
+        events.append("snapshot")
+        return (
+            arguments["bundle"],
+            arguments["summary_bytes"],
+            arguments["stage1_bytes"],
+        )
+
+    def load_bytes(bundle, summary_bytes, stage1_bytes, **kwargs):
+        events.append("bytes")
+        assert bundle is arguments["bundle"]
+        assert summary_bytes is arguments["summary_bytes"]
+        assert stage1_bytes is arguments["stage1_bytes"]
+        assert kwargs == {
+            key: value for key, value in arguments.items() if key.startswith("_")
+        }
+        return sentinel
+
+    monkeypatch.setattr(transformer_inference, "_validate_hash_policy", policy)
+    monkeypatch.setattr(transformer_inference, "_validate_device", device)
+    monkeypatch.setattr(transformer_inference, "_snapshot_files", snapshot)
+    monkeypatch.setattr(
+        transformer_inference, "_load_transformer_cascade_bytes", load_bytes
+    )
+    assert _load_fixture(fixture_bundle) is sentinel
+    assert events == ["policy", "device", "snapshot", "bytes"]
+
+
+@pytest.mark.parametrize("override", [{"_hash_policy": None}, {"_fixture_cpu": False}])
+def test_path_loader_rejects_invalid_policy_or_device_before_reading(
+    fixture_bundle, monkeypatch, override
+):
+    arguments = _fixture_byte_arguments(fixture_bundle)
+    options = {key: value for key, value in arguments.items() if key.startswith("_")}
+    options.update(override)
+    monkeypatch.setattr(
+        transformer_inference,
+        "_snapshot_files",
+        lambda *args: pytest.fail("invalid policy/device reached private reads"),
+    )
+    with pytest.raises(transformer_inference.TransformerInferenceError):
+        transformer_inference._load_transformer_cascade_bundle(
+            fixture_bundle.bundle_dir,
+            fixture_bundle.summary_path,
+            fixture_bundle.stage1_path,
+            **options,
+        )

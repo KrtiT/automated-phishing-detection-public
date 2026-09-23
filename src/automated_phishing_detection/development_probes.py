@@ -7,6 +7,7 @@ and primary-artifact binding. No reference, boundary or model is fitted here.
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from hashlib import sha256
 
 from . import gmm_monitor, probe_replay, secondary_development
@@ -87,11 +88,16 @@ def replay_development_probes(
     stage1_model,
     gmm_artifact: dict,
     operating_points: probe_replay.OperatingPoints,
+    row_callback: Callable[[str, probe_replay.ProbeRow], None] | None = None,
+    stream_callback: Callable[[probe_replay.ProbeStream], None] | None = None,
 ) -> probe_replay.ProbeReplay:
     """Replay four aligned streams using saved references and unchanged model state.
 
     The caller must bind the primary scorer and operating points separately.
     Supplied artifact/reference identities are checked before its first call.
+    Optional synchronous callbacks pass through unchanged. Row snapshots precede
+    policy replay, so their routing fields are provisional; completed-stream
+    snapshots have authoritative routing and windows. Callback failures stop work.
     """
     rows = prepare_audit_probe_rows(
         validation_bytes=validation_bytes,
@@ -128,6 +134,8 @@ def replay_development_probes(
                 mmd_calibration=retained.mmd_calibration,
                 psi_reference=retained.psi,
                 psi_calibration=retained.psi_calibration,
+                row_callback=row_callback,
+                stream_callback=stream_callback,
             )
     except DevelopmentProbeError:
         raise

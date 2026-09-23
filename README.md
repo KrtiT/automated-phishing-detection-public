@@ -2,20 +2,22 @@
 
 ## Current Work
 
-The [current execution record](docs/advisor-approval/approval-status.md) is the
-authority for run status; contracts and the matrix retain their freeze-time
-status. The [remaining evaluation work](docs/research-evidence-outline.md#remaining-executable-work)
-distinguishes implemented utilities from scientific analyses not yet run.
+The [current execution record](docs/advisor-approval/approval-status.md) tracks
+completed and pending runs. Contracts and the matrix retain their status at the
+time they were frozen. The [remaining evaluation work](docs/research-evidence-outline.md#remaining-executable-work)
+separates tested software from scientific analyses that have not yet run.
 
-Current code includes the selective HTTP service, serialized live GMM routing,
-internal saved-evidence production, normalized external preparation, and
+The software includes a selective HTTP service, serialized live GMM routing,
+internal evidence production, preparation of normalized external records, and
 secondary score metrics. Tests use invented fixtures, including real loopback
-HTTP requests. Internal file/process execution now connects the public source
-record to saved evidence, with its research entry closed until the complete
-pre-access freeze. Secondary development code connects MMD/PSI to the original
-monitor representation and implements the fixed formatting, label-permutation
-and Random Forest models. A separate authenticated development runner now saves
-each comparison before starting the next and verifies the complete worker output.
+HTTP requests. The internal runner connects the public source record to saved
+evidence, but cannot access research inputs until the pre-access freeze is
+complete. Secondary development code uses the original monitor representation
+for MMD/PSI and implements the fixed formatting, label-permutation and Random
+Forest models. A separate development runner checks input and execution
+identities, saves each comparison before starting the next, and verifies the
+complete worker output.
+
 The September 23 [accepted development execution](reports/secondary-development-correction-v2-summary.json)
 audited the seven retained drift/formatting/permutation members without refitting,
 then completed one corrected RF fit with exact fitted/portable parity. RF
@@ -23,24 +25,31 @@ validation AP is 0.995444 and ROC AUC 0.995279; its selected cutoff detects
 12,349/12,486 positives with 157/20,209 false positives. These are development
 selection-set observations, not new hypothesis or deployment results.
 
-All five permutation controls retain their original results. Source alignment,
-saved-model predictions and metric arithmetic passed audit, but the original
-fits did not save consumed-label digests. Their varying rankings remain
-unresolved, establishing neither leakage nor successful negative controls.
+All five permutation controls retain their original results. The audit verified
+source alignment, saved-model predictions and metric arithmetic. However, the
+original fits did not save digests of the label vectors they consumed. Their
+varying rankings remain unresolved and establish neither leakage nor successful
+negative controls.
 The [original RF stop](reports/secondary-development-v1-attempt-1.json) and later
 [receipt-comparison stop](reports/secondary-development-correction-v1-attempt-1.json)
 remain failed and unchanged. The separate
 [execution correction](data/development-correction-contract-v2.json) records
 the repaired receipt handling without changing the corrected RF method.
-Additional transformer seed procedures, perturbation replay and external source
-integration remain. No group-test or external result is claimed.
+The [seed and probe methods](data/secondary-seed-probe-contract-v1.json) are now
+specified and implemented on invented fixtures. The seed entry keeps the primary
+model unchanged and exposes each epoch's predictions and fitted checkpoints for
+retention. Probe replay compares four independent URL streams using saved
+references and boundaries, without assigning labels to transformed URLs. The
+development adapter checks the original audit rows and model/scaler identities.
+These procedures still need durable, supervised research execution; no new seed,
+probe, group-test or external result is claimed.
 
-The correction's public record binds its reviewed code, runtime, receipts and
-private artifact hashes. `python scripts/run_secondary_correction.py --help`
+The correction's public record identifies the reviewed code, runtime, receipts
+and private artifact hashes. `python scripts/run_secondary_correction.py --help`
 documents the command; `--check` with the required revision/profile pins verifies
-metadata without reading research inputs. The completed fits are not to be
-repeated. Only training and validation were used; protected evaluation remains
-closed pending the remaining seed/probe and source/output integration work.
+metadata without reading research inputs. The completed fits must not be
+repeated. Only training and validation were used. Protected evaluation remains
+closed until the seed/probe procedures and source/output integration are complete.
 
 ## Source and Baseline Record
 

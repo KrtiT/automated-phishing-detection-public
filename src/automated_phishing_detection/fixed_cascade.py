@@ -877,6 +877,19 @@ def calibrate_fixed_cascade(
     transformer_record = _validate_transformer_threshold_binding(
         transformer_threshold_record, transformer, labels
     )
+    return _calibrate_cascade_band(
+        stage1, transformer, labels, stage1_record, transformer_record
+    )
+
+
+def _calibrate_cascade_band(
+    stage1: np.ndarray,
+    transformer: np.ndarray,
+    labels: np.ndarray,
+    stage1_record: Mapping[str, object],
+    transformer_record: Mapping[str, object],
+) -> dict[str, object]:
+    """Pure O(n log n) sweep; callers validate their distinct threshold bindings."""
     stage1_status = stage1_record["status"]
     transformer_status = transformer_record["status"]
     if stage1_status == "target_not_met" or transformer_status == "target_not_met":

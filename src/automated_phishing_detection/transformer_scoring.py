@@ -39,32 +39,7 @@ def _same_device(actual: torch.device, expected: torch.device) -> bool:
 def _validate_model(loaded: LoadedTransformerCascade) -> None:
     if type(loaded) is not LoadedTransformerCascade:
         raise TransformerInferenceError("loaded must be a LoadedTransformerCascade")
-    if (
-        type(loaded._model) is not character_transformer.CharacterTransformer
-        or type(loaded.vocabulary) is not character_sequence.CharacterVocabulary
-        or loaded._model.vocabulary_size != loaded.vocabulary.size
-    ):
-        raise TransformerInferenceError("loaded transformer and vocabulary disagree")
-    if not isinstance(loaded.device, torch.device) or loaded.device.type not in (
-        "cpu",
-        "mps",
-    ):
-        raise TransformerInferenceError("loaded transformer device is invalid")
-    if any(module.training for module in loaded._model.modules()):
-        raise TransformerInferenceError(
-            "loaded transformer must already be in eval mode"
-        )
-    if any(parameter.requires_grad for parameter in loaded._model.parameters()):
-        raise TransformerInferenceError("loaded transformer parameters must be frozen")
-    for tensor in loaded._model.state_dict().values():
-        if tensor.dtype != torch.float32:
-            raise TransformerInferenceError(
-                "loaded transformer must retain float32 state"
-            )
-        if not _same_device(tensor.device, loaded.device):
-            raise TransformerInferenceError(
-                "loaded transformer device does not match its state"
-            )
+    _validate_transformer_state(loaded._model, loaded.vocabulary, loaded.device)
     try:
         fixed_cascade._threshold(loaded.stage1_threshold, "stage1_threshold")
         fixed_cascade._threshold(loaded.transformer_threshold, "transformer_threshold")
@@ -75,12 +50,48 @@ def _validate_model(loaded: LoadedTransformerCascade) -> None:
         raise TransformerInferenceError(str(exc)) from exc
 
 
+def _validate_transformer_state(model, vocabulary, device) -> None:
+    """Validate numerical state without claiming a primary bundle identity."""
+    if (
+        type(model) is not character_transformer.CharacterTransformer
+        or type(vocabulary) is not character_sequence.CharacterVocabulary
+        or model.vocabulary_size != vocabulary.size
+    ):
+        raise TransformerInferenceError("loaded transformer and vocabulary disagree")
+    if not isinstance(device, torch.device) or device.type not in (
+        "cpu",
+        "mps",
+    ):
+        raise TransformerInferenceError("loaded transformer device is invalid")
+    if any(module.training for module in model.modules()):
+        raise TransformerInferenceError(
+            "loaded transformer must already be in eval mode"
+        )
+    if any(parameter.requires_grad for parameter in model.parameters()):
+        raise TransformerInferenceError("loaded transformer parameters must be frozen")
+    for tensor in model.state_dict().values():
+        if tensor.dtype != torch.float32:
+            raise TransformerInferenceError(
+                "loaded transformer must retain float32 state"
+            )
+        if not _same_device(tensor.device, device):
+            raise TransformerInferenceError(
+                "loaded transformer device does not match its state"
+            )
+
+
 def _prepare_inputs(
     loaded: LoadedTransformerCascade, raw_urls: object, batch_size: int
 ) -> tuple[tuple[str, ...], torch.Tensor, torch.Tensor]:
     _validate_model(loaded)
     if type(batch_size) is not int or batch_size <= 0:
         raise TransformerInferenceError("batch_size must be a positive integer")
+    return _prepare_character_inputs(loaded.vocabulary, raw_urls)
+
+
+def _prepare_character_inputs(
+    vocabulary: character_sequence.CharacterVocabulary, raw_urls: object
+) -> tuple[tuple[str, ...], torch.Tensor, torch.Tensor]:
     if isinstance(raw_urls, (str, bytes)) or not isinstance(raw_urls, Sequence):
         raise TransformerInferenceError("raw_urls must be a nonempty ordered sequence")
     urls = tuple(raw_urls)
@@ -91,7 +102,7 @@ def _prepare_inputs(
     padding_mask = np.empty(shape, dtype=np.bool_)
     for index, url in enumerate(urls):
         try:
-            encoded = character_sequence.encode_character_url(url, loaded.vocabulary)
+            encoded = character_sequence.encode_character_url(url, vocabulary)
         except character_sequence.CharacterSequenceError as exc:
             raise TransformerInferenceError(
                 f"raw_urls[{index}] is invalid under the frozen encoder rules"
@@ -126,30 +137,42 @@ def _score_prepared(
     padding_mask: torch.Tensor,
     batch_size: int,
 ) -> tuple[float, ...]:
+    return _score_model_prepared(
+        loaded._model, loaded.device, token_ids, padding_mask, batch_size
+    )
+
+
+def _score_model_prepared(
+    model: character_transformer.CharacterTransformer,
+    device: torch.device,
+    token_ids: torch.Tensor,
+    padding_mask: torch.Tensor,
+    batch_size: int,
+) -> tuple[float, ...]:
     probabilities: list[float] = []
     try:
         with warnings.catch_warnings():
             warnings.simplefilter("error")
             with (
                 torch.inference_mode(),
-                torch.autocast(device_type=loaded.device.type, enabled=False),
+                torch.autocast(device_type=device.type, enabled=False),
             ):
                 # Error mode is process-wide; frozen inference needs no reseeding.
                 torch.use_deterministic_algorithms(True, warn_only=False)
                 for start in range(0, len(token_ids), batch_size):
-                    tokens = token_ids[start : start + batch_size].to(loaded.device)
-                    mask = padding_mask[start : start + batch_size].to(loaded.device)
+                    tokens = token_ids[start : start + batch_size].to(device)
+                    mask = padding_mask[start : start + batch_size].to(device)
                     logits = _validate_batch_output(
-                        loaded._model(tokens, mask),
+                        model(tokens, mask),
                         rows=len(tokens),
-                        device=loaded.device,
+                        device=device,
                         field="logits",
                     )
                     # Keep validation's float32 sigmoid on the model device.
                     batch = _validate_batch_output(
                         torch.sigmoid(logits),
                         rows=len(tokens),
-                        device=loaded.device,
+                        device=device,
                         field="probabilities",
                     )
                     probabilities.extend(

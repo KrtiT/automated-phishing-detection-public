@@ -35,10 +35,10 @@ manuscript prose and does not contain an interpretation of results.
 | External source | Mendeley Data repository Version 4 (PhishVN v3.1.0), reserved for the frozen external evaluation |
 | Current hypothesis status | H1 `undecided`; H2 `not_supported`; H3 `undecided` |
 
-An absent final artifact or denominator leaves the related item `not_run` or
-`undecided`. Frozen contracts and dated artifacts retain their own historical
-status fields; the current conclusion above incorporates the later accepted
-development records. No result is inferred from another experiment.
+An item remains `not_run` or `undecided` if its final artifact or denominator is
+missing. Frozen contracts and dated artifacts retain their historical status
+fields; the current conclusion above includes the later accepted development
+records. No result is inferred from another experiment.
 
 The [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1)
 GitHub Release is the source-freeze record for the completed preparation
@@ -450,10 +450,10 @@ They describe robustness but do not replace a primary decision rule.
 
 ## Remaining Executable Work
 
-The corrected transformer/cascade development execution and reviewed no-fit
-bundle loader are complete. Artifact-only scoring now includes length-only,
-Logistic-L1, transformer, and cascade paths. `selective_inference.py` shares one
-singleton scoring path between full paired scoring and selective requests.
+The corrected transformer/cascade development run and reviewed no-fit bundle
+loader are complete. Saved artifacts support scoring with length-only,
+Logistic-L1, transformer, and cascade models. `selective_inference.py` uses the
+same one-URL-at-a-time scoring path for full paired scoring and selective requests.
 Stage one receives the original raw URL; character normalization remains
 specific to the transformer. A selective request skips the transformer outside
 the band unless a prior alert overrides routing. Forward attempts and validated
@@ -534,12 +534,15 @@ or loading a model:
 ```python
 import json
 from pathlib import Path
-from automated_phishing_detection.hypothesis_evaluation import WindowCounts, evaluate_primary
+from automated_phishing_detection.hypothesis_evaluation import (
+    WindowCounts,
+    evaluate_primary,
+)
 
 audit = json.loads(Path("reports/rq2-gmm-development-v1-summary.json").read_text())
-result = evaluate_primary(audit_windows=WindowCounts(
-    audit["audit_alert_count"], audit["audit_window_count"]
-))
+result = evaluate_primary(
+    audit_windows=WindowCounts(audit["audit_alert_count"], audit["audit_window_count"])
+)
 assert result.hypotheses["H2"].decision == "not_supported"
 assert result.hypotheses["H2"].complete is False
 ```
@@ -591,8 +594,8 @@ with the service owner lifecycle, including a post-restoration identity check.
 the public completion marker without replacing existing records. Installed
 records survive failure; acceptance requires successful producer exit and
 verification of all installed evidence, not merely the presence of a marker.
-The internal file/process composition is now implemented; complete secondary
-output coverage and external source execution remain integration tasks.
+The internal file/process composition is implemented. The remaining secondary
+outputs and external source execution still need integration.
 
 `evaluation_producer.parse_internal_partition` checks the supplied bytes against
 an expected hash before parsing, then validates canonical rows, source IDs,
@@ -638,9 +641,9 @@ authenticated in the staged external preparation and producer integration.
 confusion metrics, Brier score, ten-bin ECE and prevalence projections. Probability
 scores and binary operating-point decisions remain separate, which matters for
 a cascade with different stage thresholds. Exact two-sided McNemar tests and
-the fixed four-contrast Holm family are secondary, dependence-limited summaries;
-they do not replace the primary domain-clustered intervals. Missing strata stay
-explicit and retain their place in the multiplicity family. The
+the fixed four-contrast Holm family are secondary summaries that do not account
+for domain dependence. They do not replace the primary domain-clustered intervals.
+Missing strata stay explicit and retain their place in the multiplicity family. The
 [secondary supplement](../data/secondary-analysis-contract-v1.json) also specifies
 MMD, PSI, perturbations and shortcut checks. `secondary_drift.py` implements
 training-reference selection, biased RBF MMD, featurewise PSI, complete 256/64
@@ -652,8 +655,9 @@ scaler and receives no validation rows. The later evaluator preserves the origin
 calibration/audit allocation and row order. References, bins, window membership
 and traces remain private; aggregate summaries carry their hashes. The separate
 development runner now authenticates those expected pins. Its first research
-attempt retained the drift comparison but stopped later at Random Forest;
-the family has not passed independent completion verification.
+attempt retained the drift comparison but stopped later at Random Forest.
+That original family did not pass independent completion verification; the
+separate audit accepted its retained members as described below.
 
 `secondary_probes.py` preserves original URL spelling and returns three separate
 operator outputs with eligibility and changed status. Inputs retain the primary
@@ -695,9 +699,33 @@ of every member, receipt, identity and output hash. It recomputes CP thresholds,
 AP/AUC and drift boundary/alert arithmetic from saved evidence. This verifies
 publication and arithmetic, not an independent refit or URL-scoring replication.
 Synthetic tests include actual subprocess execution and retained partial failures.
-Additional transformer seed runtime/checkpoint/calibration choices and complete
-perturbation replay remain separate work. These details are development-informed,
-not a retroactive claim that they preceded all development observations.
+The [seed/probe supplement](../data/secondary-seed-probe-contract-v1.json) now
+specifies the remaining development methods. `secondary_transformer.py` provides
+a separate seed-43--46 entry while the primary entry stays fixed at 42. Training
+keeps the original batch-512 checkpoint AP and stopping rule. Each epoch exposes
+its ordered validation probabilities and AP, and each qualifying checkpoint is
+captured before a later epoch or verification check can fail. Callbacks still
+need durable, create-only writers in the supervised research runner.
+
+All five weight sets will use singleton secondary calibration with the same
+accepted stage-one model and historical cutoff. Only each transformer's secondary
+cutoff and cascade band are selected anew. The primary seed-42 weights, cutoffs
+and band are unchanged. Common scoring does not remove seed 42's historical
+training-runtime difference; this is a seed/runtime sensitivity check, not a pure
+random-seed effect.
+
+`probe_replay.py` compares the original validation audit stream with three
+independent transformed copies. Every row, including ineligible and unchanged
+rows, keeps its position. The four primary detectors and GMM routing policy are
+scored; GMM, MMD and PSI each use complete 256/64 windows and their saved
+boundaries. Monitor and routing history start empty for each stream. Paired
+score, decision and alert changes are descriptive and carry no outcome labels.
+`retained_drift.py` restores the saved comparator references and boundaries;
+`development_probes.py` checks the supplied validation bytes, exact audit
+allocation and model/scaler identities before replay. Neither fits a reference
+or recalibrates a boundary. Tests use invented records only. These choices are
+informed by completed development work, and no seed/probe research result is
+claimed from this implementation.
 
 ### First Secondary Development Attempt
 
@@ -771,8 +799,8 @@ tagged rather than lost. Actual worker exits, including signal exits, precede
 acceptance checks. Failure records use safe check identifiers, not exception
 text. Both stages' files remain pinned through final verification. No retry,
 resume, control refit or protected input is permitted. This development-informed
-correction is implemented; execution requires reviewed-code publication and
-exact-commit CI.
+correction required publication of the reviewed code and CI checks on the exact
+commit before execution.
 
 The [first correction attempt](../reports/secondary-development-correction-v1-attempt-1.json)
 stopped at receipt comparison before scientific audit calculations or any fit.
@@ -784,24 +812,24 @@ specific check. The [v2 execution amendment](../data/development-correction-cont
 binds this failure, fixes only that accounting comparison and its diagnostics,
 and leaves the RF method and all scientific rules unchanged. Original marker
 bytes remain hash-authenticated and authoritative. Both failed attempts remain
-immutable. One fresh audit and conditional RF fit are specified; no RF fit has
-yet occurred when that amendment was frozen.
+immutable. The amendment specified one fresh audit and a conditional RF fit.
+No RF fit had occurred under either correction profile when it was frozen.
 
 ### Accepted Secondary Development Evidence
 
 The September 23 [accepted execution](../reports/secondary-development-correction-v2-summary.json)
 ran from reviewed, CI-passed `f1bebca93aba38b19a208026242c14c8285c27eb`.
-Both fresh workers and the parent exited 0. Root publication and exact
-stage-summary linkage were checked after completion. The no-fit audit accepted
-the seven retained members within its declared scope. Saved tabular predictions
-matched reconstructed model scores exactly on the authenticated validation IDs
-and labels; saved AP/AUC and CP calculations reproduced. Each declared PCG64
-permutation preserved the 94,373 negative and 71,875 positive training labels.
-Historical consumed-label digests remain unavailable.
+Both fresh workers and the parent exited 0. A post-run check verified the final
+receipt and its exact links to both stage summaries. The no-fit audit accepted
+the seven retained members within its declared scope. Scores reconstructed from
+the saved tabular models matched the saved predictions exactly on authenticated
+validation IDs and labels. The saved AP/AUC and CP calculations also reproduced.
+Each declared PCG64 permutation preserved the 94,373 negative and 71,875 positive
+training labels. The original fits' consumed-label digests remain unavailable.
 
 The one new RF fit used the unchanged 166,248 training and 32,695 validation
-rows, parameters and seed 42. Fitted/portable scores matched exactly; its
-diagnostic checkpoint matches the accepted model. At selected cutoff 0.2, RF
+rows, parameters and seed 42. Fitted and portable scores matched exactly, as did
+the diagnostic checkpoint and accepted model. At the selected cutoff of 0.2, RF
 detected 12,349/12,486 positives with 157/20,209 false positives. Recall is
 98.9028%, observed FPR 0.7769% and its one-sided 95% CP upper bound 0.8864%.
 AP is 0.995444 and ROC AUC 0.995279. This cutoff was selected on the same
@@ -812,10 +840,11 @@ The five permutation score means are 0.499827-0.500107, with population standard
 deviations 0.004802-0.006540. The public record also retains their extremes and
 all earlier ranking metrics. Ranking depends on order, not distance from 0.5;
 these summaries do not identify the cause of the observed rankings. The audit
-does not establish leakage, successful negative controls or a permutation-test
-p-value. No seed was discarded or refitted. Drift acceptance remains limited
-to authenticated membership and retained-score arithmetic. Original GMM 28/252,
-H2 non-support, all primary models and H1/H3's undecided status are unchanged.
+does not establish leakage or successful negative controls, and it does not
+provide a permutation-test p-value. No seed was discarded or refitted. The drift
+audit verified membership and retained-score arithmetic, not an independent
+URL-to-drift-score recomputation. The original GMM result of 28/252, H2 non-support,
+all primary models and H1/H3's undecided status are unchanged.
 No protected records or operational workloads were accessed.
 
 The metadata-only preflight accepts no model or dataset paths:

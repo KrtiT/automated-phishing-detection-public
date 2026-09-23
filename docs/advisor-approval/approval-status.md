@@ -142,8 +142,8 @@ separate validation cutoffs. Its SHA-256 is
 Synthetic tests exercise these paths, portable
 model round trips, training-reference separation and the original calibration/
 audit allocation. The first research attempt is recorded below. The three
-independent URL transformations are implemented;
-their full detector/monitor comparison remains to be connected.
+independent URL transformations and their in-memory detector/monitor replay are
+implemented. Supervised research execution remains separate work.
 
 The separate [development execution profile](../../data/development-execution-contract-v1.json),
 SHA-256 `67146228d636c16f02484998741c7a1545da68b209e693620efab22b2676cd43`,
@@ -207,10 +207,18 @@ variation remain; the failed original aggregate is not retrospectively accepted.
 The public execution report SHA-256 is
 `663f1117cd33f949b70c35c56810764193f69cae3a37505004d0db27641d829d`.
 
-Additional transformer seeds 43-46 still
-need their training runtime, checkpoint-scoring and comparable secondary
-calibration contract; seed 42 primary weights and cutoffs remain unchanged.
-No additional fitting follows from the no-fit singleton amendment.
+The [seed/probe supplement](../../data/secondary-seed-probe-contract-v1.json),
+SHA-256 `eb279404728e498999fc7fd0c7578291373bb80b9816f88b5d7202dfdf637380`,
+specifies training for seeds 43-46, batch-512 checkpoint AP and common singleton
+secondary calibration for all five weight sets. The separate implementation
+retains epoch predictions and qualifying checkpoints through callbacks; primary
+seed-42 weights and cutoffs remain unchanged. Probe replay and its saved-reference
+loader preserve the original audit rows, fixed boundaries and label-free
+transformations. The development adapter checks input bytes and model/scaler
+identities before replay. These paths have only been exercised on invented
+fixtures. Durable attempt writers, process supervision and output verification
+must be connected before new research execution. No additional fitting follows
+from the no-fit singleton amendment.
 
 Execution binding now uses the fixed
 [v2 profile](../../data/execution-binding-contract-v2.json), SHA-256

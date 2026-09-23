@@ -5,6 +5,7 @@ from __future__ import annotations
 import math
 import random
 import warnings
+from collections.abc import Callable
 from dataclasses import dataclass
 
 import numpy as np
@@ -53,6 +54,14 @@ class EpochRecord:
 
 
 @dataclass(frozen=True)
+class _EpochEvidence:
+    """Completed-epoch metrics and ordered probabilities used to calculate AP."""
+
+    record: EpochRecord
+    validation_probabilities: tuple[float, ...]
+
+
+@dataclass(frozen=True)
 class TransformerFit:
     """Restored best model and the validation outputs needed downstream."""
 
@@ -64,6 +73,20 @@ class TransformerFit:
     stopped_early: bool
     positive_class_weight: float
     validation_probabilities: tuple[float, ...]
+
+
+@dataclass(frozen=True)
+class _CheckpointEvidence:
+    """Synchronous snapshot seam, before another epoch or restored-score checks."""
+
+    phase: str
+    model: CharacterTransformer
+    history: tuple[EpochRecord, ...]
+    best_epoch: int
+    best_validation_average_precision: float
+    epochs_completed: int
+    stopped_early: bool
+    positive_class_weight: float
 
 
 class CharacterTransformer(nn.Module):
@@ -202,11 +225,15 @@ class _BestCheckpoint:
 
 def configure_deterministic_runtime() -> None:
     """Seed every used generator and require deterministic kernels in error mode."""
-    random.seed(SEED)
-    np.random.seed(SEED)
-    torch.manual_seed(SEED)
+    _configure_deterministic_runtime()
+
+
+def _configure_deterministic_runtime(*, seed: int = SEED) -> None:
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
     if hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
-        torch.mps.manual_seed(SEED)
+        torch.mps.manual_seed(seed)
     torch.use_deterministic_algorithms(True, warn_only=False)
 
 
@@ -292,9 +319,11 @@ def _validated_tensor_batch(
 def _build_data_loaders(
     train: _TensorBatch,
     validation: _TensorBatch,
+    *,
+    seed: int = SEED,
 ) -> tuple[DataLoader, DataLoader]:
     generator = torch.Generator()
-    generator.manual_seed(SEED)
+    generator.manual_seed(seed)
     train_loader = DataLoader(
         TensorDataset(train.token_ids, train.padding_mask, train.labels),
         batch_size=TRAIN_BATCH_SIZE,
@@ -426,6 +455,9 @@ def _fit_character_transformer_on_device(
     *,
     vocabulary_size: int,
     device: torch.device,
+    seed: int = SEED,
+    epoch_callback: Callable[[_EpochEvidence], None] | None = None,
+    checkpoint_callback: Callable[[_CheckpointEvidence], None] | None = None,
 ) -> TransformerFit:
     if not isinstance(device, torch.device) or device.type not in {"cpu", "mps"}:
         raise TransformerTrainingError("fixture device must be CPU or MPS")
@@ -433,7 +465,7 @@ def _fit_character_transformer_on_device(
         with warnings.catch_warnings():
             warnings.simplefilter("error")
             with torch.autocast(device_type=device.type, enabled=False):
-                configure_deterministic_runtime()
+                _configure_deterministic_runtime(seed=seed)
                 train = _validated_tensor_batch(
                     train_token_ids,
                     train_padding_mask,
@@ -449,7 +481,9 @@ def _fit_character_transformer_on_device(
                     partition="validation",
                 )
                 class_weight = positive_class_weight(train.labels)
-                train_loader, validation_loader = _build_data_loaders(train, validation)
+                train_loader, validation_loader = _build_data_loaders(
+                    train, validation, seed=seed
+                )
 
                 model = CharacterTransformer(vocabulary_size).to(
                     device=device, dtype=torch.float32
@@ -470,25 +504,45 @@ def _fit_character_transformer_on_device(
                 history: list[EpochRecord] = []
                 stopped_early = False
 
+                def retain_checkpoint(phase: str) -> None:
+                    if checkpoint_callback is not None:
+                        checkpoint_callback(
+                            _CheckpointEvidence(
+                                phase=phase,
+                                model=model,
+                                history=tuple(history),
+                                best_epoch=checkpoint.best_epoch,
+                                best_validation_average_precision=checkpoint.best_score,
+                                epochs_completed=len(history),
+                                stopped_early=stopped_early,
+                                positive_class_weight=class_weight,
+                            )
+                        )
+
                 for epoch in range(1, MAX_EPOCHS + 1):
                     training_loss = _run_training_epoch(
                         model, train_loader, optimizer, loss_function, device
                     )
                     if not math.isfinite(training_loss):
                         raise TransformerTrainingError("training loss is nonfinite")
-                    validation_ap, _ = _evaluate_validation(
+                    validation_ap, epoch_probabilities = _evaluate_validation(
                         model, validation_loader, device
                     )
                     if not math.isfinite(validation_ap):
                         raise TransformerTrainingError("validation metric is nonfinite")
                     history.append(EpochRecord(epoch, training_loss, validation_ap))
-                    if checkpoint.observe(
+                    stopped_early = checkpoint.observe(
                         epoch=epoch, score=validation_ap, model=model
-                    ):
-                        stopped_early = True
+                    )
+                    if checkpoint.best_epoch == epoch:
+                        retain_checkpoint("best_update")
+                    if epoch_callback is not None:
+                        epoch_callback(_EpochEvidence(history[-1], epoch_probabilities))
+                    if stopped_early:
                         break
 
                 checkpoint.restore(model)
+                retain_checkpoint("restored_best")
                 best_ap, validation_probabilities = _evaluate_validation(
                     model, validation_loader, device
                 )

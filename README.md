@@ -44,14 +44,24 @@ development adapter checks the original audit rows and model/scaler identities.
 The separate [execution profile](data/seed-probe-execution-contract-v1.json)
 connects these procedures to fresh workers and create-only evidence. Saved-output
 checks cover consumed labels, checkpoints, calibration and probe arithmetic.
-Implementation tests use invented inputs. Research results will be reported
-separately; no new seed, probe, group-test or external result is claimed here.
+Implementation tests use invented inputs. The September 23
+[v1 attempt](reports/secondary-seed-probe-v1-attempt-1.json) stopped in
+`seed_42_calibration` at `invalid_evidence_json`; both the worker and parent
+exited 2, no public summary was produced, no fit occurred, and no stage was
+accepted. Seeds 43-46 and probes were unattempted. A post-stop diagnosis found
+that source JSONL used the established ASCII-escaped canonical form while the
+runner used artifact UTF-8 canonical reserialization; an invented Unicode
+fixture reproduces the mismatch. This accounting does not establish whether
+calibration computation occurred before the stop, and no seed/probe research
+result is accepted.
 
-`python scripts/run_secondary_seed_probes.py --help` documents the next run.
+`python scripts/run_secondary_seed_probes.py --help` documents the v1 interface.
 Its `--check` mode accepts revision/profile pins but no data paths; `--verify`
-checks saved evidence against the observed producer exit. Do not repeat completed
-fits. Protected evaluation remains closed until secondary development and the
-remaining prediction/source/HTTP integration are complete.
+checks saved evidence against the observed producer exit. The v1 profile is
+exhausted. No fresh execution is authorized until a separate prospective
+correction profile is frozen, reviewed, published, and CI-passed. Protected
+evaluation remains closed until secondary development and the remaining
+prediction/source/HTTP integration are complete.
 
 ## Source and Baseline Record
 

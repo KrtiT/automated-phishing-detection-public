@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "record_kind": "secondary_seed_probe_attempt_accounting",
+  "date": "2026-09-23",
+  "status": "stopped_invalid_evidence_json",
+  "aggregate_accepted": false,
+  "execution": {
+    "kind": "secondary_seed_probes",
+    "revision": "2ccc56867bf1ce9e963bcd47273925381a241961",
+    "profile_sha256": "cf18fa8c35039c63f896cc62c7aaac8b0847a1abf55676ba67ee65b42340381d",
+    "methods_sha256": "eb279404728e498999fc7fd0c7578291373bb80b9816f88b5d7202dfdf637380",
+    "execution_contract_sha256": "887f771381927dfe1b9268a45f4e605baf3e9a7caee2b7005cdfe68b1be516e1",
+    "runtime_sha256": "f60e3c1486996dab72f10090de1ac615806fe53244ceb92dd571a40341803d86",
+    "stages": [
+      "seed_42_calibration",
+      "seed_43",
+      "seed_44",
+      "seed_45",
+      "seed_46",
+      "probes"
+    ]
+  },
+  "execution_observation": {
+    "start_observed_utc": "2026-09-23T22:12:49Z",
+    "exit_observed_utc": "2026-09-23T22:13:12Z",
+    "parent_exit_code": 2,
+    "worker_exit_code": 2,
+    "public_summary_present": false,
+    "successful_public_marker_present": false,
+    "new_fits": 0,
+    "retries": 0,
+    "resumes": 0,
+    "completed_stages": []
+  },
+  "failure": {
+    "stage": "seed_42_calibration",
+    "safe_check": "invalid_evidence_json",
+    "root_error_type": "Exception"
+  },
+  "unattempted_stages": [
+    "seed_43",
+    "seed_44",
+    "seed_45",
+    "seed_46",
+    "probes"
+  ],
+  "process_observation": {
+    "record": "seed_42_calibration-process.json",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "4fc57bd849fdb111eba71f1750238d6252d37efc82297224023973616ed167a2"
+  },
+  "receipt_sha256": {
+    "reservation.json": "73c2f55952fa6e4b7beab7168c67ec00b4487f70022f1914e5dfdf6f44e46285",
+    "finalize.claim": "ebef1a7ae502bbbe7b82280336fc113ba5b4fea1942606ecd63166bd667529a5",
+    "outcome.json": "338f36b085c55c67ec36525d2872392d33c6e16d94406b37755742d77cd6f14a",
+    "failure-details.json": "d5262fcd3b85e0b1a0a58c6af006f30b08132f47f333b83d257bb20663a61828",
+    "seed_42_calibration-process.json": "dc12819722abff0875f01b817c6cff84ebd8f1330d46f1b779cc0ed7c3a07dc1",
+    "seed_42_calibration/reservation.json": "44850820e04518dfe9ff445654aa636ed39dfa2277c5e949b2c8503e0ea7ec96",
+    "seed_42_calibration/finalize.claim": "0f1c6e3f01feeadde96542c180ef8db7492ca03fe254b30edff4f1395b2dce06",
+    "seed_42_calibration/outcome.json": "c51f72b602ebfba26b7beaa7da17e9c808f1785ba1033ed1bd00bf2ec68a252a",
+    "seed_42_calibration/failure-details.json": "74c8143a6f959dc3892f5fd8b0798e9a44d6128899ead790e80eeab99e11441c"
+  },
+  "diagnosis": {
+    "timing": "post_stop",
+    "source_canonical_form": "established_ascii_escaped_jsonl",
+    "runner_canonical_form": "artifact_utf8_canonical_reserialization",
+    "reproduced_with": "invented_unicode_fixture",
+    "scope": "This diagnosis explains the evidence-JSON validation failure. It does not establish whether calibration computation occurred before the stop."
+  },
+  "authorization": {
+    "profile_status": "exhausted",
+    "fresh_execution_authorized": false,
+    "required_before_any_fresh_execution": [
+      "separate_prospective_correction_profile_frozen",
+      "reviewed",
+      "published",
+      "ci_passed"
+    ]
+  },
+  "interpretation": [
+    "No fit occurred.",
+    "No stage was accepted.",
+    "This record does not establish whether calibration computation occurred.",
+    "No seed/probe research result is accepted from this attempt."
+  ]
+}

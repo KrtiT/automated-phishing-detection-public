@@ -220,8 +220,18 @@ identities before replay. Implementation tests use invented fixtures. The separa
 SHA-256 `cf18fa8c35039c63f896cc62c7aaac8b0847a1abf55676ba67ee65b42340381d`,
 now connects create-only evidence, fresh worker processes and saved-output
 verification. It covers seed-42 calibration without a fit, seeds 43-46, then
-probes, stopping at the first failed stage. No research result under this profile
-has been accepted yet. No additional fitting follows from the no-fit singleton amendment.
+probes, stopping at the first failed stage. The September 23
+[v1 attempt](../../reports/secondary-seed-probe-v1-attempt-1.json) stopped in
+`seed_42_calibration` at the safe check `invalid_evidence_json`. Both the worker
+and parent exited 2. No public summary was produced, no fit occurred, no stage
+was accepted, and seeds 43-46 and probes were unattempted. The record does not
+establish whether calibration computation occurred. Post-stop diagnosis found the
+source JSONL in the established ASCII-escaped canonical form but the runner using
+artifact UTF-8 canonical reserialization; an invented Unicode fixture reproduces
+the mismatch. No research result under this profile was accepted. The v1 profile
+is exhausted, and no fresh execution is authorized until a separate prospective
+correction profile is frozen, reviewed, published, and CI-passed. No additional
+fitting follows from the no-fit singleton amendment.
 
 Execution binding now uses the fixed
 [v2 profile](../../data/execution-binding-contract-v2.json), SHA-256

@@ -745,6 +745,24 @@ models or reread source records. Subprocess, kill and tamper tests use invented
 data. Research execution and the remaining primary-study integration are separate
 from these software checks.
 
+### Stopped Seed/Probe v1 Attempt
+
+The September 23
+[attempt record](../reports/secondary-seed-probe-v1-attempt-1.json) preserves
+the execution identity and root, worker and process receipt hashes. The
+`seed_42_calibration` worker stopped at `invalid_evidence_json`; it and the parent
+exited 2. No public summary was produced, no fit occurred, and no stage was
+accepted. Seeds 43-46 and probes were unattempted, with zero retries and zero
+resumes. This establishes the fit and acceptance accounting only; it does not
+establish whether calibration computation occurred before the stop.
+
+Post-stop diagnosis found that source JSONL uses the established ASCII-escaped
+canonical form while the runner used artifact UTF-8 canonical reserialization.
+An invented Unicode fixture reproduces that mismatch. No seed/probe research
+result is accepted. The v1 profile is exhausted, and no fresh execution is
+authorized until a separate prospective correction profile is frozen, reviewed,
+published, and CI-passed.
+
 ### First Secondary Development Attempt
 
 The September 22 [attempt record](../reports/secondary-development-v1-attempt-1.json)

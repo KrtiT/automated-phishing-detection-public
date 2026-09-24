@@ -75,11 +75,12 @@ seed-43–46 workers each exited 0, and the supervisor verified their saved
 receipts and arithmetic before advancing. Seeds 43–46 account for exactly four
 new fits; seed 42 reused the accepted weights. The probe worker stopped at
 `probe_metadata` before row preparation or scoring, and both it and the parent
-exited 2. No complete-family public summary was produced. The five seed
-summaries are retained as preliminary producer-completed evidence, not accepted
-scientific results. They remain preliminary unless the separate all-or-none
-retained-stage audit executes and verifies all five together. The complete v2
-family remains failed, unaccepted, exhausted and unchanged. Its immutable
+exited 2. No complete-family public summary was produced. At that stop, the five
+seed summaries were retained as preliminary producer-completed evidence, not
+accepted scientific results. The later separate no-fit correction accepted all
+five together from saved evidence without accepting the failed v2 root. The
+complete v2 family remains failed, unaccepted, exhausted and unchanged. Its
+immutable
 [attempt record](reports/secondary-seed-probe-v2-attempt-1.json) has SHA-256
 `cf1fc0e6e41839464def2955b4475492b4839e637d4e563d4c94324057e74cb4`
 and was published at commit `fb688a13bc2cef5ac29c0be5123f8436f8229728`.
@@ -87,29 +88,32 @@ and was published at commit `fb688a13bc2cef5ac29c0be5123f8436f8229728`.
 Post-stop diagnosis found that the valid, hash-bound public preparation report
 was passed through a compact private-JSON canonicalization check. The retained
 drift artifacts themselves are valid. V2 is exhausted: no retry, resume or refit
-is authorized. Any acceptance of the retained seed prefix or any new probe
-execution requires separate prospective authority frozen, reviewed, published
-and CI-passed before execution.
+is authorized. At that time, accepting the retained seed prefix or executing a
+new probe required separate authority frozen, reviewed, published and CI-passed
+before execution; the correction below supplied and consumed that authority.
 
-The prospective
-[retained-seed/probe correction profile](data/seed-probe-correction-contract-v1.json),
-SHA-256 `46a659ddc809f998a12abaae0f5c6e353c2f965844487faf87c0637b9d7697a4`,
-binds the exhausted v2 profile SHA-256
-`4da034b1a46baa599ae04226ee2f4d9a26c2b2d639cac73fa576ff9cb7aa8839`,
-the accounting SHA-256 above and the unchanged methods SHA-256
-`eb279404728e498999fc7fd0c7578291373bb80b9816f88b5d7202dfdf637380`.
-After the authority is reviewed and published, exact-head CI passes and its
-metadata-only binding passes, it permits exactly one all-or-none retained-seed
-audit followed conditionally by one fresh zero-fit probe. It permits no seed
-execution, fit, retry, resume, seed selection or primary change. No correction
-execution or result exists yet.
+The separate
+[retained-seed/probe correction profile](data/seed-probe-correction-contract-v1.json)
+was executed once from revision
+`9abb83202813ca8bf988809f68072ce2fe511361`. Its
+[accepted report](reports/secondary-seed-probe-correction-v1-summary.json),
+SHA-256 `d63a85792088871cfb667e7e5cbe86c6148dc3a6c7430ca2e4db29d788ab8e23`,
+records zero new fits, zero seed-stage executions, one probe, and zero retries
+or resumes. The parent, retained-stage audit, probe and saved-evidence verifier
+all exited 0.
 
-`python scripts/run_secondary_probe_correction.py --help` documents this narrow
-prospective interface. Its `--check` mode accepts only repository and correction
-identity pins and reads no research or output path; `--verify` checks saved
-evidence against an observed producer exit. The group test, PhishVN, external
-evaluation and all other protected evaluation remain closed; this correction
-authority does not open them.
+The all-or-none no-fit audit accepted exactly five retained seed-stage records
+without refitting, rereading a source partition, rescoring URLs, selecting a
+seed or changing a primary artifact. The subsequent probe is descriptive
+development-validation evidence, not an acceptance of the failed v2 root,
+which remains failed, unaccepted and exhausted. For probe preparation and
+scoring, the correction read the development-validation partition and Public
+Suffix List; it did not reread the source training partition or access the group
+test, PhishVN, an external source or protected evaluation. The correction
+authority is consumed and authorizes no additional probe, refit, retry, resume
+or protected evaluation.
+See the [evidence outline](docs/research-evidence-outline.md#accepted-retained-seed-audit-and-probe-correction)
+for the aggregate results and limitations.
 
 ## Source and Baseline Record
 

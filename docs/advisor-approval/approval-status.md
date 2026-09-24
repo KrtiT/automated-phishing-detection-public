@@ -255,9 +255,10 @@ supervisor verified each stage before proceeding, and seeds 43–46 account for
 the four authorized fits. The probe worker stopped at `probe_metadata` before
 row preparation or scoring. The probe worker and parent exited 2, no root
 success summary was produced, and no retry or resume occurred. The complete v2
-family remains failed, unaccepted, exhausted and unchanged. The five seed
-summaries remain preliminary unless a separate all-or-none no-fit retained-stage
-audit executes and verifies all five together. The
+family remains failed, unaccepted, exhausted and unchanged. At that stop, the
+five seed summaries were preliminary. The later separate no-fit correction
+accepted all five together from saved evidence without accepting the failed v2
+root. The
 [v2 attempt record](../../reports/secondary-seed-probe-v2-attempt-1.json),
 SHA-256 `cf1fc0e6e41839464def2955b4475492b4839e637d4e563d4c94324057e74cb4`,
 preserves all five summaries, process exits, failure records and receipt hashes.
@@ -267,24 +268,32 @@ The accounting was published at commit
 Post-stop diagnosis identified an interface error: the hash-bound,
 pretty-printed public preparation report was subjected to a compact private-JSON
 byte rule. The retained drift artifacts are not corrupt. The v2 profile is
-exhausted and authorizes no retry, resume or refit. A new probe execution would
-require a separate prospective, zero-fit correction authority frozen, reviewed,
-published and CI-passed before execution.
+exhausted and authorizes no retry, resume or refit. At that time, a new probe
+required separate zero-fit correction authority frozen, reviewed, published and
+CI-passed before execution; the correction below supplied and consumed it.
 
-The prospective
+The separate
 [retained-seed/probe correction profile](../../data/seed-probe-correction-contract-v1.json),
 SHA-256 `46a659ddc809f998a12abaae0f5c6e353c2f965844487faf87c0637b9d7697a4`,
-binds the exhausted v2 profile SHA-256
-`4da034b1a46baa599ae04226ee2f4d9a26c2b2d639cac73fa576ff9cb7aa8839`,
-the accounting SHA-256 above and the unchanged methods SHA-256
-`eb279404728e498999fc7fd0c7578291373bb80b9816f88b5d7202dfdf637380`.
-It preserves the failed v2 root rather than retrying, resuming or accepting it.
-Only after the authority is reviewed and published, exact-head CI passes and a
-metadata-only binding passes may it run one all-or-none retained-seed audit and,
-conditionally on that verified audit, one fresh zero-fit probe. It authorizes no
-seed execution, refit, seed selection or primary change. No correction execution,
-accepted audit or probe result exists yet. The group test, PhishVN, external
-evaluation and all protected evaluation remain closed.
+ran once from revision `9abb83202813ca8bf988809f68072ce2fe511361`.
+The [accepted correction report](../../reports/secondary-seed-probe-correction-v1-summary.json),
+SHA-256 `d63a85792088871cfb667e7e5cbe86c6148dc3a6c7430ca2e4db29d788ab8e23`,
+contains embedded completion SHA-256
+`4b20d8877d59e7c80b384d09596102552bbeae320ab8b01aa32aa3109bf2ab75`.
+The parent, retained-stage audit, probe and saved-evidence verifier each exited
+0. Exactly five retained seed stages were accepted together from saved evidence,
+then one zero-fit descriptive probe completed. The correction performed zero
+new fits, zero seed-stage executions, zero retries and zero resumes.
+
+The retained audit did not refit, reread a source partition, rescore URLs,
+select a seed or change a primary artifact. The failed v2 root remains failed
+and unaccepted, and its profile remains exhausted. The separate correction
+authority is now consumed and exhausted; it authorizes no additional probe,
+refit, retry, resume or protected evaluation. For probe preparation and scoring,
+the correction read the development-validation partition and Public Suffix List;
+it did not reread the source training partition or access the group test,
+PhishVN, an external source or protected records. This correction-scoped
+statement does not revise the separate historical analyst-exposure record.
 
 Execution binding now uses the fixed
 [v2 profile](../../data/execution-binding-contract-v2.json), SHA-256
@@ -292,9 +301,9 @@ Execution binding now uses the fixed
 which adds the shift/secondary-analysis supplements and the unchanged v1 profile
 to its public pins. It remains unchanged; the separate development profile adds
 the secondary-development binding without enabling protected evaluation.
-The runtime and historical pins are unchanged. External file/schema integration,
-retained-seed review, probe correction and complete output coverage still
-precede the final pre-access review. The development attempt read only the
+The runtime and historical pins are unchanged. External file/schema integration
+and complete output coverage still precede the final pre-access review. The
+development attempt read only the
 accepted training/validation, PSL, Logistic-L1 and GMM inputs. It accessed no
 protected records. Its original family result remains unaccepted; the separate
 September 23 execution accepts the audited members and corrected RF as
@@ -340,7 +349,7 @@ parent returned code 2 because exact compatibility was not established.
 | Source-freeze release tag | `phiusiil-development-v1` |
 | Source-freeze release | [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1) |
 | Development preparation | `complete` |
-| Current technical milestone | Baseline v2, transformer/cascade, and GMM development validation complete. The transformer bundle is independently verified; the GMM false-alert gate failed at 28/252 windows. Historical attempts remain recorded below. |
+| Current technical milestone | Baseline v2, transformer/cascade, and GMM development validation are complete. The retained-seed audit accepted all five saved stages together, and one zero-fit descriptive probe completed; protected evaluation remains closed. The GMM false-alert gate remains failed at 28/252 windows, and historical attempts remain recorded below. |
 | Current hypothesis status | H1 `undecided`; H2 `not_supported`; H3 `undecided` |
 | Legacy base tag | `legacy-v2-clean-2026-08-16` |
 | Legacy base SHA | `a5eceecf21ad5ce29c4ab8f8d4de0edc8b73b240` |

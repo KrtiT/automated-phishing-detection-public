@@ -712,12 +712,13 @@ accepted stage-one model and historical cutoff. Only each transformer's secondar
 cutoff and cascade band are selected anew. The primary seed-42 weights, cutoffs
 and band are unchanged. Common scoring does not remove seed 42's historical
 training-runtime difference; this is a seed/runtime sensitivity check, not a pure
-random-seed effect. Their summaries remain preliminary unless a separate
-all-or-none retained audit executes and verifies all five together; the failed
-v2 root does not establish a complete-family result.
+random-seed effect. At the v2 stop, their summaries were preliminary. The later
+separate correction accepted all five together through an all-or-none retained
+audit without accepting the failed v2 root or establishing a complete-family v2
+result.
 
 `probe_replay.py` compares the original validation audit stream with three
-independent transformed copies. Every row, including ineligible and unchanged
+separately transformed copies. Every row, including ineligible and unchanged
 rows, keeps its position. The four primary detectors and GMM routing policy are
 scored; GMM, MMD and PSI each use complete 256/64 windows and their saved
 boundaries. Monitor and routing history start empty for each stream. Paired
@@ -740,11 +741,12 @@ are checked; their contents are not re-encoded without source URLs.
 
 Probe snapshots distinguish scored rows from completed routing/window results.
 A stopped worker retains its installed prefix, not a partial success. The
-verifier reproduces transformations, monitor and routing arithmetic and aggregate
-comparisons from saved evidence; it does not independently rescore the primary
-models or reread source records. Subprocess, kill and tamper tests use invented
-data. Research execution and the remaining primary-study integration are separate
-from these software checks.
+verifier reuses saved primary length-only, stage-one and transformer probabilities
+while recomputing transformations, retained-URL structural features, portable
+Logistic-L1 monitor scores, GMM scores, decisions, monitor/routing arithmetic and
+aggregate comparisons; it reopens no source partition. Subprocess, kill and
+tamper tests use invented data. Research execution and the remaining primary-study
+integration are separate from these software checks.
 
 ### Stopped Seed/Probe v1 Attempt
 
@@ -800,9 +802,9 @@ SHA-256 `cf1fc0e6e41839464def2955b4475492b4839e637d4e563d4c94324057e74cb4`,
 preserves the five seed summaries, all worker exits and the root and child
 receipt hashes. Seeds 43–46 account for exactly four fits; seed 42 reused the
 accepted weights. Every seed is reported and no best seed is selected. These
-summaries are producer-completed preliminary evidence, not accepted seed/runtime
-findings. A separate all-or-none no-fit retained-stage audit must execute and
-verify all five together before any promotion.
+summaries were producer-completed preliminary evidence at the v2 stop, not then
+accepted seed/runtime findings. The later separate all-or-none no-fit audit
+accepted all five together without accepting the failed v2 root.
 No probe result, correctness claim, adversarial-success measure, replacement H2
 decision, HTTP measurement or protected/external result follows from this stop.
 
@@ -829,13 +831,95 @@ The original v2 execution revision remains
 `1135b8e0f0750be7bd83ab0e314c6733ca609eb6`; neither it nor the failed root is
 rewritten or accepted.
 
-After this authority is reviewed and published, exact-head CI passes and its
-metadata-only binding passes, it permits exactly one all-or-none saved-evidence
-audit of the five retained seed stages and then, only if that audit verifies,
-one fresh zero-fit probe. It permits no seed-stage execution, fit, retry, resume,
-seed selection or primary change. No correction execution, accepted retained
-audit or probe result exists yet. The group test, PhishVN, external evaluation
-and all protected evaluation remain closed.
+At the time it was frozen, publication, successful exact-head CI and a
+metadata-only binding were prerequisites for one all-or-none saved-evidence
+audit of the five retained seed stages and, only after that audit verified, one
+fresh zero-fit probe. It permitted no seed-stage execution, fit, retry, resume,
+seed selection or primary change. The observed execution is reported in the
+next section.
+
+### Accepted Retained-Seed Audit and Probe Correction
+
+The correction ran once from published execution revision
+`9abb83202813ca8bf988809f68072ce2fe511361`. Its
+[accepted public report](../reports/secondary-seed-probe-correction-v1-summary.json)
+has byte SHA-256
+`d63a85792088871cfb667e7e5cbe86c6148dc3a6c7430ca2e4db29d788ab8e23`;
+the embedded completion has SHA-256
+`4b20d8877d59e7c80b384d09596102552bbeae320ab8b01aa32aa3109bf2ab75`.
+The producer, retained-stage audit, probe and saved-evidence verifier all exited
+0. Accounting records zero new fits, zero seed-stage executions, one probe, zero
+retries and zero resumes.
+
+The all-or-none audit accepted exactly five retained seed-stage records from
+saved evidence. It performed no refit, source-partition reread or URL rescoring,
+selected no seed, and changed no primary artifact. This accepts those five
+records within their declared secondary scope; it does not accept the failed v2
+root, which remains failed and unaccepted, or reopen its exhausted profile.
+
+Each retained stage used 32,695 validation rows: 12,486 positive and 20,209
+negative. The accepted saved summaries report:
+
+| Seed | Validation AP | ROC AUC | Cutoff | Recall | Observed FPR | CP upper 95% |
+|---:|---:|---:|---:|---:|---:|---:|
+| 42 | 0.9976128267314586 | 0.9974161035123057 | 0.03397693857550621 | 0.9910299535479737 | 0.008807956850908011 | 0.00996796597890856 |
+| 43 | 0.9975457496857655 | 0.9973267144658993 | 0.17120759189128876 | 0.9907896844465802 | 0.008362610717996932 | 0.009495280363162285 |
+| 44 | 0.9976882998726329 | 0.9975002533789399 | 0.03427749499678612 | 0.9907896844465802 | 0.007620367163145133 | 0.008705761395523337 |
+| 45 | 0.9976011107337017 | 0.9974325086444287 | 0.05094735324382782 | 0.9908697741470447 | 0.008214162007026573 | 0.009337553620791274 |
+| 46 | 0.9975999109287685 | 0.9975101630378056 | 0.02175699733197689 | 0.989988787441935 | 0.00752140135583156 | 0.008600317580992483 |
+
+Across the five saved stages, the validation-AP range is
+0.00014255018686737397 and the ROC-AUC range is 0.00018344857190633057.
+Seed 42 retains its different historical training runtime, so these records do
+not isolate a pure-seed effect. No seed was selected or discarded.
+
+The zero-fit probe separately replayed four position-aligned 16,370-row streams.
+The original stream retained all 16,370 rows unchanged. ASCII scheme/host
+uppercasing changed all 16,370 rows. Percent-escape uppercasing found 53 eligible
+rows: 22 changed, 31 were eligible no-ops, and 16,317 were ineligible.
+First-literal path encoding changed 1,563 rows, with 14,807 ineligible. Detector
+transitions are paired with the original stream:
+
+| Detector | Original positives | ASCII 0→1 | ASCII 1→0 | Percent 0→1 | Percent 1→0 | Path 0→1 | Path 1→0 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Length-only | 2,139 | 0 | 0 | 0 | 0 | 48 | 0 |
+| Logistic-L1 | 6,270 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Transformer-42 | 6,307 | 0 | 0 | 0 | 0 | 14 | 0 |
+| Fixed cascade | 6,270 | 0 | 0 | 0 | 0 | 0 | 0 |
+| GMM policy | 6,279 | 0 | 0 | 0 | 0 | 105 | 63 |
+
+All three monitors used 252 overlapping windows per stream and their saved,
+unchanged boundaries. Parentheses give paired `0→1 / 1→0` alert transitions
+relative to the original stream:
+
+| Monitor | Original alerts | ASCII alerts (0→1 / 1→0) | Percent alerts (0→1 / 1→0) | Path alerts (0→1 / 1→0) |
+|---|---:|---:|---:|---:|
+| GMM | 28 | 29 (1 / 0) | 28 (0 / 0) | 213 (185 / 0) |
+| MMD | 8 | 15 (7 / 0) | 8 (0 / 0) | 14 (6 / 0) |
+| PSI | 11 | 10 (0 / 1) | 11 (0 / 0) | 6 (0 / 5) |
+
+Decision stability is not score invariance. ASCII uppercasing changed some
+structural-model and GMM-policy scores while leaving every detector decision
+unchanged; percent-escape uppercasing likewise left decisions unchanged despite
+small score changes. The percent result covers only 22 changed rows and is too
+narrow to support general invariance. Path encoding materially changed some
+detector decisions and monitor alerts. The monitors also disagree: under both
+ASCII uppercasing and path encoding, GMM and MMD alerts increased while PSI
+alerts decreased. Alert transitions report fixed-boundary monitor behavior, not
+labeled errors, and the overlapping windows are descriptive rather than
+independent inferential replicates. The probe contained no outcome labels and
+establishes no correctness, recall, average precision (AP), adversarial success,
+semantic equivalence, deployment FPR, replacement-H2, HTTP, operational,
+protected-generalization, production-robustness or other production claim. In
+particular, the original GMM result remains 28/252 alerts and its mandatory H2
+false-alert failure is unchanged.
+
+The correction authority is consumed and exhausted. It authorizes no additional
+probe, refit, retry, resume or protected evaluation. For probe preparation and
+scoring, the correction read the development-validation partition and Public
+Suffix List; it did not reread the source training partition or access the group
+test, PhishVN, an external source or protected records. This correction-scoped
+statement does not revise the separate historical analyst-exposure record.
 
 ### First Secondary Development Attempt
 
@@ -1004,7 +1088,7 @@ conventions without changing the frozen workload or H3 definition.
 | 1 | Complete paired evaluator integration | Internal file/process execution, primary/score-metric composition and receipt verification are implemented on fixtures behind the closed readiness gate. Complete remaining secondary-model outputs and external execution before opening that gate. The singleton convention is adopted by explicit amendment, not equivalence acceptance. |
 | 2 | Composed H2 policy replay | Full-stream routing followed by outcome-stratum selection and normalized external preparation are implemented on fixtures. Bind the verified publisher schema, complete source inventory and saved-score inputs. Preserve the failed development false-alert component; this characterizes RQ2 and cannot rescue H2. |
 | 3 | Selective inference service and real-HTTP harness | Fixed cascade, transformer-only and serialized live-monitor modes are tested, including real TCP, phase reset and offline trace agreement. Bind service, client, process lifecycle and saved outputs in the official producer before measurements. |
-| 4 | Frozen evaluation and replay-manifest contracts | Sampling, stream integration, runtime identity and all three workloads have supplements. The separate September 23 execution accepted the retained audit and corrected RF; both earlier stops remain preserved. The v2 seed stages completed, while probe metadata validation stopped the family before replay. Publish the prospective correction authority, pass exact-head CI and metadata-only binding, then run its single all-or-none retained-seed audit and, conditionally, its one zero-fit probe. Complete secondary output coverage and external/operational integration before the pre-access freeze. Control interpretation and missing historical label digests remain explicit limitations. |
+| 4 | Frozen evaluation and replay-manifest contracts | Sampling, stream integration, runtime identity and all three workloads have supplements. The separate September 23 execution accepted the retained audit and corrected RF; both earlier stops remain preserved. The v2 seed/probe family remains failed, while the separate correction accepted all five retained seed stages together and completed one zero-fit descriptive probe. Complete secondary output coverage and external/operational integration before the pre-access freeze. Control interpretation and missing historical label digests remain explicit limitations. |
 | 5 | Independent execution and one gate table | The single internal raw-partition pass produces paired predictions and replay manifests. Later HTTP runs use only those manifests. External schema verification, preparation, and evaluation follow the separate frozen access sequence. |
 
 The existing offline cascade scorer accepts transformer probabilities for every
@@ -1031,8 +1115,11 @@ separate from model selection and does not reopen the audit for tuning.
 
 The working manuscript remains private. Public repository evidence currently
 consists of the protocol, implementation, tests, source and environment locks,
-and aggregate data-preparation, baseline-validation, transformer/cascade, and
-GMM-audit records, including the failed false-alert gate. The stopped
+and aggregate data-preparation, baseline-validation, transformer/cascade, GMM
+audit, and [retained-seed/probe correction](../reports/secondary-seed-probe-correction-v1-summary.json)
+records. The correction report has SHA-256
+`d63a85792088871cfb667e7e5cbe86c6148dc3a6c7430ca2e4db29d788ab8e23`.
+The GMM record includes the failed false-alert gate. The stopped
 transformer execution and its diagnosed scoring mismatch remain recorded beside
 the accepted retry. The accepted transformer/cascade record is development
 validation only: it does not decide H1 and does not establish measured HTTP

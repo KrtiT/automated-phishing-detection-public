@@ -248,7 +248,25 @@ automatic retry is authorized. One-use is enforced by policy, a fresh
 create-only path and fail-stop handling; it is not a global ledger across
 arbitrary paths. Publication at a reviewed exact head, successful exact-head CI
 and metadata-only binding are prerequisites for using v2 as execution authority.
-No seed/probe research result is yet accepted.
+
+V2 ran once from commit `1135b8e0f0750be7bd83ab0e314c6733ca609eb6`.
+Seed-42 calibration and seeds 43–46 completed with worker exit 0; the
+supervisor verified each stage before proceeding, and seeds 43–46 account for
+the four authorized fits. The probe worker stopped at `probe_metadata` before
+row preparation or scoring. The probe worker and parent exited 2, no root
+success summary was produced, and no retry or resume occurred. The complete v2
+family is not accepted. The five seed summaries remain preliminary until a
+separate no-fit retained-stage audit accepts them. The
+[v2 attempt record](../../reports/secondary-seed-probe-v2-attempt-1.json),
+SHA-256 `cf1fc0e6e41839464def2955b4475492b4839e637d4e563d4c94324057e74cb4`,
+preserves all five summaries, process exits, failure records and receipt hashes.
+
+Post-stop diagnosis identified an interface error: the hash-bound,
+pretty-printed public preparation report was subjected to a compact private-JSON
+byte rule. The retained drift artifacts are not corrupt. The v2 profile is
+exhausted and authorizes no retry, resume or refit. A new probe execution would
+require a separate prospective, zero-fit correction authority frozen, reviewed,
+published and CI-passed before execution.
 
 Execution binding now uses the fixed
 [v2 profile](../../data/execution-binding-contract-v2.json), SHA-256
@@ -257,7 +275,7 @@ which adds the shift/secondary-analysis supplements and the unchanged v1 profile
 to its public pins. It remains unchanged; the separate development profile adds
 the secondary-development binding without enabling protected evaluation.
 The runtime and historical pins are unchanged. External file/schema integration,
-remaining secondary development procedures and complete output coverage still
+retained-seed review, probe correction and complete output coverage still
 precede the final pre-access review. The development attempt read only the
 accepted training/validation, PSL, Logistic-L1 and GMM inputs. It accessed no
 protected records. Its original family result remains unaccepted; the separate

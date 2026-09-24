@@ -69,11 +69,31 @@ across arbitrary paths. Publication at a reviewed exact head, successful
 exact-head CI and metadata-only binding are prerequisites for using v2 as
 execution authority.
 
+The authorized v2 sequence then ran once from commit
+`1135b8e0f0750be7bd83ab0e314c6733ca609eb6`. The seed-42 calibration and
+seed-43–46 workers each exited 0, and the supervisor verified their saved
+receipts and arithmetic before advancing. Seeds 43–46 account for exactly four
+new fits; seed 42 reused the accepted weights. The probe worker stopped at
+`probe_metadata` before row preparation or scoring, and both it and the parent
+exited 2. No complete-family public summary was produced. The five seed
+summaries are retained as preliminary producer-completed evidence, not accepted
+scientific results, pending a separate no-fit retained-stage audit. The complete
+v2 family remains failed. Its immutable
+[attempt record](reports/secondary-seed-probe-v2-attempt-1.json) has SHA-256
+`cf1fc0e6e41839464def2955b4475492b4839e637d4e563d4c94324057e74cb4`.
+
+Post-stop diagnosis found that the valid, hash-bound public preparation report
+was passed through a compact private-JSON canonicalization check. The retained
+drift artifacts themselves are valid. V2 is exhausted: no retry, resume or refit
+is authorized. Any acceptance of the retained seed prefix or any new probe
+execution requires separate prospective authority frozen, reviewed, published
+and CI-passed before execution.
+
 `python scripts/run_secondary_seed_probes.py --help` documents the interface.
 Its `--check` mode accepts revision/profile pins but no data paths; `--verify`
 checks saved evidence against the observed producer exit. Protected
-evaluation remains closed until secondary development and the remaining
-prediction/source/HTTP integration are complete.
+evaluation remains closed until retained seed review, probe correction and the
+remaining prediction/source/HTTP integration are complete.
 
 ## Source and Baseline Record
 

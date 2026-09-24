@@ -1,0 +1,786 @@
+{
+  "schema_version": 1,
+  "record_kind": "secondary_seed_probe_attempt_accounting",
+  "date": "2026-09-23",
+  "status": "failed_partial_evidence_retained",
+  "analysis_stage": "development_validation_only",
+  "aggregate_accepted": false,
+  "execution": {
+    "kind": "secondary_seed_probes",
+    "revision": "1135b8e0f0750be7bd83ab0e314c6733ca609eb6",
+    "profile_sha256": "4da034b1a46baa599ae04226ee2f4d9a26c2b2d639cac73fa576ff9cb7aa8839",
+    "base_profile_sha256": "cf18fa8c35039c63f896cc62c7aaac8b0847a1abf55676ba67ee65b42340381d",
+    "stopped_v1_attempt_sha256": "3be65bd38c32b8bf8aafa06eede3577a0d1acc212f052d2d9f60768183f535c6",
+    "methods_sha256": "eb279404728e498999fc7fd0c7578291373bb80b9816f88b5d7202dfdf637380",
+    "execution_contract_sha256": "887f771381927dfe1b9268a45f4e605baf3e9a7caee2b7005cdfe68b1be516e1",
+    "runtime_sha256": "f60e3c1486996dab72f10090de1ac615806fe53244ceb92dd571a40341803d86",
+    "root_reservation_sha256": "e3963a2a9ea84f37d2f28ec07c0aadbbf6cf98dacdbf0f6e3459fb91ceee79f0",
+    "stages": [
+      "seed_42_calibration",
+      "seed_43",
+      "seed_44",
+      "seed_45",
+      "seed_46",
+      "probes"
+    ],
+    "seed_order": [
+      42,
+      43,
+      44,
+      45,
+      46
+    ]
+  },
+  "execution_observation": {
+    "start_observed_utc": "2026-09-24T00:14:29Z",
+    "exit_observed_utc": "2026-09-24T07:56:27Z",
+    "parent_exit_code": 2,
+    "public_summary_present": false,
+    "successful_public_marker_present": false,
+    "new_fits": 4,
+    "retries": 0,
+    "resumes": 0,
+    "completed_stages": [
+      "seed_42_calibration",
+      "seed_43",
+      "seed_44",
+      "seed_45",
+      "seed_46"
+    ],
+    "worker_exit_codes": {
+      "seed_42_calibration": 0,
+      "seed_43": 0,
+      "seed_44": 0,
+      "seed_45": 0,
+      "seed_46": 0,
+      "probes": 2
+    }
+  },
+  "failure": {
+    "stage": "probes",
+    "root_safe_check": "worker_exit_not_successful",
+    "worker_safe_check": "probe_metadata",
+    "root_error_type": "Exception",
+    "worker_error_type": "Exception",
+    "probe_progress": {
+      "completed_row_prefix": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "observed_completed_stream_records": [],
+      "unaccepted_row_records_outside_prefix": 0,
+      "inventory_incomplete": false,
+      "failed_row_position": null,
+      "durability_confirmed": false
+    }
+  },
+  "unattempted_stages": [],
+  "completed_seed_stages": [
+    {
+      "acceptance": "producer_completed_preliminary_not_independently_accepted",
+      "summary_sha256": "ef8431a5c2308a5023a6e409a22ed388d26745d236047827704ce10b1fc0d5a6",
+      "summary": {
+        "private_sha256": {
+          "artifact-manifest.json": "6082a079ca160e2ab7a8a6bab6cabf71706740e428499e28d5ee8a15e20c6ad5",
+          "calibration.json": "fb5748abfba29dbe8771899eb30311f4e0438d64c754ef226e0e04e79da4afe9",
+          "fit-input.json": "65c4a7ef017b01c37ebd6d267d5c41d9d39b0ea45e7f702e53eec4d1545357be",
+          "training-result.json": "f580222a12a2693ab1013f44d6b2b45da4524e8e4dc024ce5f1dba8455b5fffd",
+          "validation-predictions.jsonl": "030d68a890b3148a3f7270d7be05c0e32a97e26b03ab92b438b59efd6912cc05"
+        },
+        "reservation_sha256": "06854243f02742254b54bda2661009036ed1d8521dd32d05c94fa88545691bf3",
+        "result": {
+          "best_epoch": null,
+          "calibration": {
+            "cascade_band": {
+              "accepted_cascade": true,
+              "candidate_count": 11209,
+              "counts": {
+                "false_negative": 197,
+                "false_positive": 177,
+                "negative": 20209,
+                "positive": 12486,
+                "true_negative": 20032,
+                "true_positive": 12289
+              },
+              "fpr_upper_95": 0.009915480854183582,
+              "half_width": 0.0,
+              "maximum_fpr_upper_95": 0.01,
+              "minimum_recall": 0.9710299535479737,
+              "observed_fpr": 0.008758473947251225,
+              "reason": "constraints_met",
+              "recall": 0.9842223290084895,
+              "schema_version": 1,
+              "status": "selected",
+              "threshold_statuses": {
+                "stage1": "selected",
+                "transformer": "selected"
+              },
+              "transformer_invocation_rate": 9.175714941122495e-05,
+              "transformer_invocations": 3
+            },
+            "result_role": "secondary_seed_sensitivity_historical_42_runtime_confounded",
+            "stage1": {
+              "counts": {
+                "false_negative": 197,
+                "false_positive": 177,
+                "negative": 20209,
+                "positive": 12486,
+                "true_negative": 20032,
+                "true_positive": 12289
+              },
+              "fpr_upper_95": 0.009915480854183582,
+              "historical_threshold_record": {
+                "candidate_count": 11279,
+                "counts": {
+                  "false_negative": 197,
+                  "false_positive": 177,
+                  "negative": 20209,
+                  "positive": 12486,
+                  "true_negative": 20032,
+                  "true_positive": 12289
+                },
+                "fpr_upper_95": 0.009915480854183582,
+                "observed_fpr": 0.008758473947251225,
+                "recall": 0.9842223290084895,
+                "status": "selected",
+                "threshold": 0.2670846328466124
+              },
+              "observed_fpr": 0.008758473947251225,
+              "recall": 0.9842223290084895,
+              "threshold": 0.2670846328466124,
+              "threshold_source": "fixed_historical_artifact"
+            },
+            "transformer_threshold": {
+              "candidate_count": 20782,
+              "counts": {
+                "false_negative": 112,
+                "false_positive": 178,
+                "negative": 20209,
+                "positive": 12486,
+                "true_negative": 20031,
+                "true_positive": 12374
+              },
+              "fpr_upper_95": 0.00996796597890856,
+              "observed_fpr": 0.008807956850908011,
+              "recall": 0.9910299535479737,
+              "status": "selected",
+              "threshold": 0.03397693857550621
+            }
+          },
+          "epochs_completed": 0,
+          "new_fit": false,
+          "output_sha256": {
+            "calibration.json": "fb5748abfba29dbe8771899eb30311f4e0438d64c754ef226e0e04e79da4afe9",
+            "fit-input.json": "65c4a7ef017b01c37ebd6d267d5c41d9d39b0ea45e7f702e53eec4d1545357be",
+            "training-result.json": "f580222a12a2693ab1013f44d6b2b45da4524e8e4dc024ce5f1dba8455b5fffd",
+            "validation-predictions.jsonl": "030d68a890b3148a3f7270d7be05c0e32a97e26b03ab92b438b59efd6912cc05"
+          },
+          "primary_artifacts_changed": false,
+          "pure_seed_effect_claim": false,
+          "result_role": "secondary_seed_runtime_sensitivity",
+          "seed": 42,
+          "validation_average_precision": 0.9976128267314586,
+          "validation_negative": 20209,
+          "validation_positive": 12486,
+          "validation_roc_auc": 0.9974161035123057,
+          "validation_rows": 32695,
+          "weights_sha256": "1d4cdef31cb23cb84f093ca61c0afe0318142fa45ae559acd78cf10b49ee5de7"
+        },
+        "root_reservation_sha256": "e3963a2a9ea84f37d2f28ec07c0aadbbf6cf98dacdbf0f6e3459fb91ceee79f0",
+        "schema_version": 1,
+        "stage": "seed_42_calibration",
+        "status": "completed_secondary_seed_probe_stage"
+      }
+    },
+    {
+      "acceptance": "producer_completed_preliminary_not_independently_accepted",
+      "summary_sha256": "4cb3b1080b7484dda827f567598dcd61fc9ad9e97a702639388f92431807d66e",
+      "summary": {
+        "private_sha256": {
+          "artifact-manifest.json": "f1940453beb57e898a55bd7ae38912f05cd556524b89b46a93769df26d637ad5",
+          "calibration.json": "00b866e8d76509ee04cca5bda10b905dec7faf8e943cf44450c82ac3a496814c",
+          "fit-input.json": "c1d4a3fa3fd12a86ed3416e9909d182d93bff2cf978c93a29d3dcef96f9f503b",
+          "training-result.json": "be8b60b0919b34f69e518ea41ae872e437521b0c3f23e93fa537d3952dfd24ac",
+          "validation-predictions.jsonl": "975b69e630373ddcb8dea7a1f8c6cc0140a3d2c22ead5d124e3571c870e08729"
+        },
+        "reservation_sha256": "1c64a4af335ac7b856865f7a22ad8cc2accf011bc042c5108d322e51569eae64",
+        "result": {
+          "best_epoch": 4,
+          "calibration": {
+            "cascade_band": {
+              "accepted_cascade": true,
+              "candidate_count": 11209,
+              "counts": {
+                "false_negative": 197,
+                "false_positive": 177,
+                "negative": 20209,
+                "positive": 12486,
+                "true_negative": 20032,
+                "true_positive": 12289
+              },
+              "fpr_upper_95": 0.009915480854183582,
+              "half_width": 0.0,
+              "maximum_fpr_upper_95": 0.01,
+              "minimum_recall": 0.9707896844465802,
+              "observed_fpr": 0.008758473947251225,
+              "reason": "constraints_met",
+              "recall": 0.9842223290084895,
+              "schema_version": 1,
+              "status": "selected",
+              "threshold_statuses": {
+                "stage1": "selected",
+                "transformer": "selected"
+              },
+              "transformer_invocation_rate": 9.175714941122495e-05,
+              "transformer_invocations": 3
+            },
+            "result_role": "secondary_seed_sensitivity_historical_42_runtime_confounded",
+            "stage1": {
+              "counts": {
+                "false_negative": 197,
+                "false_positive": 177,
+                "negative": 20209,
+                "positive": 12486,
+                "true_negative": 20032,
+                "true_positive": 12289
+              },
+              "fpr_upper_95": 0.009915480854183582,
+              "historical_threshold_record": {
+                "candidate_count": 11279,
+                "counts": {
+                  "false_negative": 197,
+                  "false_positive": 177,
+                  "negative": 20209,
+                  "positive": 12486,
+                  "true_negative": 20032,
+                  "true_positive": 12289
+                },
+                "fpr_upper_95": 0.009915480854183582,
+                "observed_fpr": 0.008758473947251225,
+                "recall": 0.9842223290084895,
+                "status": "selected",
+                "threshold": 0.2670846328466124
+              },
+              "observed_fpr": 0.008758473947251225,
+              "recall": 0.9842223290084895,
+              "threshold": 0.2670846328466124,
+              "threshold_source": "fixed_historical_artifact"
+            },
+            "transformer_threshold": {
+              "candidate_count": 21141,
+              "counts": {
+                "false_negative": 115,
+                "false_positive": 169,
+                "negative": 20209,
+                "positive": 12486,
+                "true_negative": 20040,
+                "true_positive": 12371
+              },
+              "fpr_upper_95": 0.009495280363162285,
+              "observed_fpr": 0.008362610717996932,
+              "recall": 0.9907896844465802,
+              "status": "selected",
+              "threshold": 0.17120759189128876
+            }
+          },
+          "epochs_completed": 9,
+          "new_fit": true,
+          "output_sha256": {
+            "calibration.json": "00b866e8d76509ee04cca5bda10b905dec7faf8e943cf44450c82ac3a496814c",
+            "fit-input.json": "c1d4a3fa3fd12a86ed3416e9909d182d93bff2cf978c93a29d3dcef96f9f503b",
+            "training-result.json": "be8b60b0919b34f69e518ea41ae872e437521b0c3f23e93fa537d3952dfd24ac",
+            "validation-predictions.jsonl": "975b69e630373ddcb8dea7a1f8c6cc0140a3d2c22ead5d124e3571c870e08729"
+          },
+          "primary_artifacts_changed": false,
+          "pure_seed_effect_claim": false,
+          "result_role": "secondary_seed_runtime_sensitivity",
+          "seed": 43,
+          "validation_average_precision": 0.9975457496857655,
+          "validation_negative": 20209,
+          "validation_positive": 12486,
+          "validation_roc_auc": 0.9973267144658993,
+          "validation_rows": 32695,
+          "weights_sha256": "9b8e676547fcc6883b945c41c422819ee31cbaa7cae839b0492640877ec1c881"
+        },
+        "root_reservation_sha256": "e3963a2a9ea84f37d2f28ec07c0aadbbf6cf98dacdbf0f6e3459fb91ceee79f0",
+        "schema_version": 1,
+        "stage": "seed_43",
+        "status": "completed_secondary_seed_probe_stage"
+      }
+    },
+    {
+      "acceptance": "producer_completed_preliminary_not_independently_accepted",
+      "summary_sha256": "89aab1f47dbceb82096948f994843276c13789c923e170432b638cb385783b11",
+      "summary": {
+        "private_sha256": {
+          "artifact-manifest.json": "50a112055e7ddd1de0aa78c1ceb557761305c837be263d43f8e39061fd14fc81",
+          "calibration.json": "53623c98fc972b578a164c2cbf44333838d288f9d035c0eb6aac2238c287bafa",
+          "fit-input.json": "d853e10d2c4b7fbf1857e40d1b08eb54d508ec14ac251ccb7c7c17f3e29ef9da",
+          "training-result.json": "ef4d7533119a9f332396400f2f809501051200454f346604ba9da2e77fe0beeb",
+          "validation-predictions.jsonl": "ff00126f617086c9aaabeb79e5522b553765661a69959cd23576a71107429ce4"
+        },
+        "reservation_sha256": "eea1be619972f7397d62fdeb4d1604c94eabf789289c7bdbf2582428aaf3d479",
+        "result": {
+          "best_epoch": 3,
+          "calibration": {
+            "cascade_band": {
+              "accepted_cascade": true,
+              "candidate_count": 11209,
+              "counts": {
+                "false_negative": 197,
+                "false_positive": 177,
+                "negative": 20209,
+                "positive": 12486,
+                "true_negative": 20032,
+                "true_positive": 12289
+              },
+              "fpr_upper_95": 0.009915480854183582,
+              "half_width": 0.0,
+              "maximum_fpr_upper_95": 0.01,
+              "minimum_recall": 0.9707896844465802,
+              "observed_fpr": 0.008758473947251225,
+              "reason": "constraints_met",
+              "recall": 0.9842223290084895,
+              "schema_version": 1,
+              "status": "selected",
+              "threshold_statuses": {
+                "stage1": "selected",
+                "transformer": "selected"
+              },
+              "transformer_invocation_rate": 9.175714941122495e-05,
+              "transformer_invocations": 3
+            },
+            "result_role": "secondary_seed_sensitivity_historical_42_runtime_confounded",
+            "stage1": {
+              "counts": {
+                "false_negative": 197,
+                "false_positive": 177,
+                "negative": 20209,
+                "positive": 12486,
+                "true_negative": 20032,
+                "true_positive": 12289
+              },
+              "fpr_upper_95": 0.009915480854183582,
+              "historical_threshold_record": {
+                "candidate_count": 11279,
+                "counts": {
+                  "false_negative": 197,
+                  "false_positive": 177,
+                  "negative": 20209,
+                  "positive": 12486,
+                  "true_negative": 20032,
+                  "true_positive": 12289
+                },
+                "fpr_upper_95": 0.009915480854183582,
+                "observed_fpr": 0.008758473947251225,
+                "recall": 0.9842223290084895,
+                "status": "selected",
+                "threshold": 0.2670846328466124
+              },
+              "observed_fpr": 0.008758473947251225,
+              "recall": 0.9842223290084895,
+              "threshold": 0.2670846328466124,
+              "threshold_source": "fixed_historical_artifact"
+            },
+            "transformer_threshold": {
+              "candidate_count": 20647,
+              "counts": {
+                "false_negative": 115,
+                "false_positive": 154,
+                "negative": 20209,
+                "positive": 12486,
+                "true_negative": 20055,
+                "true_positive": 12371
+              },
+              "fpr_upper_95": 0.008705761395523337,
+              "observed_fpr": 0.007620367163145133,
+              "recall": 0.9907896844465802,
+              "status": "selected",
+              "threshold": 0.03427749499678612
+            }
+          },
+          "epochs_completed": 8,
+          "new_fit": true,
+          "output_sha256": {
+            "calibration.json": "53623c98fc972b578a164c2cbf44333838d288f9d035c0eb6aac2238c287bafa",
+            "fit-input.json": "d853e10d2c4b7fbf1857e40d1b08eb54d508ec14ac251ccb7c7c17f3e29ef9da",
+            "training-result.json": "ef4d7533119a9f332396400f2f809501051200454f346604ba9da2e77fe0beeb",
+            "validation-predictions.jsonl": "ff00126f617086c9aaabeb79e5522b553765661a69959cd23576a71107429ce4"
+          },
+          "primary_artifacts_changed": false,
+          "pure_seed_effect_claim": false,
+          "result_role": "secondary_seed_runtime_sensitivity",
+          "seed": 44,
+          "validation_average_precision": 0.9976882998726329,
+          "validation_negative": 20209,
+          "validation_positive": 12486,
+          "validation_roc_auc": 0.9975002533789399,
+          "validation_rows": 32695,
+          "weights_sha256": "8a67b72fe86eaffd0d1336daeb54fa5f6398aac5ed82a9125db801ffbdbfa533"
+        },
+        "root_reservation_sha256": "e3963a2a9ea84f37d2f28ec07c0aadbbf6cf98dacdbf0f6e3459fb91ceee79f0",
+        "schema_version": 1,
+        "stage": "seed_44",
+        "status": "completed_secondary_seed_probe_stage"
+      }
+    },
+    {
+      "acceptance": "producer_completed_preliminary_not_independently_accepted",
+      "summary_sha256": "85bb4d8063c6de6a143c2aa08eb322998c7b227066af18d4eaf1f1cca4a6f4cd",
+      "summary": {
+        "private_sha256": {
+          "artifact-manifest.json": "aff8d7f57d835a737047d1f3466acc8e7829a4771b8072126dc1fe033a812719",
+          "calibration.json": "eaf4bdb92b5a3f18a8ab8706c48ed3729c6b62e0f88bd88a64ad2788df01d693",
+          "fit-input.json": "6f21c2d3166a7884a3c417da6a756728cb6fb22546dc33fce6e1cdfa8e0383eb",
+          "training-result.json": "866a645e33fd449e98078c29c173e24b990524caccc90181357a20f5bb20d14c",
+          "validation-predictions.jsonl": "761a069f9b55b5dc46aebe5aaa998b344bae19d8140597fcecf9588acb7bb8eb"
+        },
+        "reservation_sha256": "16122cad189f5be0931e7681dddaa6e371a331024ee1a6d5fae6aedfb8b695b2",
+        "result": {
+          "best_epoch": 4,
+          "calibration": {
+            "cascade_band": {
+              "accepted_cascade": true,
+              "candidate_count": 11209,
+              "counts": {
+                "false_negative": 197,
+                "false_positive": 177,
+                "negative": 20209,
+                "positive": 12486,
+                "true_negative": 20032,
+                "true_positive": 12289
+              },
+              "fpr_upper_95": 0.009915480854183582,
+              "half_width": 0.0,
+              "maximum_fpr_upper_95": 0.01,
+              "minimum_recall": 0.9708697741470447,
+              "observed_fpr": 0.008758473947251225,
+              "reason": "constraints_met",
+              "recall": 0.9842223290084895,
+              "schema_version": 1,
+              "status": "selected",
+              "threshold_statuses": {
+                "stage1": "selected",
+                "transformer": "selected"
+              },
+              "transformer_invocation_rate": 9.175714941122495e-05,
+              "transformer_invocations": 3
+            },
+            "result_role": "secondary_seed_sensitivity_historical_42_runtime_confounded",
+            "stage1": {
+              "counts": {
+                "false_negative": 197,
+                "false_positive": 177,
+                "negative": 20209,
+                "positive": 12486,
+                "true_negative": 20032,
+                "true_positive": 12289
+              },
+              "fpr_upper_95": 0.009915480854183582,
+              "historical_threshold_record": {
+                "candidate_count": 11279,
+                "counts": {
+                  "false_negative": 197,
+                  "false_positive": 177,
+                  "negative": 20209,
+                  "positive": 12486,
+                  "true_negative": 20032,
+                  "true_positive": 12289
+                },
+                "fpr_upper_95": 0.009915480854183582,
+                "observed_fpr": 0.008758473947251225,
+                "recall": 0.9842223290084895,
+                "status": "selected",
+                "threshold": 0.2670846328466124
+              },
+              "observed_fpr": 0.008758473947251225,
+              "recall": 0.9842223290084895,
+              "threshold": 0.2670846328466124,
+              "threshold_source": "fixed_historical_artifact"
+            },
+            "transformer_threshold": {
+              "candidate_count": 20788,
+              "counts": {
+                "false_negative": 114,
+                "false_positive": 166,
+                "negative": 20209,
+                "positive": 12486,
+                "true_negative": 20043,
+                "true_positive": 12372
+              },
+              "fpr_upper_95": 0.009337553620791274,
+              "observed_fpr": 0.008214162007026573,
+              "recall": 0.9908697741470447,
+              "status": "selected",
+              "threshold": 0.05094735324382782
+            }
+          },
+          "epochs_completed": 9,
+          "new_fit": true,
+          "output_sha256": {
+            "calibration.json": "eaf4bdb92b5a3f18a8ab8706c48ed3729c6b62e0f88bd88a64ad2788df01d693",
+            "fit-input.json": "6f21c2d3166a7884a3c417da6a756728cb6fb22546dc33fce6e1cdfa8e0383eb",
+            "training-result.json": "866a645e33fd449e98078c29c173e24b990524caccc90181357a20f5bb20d14c",
+            "validation-predictions.jsonl": "761a069f9b55b5dc46aebe5aaa998b344bae19d8140597fcecf9588acb7bb8eb"
+          },
+          "primary_artifacts_changed": false,
+          "pure_seed_effect_claim": false,
+          "result_role": "secondary_seed_runtime_sensitivity",
+          "seed": 45,
+          "validation_average_precision": 0.9976011107337017,
+          "validation_negative": 20209,
+          "validation_positive": 12486,
+          "validation_roc_auc": 0.9974325086444287,
+          "validation_rows": 32695,
+          "weights_sha256": "decec41908400fb7cbb775a3390dc0118af148272da3d68961aaacdf9f70f5aa"
+        },
+        "root_reservation_sha256": "e3963a2a9ea84f37d2f28ec07c0aadbbf6cf98dacdbf0f6e3459fb91ceee79f0",
+        "schema_version": 1,
+        "stage": "seed_45",
+        "status": "completed_secondary_seed_probe_stage"
+      }
+    },
+    {
+      "acceptance": "producer_completed_preliminary_not_independently_accepted",
+      "summary_sha256": "16ebf6c41de836aa124a5b7cbb95b8bb14478d276d356a640b114cf30243c5b5",
+      "summary": {
+        "private_sha256": {
+          "artifact-manifest.json": "312d713b4afb93922237e4ad895329e4fc3e4bf7419a276f235ed3e2c2fbfff4",
+          "calibration.json": "beb9c42f27933e8645973fa9dc4bca8512c3132f239a0c523328b9fb20abdc81",
+          "fit-input.json": "ef91d872acff04c4107e40148ff57fcea08d579dd45605a4661c7391d0802df2",
+          "training-result.json": "9fd8e26cd95de2f2672f0c06dd011acb1cd0c3208abe8f3f614048800a423c8c",
+          "validation-predictions.jsonl": "a9b1b3499d1f397ae268806b39dd1c3583a4b067c2f7a8af404af5728b4828f3"
+        },
+        "reservation_sha256": "85c3e04f6094d01e47a415b699291792125e6564a2999dd1d9ac60f56def42f6",
+        "result": {
+          "best_epoch": 2,
+          "calibration": {
+            "cascade_band": {
+              "accepted_cascade": true,
+              "candidate_count": 11209,
+              "counts": {
+                "false_negative": 197,
+                "false_positive": 177,
+                "negative": 20209,
+                "positive": 12486,
+                "true_negative": 20032,
+                "true_positive": 12289
+              },
+              "fpr_upper_95": 0.009915480854183582,
+              "half_width": 0.0,
+              "maximum_fpr_upper_95": 0.01,
+              "minimum_recall": 0.969988787441935,
+              "observed_fpr": 0.008758473947251225,
+              "reason": "constraints_met",
+              "recall": 0.9842223290084895,
+              "schema_version": 1,
+              "status": "selected",
+              "threshold_statuses": {
+                "stage1": "selected",
+                "transformer": "selected"
+              },
+              "transformer_invocation_rate": 9.175714941122495e-05,
+              "transformer_invocations": 3
+            },
+            "result_role": "secondary_seed_sensitivity_historical_42_runtime_confounded",
+            "stage1": {
+              "counts": {
+                "false_negative": 197,
+                "false_positive": 177,
+                "negative": 20209,
+                "positive": 12486,
+                "true_negative": 20032,
+                "true_positive": 12289
+              },
+              "fpr_upper_95": 0.009915480854183582,
+              "historical_threshold_record": {
+                "candidate_count": 11279,
+                "counts": {
+                  "false_negative": 197,
+                  "false_positive": 177,
+                  "negative": 20209,
+                  "positive": 12486,
+                  "true_negative": 20032,
+                  "true_positive": 12289
+                },
+                "fpr_upper_95": 0.009915480854183582,
+                "observed_fpr": 0.008758473947251225,
+                "recall": 0.9842223290084895,
+                "status": "selected",
+                "threshold": 0.2670846328466124
+              },
+              "observed_fpr": 0.008758473947251225,
+              "recall": 0.9842223290084895,
+              "threshold": 0.2670846328466124,
+              "threshold_source": "fixed_historical_artifact"
+            },
+            "transformer_threshold": {
+              "candidate_count": 20948,
+              "counts": {
+                "false_negative": 125,
+                "false_positive": 152,
+                "negative": 20209,
+                "positive": 12486,
+                "true_negative": 20057,
+                "true_positive": 12361
+              },
+              "fpr_upper_95": 0.008600317580992483,
+              "observed_fpr": 0.00752140135583156,
+              "recall": 0.989988787441935,
+              "status": "selected",
+              "threshold": 0.02175699733197689
+            }
+          },
+          "epochs_completed": 7,
+          "new_fit": true,
+          "output_sha256": {
+            "calibration.json": "beb9c42f27933e8645973fa9dc4bca8512c3132f239a0c523328b9fb20abdc81",
+            "fit-input.json": "ef91d872acff04c4107e40148ff57fcea08d579dd45605a4661c7391d0802df2",
+            "training-result.json": "9fd8e26cd95de2f2672f0c06dd011acb1cd0c3208abe8f3f614048800a423c8c",
+            "validation-predictions.jsonl": "a9b1b3499d1f397ae268806b39dd1c3583a4b067c2f7a8af404af5728b4828f3"
+          },
+          "primary_artifacts_changed": false,
+          "pure_seed_effect_claim": false,
+          "result_role": "secondary_seed_runtime_sensitivity",
+          "seed": 46,
+          "validation_average_precision": 0.9975999109287685,
+          "validation_negative": 20209,
+          "validation_positive": 12486,
+          "validation_roc_auc": 0.9975101630378056,
+          "validation_rows": 32695,
+          "weights_sha256": "bac18ebed42a8577a52ed84b7dd1d7fce3939043105b3ea379d804d20d9928c4"
+        },
+        "root_reservation_sha256": "e3963a2a9ea84f37d2f28ec07c0aadbbf6cf98dacdbf0f6e3459fb91ceee79f0",
+        "schema_version": 1,
+        "stage": "seed_46",
+        "status": "completed_secondary_seed_probe_stage"
+      }
+    }
+  ],
+  "process_observation": {
+    "records": [
+      {
+        "stage": "seed_42_calibration",
+        "record": "seed_42_calibration-process.json",
+        "exit_code": 0,
+        "stdout_sha256": "7703e3619967f2639bd6a79d9c8c98a97ab0b5f9acf84974cc6d70c967c6f59b",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "stage": "seed_43",
+        "record": "seed_43-process.json",
+        "exit_code": 0,
+        "stdout_sha256": "7703e3619967f2639bd6a79d9c8c98a97ab0b5f9acf84974cc6d70c967c6f59b",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "stage": "seed_44",
+        "record": "seed_44-process.json",
+        "exit_code": 0,
+        "stdout_sha256": "7703e3619967f2639bd6a79d9c8c98a97ab0b5f9acf84974cc6d70c967c6f59b",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "stage": "seed_45",
+        "record": "seed_45-process.json",
+        "exit_code": 0,
+        "stdout_sha256": "7703e3619967f2639bd6a79d9c8c98a97ab0b5f9acf84974cc6d70c967c6f59b",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "stage": "seed_46",
+        "record": "seed_46-process.json",
+        "exit_code": 0,
+        "stdout_sha256": "7703e3619967f2639bd6a79d9c8c98a97ab0b5f9acf84974cc6d70c967c6f59b",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "stage": "probes",
+        "record": "probes-process.json",
+        "exit_code": 2,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "4fc57bd849fdb111eba71f1750238d6252d37efc82297224023973616ed167a2"
+      }
+    ]
+  },
+  "receipt_sha256": {
+    "reservation.json": "e3963a2a9ea84f37d2f28ec07c0aadbbf6cf98dacdbf0f6e3459fb91ceee79f0",
+    "finalize.claim": "7b0711e24773ee6cf2bab41af7e13249b2386e59629c72f659154e2a307e404d",
+    "outcome.json": "eb5d12cc4b6df36e7788b40497f8992580679470627ad423d1d3cacc5f163aa3",
+    "failure-details.json": "0878463c8033058efbb3d86076c0ed18556845b3ed50005669461c5528c78f1e",
+    "seed_42_calibration-process.json": "a02ca3795abe617b34dd648a0f8abf40d9fe2d558d0eee9ed5b4e3f1b7c49c13",
+    "seed_43-process.json": "83356d6882b4319671a76124d920ed16f603c80e7e73a195759d6acd6e320443",
+    "seed_44-process.json": "a458df02b2ded3a2477df6392af5052835834d90058d17f0007b64d74802f5b4",
+    "seed_45-process.json": "d00f2206f798de1c68f9a6f8c39acb7e685f27b33a2ac6531f311cc97e297393",
+    "seed_46-process.json": "1efe1767516e8974ac39992450572cbf2f95e7d53476774a245e31f7344bd261",
+    "probes-process.json": "babcc6939362fee49485a6657f0999fc3e4c6a7025f91fae3c2de73126ac3a15",
+    "seed_42_calibration/reservation.json": "06854243f02742254b54bda2661009036ed1d8521dd32d05c94fa88545691bf3",
+    "seed_42_calibration/finalize.claim": "258f87fd0ad0bd8e44dd45648b62f58fd31d5a70b7a9f0d06eeac4f00f1a6205",
+    "seed_42_calibration/outcome.json": "c33a189db1c966343292a3eacaae46c31dc3036b221a7108d98d2d7d484292c9",
+    "seed_43/reservation.json": "1c64a4af335ac7b856865f7a22ad8cc2accf011bc042c5108d322e51569eae64",
+    "seed_43/finalize.claim": "0f16f1711c519724b69c95823c81300c3a9312ec45667c804429dbd3083df382",
+    "seed_43/outcome.json": "c243346b516d6851ed685e41064d08594aaaaa3925d87a0a971a72532b1d1a43",
+    "seed_44/reservation.json": "eea1be619972f7397d62fdeb4d1604c94eabf789289c7bdbf2582428aaf3d479",
+    "seed_44/finalize.claim": "6c1f805c093fa8187c367d83b06ac4699debc7379fc2d7cc9c8d00082f291bf5",
+    "seed_44/outcome.json": "8381d182708fa334ccc93325f6ec1e88ed2f291e9545e99e7ec494c35eeeb975",
+    "seed_45/reservation.json": "16122cad189f5be0931e7681dddaa6e371a331024ee1a6d5fae6aedfb8b695b2",
+    "seed_45/finalize.claim": "97af87fe9cfdaa11bf0c2274cf6af82c331766c56e9cf93233562235b0b64896",
+    "seed_45/outcome.json": "89990a4d2c412d4e4ead4ea4d97f9a3fe70f3e4f11bbfccc1bcb9e0d758aa664",
+    "seed_46/reservation.json": "85c3e04f6094d01e47a415b699291792125e6564a2999dd1d9ac60f56def42f6",
+    "seed_46/finalize.claim": "9b7923f65368a35bb1f389f51d48235555cffb3d0ce0f857d2d0f2e7d2ff0b74",
+    "seed_46/outcome.json": "ab395964a34f4d4359e386987bba4799f0acacab636ea21074206b966ede4e9e",
+    "probes/reservation.json": "c7dc81d762a21434ae9065192839822e996e3ab1c374c68a464f0a3dc8ae1e49",
+    "probes/finalize.claim": "d1693e10d7492fd706da42ce1fa143d49e153f6c0f98a12d8f5d625c155bdbfb",
+    "probes/outcome.json": "19fcef5bb22289f0179b3fd80872972e21bf596c038286402a5fa8a59f3f411f",
+    "probes/failure-details.json": "064629aa7f3ae2c407b87388a16b5c268c13a598df6c38e524f9d7aef26b335c"
+  },
+  "diagnosis": {
+    "timing": "post_stop",
+    "cause": "public_preparation_report_was_validated_with_private_compact_json_rule",
+    "preparation_summary_sha256": "1a85a7eecc0f5baa7c59e03a0cbde63fd4595409feb918dc5ff916ead7cd5c9e",
+    "bound_report_bytes": 4208,
+    "compact_reserialization_bytes": 3294,
+    "first_divergent_byte": 1,
+    "failure_position": "before_probe_row_preparation_or_scoring",
+    "retained_drift_artifacts_corrupt": false,
+    "test_gap": "invented_retained_drift_fixtures_used_compact_preparation_json",
+    "scope": "This diagnosis explains the probe metadata stop only; it does not convert the failed root or retained probe inputs into accepted probe evidence."
+  },
+  "verification": {
+    "completed_seed_stage_verifier_exit_code": 0,
+    "completed_seed_stage_scope": "saved_evidence_arithmetic_and_receipts_no_refit_or_source_rescoring",
+    "complete_family_verification": "not_eligible_producer_exit_2",
+    "complete_family_accepted": false
+  },
+  "access": {
+    "training_partition_accessed": true,
+    "development_validation_accessed": true,
+    "public_suffix_list_accessed": true,
+    "group_test_accessed": false,
+    "phishvn_accessed": false,
+    "external_source_accessed": false,
+    "protected_evaluation_accessed": false
+  },
+  "authorization": {
+    "profile_status": "exhausted",
+    "retry_authorized": false,
+    "resume_authorized": false,
+    "refit_authorized": false,
+    "required_before_any_new_probe_execution": [
+      "separate_prospective_probe_correction_authority_frozen",
+      "reviewed",
+      "published",
+      "ci_passed"
+    ]
+  },
+  "interpretation": [
+    "The complete v2 seed/probe family is not accepted.",
+    "All five seed stages completed and were supervisor-verified before the probe failure, but remain preliminary pending a separate retained-evidence audit.",
+    "Seeds 43-46 account for exactly four new fits; seed 42 reused the accepted weights without fitting.",
+    "No best seed is selected, no pure causal seed-effect claim is made, and no primary artifact changed.",
+    "The probe worker stopped before row preparation or scoring, so no probe scientific result is accepted.",
+    "No protected, group-test, PhishVN, external, HTTP, operational, adversarial-success, or replacement-H2 claim follows from this attempt."
+  ]
+}

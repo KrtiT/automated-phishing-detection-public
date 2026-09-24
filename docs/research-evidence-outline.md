@@ -701,18 +701,20 @@ publication and arithmetic, not an independent refit or URL-scoring replication.
 Synthetic tests include actual subprocess execution and retained partial failures.
 The [seed/probe supplement](../data/secondary-seed-probe-contract-v1.json) now
 specifies the remaining development methods. `secondary_transformer.py` provides
-a separate seed-43--46 entry while the primary entry stays fixed at 42. Training
+a separate seed-43–46 entry while the primary entry stays fixed at 42. Training
 keeps the original batch-512 checkpoint AP and stopping rule. Each epoch exposes
 its ordered validation probabilities and AP, and each qualifying checkpoint is
 captured before a later epoch or verification check can fail. The separate
 seed/probe runner now supplies create-only writers and one fresh worker per stage.
 
-All five weight sets will use singleton secondary calibration with the same
+The five completed v2 seed stages used singleton secondary calibration with the same
 accepted stage-one model and historical cutoff. Only each transformer's secondary
 cutoff and cascade band are selected anew. The primary seed-42 weights, cutoffs
 and band are unchanged. Common scoring does not remove seed 42's historical
 training-runtime difference; this is a seed/runtime sensitivity check, not a pure
-random-seed effect.
+random-seed effect. Their summaries remain preliminary until a separate retained
+audit accepts them; the failed v2 root does not establish a complete-family
+result.
 
 `probe_replay.py` compares the original validation audit stream with three
 independent transformed copies. Every row, including ineligible and unchanged
@@ -724,8 +726,7 @@ score, decision and alert changes are descriptive and carry no outcome labels.
 `development_probes.py` checks the supplied validation bytes, exact audit
 allocation and model/scaler identities before replay. Neither fits a reference
 or recalibrates a boundary. Tests use invented records only. These choices are
-informed by completed development work, and no seed/probe research result is
-claimed from this implementation.
+informed by completed development work; the v2 execution is reported below.
 
 The historical [v1 seed/probe execution profile](../data/seed-probe-execution-contract-v1.json)
 fixes the order: seed-42 calibration without fitting, seeds 43-46, then probes.
@@ -781,8 +782,37 @@ retry. One-use is a prospective policy enforced by the operator-controlled
 launch, fresh create-only paths and fail-stop handling; it is not a global ledger
 across arbitrary filesystem paths. Publication at a reviewed exact head,
 successful exact-head CI and metadata-only binding are prerequisites for using
-v2 as execution authority. No v2 execution has occurred, and no seed/probe
-research result is accepted.
+v2 as execution authority.
+
+### Stopped Seed/Probe v2 Attempt
+
+The authorized v2 sequence ran once from clean, published commit
+`1135b8e0f0750be7bd83ab0e314c6733ca609eb6`, beginning at
+`2026-09-24T00:14:29Z`. Seed-42 calibration and the four new seed fits completed
+in order with worker exit 0. The supervisor verified each saved stage before
+advancing. The probe worker then stopped at `probe_metadata` before row
+preparation or scoring; it and the parent exited 2 at `2026-09-24T07:56:27Z`.
+All four retained row prefixes are zero, no stream record completed, and no
+complete-family public summary exists. No retry or resume occurred.
+
+The [v2 attempt record](../reports/secondary-seed-probe-v2-attempt-1.json),
+SHA-256 `cf1fc0e6e41839464def2955b4475492b4839e637d4e563d4c94324057e74cb4`,
+preserves the five seed summaries, all worker exits and the root and child
+receipt hashes. Seeds 43–46 account for exactly four fits; seed 42 reused the
+accepted weights. Every seed is reported and no best seed is selected. These
+summaries are producer-completed preliminary evidence, not accepted seed/runtime
+findings. A separate no-fit retained-stage audit is required before promotion.
+No probe result, correctness claim, adversarial-success measure, replacement H2
+decision, HTTP measurement or protected/external result follows from this stop.
+
+Post-stop diagnosis found that the bound public preparation report was valid but
+pretty-printed, while `retained_drift.py` applied the compact canonical rule
+reserved for private evidence. The retained drift snapshots themselves pass
+their canonical checks. This interface error arose before probe-row preparation
+or scoring. V2 is exhausted and authorizes no retry, resume or refit. Any new
+probe execution requires a prospective zero-fit correction authority frozen,
+reviewed, published and CI-passed before execution; the failed v2 root remains
+failed.
 
 ### First Secondary Development Attempt
 
@@ -951,7 +981,7 @@ conventions without changing the frozen workload or H3 definition.
 | 1 | Complete paired evaluator integration | Internal file/process execution, primary/score-metric composition and receipt verification are implemented on fixtures behind the closed readiness gate. Complete remaining secondary-model outputs and external execution before opening that gate. The singleton convention is adopted by explicit amendment, not equivalence acceptance. |
 | 2 | Composed H2 policy replay | Full-stream routing followed by outcome-stratum selection and normalized external preparation are implemented on fixtures. Bind the verified publisher schema, complete source inventory and saved-score inputs. Preserve the failed development false-alert component; this characterizes RQ2 and cannot rescue H2. |
 | 3 | Selective inference service and real-HTTP harness | Fixed cascade, transformer-only and serialized live-monitor modes are tested, including real TCP, phase reset and offline trace agreement. Bind service, client, process lifecycle and saved outputs in the official producer before measurements. |
-| 4 | Frozen evaluation and replay-manifest contracts | Sampling, stream integration, runtime identity and all three workloads have supplements. The separate September 23 execution accepted the retained audit and corrected RF; both earlier stops remain preserved. Seed/probe methods are implemented. Complete their supervised execution and retained-output verification, secondary output coverage and external/operational integration before the pre-access freeze. Control interpretation and missing historical label digests remain explicit limitations. |
+| 4 | Frozen evaluation and replay-manifest contracts | Sampling, stream integration, runtime identity and all three workloads have supplements. The separate September 23 execution accepted the retained audit and corrected RF; both earlier stops remain preserved. The v2 seed stages completed, while probe metadata validation stopped the family before replay. Complete the no-fit retained-seed audit, prospective probe correction, secondary output coverage and external/operational integration before the pre-access freeze. Control interpretation and missing historical label digests remain explicit limitations. |
 | 5 | Independent execution and one gate table | The single internal raw-partition pass produces paired predictions and replay manifests. Later HTTP runs use only those manifests. External schema verification, preparation, and evaluation follow the separate frozen access sequence. |
 
 The existing offline cascade scorer accepts transformer probabilities for every

@@ -56,7 +56,7 @@ def _bound_bytes(content, digest, role):
 
 
 def _preparation(content, pins):
-    summary = development_completion._private_json(content)
+    summary = secondary_development._json(content)
     prepared = baselines._validate_preparation_summary(summary)
     _require(
         prepared["source_csv_sha256"] == pins.source_csv_sha256,
@@ -132,11 +132,13 @@ def load_retained_drift_reference(
 ) -> RetainedDriftReference:
     """Check supplied snapshots and restore their immutable replay state.
 
-    All byte inputs must be canonical strict JSON matching explicit digests.
-    The shared completion checker verifies membership, saved reference arrays,
-    stream allocation and boundary arithmetic, without fitting or rescoring.
-    Returned thresholds come from the saved audit, never from a replacement
-    calibration. No files are read; no protected-evaluation access is authorized.
+    The preparation report is exact hash-bound public JSON. Retained drift
+    artifacts must be canonical private JSON, and every byte input must match
+    its explicit digest. The shared completion checker verifies membership,
+    saved reference arrays, stream allocation and boundary arithmetic, without
+    fitting or rescoring. Returned thresholds come from the saved audit, never
+    from a replacement calibration. No files are read; no protected-evaluation
+    access is authorized.
     """
     try:
         _require(

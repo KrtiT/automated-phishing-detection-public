@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "contract_id": "secondary-seed-probe-correction-v1",
+  "date": "2026-09-24",
+  "base_seed_probe_profile_sha256": "4da034b1a46baa599ae04226ee2f4d9a26c2b2d639cac73fa576ff9cb7aa8839",
+  "stopped_v2_accounting_sha256": "cf1fc0e6e41839464def2955b4475492b4839e637d4e563d4c94324057e74cb4",
+  "methods_sha256": "eb279404728e498999fc7fd0c7578291373bb80b9816f88b5d7202dfdf637380",
+  "development_execution_ready": true,
+  "protected_evaluation_ready": false,
+  "scientific_method_changes": false,
+  "primary_changes": false,
+  "stages": [
+    "retained_seed_audit",
+    "probes"
+  ],
+  "retained_seed_stages": [
+    "seed_42_calibration",
+    "seed_43",
+    "seed_44",
+    "seed_45",
+    "seed_46"
+  ],
+  "historical_new_fits": 4,
+  "maximum_new_fits": 0,
+  "seed_stage_executions": 0,
+  "probe_executions": 1,
+  "retry_or_resume": false,
+  "original_v2_aggregate_accepted": false,
+  "parser_scope": "Parse the exact hash-bound public preparation report as strict structural JSON while retaining canonical private JSON requirements for the saved drift artifacts; no other parser behavior changes.",
+  "audit_scope": "Authenticate and verify exactly the five completed v2 seed stages from saved immutable evidence only, with no source reread, URL rescoring, refit, seed selection or promotion of the failed v2 aggregate.",
+  "failure_policy": "fail_stop_no_retry_no_resume",
+  "execution_policy": "After the retained seed audit succeeds, authorize exactly one fresh probe execution against unchanged accepted primary artifacts; no seed stage execution, fit, retry or resume is authorized.",
+  "acceptance": "Accept the correction aggregate only after all five retained seed stages pass one all-or-none saved-evidence audit, the single fresh probe stage exits successfully, saved probe evidence verifies and the correction binding is rechecked.",
+  "preservation": "The original v2 root remains failed, unaccepted, exhausted and unchanged; v2 itself does not promote its completed seed summaries, while this correction may accept all five only together after a separate all-or-none saved-evidence audit as descriptive seed/runtime evidence.",
+  "research_limitations": "Development-validation-only correction; no group-test, PhishVN, external-source or protected-evaluation access, no pure-seed-effect claim and no seed-selection or model-selection claim."
+}

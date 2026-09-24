@@ -23,6 +23,13 @@ def _bytes(value):
     return gmm_monitor._canonical_json_bytes(value)
 
 
+def _public_bytes(value):
+    return (
+        json.dumps(value, ensure_ascii=True, allow_nan=False, indent=2, sort_keys=True)
+        + "\n"
+    ).encode("ascii")
+
+
 def _snapshots(*, training_count=256, constant=False, validation_count=640):
     # Metadata declarations are invented, not records or partition content.
     summary = _preparation_summary(
@@ -31,7 +38,7 @@ def _snapshots(*, training_count=256, constant=False, validation_count=640):
         b"invented train identity",
         b"invented validation identity",
     )
-    preparation = _bytes(summary)
+    preparation = _public_bytes(summary)
     pins = secondary_development.DevelopmentPins(
         train_sha256=summary["output_hashes"]["train.jsonl"],
         validation_sha256=summary["output_hashes"]["validation.jsonl"],
@@ -228,6 +235,14 @@ def test_retained_snapshot_loader_is_available():
     assert importlib.util.find_spec("automated_phishing_detection.retained_drift")
 
 
+# SP-CORR-01: exact hash-bound producer-format public JSON is accepted.
+def test_pretty_public_preparation_json_is_accepted(loader):
+    data = _snapshots()
+    assert data["preparation_summary"].startswith(b"{\n  ")
+    result = loader.load_retained_drift_reference(**data)
+    assert result.preparation_summary_sha256 == data["pins"].preparation_summary_sha256
+
+
 def test_load_returns_immutable_saved_state_and_original_audit_identities(loader):
     data = _snapshots()
     before = copy.deepcopy(data)
@@ -414,18 +429,29 @@ def test_every_supplied_pin_is_bound_to_retained_evidence(loader, field):
         loader.load_retained_drift_reference(**data)
 
 
+# SP-CORR-02: private canonicality and strict duplicate/nonfinite parsing remain closed.
+@pytest.mark.parametrize("name", ["training_reference", "validation_audit"])
+def test_private_json_rejects_noncanonical_bytes(loader, name):
+    data = _snapshots()
+    content = data[name] + b" "
+    data[name] = content
+    digest = sha256(content).hexdigest()
+    if name == "training_reference":
+        data["expected_reference_sha256"] = digest
+    else:
+        data["expected_audit_sha256"] = digest
+    with pytest.raises(loader.RetainedDriftError, match="noncanonical_private_json"):
+        loader.load_retained_drift_reference(**data)
+
+
 @pytest.mark.parametrize(
     "name", ["training_reference", "validation_audit", "preparation_summary"]
 )
-@pytest.mark.parametrize("kind", ["noncanonical", "duplicate", "nonfinite"])
-def test_strict_json_rejects_noncanonical_duplicate_and_nonfinite_bytes(
-    loader, name, kind
-):
+@pytest.mark.parametrize("kind", ["duplicate", "nonfinite"])
+def test_strict_json_rejects_duplicate_and_nonfinite_bytes(loader, name, kind):
     data = _snapshots()
     content = data[name]
-    if kind == "noncanonical":
-        content += b" "
-    elif kind == "duplicate":
+    if kind == "duplicate":
         content = b'{"schema_version":1,' + content[1:]
     else:
         content = b'{"nonfinite":NaN,' + content[1:]

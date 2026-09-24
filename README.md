@@ -77,10 +77,12 @@ new fits; seed 42 reused the accepted weights. The probe worker stopped at
 `probe_metadata` before row preparation or scoring, and both it and the parent
 exited 2. No complete-family public summary was produced. The five seed
 summaries are retained as preliminary producer-completed evidence, not accepted
-scientific results, pending a separate no-fit retained-stage audit. The complete
-v2 family remains failed. Its immutable
+scientific results. They remain preliminary unless the separate all-or-none
+retained-stage audit executes and verifies all five together. The complete v2
+family remains failed, unaccepted, exhausted and unchanged. Its immutable
 [attempt record](reports/secondary-seed-probe-v2-attempt-1.json) has SHA-256
-`cf1fc0e6e41839464def2955b4475492b4839e637d4e563d4c94324057e74cb4`.
+`cf1fc0e6e41839464def2955b4475492b4839e637d4e563d4c94324057e74cb4`
+and was published at commit `fb688a13bc2cef5ac29c0be5123f8436f8229728`.
 
 Post-stop diagnosis found that the valid, hash-bound public preparation report
 was passed through a compact private-JSON canonicalization check. The retained
@@ -89,11 +91,25 @@ is authorized. Any acceptance of the retained seed prefix or any new probe
 execution requires separate prospective authority frozen, reviewed, published
 and CI-passed before execution.
 
-`python scripts/run_secondary_seed_probes.py --help` documents the interface.
-Its `--check` mode accepts revision/profile pins but no data paths; `--verify`
-checks saved evidence against the observed producer exit. Protected
-evaluation remains closed until retained seed review, probe correction and the
-remaining prediction/source/HTTP integration are complete.
+The prospective
+[retained-seed/probe correction profile](data/seed-probe-correction-contract-v1.json),
+SHA-256 `46a659ddc809f998a12abaae0f5c6e353c2f965844487faf87c0637b9d7697a4`,
+binds the exhausted v2 profile SHA-256
+`4da034b1a46baa599ae04226ee2f4d9a26c2b2d639cac73fa576ff9cb7aa8839`,
+the accounting SHA-256 above and the unchanged methods SHA-256
+`eb279404728e498999fc7fd0c7578291373bb80b9816f88b5d7202dfdf637380`.
+After the authority is reviewed and published, exact-head CI passes and its
+metadata-only binding passes, it permits exactly one all-or-none retained-seed
+audit followed conditionally by one fresh zero-fit probe. It permits no seed
+execution, fit, retry, resume, seed selection or primary change. No correction
+execution or result exists yet.
+
+`python scripts/run_secondary_probe_correction.py --help` documents this narrow
+prospective interface. Its `--check` mode accepts only repository and correction
+identity pins and reads no research or output path; `--verify` checks saved
+evidence against an observed producer exit. The group test, PhishVN, external
+evaluation and all other protected evaluation remain closed; this correction
+authority does not open them.
 
 ## Source and Baseline Record
 

@@ -712,9 +712,9 @@ accepted stage-one model and historical cutoff. Only each transformer's secondar
 cutoff and cascade band are selected anew. The primary seed-42 weights, cutoffs
 and band are unchanged. Common scoring does not remove seed 42's historical
 training-runtime difference; this is a seed/runtime sensitivity check, not a pure
-random-seed effect. Their summaries remain preliminary until a separate retained
-audit accepts them; the failed v2 root does not establish a complete-family
-result.
+random-seed effect. Their summaries remain preliminary unless a separate
+all-or-none retained audit executes and verifies all five together; the failed
+v2 root does not establish a complete-family result.
 
 `probe_replay.py` compares the original validation audit stream with three
 independent transformed copies. Every row, including ineligible and unchanged
@@ -801,7 +801,8 @@ preserves the five seed summaries, all worker exits and the root and child
 receipt hashes. Seeds 43–46 account for exactly four fits; seed 42 reused the
 accepted weights. Every seed is reported and no best seed is selected. These
 summaries are producer-completed preliminary evidence, not accepted seed/runtime
-findings. A separate no-fit retained-stage audit is required before promotion.
+findings. A separate all-or-none no-fit retained-stage audit must execute and
+verify all five together before any promotion.
 No probe result, correctness claim, adversarial-success measure, replacement H2
 decision, HTTP measurement or protected/external result follows from this stop.
 
@@ -809,10 +810,32 @@ Post-stop diagnosis found that the bound public preparation report was valid but
 pretty-printed, while `retained_drift.py` applied the compact canonical rule
 reserved for private evidence. The retained drift snapshots themselves pass
 their canonical checks. This interface error arose before probe-row preparation
-or scoring. V2 is exhausted and authorizes no retry, resume or refit. Any new
-probe execution requires a prospective zero-fit correction authority frozen,
-reviewed, published and CI-passed before execution; the failed v2 root remains
-failed.
+or scoring. V2 remains failed, unaccepted, exhausted and unchanged and authorizes
+no retry, resume or refit. The accounting record was published at commit
+`fb688a13bc2cef5ac29c0be5123f8436f8229728`.
+
+### Prospective Retained-Seed/Probe Correction Authority
+
+The prospective
+[correction profile](../data/seed-probe-correction-contract-v1.json), SHA-256
+`46a659ddc809f998a12abaae0f5c6e353c2f965844487faf87c0637b9d7697a4`,
+binds the exhausted v2 profile SHA-256
+`4da034b1a46baa599ae04226ee2f4d9a26c2b2d639cac73fa576ff9cb7aa8839`,
+the immutable attempt-accounting SHA-256
+`cf1fc0e6e41839464def2955b4475492b4839e637d4e563d4c94324057e74cb4`
+and the unchanged methods SHA-256
+`eb279404728e498999fc7fd0c7578291373bb80b9816f88b5d7202dfdf637380`.
+The original v2 execution revision remains
+`1135b8e0f0750be7bd83ab0e314c6733ca609eb6`; neither it nor the failed root is
+rewritten or accepted.
+
+After this authority is reviewed and published, exact-head CI passes and its
+metadata-only binding passes, it permits exactly one all-or-none saved-evidence
+audit of the five retained seed stages and then, only if that audit verifies,
+one fresh zero-fit probe. It permits no seed-stage execution, fit, retry, resume,
+seed selection or primary change. No correction execution, accepted retained
+audit or probe result exists yet. The group test, PhishVN, external evaluation
+and all protected evaluation remain closed.
 
 ### First Secondary Development Attempt
 
@@ -981,7 +1004,7 @@ conventions without changing the frozen workload or H3 definition.
 | 1 | Complete paired evaluator integration | Internal file/process execution, primary/score-metric composition and receipt verification are implemented on fixtures behind the closed readiness gate. Complete remaining secondary-model outputs and external execution before opening that gate. The singleton convention is adopted by explicit amendment, not equivalence acceptance. |
 | 2 | Composed H2 policy replay | Full-stream routing followed by outcome-stratum selection and normalized external preparation are implemented on fixtures. Bind the verified publisher schema, complete source inventory and saved-score inputs. Preserve the failed development false-alert component; this characterizes RQ2 and cannot rescue H2. |
 | 3 | Selective inference service and real-HTTP harness | Fixed cascade, transformer-only and serialized live-monitor modes are tested, including real TCP, phase reset and offline trace agreement. Bind service, client, process lifecycle and saved outputs in the official producer before measurements. |
-| 4 | Frozen evaluation and replay-manifest contracts | Sampling, stream integration, runtime identity and all three workloads have supplements. The separate September 23 execution accepted the retained audit and corrected RF; both earlier stops remain preserved. The v2 seed stages completed, while probe metadata validation stopped the family before replay. Complete the no-fit retained-seed audit, prospective probe correction, secondary output coverage and external/operational integration before the pre-access freeze. Control interpretation and missing historical label digests remain explicit limitations. |
+| 4 | Frozen evaluation and replay-manifest contracts | Sampling, stream integration, runtime identity and all three workloads have supplements. The separate September 23 execution accepted the retained audit and corrected RF; both earlier stops remain preserved. The v2 seed stages completed, while probe metadata validation stopped the family before replay. Publish the prospective correction authority, pass exact-head CI and metadata-only binding, then run its single all-or-none retained-seed audit and, conditionally, its one zero-fit probe. Complete secondary output coverage and external/operational integration before the pre-access freeze. Control interpretation and missing historical label digests remain explicit limitations. |
 | 5 | Independent execution and one gate table | The single internal raw-partition pass produces paired predictions and replay manifests. Later HTTP runs use only those manifests. External schema verification, preparation, and evaluation follow the separate frozen access sequence. |
 
 The existing offline cascade scorer accepts transformer probabilities for every

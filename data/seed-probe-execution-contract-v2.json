@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "contract_id": "seed-probe-execution-v2",
+  "date": "2026-09-23",
+  "base_execution_profile_sha256": "cf18fa8c35039c63f896cc62c7aaac8b0847a1abf55676ba67ee65b42340381d",
+  "stopped_attempt_accounting_sha256": "3be65bd38c32b8bf8aafa06eede3577a0d1acc212f052d2d9f60768183f535c6",
+  "methods_sha256": "eb279404728e498999fc7fd0c7578291373bb80b9816f88b5d7202dfdf637380",
+  "development_execution_ready": true,
+  "protected_evaluation_ready": false,
+  "scientific_method_changes": false,
+  "primary_changes": false,
+  "stages": [
+    "seed_42_calibration",
+    "seed_43",
+    "seed_44",
+    "seed_45",
+    "seed_46",
+    "probes"
+  ],
+  "new_fit_seeds": [43, 44, 45, 46],
+  "primary_seed_42_fits": 0,
+  "prior_attempt_new_fits": 0,
+  "maximum_new_fits": 4,
+  "authorized_fresh_sequences": 1,
+  "retry_or_resume": false,
+  "failure_policy": "fail_stop_no_retry_no_resume",
+  "correction_scope": "The only implementation correction is to read canonical source JSONL with the established ASCII-escaped source serializer instead of the saved-artifact UTF-8 serializer. No data, scientific method, seed, threshold, band, calibration, fit, stopping, probe, monitor, hypothesis or interpretation changes are authorized.",
+  "execution_policy": "Authorize one new complete six-stage sequence in a fresh root reservation after the parser-only correction. The exhausted v1 attempt is not retried, resumed or promoted, and there is no automatic retry.",
+  "inheritance": "Inherit unchanged from the v1 profile and methods contract all data, stages, seeds, models, artifacts, thresholds, bands, calibration, fit and stop rules, probes, monitors, hypotheses and interpretation.",
+  "saved_evidence_canonicalization": "Saved evidence retains the existing UTF-8 artifact canonicalizer; only canonical source JSONL uses the established ASCII-escaped source serializer.",
+  "one_use_enforcement": "One-use is a prospective policy enforced by an operator-controlled launch, a fresh root reservation with create-only paths, and fail-stop handling; it is not a global execution ledger across arbitrary filesystem paths."
+}

@@ -18,6 +18,7 @@ from sklearn.metrics import average_precision_score, roc_auc_score
 from . import character_transformer as trainer
 from . import (
     fixed_cascade,
+    phiusiil,
     secondary_transformer,
     transformer_inference,
     transformer_scoring,
@@ -143,6 +144,16 @@ def _lines(content):
     return [_json(line) for line in content.splitlines(keepends=True)]
 
 
+def _source_lines(content):
+    _require(type(content) is bytes and bool(content), "empty_prediction_evidence")
+    try:
+        rows = [development._json(line) for line in content.splitlines(keepends=True)]
+        _require(phiusiil._jsonl_bytes(rows) == content, "noncanonical_evidence")
+        return rows
+    except (ValueError, TypeError, UnicodeError) as error:
+        raise SeedStageError("invalid_evidence_json") from error
+
+
 def _line_bytes(rows):
     return b"".join(development._json_bytes(row) for row in rows)
 
@@ -228,7 +239,8 @@ def _prepare(
             rules,
         )
         validation_rows = [
-            {**row, "label": row["is_phishing"]} for row in _lines(validation_bytes)
+            {**row, "label": row["is_phishing"]}
+            for row in _source_lines(validation_bytes)
         ]
         validation_tensors = _encode(vocabulary, validation, validation_rows)
         train, train_rows, train_tensors = None, None, None
@@ -241,7 +253,8 @@ def _prepare(
                 rules,
             )
             train_rows = [
-                {**row, "label": row["is_phishing"]} for row in _lines(train_bytes)
+                {**row, "label": row["is_phishing"]}
+                for row in _source_lines(train_bytes)
             ]
             _require(
                 not set(train.domains).intersection(validation.domains)

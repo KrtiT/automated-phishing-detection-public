@@ -727,7 +727,7 @@ or recalibrates a boundary. Tests use invented records only. These choices are
 informed by completed development work, and no seed/probe research result is
 claimed from this implementation.
 
-The [seed/probe execution profile](../data/seed-probe-execution-contract-v1.json)
+The historical [v1 seed/probe execution profile](../data/seed-probe-execution-contract-v1.json)
 fixes the order: seed-42 calibration without fitting, seeds 43-46, then probes.
 The runner reserves each worker before reading its inputs and preserves actual
 process exits, including signals. Later seeds reuse one authenticated copy of
@@ -759,9 +759,30 @@ establish whether calibration computation occurred before the stop.
 Post-stop diagnosis found that source JSONL uses the established ASCII-escaped
 canonical form while the runner used artifact UTF-8 canonical reserialization.
 An invented Unicode fixture reproduces that mismatch. No seed/probe research
-result is accepted. The v1 profile is exhausted, and no fresh execution is
-authorized until a separate prospective correction profile is frozen, reviewed,
-published, and CI-passed.
+result is accepted. The v1 profile is exhausted. The stopped-attempt report
+SHA-256 is
+`3be65bd38c32b8bf8aafa06eede3577a0d1acc212f052d2d9f60768183f535c6`.
+
+### Prospective Seed/Probe v2 Correction Authority
+
+The prospective [v2 profile](../data/seed-probe-execution-contract-v2.json),
+SHA-256 `4da034b1a46baa599ae04226ee2f4d9a26c2b2d639cac73fa576ff9cb7aa8839`,
+pins the unchanged v1 profile, stopped-attempt report and seed/probe methods. The
+only implementation correction reads source JSONL with its established
+ASCII-escaped canonicalizer; saved evidence retains its existing UTF-8 artifact
+canonicalizer. All data, stages, seeds, models, artifacts, thresholds, bands,
+calibration, fit/stop rules, probes, monitors, hypotheses and interpretation
+remain unchanged.
+
+After publication and CI, v2 authorizes one complete six-stage sequence in a
+fresh root reservation, with zero prior-attempt fits and at most the same four
+seed fits. It neither retries, resumes nor promotes v1 and provides no automatic
+retry. One-use is a prospective policy enforced by the operator-controlled
+launch, fresh create-only paths and fail-stop handling; it is not a global ledger
+across arbitrary filesystem paths. Publication at a reviewed exact head,
+successful exact-head CI and metadata-only binding are prerequisites for using
+v2 as execution authority. No v2 execution has occurred, and no seed/probe
+research result is accepted.
 
 ### First Secondary Development Attempt
 

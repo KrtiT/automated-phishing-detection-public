@@ -41,8 +41,8 @@ model unchanged and exposes each epoch's predictions and fitted checkpoints for
 retention. Probe replay compares four independent URL streams using saved
 references and boundaries, without assigning labels to transformed URLs. The
 development adapter checks the original audit rows and model/scaler identities.
-The separate [execution profile](data/seed-probe-execution-contract-v1.json)
-connects these procedures to fresh workers and create-only evidence. Saved-output
+The historical [v1 execution profile](data/seed-probe-execution-contract-v1.json)
+connected these procedures to fresh workers and create-only evidence. Saved-output
 checks cover consumed labels, checkpoints, calibration and probe arithmetic.
 Implementation tests use invented inputs. The September 23
 [v1 attempt](reports/secondary-seed-probe-v1-attempt-1.json) stopped in
@@ -53,13 +53,25 @@ that source JSONL used the established ASCII-escaped canonical form while the
 runner used artifact UTF-8 canonical reserialization; an invented Unicode
 fixture reproduces the mismatch. This accounting does not establish whether
 calibration computation occurred before the stop, and no seed/probe research
-result is accepted.
+result is accepted. The attempt report SHA-256 is
+`3be65bd38c32b8bf8aafa06eede3577a0d1acc212f052d2d9f60768183f535c6`.
 
-`python scripts/run_secondary_seed_probes.py --help` documents the v1 interface.
+The prospective [v2 execution profile](data/seed-probe-execution-contract-v2.json),
+SHA-256 `4da034b1a46baa599ae04226ee2f4d9a26c2b2d639cac73fa576ff9cb7aa8839`,
+binds the unchanged v1 profile, stopped-attempt report and methods contract. Its
+only implementation correction uses the established ASCII-escaped canonicalizer
+for source JSONL; saved evidence retains its existing UTF-8 artifact canonicalizer.
+It authorizes one complete six-stage sequence in a fresh root reservation, with
+zero fits carried from v1 and at most the same four seed fits. V1 is not retried,
+resumed or promoted, and no automatic retry is authorized. One-use is enforced
+by policy, a fresh create-only path and fail-stop handling, not by a global ledger
+across arbitrary paths. Publication at a reviewed exact head, successful
+exact-head CI and metadata-only binding are prerequisites for using v2 as
+execution authority.
+
+`python scripts/run_secondary_seed_probes.py --help` documents the interface.
 Its `--check` mode accepts revision/profile pins but no data paths; `--verify`
-checks saved evidence against the observed producer exit. The v1 profile is
-exhausted. No fresh execution is authorized until a separate prospective
-correction profile is frozen, reviewed, published, and CI-passed. Protected
+checks saved evidence against the observed producer exit. Protected
 evaluation remains closed until secondary development and the remaining
 prediction/source/HTTP integration are complete.
 

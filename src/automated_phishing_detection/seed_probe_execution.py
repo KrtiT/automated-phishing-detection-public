@@ -17,8 +17,16 @@ from .execution_preflight import ExecutionBinding, bind_execution, recheck_bindi
 from .secondary_development import DevelopmentPins
 from .source_runner import _json
 
-PROFILE_PATH = "data/seed-probe-execution-contract-v1.json"
-PROFILE_SHA256 = "cf18fa8c35039c63f896cc62c7aaac8b0847a1abf55676ba67ee65b42340381d"
+PROFILE_PATH = "data/seed-probe-execution-contract-v2.json"
+PROFILE_SHA256 = "4da034b1a46baa599ae04226ee2f4d9a26c2b2d639cac73fa576ff9cb7aa8839"
+BASE_EXECUTION_PROFILE_PATH = "data/seed-probe-execution-contract-v1.json"
+BASE_EXECUTION_PROFILE_SHA256 = (
+    "cf18fa8c35039c63f896cc62c7aaac8b0847a1abf55676ba67ee65b42340381d"
+)
+STOPPED_ATTEMPT_PATH = "reports/secondary-seed-probe-v1-attempt-1.json"
+STOPPED_ATTEMPT_SHA256 = (
+    "3be65bd38c32b8bf8aafa06eede3577a0d1acc212f052d2d9f60768183f535c6"
+)
 METHODS_PATH = "data/secondary-seed-probe-contract-v1.json"
 METHODS_SHA256 = "eb279404728e498999fc7fd0c7578291373bb80b9816f88b5d7202dfdf637380"
 ACCEPTED_PATH = "reports/secondary-development-correction-v2-summary.json"
@@ -33,9 +41,11 @@ STAGES = (
     "probes",
 )
 # The canonical policy hash avoids duplicating the contract's prose in code.
-_POLICY_SHA256 = "05ad9142a01c1c597956c0b6f757252107f45bcfeefdd2cd6f5c83689b962294"
+_POLICY_SHA256 = "a64b630375d7aeae5601663c255efb2185e30d35fc9c85dddbf70240794cc43a"
 _SUPPLEMENT_HASHES = {
     PROFILE_PATH: PROFILE_SHA256,
+    BASE_EXECUTION_PROFILE_PATH: BASE_EXECUTION_PROFILE_SHA256,
+    STOPPED_ATTEMPT_PATH: STOPPED_ATTEMPT_SHA256,
     METHODS_PATH: METHODS_SHA256,
     development_execution.METHODS_PATH: development_execution.METHODS_SHA256,
     ACCEPTED_PATH: ACCEPTED_SHA256,
@@ -50,6 +60,8 @@ class SeedProbeExecutionError(ValueError):
 class SeedProbeExecutionBinding:
     base: ExecutionBinding
     profile_sha256: str
+    base_profile_sha256: str
+    stopped_attempt_sha256: str
     methods_sha256: str
     accepted_development_sha256: str
     pins: DevelopmentPins
@@ -269,6 +281,8 @@ def bind_seed_probe_execution(
     return SeedProbeExecutionBinding(
         base,
         expected_profile_sha256,
+        BASE_EXECUTION_PROFILE_SHA256,
+        STOPPED_ATTEMPT_SHA256,
         METHODS_SHA256,
         ACCEPTED_SHA256,
         pins,

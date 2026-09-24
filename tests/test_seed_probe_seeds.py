@@ -13,6 +13,7 @@ from test_secondary_development import _fixture
 
 from automated_phishing_detection import (
     character_sequence,
+    phiusiil,
 )
 from automated_phishing_detection import (
     character_transformer as trainer,
@@ -167,6 +168,57 @@ def test_changed_artifact_rejected_before_scoring(sample, monkeypatch):
     artifacts = sample.artifacts | {"vocabulary.json": b"changed"}
     with pytest.raises(sample.module.SeedStageError, match="artifact_hash_mismatch"):
         _run(sample, artifacts=artifacts)
+
+
+def test_prepare_accepts_phiusiil_ascii_escaped_unicode_source(sample):
+    rows = [dict(row) for row in sample.fixture["validation"]]
+    raw_url = f"{rows[0]['raw_url']}&place=Honolulu-例"
+    rows[0].update(
+        raw_url=raw_url,
+        canonical_url_sha256=sha256(
+            phiusiil.canonicalize_url(raw_url).encode("utf-8")
+        ).hexdigest(),
+    )
+    validation_bytes = phiusiil._jsonl_bytes(rows)
+    preparation = development._json(sample.binding.preparation_bytes)
+    validation_sha256 = sha256(validation_bytes).hexdigest()
+    preparation["output_hashes"]["validation.jsonl"] = validation_sha256
+    preparation_bytes = development._json_bytes(preparation)
+    binding = SimpleNamespace(
+        **(
+            vars(sample.binding)
+            | {
+                "pins": replace(
+                    sample.binding.pins,
+                    validation_sha256=validation_sha256,
+                    preparation_summary_sha256=sha256(preparation_bytes).hexdigest(),
+                ),
+                "preparation_bytes": preparation_bytes,
+            }
+        )
+    )
+    vocabulary = character_sequence.build_character_vocabulary(
+        [row["raw_url"] for row in rows]
+    )
+
+    _, parsed_rows, _, _, _ = sample.module._prepare(
+        binding,
+        42,
+        None,
+        validation_bytes,
+        sample.arguments["suffix_rules_bytes"],
+        vocabulary,
+    )
+
+    assert parsed_rows[0]["raw_url"] == raw_url
+
+
+def test_saved_evidence_rejects_phiusiil_ascii_escaped_unicode():
+    module = _module()
+    content = phiusiil._jsonl_bytes([{"raw_url": "https://example.test/例"}])
+
+    with pytest.raises(module.SeedStageError, match="invalid_evidence_json"):
+        module._lines(content)
 
 
 def test_saved_predictions_are_checked_without_source_scoring(sample, monkeypatch):

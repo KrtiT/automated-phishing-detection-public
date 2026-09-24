@@ -215,10 +215,10 @@ retains epoch predictions and qualifying checkpoints through callbacks; primary
 seed-42 weights and cutoffs remain unchanged. Probe replay and its saved-reference
 loader preserve the original audit rows, fixed boundaries and label-free
 transformations. The development adapter checks input bytes and model/scaler
-identities before replay. Implementation tests use invented fixtures. The separate
-[execution profile](../../data/seed-probe-execution-contract-v1.json),
+identities before replay. Implementation tests use invented fixtures. The historical
+[v1 execution profile](../../data/seed-probe-execution-contract-v1.json),
 SHA-256 `cf18fa8c35039c63f896cc62c7aaac8b0847a1abf55676ba67ee65b42340381d`,
-now connects create-only evidence, fresh worker processes and saved-output
+connected create-only evidence, fresh worker processes and saved-output
 verification. It covers seed-42 calibration without a fit, seeds 43-46, then
 probes, stopping at the first failed stage. The September 23
 [v1 attempt](../../reports/secondary-seed-probe-v1-attempt-1.json) stopped in
@@ -229,9 +229,26 @@ establish whether calibration computation occurred. Post-stop diagnosis found th
 source JSONL in the established ASCII-escaped canonical form but the runner using
 artifact UTF-8 canonical reserialization; an invented Unicode fixture reproduces
 the mismatch. No research result under this profile was accepted. The v1 profile
-is exhausted, and no fresh execution is authorized until a separate prospective
-correction profile is frozen, reviewed, published, and CI-passed. No additional
-fitting follows from the no-fit singleton amendment.
+is exhausted. The stopped-attempt report SHA-256 is
+`3be65bd38c32b8bf8aafa06eede3577a0d1acc212f052d2d9f60768183f535c6`.
+No additional fitting follows from the no-fit singleton amendment.
+
+The prospective [v2 seed/probe execution profile](../../data/seed-probe-execution-contract-v2.json),
+SHA-256 `4da034b1a46baa599ae04226ee2f4d9a26c2b2d639cac73fa576ff9cb7aa8839`,
+hash-binds the unchanged v1 profile, the stopped-attempt accounting and the
+unchanged methods.
+Its only implementation correction applies the established ASCII-escaped
+canonicalizer to source JSONL; saved evidence keeps the existing UTF-8 artifact
+canonicalizer. It changes no data, scientific method, stage, seed, model,
+artifact, threshold, band, calibration, fit/stop rule, probe, monitor, hypothesis
+or interpretation. It prospectively authorizes one complete six-stage sequence
+in a fresh root reservation, with zero fits from the prior attempt and at most
+four new fits. The v1 attempt is not retried, resumed or promoted, and no
+automatic retry is authorized. One-use is enforced by policy, a fresh
+create-only path and fail-stop handling; it is not a global ledger across
+arbitrary paths. Publication at a reviewed exact head, successful exact-head CI
+and metadata-only binding are prerequisites for using v2 as execution authority.
+No seed/probe research result is yet accepted.
 
 Execution binding now uses the fixed
 [v2 profile](../../data/execution-binding-contract-v2.json), SHA-256

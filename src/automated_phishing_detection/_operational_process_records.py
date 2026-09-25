@@ -1,11 +1,11 @@
 """Create-only observations of owned processes, not scientific authorization."""
 
-import json
 from dataclasses import dataclass
 from hashlib import sha256
 
 from . import execution_receipt as receipt
 from ._owned_process_exit import observe_owned_exit
+from ._process_support import command_hash
 from .source_runner import _json, _read_file_once
 
 
@@ -187,8 +187,3 @@ class Observations:
             self.value["status"] = "observed"
         self.try_install("process-pair.json", self.value)
         return self.snapshot()
-
-
-def command_hash(command):
-    content = json.dumps(list(command), ensure_ascii=True, separators=(",", ":"))
-    return sha256(content.encode("ascii")).hexdigest()

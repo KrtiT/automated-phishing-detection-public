@@ -6,28 +6,10 @@ import signal
 import socket
 import subprocess
 import tempfile
-import threading
-from contextlib import ExitStack, contextmanager
+from contextlib import ExitStack
 
 from ._operational_process_records import OperationalProcessError, command_hash
-
-
-@contextmanager
-def _defer_interrupt():
-    handler = signal.getsignal(signal.SIGINT)
-    received = []
-    if threading.current_thread() is not threading.main_thread() or not callable(
-        handler
-    ):
-        yield received
-        return
-    signal.signal(signal.SIGINT, lambda number, frame: received.append((number, frame)))
-    try:
-        yield received
-    finally:
-        signal.signal(signal.SIGINT, handler)
-        if received:
-            handler(*received[0])
+from ._process_support import _defer_interrupt
 
 
 class OwnedChildren:

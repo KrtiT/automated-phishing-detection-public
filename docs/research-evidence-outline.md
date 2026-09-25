@@ -692,10 +692,17 @@ there is no flag to enable protected access. The five private outputs are
 existing scientific record layouts are unchanged. The public source-completion
 envelope is version 4 and authenticates the three additional private checkpoints.
 Descriptive secondary metrics retain schema 2.
-The shared owned-child probe now distinguishes an observed kernel exit from
-lost ownership and is used by the operational observer. Integrating it into
-the single-worker parent remains required: a cached subprocess return code
-alone is insufficient, because external reaping can erase the real exit status.
+The single-worker parent now requires its owned kernel exit observation before
+reading completion evidence. Lost ownership, nonzero and signal exits reject;
+cached subprocess status and installed markers cannot substitute for observation.
+Private temporary streams avoid pipe deadlock or a second reaper. Interrupted
+cleanup preserves the first interruption and never signals after lost ownership.
+Later acceptance or verification failures retain the observed result privately.
+The same parent keeps an immutable snapshot of all thirty-five already-read
+payloads, the reconstructed population and complete pre-quarantine overlap.
+Compatibility APIs return fresh public summaries. This in-memory association
+is not portable process attestation and adds no internal attempt file or access
+authority; the external launcher must preserve that observing-parent lineage.
 Saved checkpoint verification checks every original ordinal/ID, canonical-domain
 consistency, counts, and exact group-test agreement with prediction records. It
 does not independently re-extract quarantined domains without the raw source.
@@ -755,9 +762,9 @@ replays retained length/L1/GMM arithmetic. Routing, monitors, rich predictions,
 all secondary aggregates and the public summary must match exactly. It performs
 no source/model-file reads, fitting or transformer/secondary forwards. These
 invented-fixture checks establish saved-byte consistency, not publisher
-provenance or successful physical execution. Authenticated external execution,
-owned-exit internal acceptance and handoff, operational supervision and the
-final pre-access freeze remain outstanding.
+provenance or successful physical execution. Authenticated external execution
+using the observed internal handoff, operational supervision and the final
+pre-access freeze remain outstanding.
 
 `phishvn.prepare_external_rows` implements the frozen mapping and preparation
 rules on normalized records. Declared all-split coverage and file positions are

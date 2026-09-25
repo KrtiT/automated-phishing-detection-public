@@ -166,3 +166,4 @@ def verify_source_checkpoints(
     }
     _require(contents["source-reconstruction.json"] == _json_bytes(expected))
     _partition(contents, predictions, source, valid)
+    return frozenset(domains)

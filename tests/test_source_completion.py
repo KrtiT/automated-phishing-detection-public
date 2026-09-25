@@ -110,7 +110,7 @@ def test_valid_completion_returns_public_summary_with_single_safe_reads(
         return original(path, **kwargs)
 
     monkeypatch.setattr(runner, "_read_file_once", observed)
-    reconstruct = verifier.reconstruct_internal_evidence
+    reconstruct = verifier.reconstruct_internal_evidence_and_population
     reconstruction_calls = []
 
     def observed_reconstruction(*args):
@@ -118,7 +118,9 @@ def test_valid_completion_returns_public_summary_with_single_safe_reads(
         return reconstruct(*args)
 
     monkeypatch.setattr(
-        verifier, "reconstruct_internal_evidence", observed_reconstruction
+        verifier,
+        "reconstruct_internal_evidence_and_population",
+        observed_reconstruction,
     )
     assert (
         verifier.verify_internal_completion(binding, paths, producer_exit_code=0)

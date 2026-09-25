@@ -673,7 +673,7 @@ def test_parent_process_entry_is_closed_before_launch(runner, inputs, monkeypatc
     def forbidden(*args, **kwargs):
         pytest.fail("closed entry launched a subprocess")
 
-    monkeypatch.setattr(subprocess, "run", forbidden)
+    monkeypatch.setattr(subprocess, "Popen", forbidden)
     assert hasattr(runner, "run_internal_process"), "missing process orchestration"
     with pytest.raises(runner.SourceExecutionError, match="pre_access_freeze"):
         runner.run_internal_process(
@@ -689,6 +689,9 @@ def test_parent_passes_actual_exit_to_independent_verifier(
     runner, inputs, monkeypatch, exit_code
 ):
     from automated_phishing_detection import source_completion
+    from automated_phishing_detection._owned_process_exit import OwnedProcessExit
+    from automated_phishing_detection._process_support import command_hash
+    from automated_phishing_detection.owned_worker import WorkerObservation
 
     binding, paths, *_ = inputs
     monkeypatch.setattr(runner, "bind_execution", lambda *a, **k: binding)
@@ -699,40 +702,42 @@ def test_parent_passes_actual_exit_to_independent_verifier(
     )
     observed = []
 
-    def child(command, **kwargs):
+    def child(command):
         observed.append(command)
-        assert kwargs == {"capture_output": True, "check": False}
-        return SimpleNamespace(
-            returncode=exit_code,
-            stdout=b"not completion proof",
-            stderr=b"private diagnostic",
+        return WorkerObservation(
+            command_hash(command),
+            OwnedProcessExit(123, True, exit_code),
+            "a" * 64,
+            "b" * 64,
         )
 
     def verify(actual_binding, actual_paths, *, producer_exit_code):
         assert actual_binding is binding and actual_paths is paths
-        assert producer_exit_code == exit_code
-        if exit_code:
-            raise source_completion.CompletionVerificationError("producer_exit")
-        return {"verified": True}
+        assert producer_exit_code == exit_code == 0
+        return SimpleNamespace(public_summary={"verified": True})
 
-    monkeypatch.setattr(subprocess, "run", child)
-    monkeypatch.setattr(source_completion, "verify_internal_completion", verify)
+    monkeypatch.setattr(runner, "observe_worker", child)
+    monkeypatch.setattr(
+        source_completion, "verify_internal_completion_snapshot", verify
+    )
     kwargs = dict(
         expected_revision=binding.revision,
         expected_contract_sha256=binding.contract_sha256,
         paths=paths,
     )
     if exit_code:
-        with pytest.raises(source_completion.CompletionVerificationError):
+        with pytest.raises(
+            runner.SourceExecutionError, match="worker_exit_not_successful"
+        ):
             runner.run_internal_process(binding.root, **kwargs)
     else:
         assert runner.run_internal_process(binding.root, **kwargs) == {"verified": True}
     (command,) = observed
-    assert command[:3] == [
+    assert command[:3] == (
         sys.executable,
         str(binding.root / "scripts/run_internal_evaluation.py"),
         "--worker",
-    ]
+    )
     assert command[command.index("--source-csv") + 1] == str(paths.source_csv)
     assert "--partition" not in command
     assert command[command.index("--expected-revision") + 1] == binding.revision

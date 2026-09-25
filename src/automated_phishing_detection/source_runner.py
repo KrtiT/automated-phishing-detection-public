@@ -11,9 +11,8 @@ from __future__ import annotations
 import json
 import os
 import stat
-import subprocess
 import sys
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, fields
 from hashlib import sha256
 from pathlib import Path
 
@@ -27,17 +26,21 @@ from . import (
     secondary_metrics,
     source_overlap,
 )
+from ._owned_process_exit import OwnedProcessExit
+from ._process_support import command_hash
 from .bound_models import ArtifactPaths
 from .bound_runtime import open_bound_evaluation_session
 from .bound_secondary import SecondaryArtifactPaths
 from .execution_preflight import ExecutionBinding, bind_execution, recheck_binding
 from .execution_receipt import publish_completion, record_failure, reserve_attempt
 from .internal_failure import InternalFailureState, failure_kind, propagate_interruption
+from .internal_process_handoff import ObservedInternalCompletion, retain_worker_failure
 from .internal_scientific_checkpoints import (
     SCIENTIFIC_CHECKPOINT_PROTOCOL,
     ScientificCheckpointWriter,
     retain_failure_progress,
 )
+from .owned_worker import WorkerObservation, observe_worker
 from .paired_evaluation import BinaryPrediction
 from .source_checkpoints import retain_source_checkpoints
 
@@ -480,7 +483,23 @@ def run_internal_process(
     expected_contract_sha256: str,
     paths: InternalRunPaths,
 ) -> dict:
-    """Accept evidence only after a fresh worker exits successfully and verifies."""
+    """Return public evidence from the same owned observation and verified snapshot."""
+    return run_internal_process_with_evidence(
+        root,
+        expected_revision=expected_revision,
+        expected_contract_sha256=expected_contract_sha256,
+        paths=paths,
+    ).public_summary
+
+
+def run_internal_process_with_evidence(
+    root: Path,
+    *,
+    expected_revision: str,
+    expected_contract_sha256: str,
+    paths: InternalRunPaths,
+) -> ObservedInternalCompletion:
+    """Keep owned exit and once-read evidence together in the observing parent."""
     binding = bind_execution(
         root,
         expected_revision=expected_revision,
@@ -488,45 +507,84 @@ def run_internal_process(
     )
     if not binding.protected_evaluation_ready:
         raise SourceExecutionError("pre_access_freeze_incomplete")
-    from .source_completion import verify_internal_completion
+    return _run_observed_internal(binding, paths)
 
-    command = [
+
+def _worker_options(paths):
+    return (
+        ("source-csv", paths.source_csv),
+        ("suffix-rules", paths.suffix_rules),
+        *(
+            (member.name.replace("_", "-"), getattr(group, member.name))
+            for group in (paths.artifacts, paths.secondary_artifacts)
+            for member in fields(group)
+        ),
+        ("attempt", paths.attempt),
+        ("public-summary", paths.public_summary),
+    )
+
+
+def _worker_command(binding, paths):
+    if (
+        type(paths) is not InternalRunPaths
+        or type(paths.artifacts) is not ArtifactPaths
+        or type(paths.secondary_artifacts) is not SecondaryArtifactPaths
+    ):
+        raise SourceExecutionError("invalid_run_paths")
+    return (
         sys.executable,
         str(binding.root / "scripts/run_internal_evaluation.py"),
         "--worker",
         "--repo-root",
         str(binding.root),
         "--expected-revision",
-        expected_revision,
+        binding.revision,
         "--expected-contract-sha256",
-        expected_contract_sha256,
-    ]
-    for name, path in (
-        ("source-csv", paths.source_csv),
-        ("suffix-rules", paths.suffix_rules),
-        ("length-only", paths.artifacts.length_only),
-        ("logistic-l1", paths.artifacts.logistic_l1),
-        ("transformer-bundle", paths.artifacts.transformer_bundle),
-        ("gmm", paths.artifacts.gmm),
-        ("formatting", paths.secondary_artifacts.formatting),
-        ("permutation-42", paths.secondary_artifacts.permutation_42),
-        ("permutation-43", paths.secondary_artifacts.permutation_43),
-        ("permutation-44", paths.secondary_artifacts.permutation_44),
-        ("permutation-45", paths.secondary_artifacts.permutation_45),
-        ("permutation-46", paths.secondary_artifacts.permutation_46),
-        ("random-forest", paths.secondary_artifacts.random_forest),
-        ("seed-43-weights", paths.secondary_artifacts.seed_43_weights),
-        ("seed-44-weights", paths.secondary_artifacts.seed_44_weights),
-        ("seed-45-weights", paths.secondary_artifacts.seed_45_weights),
-        ("seed-46-weights", paths.secondary_artifacts.seed_46_weights),
-        ("attempt", paths.attempt),
-        ("public-summary", paths.public_summary),
-    ):
-        command.extend((f"--{name}", str(path)))
-    try:
-        result = subprocess.run(command, capture_output=True, check=False)
-    except OSError:
-        raise SourceExecutionError("worker_launch_failed") from None
-    return verify_internal_completion(
-        binding, paths, producer_exit_code=result.returncode
+        binding.contract_sha256,
+        *(
+            argument
+            for name, path in _worker_options(paths)
+            for argument in (f"--{name}", str(path))
+        ),
     )
+
+
+def _require_successful_worker(observed, command):
+    if (
+        type(observed) is not WorkerObservation
+        or type(observed.exit) is not OwnedProcessExit
+    ):
+        raise SourceExecutionError("invalid_worker_observation")
+    if observed.command_sha256 != command_hash(command):
+        raise SourceExecutionError("worker_command_mismatch")
+    if type(observed.exit.pid) is not int or observed.exit.pid <= 0:
+        raise SourceExecutionError("invalid_worker_pid")
+    if observed.exit.exit_observed is not True:
+        raise SourceExecutionError("worker_exit_unobserved")
+    if type(observed.exit.exit_code) is not int or observed.exit.exit_code != 0:
+        raise SourceExecutionError("worker_exit_not_successful")
+    for digest in (observed.stdout_sha256, observed.stderr_sha256):
+        if (
+            type(digest) is not str
+            or execution_receipt._SHA256.fullmatch(digest) is None
+        ):
+            raise SourceExecutionError("invalid_worker_diagnostic_hash")
+
+
+def _run_observed_internal(binding, paths):
+    from .source_completion import verify_internal_completion_snapshot
+
+    command = _worker_command(binding, paths)
+    stage, observed = "worker_acceptance", None
+    try:
+        observed = observe_worker(command)
+        _require_successful_worker(observed, command)
+        stage = "completion_verification"
+        snapshot = verify_internal_completion_snapshot(
+            binding, paths, producer_exit_code=observed.exit.exit_code
+        )
+        return ObservedInternalCompletion(observed, snapshot)
+    except BaseException as error:
+        if observed is not None:
+            retain_worker_failure(error, observed, binding, stage)
+        raise

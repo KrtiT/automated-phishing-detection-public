@@ -30,7 +30,8 @@ from .internal_scientific_checkpoints import (
     SCIENTIFIC_CHECKPOINT_PROTOCOL,
 )
 from .internal_scientific_verification import verify_scientific_checkpoints
-from .saved_evidence import reconstruct_internal_evidence
+from .internal_source_handoff import VerifiedInternalSnapshot, freeze_internal_snapshot
+from .saved_evidence import reconstruct_internal_evidence_and_population
 from .saved_metrics import DetectionMetrics
 from .selective_inference import InferenceCounts
 from .source_checkpoint_verification import verify_source_checkpoints
@@ -681,7 +682,7 @@ def _verify_outputs(binding, paths, source, source_buffers, identity):
             "private_secondary_mismatch",
         )
         _private_bindings(contents[evidence.path / "bindings.json"], identity)
-        verify_source_checkpoints(
+        overlap_domains = verify_source_checkpoints(
             {name: contents[checkpoints.path / name] for name in CHECKPOINT_NAMES},
             public,
             source,
@@ -700,7 +701,7 @@ def _verify_outputs(binding, paths, source, source_buffers, identity):
             reservation_sha256=reservation_hash,
             source_checkpoint_sha256=public["checkpoint_sha256"],
         )
-        reconstructed = reconstruct_internal_evidence(
+        reconstructed, population = reconstruct_internal_evidence_and_population(
             contents[evidence.path / "predictions.jsonl"],
             contents[evidence.path / "manifests.json"],
             contents[evidence.path / "bindings.json"],
@@ -756,11 +757,30 @@ def _verify_outputs(binding, paths, source, source_buffers, identity):
                 current is not None and source_runner._file_state(current) == initial,
                 "output_changed_during_verification",
             )
-        return public
+        return freeze_internal_snapshot(
+            contents,
+            source_buffers,
+            attempt=attempt_path,
+            public_summary=public_path,
+            population=population,
+            overlap_domains=overlap_domains,
+        )
 
 
 def verify_internal_completion(binding, paths, *, producer_exit_code: int) -> dict:
-    """Accept only linked, intact evidence after an externally observed zero exit.
+    """Return a fresh public summary after completion consistency verification.
+
+    The caller-supplied exit is a prerequisite assertion, not supervision proof.
+    """
+    return verify_internal_completion_snapshot(
+        binding, paths, producer_exit_code=producer_exit_code
+    ).public_summary
+
+
+def verify_internal_completion_snapshot(
+    binding, paths, *, producer_exit_code: int
+) -> VerifiedInternalSnapshot:
+    """Retain immutable evidence after a caller-asserted successful producer exit.
 
     No producer input or model file is opened. Private evidence and checkpoints are read
     exactly once through the descriptor-checked reader, then retained in memory.

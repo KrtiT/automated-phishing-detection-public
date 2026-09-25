@@ -110,11 +110,19 @@ def worker(value: object) -> None:
 
 
 def execution(value: object, snapshot_hashes: dict) -> None:
-    keys(value, {*EXECUTION_CONSTANTS, *EXECUTION_HASHES, "revision"})
-    require(all(value[name] == item for name, item in EXECUTION_CONSTANTS.items()))
+    require(type(value) is dict)
+    constants, hashes = EXECUTION_CONSTANTS.copy(), EXECUTION_HASHES
+    if value.get("source_interface") == "retained_study_preparation_v1":
+        constants["source_interface"] = "retained_study_preparation_v1"
+        hashes = hashes | {
+            "study_preparation_reservation_sha256",
+            "study_preparation_complete_sha256",
+        }
+    keys(value, {*constants, *hashes, "revision"})
+    require(all(value[name] == item for name, item in constants.items()))
     require(type(value["revision"]) is str)
     require(re.fullmatch(r"[0-9a-f]{40}", value["revision"]) is not None)
-    for name in EXECUTION_HASHES:
+    for name in hashes:
         digest(value[name])
     require(
         all(value[name] == snapshot_hashes[path] for name, path in SOURCE_LINKS.items())

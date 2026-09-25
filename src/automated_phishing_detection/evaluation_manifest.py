@@ -113,7 +113,7 @@ def _validate_record(record: ManifestRecord) -> str:
     return identifier[1]
 
 
-def _validated_candidates(
+def _validated_records(
     records: Sequence[ManifestRecord],
 ) -> tuple[ManifestRecord, ...]:
     if type(records) not in (list, tuple):
@@ -133,7 +133,15 @@ def _validated_candidates(
             raise ValueError("duplicate canonical_url_sha256")
         record_ids.add(record.record_id)
         canonical_hashes.add(record.canonical_url_sha256)
-    return tuple(sorted(snapshot, key=lambda record: record.record_id))
+    return snapshot
+
+
+def _validated_candidates(
+    records: Sequence[ManifestRecord],
+) -> tuple[ManifestRecord, ...]:
+    return tuple(
+        sorted(_validated_records(records), key=lambda record: record.record_id)
+    )
 
 
 def _permutation(size: int, prevalence_basis_points: int, purpose: int) -> np.ndarray:
@@ -145,23 +153,28 @@ def _permutation(size: int, prevalence_basis_points: int, purpose: int) -> np.nd
     return generator.permutation(np.arange(size, dtype=np.int64))
 
 
-def _manifest_hash(
+def _manifest_bytes(
     prevalence_basis_points: int, records: tuple[ManifestRecord, ...]
-) -> str:
+) -> bytes:
     payload = {
         "schema_version": 1,
         "algorithm_id": "replay-manifest-v1",
         "prevalence_basis_points": prevalence_basis_points,
         "records": [asdict(record) for record in records],
     }
-    encoded = json.dumps(
+    return json.dumps(
         payload,
         ensure_ascii=False,
         allow_nan=False,
         sort_keys=True,
         separators=(",", ":"),
     ).encode("utf-8")
-    return sha256(encoded).hexdigest()
+
+
+def _manifest_hash(
+    prevalence_basis_points: int, records: tuple[ManifestRecord, ...]
+) -> str:
+    return sha256(_manifest_bytes(prevalence_basis_points, records)).hexdigest()
 
 
 def build_manifest(

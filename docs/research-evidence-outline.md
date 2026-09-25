@@ -793,8 +793,13 @@ The internal snapshot also retains its already-reconstructed typed manifests,
 including insufficient-capacity outcomes, without another read, sample or
 scientific reconstruction. These pure components establish consistency, not
 authenticated child input, successful process execution or research performance.
-The official cell/root observer and complete pre-access freeze remain required;
-no shortened workload or replacement run is authorized.
+Strict byte codecs now transport those full internal manifests without sorting,
+resampling or URL rewriting, and restore the complete external retained stream
+without filtering roles or changing publisher order. Independent expected hashes
+precede parsing. These checks use invented inputs and establish consistency, not
+the provenance of a caller-supplied hash. The official cell/root observer and
+complete pre-access freeze remain required; no shortened workload or replacement
+run is authorized.
 
 The pure descriptive reducer requires all 125 scheduled runs and returns exactly
 twenty-five five-repeat groups. It joins each fixed prevalence across concurrency
@@ -821,10 +826,30 @@ and live-shift warmup. Secondary population zeros remain descriptive counts.
 Neither an empty shortage list nor completed preparation proves that every
 prediction-dependent estimate will exist, adopts an administrative stop policy,
 authorizes scoring or decides a hypothesis. The terminal stage never launches
-models, including when all listed capacities are present. Later retained-byte
-scoring integration and the reviewed prospective continuation boundary remain
-required; existing scientific workers, source rules and hypothesis gates are
-unchanged. No required population is claimed absent from these fixture checks.
+models, including when all listed capacities are present. A reviewed prospective
+continuation boundary remains required. No required population is claimed absent
+from these fixture checks.
+
+Closed retained-preparation adapters now feed the existing internal and external
+scientific lifecycles without reopening the original CSV or archive. A pure
+restorer authenticates the twelve-file snapshot against independently expected
+identity, reservation and completion hashes; its file transport reads each file
+once and holds identities and inventories through both actual child exits and
+saved verification. New scoring receipts bind their own reservations and link
+the immutable preparation receipt. Internal partition/overlap and seven external
+preparation payloads must match the parent's retained bytes exactly. Scientific
+payload inventories, original-source validation and hypothesis gates remain
+unchanged.
+
+Invented integration tests remove the raw source fixtures before launching both
+real producer children. Acceptance requires observed successful internal exit and
+verified saved science before the external handoff, then observed successful
+external exit and independent saved verification. Post-publication nonzero exits,
+teardown failure and late held-input rejection preserve actual available failure
+lineage without retry or inferred completion. Both access gates remain closed;
+these adapters do not authorize a historical resume, adopt the proposed
+whole-study policy or provide empirical results. The joint study root, operational
+cell integration and complete prospective review remain required.
 
 `bound_external_runtime` binds primary and secondary models plus accepted saved
 MMD/PSI references before numerical ownership. The drift loader checks the

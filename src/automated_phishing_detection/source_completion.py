@@ -23,6 +23,7 @@ from . import (
     secondary_metrics,
     source_runner,
 )
+from ._prepared_internal_io import completion_directory, completion_read, io_scope
 from .bound_secondary import SecondaryInferenceCounts
 from .evaluation_producer import ManifestOutcome, _json_bytes, _manifest_summary
 from .internal_scientific_checkpoints import (
@@ -594,6 +595,7 @@ def _output_snapshot(
 
 
 def _verify_outputs(binding, paths, source, source_buffers, identity):
+    prepared = identity["source_interface"] == "retained_study_preparation_v1"
     attempt_path = execution_receipt._absolute_path(paths.attempt)
     public_path = execution_receipt._absolute_path(paths.public_summary)
     _require(
@@ -603,25 +605,31 @@ def _verify_outputs(binding, paths, source, source_buffers, identity):
         "invalid_completion_output_paths",
     )
     with (
-        execution_receipt._directory(attempt_path) as attempt,
-        execution_receipt._directory(attempt_path / "evidence") as evidence,
-        execution_receipt._directory(attempt_path / "checkpoints") as checkpoints,
-        execution_receipt._directory(
-            attempt_path / "scientific-checkpoints"
+        completion_directory(attempt_path, prepared) as attempt,
+        completion_directory(attempt_path / "evidence", prepared) as evidence,
+        completion_directory(attempt_path / "checkpoints", prepared) as checkpoints,
+        completion_directory(
+            attempt_path / "scientific-checkpoints", prepared
         ) as scientific,
-        execution_receipt._directory(public_path.parent) as public_parent,
+        completion_directory(public_path.parent, prepared) as public_parent,
     ):
-        _directory_contents(attempt, _ATTEMPT_NAMES)
-        _directory_contents(evidence, _PRIVATE_NAMES)
-        _directory_contents(checkpoints, CHECKPOINT_NAMES)
-        _directory_contents(scientific, SCIENTIFIC_CHECKPOINT_NAMES)
-        _scientific_permissions(scientific)
-        snapshot = _output_snapshot(
-            attempt, evidence, checkpoints, scientific, public_parent, public_path.name
-        )
+        with io_scope(prepared):
+            _directory_contents(attempt, _ATTEMPT_NAMES)
+            _directory_contents(evidence, _PRIVATE_NAMES)
+            _directory_contents(checkpoints, CHECKPOINT_NAMES)
+            _directory_contents(scientific, SCIENTIFIC_CHECKPOINT_NAMES)
+            _scientific_permissions(scientific)
+            snapshot = _output_snapshot(
+                attempt,
+                evidence,
+                checkpoints,
+                scientific,
+                public_parent,
+                public_path.name,
+            )
         contents = {
-            (directory.path / name): source_runner._read_file_once(
-                directory.path / name, expected_state=initial
+            (directory.path / name): completion_read(
+                directory.path / name, expected_state=initial, enabled=prepared
             )
             for directory, name, initial in snapshot
         }
@@ -744,19 +752,21 @@ def _verify_outputs(binding, paths, source, source_buffers, identity):
             ),
             "reconstructed_evidence_mismatch",
         )
-        source_runner.recheck_binding(binding)
-        _directory_contents(attempt, _ATTEMPT_NAMES)
-        _directory_contents(evidence, _PRIVATE_NAMES)
-        _directory_contents(checkpoints, CHECKPOINT_NAMES)
-        _directory_contents(scientific, SCIENTIFIC_CHECKPOINT_NAMES)
-        _scientific_permissions(scientific)
-        public_parent.check()
-        for directory, name, initial in snapshot:
-            current = execution_receipt._entry(directory, name)
-            _require(
-                current is not None and source_runner._file_state(current) == initial,
-                "output_changed_during_verification",
-            )
+        with io_scope(prepared):
+            source_runner.recheck_binding(binding)
+            _directory_contents(attempt, _ATTEMPT_NAMES)
+            _directory_contents(evidence, _PRIVATE_NAMES)
+            _directory_contents(checkpoints, CHECKPOINT_NAMES)
+            _directory_contents(scientific, SCIENTIFIC_CHECKPOINT_NAMES)
+            _scientific_permissions(scientific)
+            public_parent.check()
+            for directory, name, initial in snapshot:
+                current = execution_receipt._entry(directory, name)
+                _require(
+                    current is not None
+                    and source_runner._file_state(current) == initial,
+                    "output_changed_during_verification",
+                )
         return freeze_internal_snapshot(
             contents,
             source_buffers,
@@ -798,6 +808,50 @@ def verify_internal_completion_snapshot(
         source, source_buffers = source_runner._public_sources(binding)
         identity = _expected_identity(binding, source)
         return _verify_outputs(binding, paths, source, source_buffers, identity)
+    except CompletionVerificationError:
+        raise
+    except Exception:
+        raise CompletionVerificationError("completion_verification_failed") from None
+
+
+def _prepared_match(snapshot, preparation):
+    for name in ("group_test.jsonl", "source-overlap.json"):
+        _require(
+            snapshot.payload(f"attempt/checkpoints/{name}")
+            == preparation.payload(name),
+            "parent_preparation_payload_mismatch",
+        )
+    _require(
+        snapshot.overlap_domains == preparation.overlap_domains
+        and _same(
+            snapshot.public_summary["source_reconstruction"],
+            preparation.reconstructed_internal.public_summary,
+        ),
+        "parent_preparation_source_mismatch",
+    )
+
+
+def verify_prepared_internal_completion_snapshot(
+    binding, paths, *, preparation, producer_exit_code: int
+) -> VerifiedInternalSnapshot:
+    """Compare saved science with independently retained preparation, without rereads."""
+    from ._prepared_internal_records import prepared_source, require_paths
+
+    _require(
+        type(producer_exit_code) is int and producer_exit_code == 0,
+        "producer_exit_not_successful",
+    )
+    try:
+        with io_scope(True):
+            source_runner.recheck_binding(binding)
+            require_paths(paths)
+            source, buffers = source_runner._public_sources(binding)
+        identity = _expected_identity(binding, source) | prepared_source(
+            binding, source, preparation
+        )
+        snapshot = _verify_outputs(binding, paths, source, buffers, identity)
+        _prepared_match(snapshot, preparation)
+        return snapshot
     except CompletionVerificationError:
         raise
     except Exception:

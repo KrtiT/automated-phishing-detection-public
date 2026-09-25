@@ -14,6 +14,7 @@ from . import execution_receipt
 from ._checkpoint_codec import canonical_bytes
 from ._external_checkpoint_protocol import PROTOCOL
 from ._external_source_profile import CandidateExternalProfile
+from ._prepared_external_records import PreparedExternalRunPaths, preparation_links
 from .bound_drift import DriftArtifactPaths
 from .bound_models import ArtifactPaths
 from .bound_secondary import SecondaryArtifactPaths
@@ -21,6 +22,13 @@ from .execution_preflight import ExecutionBinding
 from .internal_external_handoff import InternalHandoffPayloads, verify_internal_handoff
 
 ExternalSourceExecutionError = validation.ExternalSourceExecutionError
+__all__ = [
+    "ExternalRunPaths",
+    "PreparedExternalRunPaths",
+    "ExternalSourceExecutionError",
+    "external_identity",
+    "build_external_public",
+]
 
 
 @dataclass(frozen=True)
@@ -54,11 +62,11 @@ def _internal(profile, projection, pins, handoff):
     return internal
 
 
-def _identity(binding, profile, handoff):
+def _identity(binding, profile, handoff, preparation):
     projection, pins = validation.context(binding, profile)
     internal = _internal(profile, projection, pins, handoff)
     archive = profile.archive_pins
-    return {
+    result = {
         "kind": "external_evaluation",
         "source_interface": "publisher_archive_reconstruction_v1",
         "checkpoint_protocol": PROTOCOL,
@@ -71,16 +79,27 @@ def _identity(binding, profile, handoff):
         "internal_overlap_sha256": sha256(handoff.overlap_bytes).hexdigest(),
         "internal_reservation_sha256": internal["reservation_sha256"],
     }
+    if preparation is not None:
+        result.update(
+            preparation_links(binding, profile, handoff, internal, preparation)
+        )
+    else:
+        validation.require(
+            internal["source_interface"] == "original_csv_reconstruction_v1"
+        )
+    return result
 
 
 def external_identity(
     binding: ExecutionBinding,
     profile: CandidateExternalProfile,
     handoff: InternalHandoffPayloads,
+    *,
+    preparation=None,
 ) -> dict:
     """Bind consistent retained context without inferring parent observation."""
     try:
-        return _identity(binding, profile, handoff)
+        return _identity(binding, profile, handoff, preparation)
     except Exception:
         raise ExternalSourceExecutionError(
             "invalid_external_source_execution"
@@ -92,7 +111,11 @@ def _public_record(binding, profile, identity, reservation, outputs, composition
     return {
         "schema_version": 1,
         "status": "external_evidence_published",
-        "source_binding": "authenticated_publisher_with_parent_declared_internal_handoff",
+        "source_binding": (
+            "authenticated_retained_preparation_with_parent_declared_internal_handoff"
+            if identity["source_interface"] == "retained_study_preparation_v1"
+            else "authenticated_publisher_with_parent_declared_internal_handoff"
+        ),
         "protected_evaluation_authorized": binding.protected_evaluation_ready,
         "execution": identity | {"reservation_sha256": reservation},
         "source_profile": profile.projection(),
@@ -103,14 +126,16 @@ def _public_record(binding, profile, identity, reservation, outputs, composition
     }
 
 
-def _build(binding, profile, identity, reservation, private_outputs, composition):
+def _build(
+    binding, profile, identity, reservation, private_outputs, composition, preparation
+):
     outputs = validation.snapshot(private_outputs)
     validation.digest(reservation)
     validation.require(type(identity) is dict)
     handoff = InternalHandoffPayloads(
         outputs["internal-source-handoff.json"], outputs["internal-source-overlap.json"]
     )
-    expected = external_identity(binding, profile, handoff)
+    expected = external_identity(binding, profile, handoff, preparation=preparation)
     validation.require(canonical_bytes(identity) == canonical_bytes(expected))
     result = _public_record(
         binding, profile, expected, reservation, outputs, composition
@@ -125,11 +150,19 @@ def build_external_public(
     reservation_sha256: str,
     private_outputs: dict[str, bytes],
     composition: dict,
+    *,
+    preparation=None,
 ) -> dict:
     """Project exact private hashes and unchanged canonical composition aggregates."""
     try:
         return _build(
-            binding, profile, identity, reservation_sha256, private_outputs, composition
+            binding,
+            profile,
+            identity,
+            reservation_sha256,
+            private_outputs,
+            composition,
+            preparation,
         )
     except Exception:
         raise ExternalSourceExecutionError(

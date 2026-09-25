@@ -147,12 +147,16 @@ class ExternalSourceFailureState:
     def snapshot(
         self, attempt, identity: dict, stage: str, error: BaseException
     ) -> bytes:
+        from ._prepared_external_io import PreparedExternalCheckpointWriter
+
         try:
             _require(
                 type(attempt) is receipt.Attempt and isinstance(error, BaseException)
             )
             _require(
-                self.writer is None or type(self.writer) is ExternalCheckpointWriter
+                self.writer is None
+                or type(self.writer)
+                in (ExternalCheckpointWriter, PreparedExternalCheckpointWriter)
             )
             if self.writer is not None:
                 _require(self.writer.attempt == attempt)

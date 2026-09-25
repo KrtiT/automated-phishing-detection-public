@@ -5,8 +5,7 @@ Caller-created records and historical handoff files cannot establish this lineag
 This pair supplies neither operational observations nor final study decisions.
 """
 
-import sys
-from dataclasses import dataclass, fields
+from dataclasses import dataclass
 from pathlib import Path
 
 from . import source_runner
@@ -17,9 +16,12 @@ from ._external_source_records import (
     ExternalSourceExecutionError,
     external_identity,
 )
-from .bound_drift import DriftArtifactPaths
-from .bound_models import ArtifactPaths
-from .bound_secondary import SecondaryArtifactPaths
+from ._external_worker_commands import (
+    _prepared_worker_command,
+    _worker_command,
+    _worker_options,
+)
+from ._prepared_external_io import io_scope
 from .execution_preflight import bind_execution
 from .external_source_completion import verify_external_completion_snapshot
 from .external_source_handoff import ObservedExternalCompletion
@@ -29,6 +31,14 @@ from .internal_process_handoff import ObservedInternalCompletion
 from .owned_worker import observe_worker
 from .source_runner import InternalRunPaths
 
+__all__ = [
+    "ObservedSourceCompletion",
+    "run_internal_external_process",
+    "_worker_command",
+    "_worker_options",
+    "_prepared_worker_command",
+]
+
 
 @dataclass(frozen=True)
 class ObservedSourceCompletion:
@@ -36,75 +46,43 @@ class ObservedSourceCompletion:
     external: ObservedExternalCompletion
 
 
-def _worker_options(paths):
-    if (
-        type(paths) is not ExternalRunPaths
-        or type(paths.artifacts) is not ArtifactPaths
-        or type(paths.secondary_artifacts) is not SecondaryArtifactPaths
-        or type(paths.drift_artifacts) is not DriftArtifactPaths
-    ):
-        raise ExternalSourceExecutionError("invalid_external_run_paths")
-    return (
-        ("archive", paths.archive),
-        ("suffix-rules", paths.suffix_rules),
-        *(
-            (member.name.replace("_", "-"), getattr(group, member.name))
-            for group in (
-                paths.artifacts,
-                paths.secondary_artifacts,
-                paths.drift_artifacts,
-            )
-            for member in fields(group)
-        ),
-        ("attempt", paths.attempt),
-        ("public-summary", paths.public_summary),
-    )
-
-
-def _worker_command(binding, paths, transport):
-    options = (
-        ("repo-root", binding.root),
-        ("expected-revision", binding.revision),
-        ("expected-contract-sha256", binding.contract_sha256),
-        *_worker_options(paths),
-        ("internal-transport", transport.directory),
-        ("expected-handoff-sha256", transport.expected_handoff_sha256),
-    )
-    return (
-        sys.executable,
-        str(binding.root / "scripts/run_external_evaluation.py"),
-        *(
-            argument
-            for name, value in options
-            for argument in (f"--{name}", str(value))
-        ),
-    )
-
-
-def _run_observed_external(binding, paths, handoff):
-    state = ExternalObservationState(binding, handoff)
+def _run_observed_external(binding, paths, handoff, *, preparation=None):
+    state = ExternalObservationState(binding, handoff, preparation=preparation)
     try:
-        profile = resolve_external_source_profile(binding)
-        external_identity(binding, profile, handoff)
+        with io_scope(preparation):
+            profile = resolve_external_source_profile(binding)
+        extra = {} if preparation is None else {"preparation": preparation}
+        external_identity(binding, profile, handoff, **extra)
         state.stage = "transport"
         with retain_internal_handoff(handoff) as transport, state.capture_body():
-            state.command = _worker_command(binding, paths, transport)
-            state.stage = "worker_observation"
-            state.worker = observe_worker(state.command)
-            source_runner._require_successful_worker(state.worker, state.command)
-            state.stage = "completion_verification"
-            state.snapshot = verify_external_completion_snapshot(
-                binding,
-                paths,
-                expected_handoff=handoff,
-                worker=state.worker,
-                command=state.command,
-            )
+            _observe_and_verify(state, paths, transport)
             state.stage = "transport_finalization"
         return ObservedExternalCompletion(state.worker, state.snapshot)
     except BaseException as error:
         state.retain_failure(error)
         raise
+
+
+def _observe_and_verify(state, paths, transport):
+    preparation = state.preparation
+    state.command = (
+        _worker_command(state.binding, paths, transport)
+        if preparation is None
+        else _prepared_worker_command(state.binding, paths, transport, preparation)
+    )
+    state.stage = "worker_observation"
+    state.worker = observe_worker(state.command)
+    source_runner._require_successful_worker(state.worker, state.command)
+    state.stage = "completion_verification"
+    extra = {} if preparation is None else {"expected_preparation": preparation}
+    state.snapshot = verify_external_completion_snapshot(
+        state.binding,
+        paths,
+        expected_handoff=state.handoff,
+        worker=state.worker,
+        command=state.command,
+        **extra,
+    )
 
 
 def _run_observed_sources(binding, internal_paths, external_paths):

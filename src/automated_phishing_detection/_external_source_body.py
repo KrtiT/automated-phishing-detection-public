@@ -12,8 +12,11 @@ from ._external_source_profile import (
 from ._external_source_records import (
     ExternalRunPaths,
     ExternalSourceExecutionError,
+    PreparedExternalRunPaths,
     external_identity,
 )
+from ._prepared_external_io import PreparedExternalCheckpointWriter, io_scope
+from ._prepared_external_records import outputs_outside_preparation
 from .bound_drift import DriftArtifactPaths
 from .bound_models import ArtifactPaths
 from .bound_secondary import SecondaryArtifactPaths
@@ -41,10 +44,11 @@ class ExternalRun:
     outputs: dict[str, bytes] | None = None
     overlap_domains: frozenset[str] = frozenset()
     publishing: bool = False
+    preparation: object = None
 
 
 def _output_paths(binding, paths):
-    if type(paths) is not ExternalRunPaths:
+    if type(paths) not in (ExternalRunPaths, PreparedExternalRunPaths):
         raise ExternalSourceExecutionError("invalid_external_run_paths")
     expected = (
         (paths.artifacts, ArtifactPaths),
@@ -53,11 +57,17 @@ def _output_paths(binding, paths):
     )
     if any(type(value) is not kind for value, kind in expected):
         raise ExternalSourceExecutionError("invalid_external_run_paths")
-    supplied = [paths.archive, paths.suffix_rules, paths.attempt, paths.public_summary]
+    inputs = (
+        (paths.archive, paths.suffix_rules)
+        if type(paths) is ExternalRunPaths
+        else (paths.preparation,)
+    )
+    supplied = [*inputs, paths.attempt, paths.public_summary]
     for group in (paths.artifacts, paths.secondary_artifacts, paths.drift_artifacts):
         supplied.extend(getattr(group, member.name) for member in fields(group))
     for path in supplied:
         execution_receipt._absolute_path(path)
+    outputs_outside_preparation(paths)
     attempt = paths.attempt.absolute()
     public = paths.public_summary.absolute()
     if public.is_relative_to(attempt):
@@ -70,18 +80,26 @@ def _output_paths(binding, paths):
 
 
 def preflight(state):
-    state.profile = resolve_external_source_profile(state.binding)
-    state.identity = external_identity(state.binding, state.profile, state.handoff)
+    with io_scope(state.preparation):
+        state.profile = resolve_external_source_profile(state.binding)
+    if (type(state.paths) is PreparedExternalRunPaths) != (
+        state.preparation is not None
+    ):
+        raise ExternalSourceExecutionError("invalid_external_run_paths")
+    state.identity = external_identity(
+        state.binding, state.profile, state.handoff, preparation=state.preparation
+    )
     state.overlap_domains = verify_internal_handoff(
         state.handoff.handoff_bytes,
         state.handoff.overlap_bytes,
         expected_handoff_sha256=sha256(state.handoff.handoff_bytes).hexdigest(),
     )
-    _output_paths(state.binding, state.paths)
-    state.stage = "reservation"
-    state.attempt = execution_receipt.reserve_attempt(
-        state.paths.attempt, identity=state.identity
-    )
+    with io_scope(state.preparation):
+        _output_paths(state.binding, state.paths)
+        state.stage = "reservation"
+        state.attempt = execution_receipt.reserve_attempt(
+            state.paths.attempt, identity=state.identity
+        )
 
 
 def _source(state):
@@ -105,7 +123,15 @@ def _source(state):
 
 
 def produce(state, session):
-    decoded, prepared, suffix = _source(state)
+    if state.preparation is None:
+        decoded, prepared, suffix = _source(state)
+    else:
+        decoded, prepared = state.preparation.publisher, state.preparation.external
+        suffix = state.preparation.payload("suffix-rules.dat")
+    produce_inputs(state, session, decoded, prepared, suffix)
+
+
+def produce_inputs(state, session, decoded, prepared, suffix):
     state.stage = "source_checkpoints"
     provenance = build_external_provenance(
         decoded,
@@ -118,9 +144,12 @@ def produce(state, session):
     )
     if set(provenance) != PROVENANCE_NAMES:
         raise ExternalSourceExecutionError("invalid_external_provenance_inventory")
-    state.failures.writer = ExternalCheckpointWriter(
-        state.attempt, identity=state.identity
+    writer = (
+        ExternalCheckpointWriter
+        if state.preparation is None
+        else PreparedExternalCheckpointWriter
     )
+    state.failures.writer = writer(state.attempt, identity=state.identity)
     state.failures.writer.begin(provenance)
     state.stage = "scoring"
     state.failures.produced = produce_external_evidence(

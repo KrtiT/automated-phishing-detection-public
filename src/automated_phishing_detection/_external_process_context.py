@@ -19,6 +19,7 @@ class ObservedExternalFailure:
     worker: WorkerObservation | None
     candidate_snapshot: VerifiedExternalSnapshot | None = field(repr=False)
     worker_progress: bytes | None = field(repr=False)
+    preparation: object = field(default=None, repr=False)
 
 
 @dataclass
@@ -30,6 +31,7 @@ class ExternalObservationState:
     worker: WorkerObservation | None = None
     snapshot: VerifiedExternalSnapshot | None = field(default=None, repr=False)
     worker_progress: bytes | None = field(default=None, repr=False)
+    preparation: object = field(default=None, repr=False)
 
     @contextmanager
     def capture_body(self):
@@ -57,6 +59,7 @@ class ExternalObservationState:
                 self.worker,
                 self.snapshot,
                 progress if type(progress) is bytes else None,
+                self.preparation,
             )
         except BaseException:
             pass

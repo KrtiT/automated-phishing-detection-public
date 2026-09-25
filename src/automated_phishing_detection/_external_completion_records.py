@@ -13,6 +13,7 @@ from . import _external_source_records as records
 from . import execution_receipt as receipt
 from ._external_completion_files import PAYLOAD_NAMES, ExternalFileSnapshot
 from ._external_source_profile import CandidateExternalProfile
+from ._prepared_external_records import match_prepared_outputs
 from .execution_preflight import ExecutionBinding
 from .internal_external_handoff import InternalHandoffPayloads
 
@@ -100,11 +101,17 @@ def _private(contents):
     return outputs
 
 
-def _public(contents, binding, profile, identity, reservation, outputs):
+def _public(contents, binding, profile, identity, reservation, outputs, preparation):
     saved = json.loads(contents["public-summary.json"])
     _require(type(saved) is dict)
     public = records.build_external_public(
-        binding, profile, identity, reservation, outputs, saved["composition"]
+        binding,
+        profile,
+        identity,
+        reservation,
+        outputs,
+        saved["composition"],
+        preparation=preparation,
     )
     _require(_encoded(public) == contents["public-summary.json"])
     return public
@@ -123,13 +130,19 @@ def _outcome(contents, reservation, outputs):
     _require(contents["attempt/outcome.json"] == _encoded(expected))
 
 
-def _authenticate(files, attempt, binding, profile, handoff):
+def _authenticate(files, attempt, binding, profile, handoff, preparation):
     contents = _contents(files)
-    identity = records.external_identity(binding, profile, handoff)
+    identity = records.external_identity(
+        binding, profile, handoff, preparation=preparation
+    )
     reservation = _reservation(contents, attempt, identity)
     _claim(contents, reservation)
     outputs = _private(contents)
-    public = _public(contents, binding, profile, identity, reservation, outputs)
+    if preparation is not None:
+        match_prepared_outputs(outputs, preparation)
+    public = _public(
+        contents, binding, profile, identity, reservation, outputs, preparation
+    )
     _outcome(contents, reservation, outputs)
     return ExternalCompletionRecords(identity, reservation, public, outputs)
 
@@ -141,10 +154,11 @@ def authenticate_external_records(
     binding: ExecutionBinding,
     profile: CandidateExternalProfile,
     handoff: InternalHandoffPayloads,
+    preparation=None,
 ) -> ExternalCompletionRecords:
     """Check exact saved links against independently retained parent expectations."""
     try:
-        return _authenticate(files, attempt, binding, profile, handoff)
+        return _authenticate(files, attempt, binding, profile, handoff, preparation)
     except Exception:
         raise ExternalCompletionVerificationError(
             "invalid_external_completion_records"

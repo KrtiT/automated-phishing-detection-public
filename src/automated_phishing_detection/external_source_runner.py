@@ -13,6 +13,8 @@ from ._external_source_records import (
     ExternalSourceExecutionError,
     build_external_public,
 )
+from ._prepared_external_io import io_scope
+from ._prepared_external_runtime import run_held_preparation
 from .bound_external_runtime import open_bound_external_session
 from .execution_preflight import ExecutionBinding, bind_execution, recheck_binding
 from .execution_receipt import publish_completion, record_failure
@@ -37,14 +39,16 @@ def _failure_records(state, error, selected):
             progress = state.failures.snapshot(
                 state.attempt, state.identity, state.stage, error
             )
-            retain_external_failure(state.attempt, progress)
+            with io_scope(state.preparation):
+                retain_external_failure(state.attempt, progress)
         except BaseException as persistence_error:
             incomplete = True
             selected = _selected(selected, persistence_error)
         try:
-            record_failure(
-                state.attempt, stage=state.stage, error_type=failure_kind(selected)
-            )
+            with io_scope(state.preparation):
+                record_failure(
+                    state.attempt, stage=state.stage, error_type=failure_kind(selected)
+                )
         except BaseException as persistence_error:
             incomplete = True
             selected = _selected(selected, persistence_error)
@@ -68,7 +72,8 @@ def _failed(state, error):
 
 def _complete(state):
     state.stage = "final_binding"
-    recheck_binding(state.binding)
+    with io_scope(state.preparation):
+        recheck_binding(state.binding)
     state.stage = "summary"
     public = build_external_public(
         state.binding,
@@ -77,15 +82,17 @@ def _complete(state):
         state.attempt.reservation_sha256,
         state.outputs,
         state.failures.produced.public_summary,
+        preparation=state.preparation,
     )
     state.stage = "publication"
     state.publishing = True
-    return publish_completion(
-        state.attempt,
-        private_outputs=state.outputs,
-        public_summary=public,
-        public_path=state.paths.public_summary,
-    )
+    with io_scope(state.preparation):
+        return publish_completion(
+            state.attempt,
+            private_outputs=state.outputs,
+            public_summary=public,
+            public_path=state.paths.public_summary,
+        )
 
 
 def _run_bound_external(
@@ -96,15 +103,19 @@ def _run_bound_external(
 ) -> Path:
     """Compose invented source fixtures without granting protected-data access."""
     state = body.ExternalRun(binding, paths, handoff)
+    return _run(state)
+
+
+def _run(state):
     try:
         body.preflight(state)
         state.stage = "model_loading"
         with (
             open_bound_external_session(
-                binding,
-                paths.artifacts,
-                paths.secondary_artifacts,
-                paths.drift_artifacts,
+                state.binding,
+                state.paths.artifacts,
+                state.paths.secondary_artifacts,
+                state.paths.drift_artifacts,
             ) as session,
             state.failures.capture_body(),
         ):
@@ -141,3 +152,40 @@ def run_external_evaluation(
         internal_transport, expected_handoff_sha256=expected_handoff_sha256
     )
     return _run_bound_external(binding, paths, handoff=handoff)
+
+
+def _run_bound_prepared_external(binding, paths, *, handoff, preparation):
+    state = body.ExternalRun(binding, paths, handoff, preparation=preparation)
+    return _run(state)
+
+
+def run_prepared_external_evaluation(
+    root,
+    *,
+    expected_revision,
+    expected_contract_sha256,
+    paths,
+    internal_transport,
+    expected_handoff_sha256,
+    expected_preparation_reservation_sha256,
+    expected_preparation_completion_sha256,
+):
+    binding = bind_execution(
+        root,
+        expected_revision=expected_revision,
+        expected_contract_sha256=expected_contract_sha256,
+    )
+    if not binding.protected_evaluation_ready:
+        raise ExternalSourceExecutionError("pre_access_freeze_incomplete")
+    with io_scope(True):
+        profile = body.resolve_external_source_profile(binding)
+    if not profile.protected_evaluation_ready:
+        raise ExternalSourceExecutionError("external_profile_freeze_incomplete")
+    return run_held_preparation(
+        binding,
+        paths,
+        internal_transport,
+        expected_handoff_sha256,
+        expected_preparation_reservation_sha256,
+        expected_preparation_completion_sha256,
+    )

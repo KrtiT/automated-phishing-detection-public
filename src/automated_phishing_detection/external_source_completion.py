@@ -17,7 +17,8 @@ from ._external_completion_records import (
 from ._external_preparation_outputs import _PUBLIC_INPUTS
 from ._external_provenance_payloads import PREPARED_NAMES, PROVENANCE_NAMES
 from ._external_source_profile import resolve_external_source_profile
-from ._external_source_records import ExternalRunPaths
+from ._external_source_records import ExternalRunPaths, PreparedExternalRunPaths
+from ._prepared_external_io import io_scope, snapshot_prepared_external_files
 from ._saved_external_bindings import PRIVATE_OUTPUTS
 from .bound_drift import DriftArtifactPaths
 from .bound_models import ArtifactPaths
@@ -37,8 +38,11 @@ def _require(condition):
         raise ExternalCompletionVerificationError("invalid_external_completion")
 
 
-def _paths(binding, paths):
-    _require(type(paths) is ExternalRunPaths)
+def _paths(binding, paths, preparation):
+    expected_type = (
+        ExternalRunPaths if preparation is None else PreparedExternalRunPaths
+    )
+    _require(type(paths) is expected_type)
     _require(type(paths.artifacts) is ArtifactPaths)
     _require(type(paths.secondary_artifacts) is SecondaryArtifactPaths)
     _require(type(paths.drift_artifacts) is DriftArtifactPaths)
@@ -68,19 +72,31 @@ def _provenance(records, binding, profile, handoff):
     )
 
 
-def _verify(binding, paths, handoff):
-    profile = resolve_external_source_profile(binding)
-    _paths(binding, paths)
-    with snapshot_external_files(paths.attempt, paths.public_summary) as files:
+def _verify(binding, paths, handoff, preparation):
+    with io_scope(preparation):
+        profile = resolve_external_source_profile(binding)
+        _paths(binding, paths, preparation)
+    reader = (
+        snapshot_external_files
+        if preparation is None
+        else snapshot_prepared_external_files
+    )
+    with reader(paths.attempt, paths.public_summary) as files:
         records = authenticate_external_records(
-            files, paths.attempt, binding=binding, profile=profile, handoff=handoff
+            files,
+            paths.attempt,
+            binding=binding,
+            profile=profile,
+            handoff=handoff,
+            preparation=preparation,
         )
         _provenance(records, binding, profile, handoff)
         replay = reconstruct_external_evidence(
             {name: records.private_outputs[name] for name in PRIVATE_OUTPUTS},
             canonical_bytes(records.public["composition"]),
         )
-        recheck_binding(binding)
+        with io_scope(preparation):
+            recheck_binding(binding)
         return freeze_external_snapshot(files, profile.canonical_bytes, replay)
 
 
@@ -91,11 +107,12 @@ def verify_external_completion_snapshot(
     expected_handoff: InternalHandoffPayloads,
     worker: WorkerObservation,
     command: tuple[str, ...],
+    expected_preparation=None,
 ) -> VerifiedExternalSnapshot:
     """Retain accepted saved bytes in the same parent that observed the worker."""
     try:
         source_runner._require_successful_worker(worker, command)
-        return _verify(binding, paths, expected_handoff)
+        return _verify(binding, paths, expected_handoff, expected_preparation)
     except Exception:
         raise ExternalCompletionVerificationError(
             "invalid_external_completion"

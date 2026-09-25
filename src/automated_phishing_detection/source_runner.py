@@ -27,6 +27,7 @@ from . import (
     source_overlap,
 )
 from ._owned_process_exit import OwnedProcessExit
+from ._prepared_internal_io import PreparedScientificCheckpointWriter, io_scope
 from ._process_support import command_hash
 from .bound_models import ArtifactPaths
 from .bound_runtime import open_bound_evaluation_session
@@ -190,14 +191,29 @@ def _output_paths(binding, paths):
         or type(paths.secondary_artifacts) is not SecondaryArtifactPaths
     ):
         raise SourceExecutionError("invalid_run_paths")
-    for path in (paths.attempt, paths.public_summary):
+    _output_locations(binding, paths.attempt, paths.public_summary)
+
+
+def _output_locations(binding, attempt, public_summary):
+    for path in (attempt, public_summary):
         absolute = execution_receipt._absolute_path(path)
         if absolute.is_relative_to(binding.root):
             raise SourceExecutionError("outputs_must_be_outside_checkout")
         with execution_receipt._directory(absolute.parent) as parent:
             execution_receipt._require_absent(parent, absolute.name)
-    if paths.public_summary.absolute().is_relative_to(paths.attempt.absolute()):
+    if public_summary.absolute().is_relative_to(attempt.absolute()):
         raise SourceExecutionError("public_summary_inside_attempt")
+
+
+def _prepared_output_paths(binding, paths):
+    from ._prepared_internal_records import require_paths
+
+    require_paths(paths)
+    preparation = execution_receipt._absolute_path(paths.preparation)
+    for value in (paths.attempt, paths.public_summary):
+        if execution_receipt._absolute_path(value).is_relative_to(preparation):
+            raise SourceExecutionError("scoring_output_inside_preparation")
+    _output_locations(binding, paths.attempt, paths.public_summary)
 
 
 def _secondary(produced):
@@ -289,7 +305,9 @@ def _secondary(produced):
     }
 
 
-def _run_bound_internal(binding: ExecutionBinding, paths: InternalRunPaths) -> Path:
+def _run_bound_internal(
+    binding: ExecutionBinding, paths: InternalRunPaths, *, preparation=None
+) -> Path:
     """Compose the boundary on fixtures; this helper grants no research access."""
     attempt = None
     publishing = False
@@ -298,9 +316,13 @@ def _run_bound_internal(binding: ExecutionBinding, paths: InternalRunPaths) -> P
     failures = InternalFailureState(progress)
     identity = None
     try:
-        recheck_binding(binding)
-        source, source_buffers = _public_sources(binding)
-        _output_paths(binding, paths)
+        with io_scope(preparation is not None):
+            recheck_binding(binding)
+            source, source_buffers = _public_sources(binding)
+            if preparation is None:
+                _output_paths(binding, paths)
+            else:
+                _prepared_output_paths(binding, paths)
         pins = dict(binding.source_hashes)
         identity = {
             "kind": "internal_evaluation",
@@ -315,8 +337,13 @@ def _run_bound_internal(binding: ExecutionBinding, paths: InternalRunPaths) -> P
             "source_csv_sha256": source["source_csv_sha256"],
             "suffix_rules_sha256": source["suffix_rules_sha256"],
         }
+        if preparation is not None:
+            from ._prepared_internal_records import prepared_source
+
+            identity.update(prepared_source(binding, source, preparation))
         stage = "reservation"
-        attempt = reserve_attempt(paths.attempt, identity=identity)
+        with io_scope(preparation is not None):
+            attempt = reserve_attempt(paths.attempt, identity=identity)
         stage = "model_loading"
         with (
             open_bound_evaluation_session(
@@ -324,38 +351,53 @@ def _run_bound_internal(binding: ExecutionBinding, paths: InternalRunPaths) -> P
             ) as session,
             failures.capture_body(session.primary.scorer),
         ):
-            stage = "suffix_rules"
-            suffix_bytes = _read_file_once(paths.suffix_rules)
-            if sha256(suffix_bytes).hexdigest() != source["suffix_rules_sha256"]:
-                raise SourceExecutionError("suffix_hash_mismatch")
-            stage = "source_csv"
-            content = _read_file_once(paths.source_csv)
-            stage = "source_reconstruction"
-            reconstructed = source_overlap.reconstruct_source_overlap(
-                content,
-                suffix_bytes,
-                source_buffers[_SOURCE],
-                source_buffers[_PREPARATION],
-                pins=source_overlap.SourceOverlapPins(
-                    source["source_csv_sha256"],
-                    source["suffix_rules_sha256"],
-                    pins[_SOURCE],
-                    pins[_PREPARATION],
-                ),
-            )
+            if preparation is None:
+                stage = "suffix_rules"
+                suffix_bytes = _read_file_once(paths.suffix_rules)
+                if sha256(suffix_bytes).hexdigest() != source["suffix_rules_sha256"]:
+                    raise SourceExecutionError("suffix_hash_mismatch")
+                stage = "source_csv"
+                content = _read_file_once(paths.source_csv)
+                stage = "source_reconstruction"
+                reconstructed = source_overlap.reconstruct_source_overlap(
+                    content,
+                    suffix_bytes,
+                    source_buffers[_SOURCE],
+                    source_buffers[_PREPARATION],
+                    pins=source_overlap.SourceOverlapPins(
+                        source["source_csv_sha256"],
+                        source["suffix_rules_sha256"],
+                        pins[_SOURCE],
+                        pins[_PREPARATION],
+                    ),
+                )
+            else:
+                stage = "retained_preparation"
+                reconstructed = preparation.reconstructed_internal
             stage = "source_checkpoints"
-            checkpoint_hashes = retain_source_checkpoints(
-                attempt, identity, reconstructed
-            )
-            failures.source_checkpoint_sha256 = checkpoint_hashes
+            with io_scope(preparation is not None):
+                checkpoint_hashes = retain_source_checkpoints(
+                    attempt, identity, reconstructed
+                )
+                failures.source_checkpoint_sha256 = checkpoint_hashes
             stage = "partition"
-            rules = protocol_preflight.parse_suffix_rules(suffix_bytes.decode("utf-8"))
-            prepared = evaluation_producer.parse_internal_partition(
-                reconstructed.group_test_bytes,
-                suffix_rules=rules,
-                **source,
+            if preparation is None:
+                rules = protocol_preflight.parse_suffix_rules(
+                    suffix_bytes.decode("utf-8")
+                )
+                prepared = evaluation_producer.parse_internal_partition(
+                    reconstructed.group_test_bytes,
+                    suffix_rules=rules,
+                    **source,
+                )
+            else:
+                prepared = preparation.internal
+            writer = (
+                ScientificCheckpointWriter
+                if preparation is None
+                else PreparedScientificCheckpointWriter
             )
-            failures.writer = ScientificCheckpointWriter(
+            failures.writer = writer(
                 attempt,
                 identity=identity,
                 source_checkpoint_sha256=checkpoint_hashes,
@@ -377,7 +419,8 @@ def _run_bound_internal(binding: ExecutionBinding, paths: InternalRunPaths) -> P
         if failures.original_error is not None:
             raise failures.original_error
         stage = "final_binding"
-        recheck_binding(binding)
+        with io_scope(preparation is not None):
+            recheck_binding(binding)
         stage = "summary"
         if set(produced.public_summary) != _PUBLIC_FIELDS or set(
             produced.private_outputs
@@ -420,12 +463,13 @@ def _run_bound_internal(binding: ExecutionBinding, paths: InternalRunPaths) -> P
         public = _json(evaluation_producer._json_bytes(public))
         stage = "publication"
         publishing = True
-        return publish_completion(
-            attempt,
-            private_outputs=private,
-            public_summary=public,
-            public_path=paths.public_summary,
-        )
+        with io_scope(preparation is not None):
+            return publish_completion(
+                attempt,
+                private_outputs=private,
+                public_summary=public,
+                public_path=paths.public_summary,
+            )
     except BaseException as exc:
         selected = failures.selected_error(exc)
         private_progress = None
@@ -433,7 +477,8 @@ def _run_bound_internal(binding: ExecutionBinding, paths: InternalRunPaths) -> P
         if attempt is not None and not publishing:
             try:
                 private_progress = failures.snapshot(attempt, identity, stage, exc)
-                retain_failure_progress(attempt, private_progress)
+                with io_scope(preparation is not None):
+                    retain_failure_progress(attempt, private_progress)
             except BaseException as persistence_error:
                 persistence_failed = True
                 if isinstance(selected, Exception) and not isinstance(
@@ -441,7 +486,10 @@ def _run_bound_internal(binding: ExecutionBinding, paths: InternalRunPaths) -> P
                 ):
                     selected = persistence_error
             try:
-                record_failure(attempt, stage=stage, error_type=failure_kind(selected))
+                with io_scope(preparation is not None):
+                    record_failure(
+                        attempt, stage=stage, error_type=failure_kind(selected)
+                    )
             except BaseException as persistence_error:
                 persistence_failed = True
                 if isinstance(selected, Exception) and not isinstance(

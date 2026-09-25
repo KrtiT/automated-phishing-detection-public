@@ -100,15 +100,14 @@ def _quarantine_identity(row: phishvn.ExternalQuarantine) -> None:
         fixed_cascade._lowercase_sha256(row.canonical_url_sha256, "quarantine_url_hash")
 
 
-def _retained_positions(rows, counts):
+def _retained_records(rows):
     identities, canonical, positions = set(), set(), set()
     previous = 0
     for row in rows:
         _mapping(row)
         _url_identity(row)
         _require(
-            type(row.file_position) is int
-            and previous < row.file_position <= counts["test"],
+            type(row.file_position) is int and previous < row.file_position,
             "invalid_retained_order",
         )
         _require(
@@ -120,6 +119,15 @@ def _retained_positions(rows, counts):
         canonical.add(row.canonical_url_sha256)
         positions.add(row.file_position)
         previous = row.file_position
+    return identities, positions
+
+
+def _retained_positions(rows, counts):
+    identities, positions = _retained_records(rows)
+    _require(
+        all(position <= counts["test"] for position in positions),
+        "invalid_retained_order",
+    )
     return identities, positions
 
 

@@ -7,12 +7,12 @@ from . import execution_receipt as receipt
 from . import source_checkpoints, source_runner, study_preparation_inputs
 from ._checkpoint_codec import canonical_bytes
 from ._exception_cleanup import CleanupStack
-from ._external_records_validation import context
 from ._external_source_profile import resolve_external_source_profile
 from ._process_support import _defer_interrupt
 from ._study_preparation_records import StudyPreparationError, StudyPreparationPaths
 from .source_overlap import SourceOverlapPins
 from .study_feasibility import assess_preparation_feasibility
+from .study_preparation_context import context_for_profile
 
 SOURCE = "data/sources.json"
 PREPARATION = "reports/phiusiil-preparation-summary.json"
@@ -56,25 +56,10 @@ def _paths(binding, paths):
 def preflight(state):
     with deferred_io():
         state.profile = resolve_external_source_profile(state.binding)
-        projection, pins = context(state.binding, state.profile)
-        state.source, state.source_buffers = source_runner._public_sources(
-            state.binding
+        state.identity, state.source, state.source_buffers, _ = context_for_profile(
+            state.binding, state.profile
         )
-    if state.source["suffix_rules_sha256"] != state.profile.suffix_rules_sha256:
-        raise StudyPreparationError("preparation_suffix_pin_mismatch")
     _paths(state.binding, state.paths)
-    state.identity = {
-        "kind": "study_preparation_only",
-        "protocol": "study-preparation-v1",
-        **projection["execution"],
-        "source_profile_sha256": state.profile.profile_sha256,
-        "preparation_summary_sha256": pins[PREPARATION],
-        "source_csv_sha256": state.source["source_csv_sha256"],
-        "suffix_rules_sha256": state.source["suffix_rules_sha256"],
-        "partition_sha256": state.source["expected_sha256"],
-        "archive_sha256": state.profile.archive_pins.archive_sha256,
-        "archive_size_bytes": state.profile.archive_pins.archive_size_bytes,
-    }
     _reserve(state)
 
 

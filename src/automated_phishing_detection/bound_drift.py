@@ -45,6 +45,7 @@ class BoundDrift:
     reference: retained_drift.RetainedDriftReference = field(repr=False)
     training_reference_bytes: bytes = field(repr=False)
     validation_audit_bytes: bytes = field(repr=False)
+    public_inputs: tuple[tuple[str, bytes], ...] = field(default=(), repr=False)
 
 
 def _require(condition: bool, reason: str) -> None:
@@ -69,12 +70,17 @@ def _public_inputs(binding: ExecutionBinding) -> dict[str, bytes]:
     return contents
 
 
-def _pins(
-    report: dict, binding: ExecutionBinding, models: BoundModels
-) -> DevelopmentPins:
+def _declared_pins(report: dict) -> DevelopmentPins:
     pins = DevelopmentPins(**report["completion"]["execution"]["pins"])
     for value in asdict(pins).values():
         baselines._lowercase_sha256(value, "development_pin")
+    return pins
+
+
+def _pins(
+    report: dict, binding: ExecutionBinding, models: BoundModels
+) -> DevelopmentPins:
+    pins = _declared_pins(report)
     hashes, artifacts = dict(binding.source_hashes), dict(models.artifact_hashes)
     _require(
         pins.preparation_summary_sha256 == hashes[_PREPARATION]
@@ -159,7 +165,7 @@ def _load(
         expected_drift_summary=secondary_development._json(summary),
     )
     _primary_state(reference, models, scaler, count)
-    return BoundDrift(reference, reference_bytes, audit_bytes)
+    return BoundDrift(reference, reference_bytes, audit_bytes, tuple(contents.items()))
 
 
 def load_bound_drift(

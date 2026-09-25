@@ -710,8 +710,28 @@ MMD/PSI references before numerical ownership. The drift loader checks the
 accepted report chain, preparation/model pins, retained-byte hashes and exact
 primary scaler/portable-state agreement without fitting or recalibration. The
 shared `score_primary_url` arithmetic needs no label, so external controls need
-no invented binary outcome. The complete external producer, saved-output reducer
-and official execution binding still need integration.
+no invented binary outcome. The external producer now composes the complete
+prepared test stream on fixtures. Before its first forward, it validates the
+prepared-byte inventory, both model families and exact retained drift state.
+It preserves preparation and bindings, the primary phase, all seven tabular
+and five seed columns, then joined scores before derived arithmetic. Routing,
+all GMM/MMD/PSI windows and rich predictions precede aggregate reduction. Thirty
+private payloads preserve output coverage. Failed or ambiguous writes retain
+attempted bytes and predecessors in private progress without retry or success.
+
+The replay routes all retained rows before outcome selection, preserves all 26
+PSI feature scores and checks seed reuse and cascade-component agreement.
+Descriptive reduction retains 22 detector columns, separate gold, certified,
+silver, bronze and unlabeled Tranco results, the declared gold-plus-certified
+mixture, source contingency counts and two external-gold McNemar cells. Tranco
+supplies alert rates, never invented labels. The joint study reducer combines
+verified populations with separately supplied operational evidence and keeps
+all four Holm slots, including absent and empty components, without changing
+primary gates. An internal reconstruction companion exposes its already-verified
+population; the drift companion checks the accepted chain from retained bytes.
+These are invented-fixture checks, not research observations. Complete saved-only
+external scientific reconstruction, authenticated external execution, operational
+supervision and the final pre-access freeze remain outstanding.
 
 `phishvn.prepare_external_rows` implements the frozen mapping and preparation
 rules on normalized records. Declared all-split coverage and file positions are

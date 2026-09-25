@@ -750,72 +750,95 @@ def reconstruct_internal_evidence(
     predictions: bytes, manifests: bytes, bindings: bytes, routing: bytes
 ) -> ReconstructedInternalEvidence:
     """Recompute internal evidence without opening source or model paths."""
-    try:
-        bound = _bindings(bindings)
-        rows = _parse_rows(predictions, bound)
-        _verify_monitor_path(rows, bound)
-        _require(
-            _json_bytes(_loads(routing, "routing"))
-            == _json_bytes(asdict(_routing(rows, bound))),
-            "saved routing differs from reconstructed routing",
+    return reconstruct_internal_evidence_and_population(
+        predictions, manifests, bindings, routing
+    )[0]
+
+
+def _validated_internal_inputs(predictions, manifests, bindings, routing):
+    bound = _bindings(bindings)
+    rows = _parse_rows(predictions, bound)
+    _verify_monitor_path(rows, bound)
+    _require(
+        _json_bytes(_loads(routing, "routing"))
+        == _json_bytes(asdict(_routing(rows, bound))),
+        "saved routing differs from reconstructed routing",
+    )
+    records = tuple(ManifestRecord(**row["record"]) for row in rows)
+    outcomes = _manifests(records)
+    saved_manifests = _loads(manifests, "manifests")
+    _require(
+        saved_manifests == {str(key): asdict(value) for key, value in outcomes.items()},
+        "saved manifests differ from reconstructed manifests",
+    )
+    return bound, rows, records, outcomes
+
+
+def _internal_population(rows, records):
+    evaluation_records = tuple(
+        EvaluationRecord(
+            record.record_id, record.registrable_domain, record.is_phishing
         )
-        records = tuple(ManifestRecord(**row["record"]) for row in rows)
-        outcomes = _manifests(records)
-        saved_manifests = _loads(manifests, "manifests")
-        _require(
-            saved_manifests
-            == {str(key): asdict(value) for key, value in outcomes.items()},
-            "saved manifests differ from reconstructed manifests",
-        )
-        evaluation_records = tuple(
-            EvaluationRecord(
-                record.record_id, record.registrable_domain, record.is_phishing
+        for record in records
+    )
+    columns = {
+        "length_only": "length_decision",
+        "logistic_l1": "stage1_decision",
+        "transformer": "transformer_decision",
+        "cascade": "cascade_decision",
+    }
+    return SavedPopulation(
+        evaluation_records,
+        {
+            model: tuple(
+                BinaryPrediction(row["record"]["record_id"], row[column])
+                for row in rows
             )
-            for record in records
+            for model, column in columns.items()
+        },
+    )
+
+
+def _internal_result(rows, records, outcomes, primary, population):
+    count = len(rows)
+    secondary_counts = SecondaryInferenceCounts(
+        tuple((name, count) for name in _TABULAR_NAMES),
+        tuple((seed, 0 if seed == 42 else count) for seed in _SEEDS),
+        count,
+    )
+    return ReconstructedInternalEvidence(
+        count,
+        len({record.registrable_domain for record in records}),
+        {
+            "0": sum(record.is_phishing == 0 for record in records),
+            "1": sum(record.is_phishing == 1 for record in records),
+        },
+        InferenceCounts(count, count, count, 0),
+        secondary_counts,
+        outcomes,
+        primary,
+        _secondary(rows, population),
+    )
+
+
+def reconstruct_internal_evidence_and_population(
+    predictions: bytes, manifests: bytes, bindings: bytes, routing: bytes
+) -> tuple[ReconstructedInternalEvidence, SavedPopulation]:
+    """Return summaries and their population after the full saved-byte verification."""
+    try:
+        bound, rows, records, outcomes = _validated_internal_inputs(
+            predictions, manifests, bindings, routing
         )
-        columns = {
-            "length_only": "length_decision",
-            "logistic_l1": "stage1_decision",
-            "transformer": "transformer_decision",
-            "cascade": "cascade_decision",
-        }
-        population = SavedPopulation(
-            evaluation_records,
-            {
-                model: tuple(
-                    BinaryPrediction(row["record"]["record_id"], row[column])
-                    for row in rows
-                )
-                for model, column in columns.items()
-            },
-        )
+        population = _internal_population(rows, records)
         primary = hypothesis_evaluation.evaluate_primary(
             populations={"internal": population},
             audit_windows=WindowCounts(
                 bound["gmm_audit"]["alert_count"], bound["gmm_audit"]["window_count"]
             ),
         )
-        count = len(rows)
-        inference_counts = InferenceCounts(count, count, count, 0)
-        secondary_counts = SecondaryInferenceCounts(
-            tuple((name, count) for name in _TABULAR_NAMES),
-            tuple((seed, 0 if seed == 42 else count) for seed in _SEEDS),
-            count,
-        )
-        classes = {
-            "0": sum(record.is_phishing == 0 for record in records),
-            "1": sum(record.is_phishing == 1 for record in records),
-        }
-        return ReconstructedInternalEvidence(
-            count,
-            len({record.registrable_domain for record in records}),
-            classes,
-            inference_counts,
-            secondary_counts,
-            outcomes,
-            primary,
-            _secondary(rows, population),
-        )
+        return _internal_result(
+            rows, records, outcomes, primary, population
+        ), population
     except SavedEvidenceError:
         raise
     except (TypeError, ValueError, KeyError, OverflowError) as exc:

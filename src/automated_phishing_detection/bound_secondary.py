@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import math
+from contextlib import contextmanager
 from dataclasses import dataclass
 from hashlib import sha256
 from pathlib import Path
@@ -93,6 +94,21 @@ class SecondarySeedScore:
     cascade_probability: float
     cascade_decision: int
     band_selected: bool
+
+
+@dataclass(frozen=True)
+class CompletedTabularColumn:
+    name: str
+    scores: tuple[SecondaryTabularScore, ...]
+    singleton_calls: int
+
+
+@dataclass(frozen=True)
+class CompletedSeedColumn:
+    seed: int
+    scores: tuple[SecondarySeedScore, ...]
+    transformer_singleton_calls: int
+    reused_primary_transformer_scores: int
 
 
 @dataclass(frozen=True)
@@ -482,99 +498,40 @@ def load_bound_secondary(root, paths, primary):
         raise BoundSecondaryError("secondary artifact binding failed") from exc
 
 
-def score_bound_secondary(bound, raw_urls, stage1_probabilities, seed_42_probabilities):
-    """Score the accepted secondary family over one retained ordered URL tuple."""
+def score_bound_secondary(
+    bound,
+    raw_urls,
+    stage1_probabilities,
+    seed_42_probabilities,
+    *,
+    on_completed_column=None,
+):
+    """Score one URL tuple, synchronously retaining fully validated columns.
+
+    The callback receives detached immutable scores before the next member starts;
+    the caller owns checkpoint identity. Callback exceptions stop scoring unchanged.
+    Empty tuples complete every column without inference or cascade scoring.
+    """
+    _require(
+        on_completed_column is None or callable(on_completed_column),
+        "on_completed_column must be callable or None",
+    )
+    with _secondary_scoring_errors():
+        stage1, seed_42 = _scoring_inputs(
+            bound, raw_urls, stage1_probabilities, seed_42_probabilities
+        )
+    columns = []
+    for column in _completed_columns(bound, raw_urls, stage1, seed_42):
+        if on_completed_column is not None:
+            on_completed_column(column)
+        columns.append(column)
+    return _scoring_result(columns, len(raw_urls))
+
+
+@contextmanager
+def _secondary_scoring_errors():
     try:
-        _validate_bound(bound)
-        _require(
-            type(raw_urls) is tuple
-            and bool(raw_urls)
-            and all(type(value) is str for value in raw_urls),
-            "raw_urls must be a nonempty tuple of exact strings",
-        )
-        count = len(raw_urls)
-        stage1 = _probabilities(stage1_probabilities, count, "stage1 probabilities")
-        seed_42 = _probabilities(seed_42_probabilities, count, "seed 42 probabilities")
-        tabular_columns = []
-        for member in bound.tabular:
-            values = _probabilities(
-                member.model.score_urls_singleton_ordered(raw_urls),
-                count,
-                f"{member.name} probabilities",
-            )
-            tabular_columns.append(
-                tuple(
-                    SecondaryTabularScore(
-                        member.name, value, int(value >= member.threshold)
-                    )
-                    for value in values
-                )
-            )
-        seed_columns = []
-        vocabulary_sha256 = sha256(bound.vocabulary_bytes).hexdigest()
-        for member in bound.seeds:
-            if member.reuses_primary:
-                transformer = seed_42
-            else:
-                loaded = secondary_transformer.load_secondary_transformer_bytes(
-                    member._weights_bytes,
-                    bound.vocabulary_bytes,
-                    seed=member.seed,
-                    device=torch.device(bound.device_type),
-                )
-                _require(
-                    loaded.seed == member.seed
-                    and loaded.weights_sha256 == member.weights_sha256
-                    and loaded.vocabulary_sha256 == vocabulary_sha256
-                    and loaded.device == torch.device(bound.device_type),
-                    "loaded secondary transformer differs from binding",
-                )
-                transformer = _probabilities(
-                    secondary_transformer.score_secondary_transformer_urls(
-                        loaded, raw_urls
-                    ),
-                    count,
-                    f"seed {member.seed} probabilities",
-                )
-                del loaded
-            cascade = fixed_cascade.score_fixed_cascade(
-                stage1,
-                transformer,
-                stage1_threshold=bound.stage1_threshold,
-                transformer_threshold=member.transformer_threshold,
-                half_width=member.half_width,
-            )
-            seed_columns.append(
-                tuple(
-                    SecondarySeedScore(
-                        member.seed,
-                        transformer[index],
-                        int(transformer[index] >= member.transformer_threshold),
-                        transformer[index]
-                        if cascade.transformer_invoked[index]
-                        else stage1[index],
-                        cascade.decisions[index],
-                        cascade.transformer_invoked[index],
-                    )
-                    for index in range(count)
-                )
-            )
-        rows = tuple(
-            SecondaryScoredRow(
-                tuple(column[index] for column in tabular_columns),
-                tuple(column[index] for column in seed_columns),
-            )
-            for index in range(count)
-        )
-        counts = SecondaryInferenceCounts(
-            tuple((member.name, count) for member in bound.tabular),
-            tuple(
-                (member.seed, 0 if member.reuses_primary else count)
-                for member in bound.seeds
-            ),
-            count,
-        )
-        return SecondaryScoring(rows, counts)
+        yield
     except BoundSecondaryError:
         raise
     except (
@@ -585,6 +542,119 @@ def score_bound_secondary(bound, raw_urls, stage1_probabilities, seed_42_probabi
         OverflowError,
     ) as exc:
         raise BoundSecondaryError("secondary scoring failed") from exc
+
+
+def _scoring_inputs(bound, raw_urls, stage1_probabilities, seed_42_probabilities):
+    _validate_bound(bound)
+    _require(
+        type(raw_urls) is tuple and all(type(value) is str for value in raw_urls),
+        "raw_urls must be a tuple of exact strings",
+    )
+    count = len(raw_urls)
+    return (
+        _probabilities(stage1_probabilities, count, "stage1 probabilities"),
+        _probabilities(seed_42_probabilities, count, "seed 42 probabilities"),
+    )
+
+
+def _completed_columns(bound, raw_urls, stage1, seed_42):
+    for member in bound.tabular:
+        with _secondary_scoring_errors():
+            column = _completed_tabular_column(member, raw_urls)
+        yield column
+    for member in bound.seeds:
+        with _secondary_scoring_errors():
+            column = _completed_seed_column(bound, member, raw_urls, stage1, seed_42)
+        yield column
+
+
+def _completed_tabular_column(member, raw_urls):
+    values = _probabilities(
+        member.model.score_urls_singleton_ordered(raw_urls) if raw_urls else (),
+        len(raw_urls),
+        f"{member.name} probabilities",
+    )
+    scores = tuple(
+        SecondaryTabularScore(member.name, value, int(value >= member.threshold))
+        for value in values
+    )
+    return CompletedTabularColumn(member.name, scores, len(raw_urls))
+
+
+def _seed_probabilities(bound, member, raw_urls, seed_42):
+    if member.reuses_primary:
+        return seed_42
+    loaded = secondary_transformer.load_secondary_transformer_bytes(
+        member._weights_bytes,
+        bound.vocabulary_bytes,
+        seed=member.seed,
+        device=torch.device(bound.device_type),
+    )
+    _require(
+        loaded.seed == member.seed
+        and loaded.weights_sha256 == member.weights_sha256
+        and loaded.vocabulary_sha256 == sha256(bound.vocabulary_bytes).hexdigest()
+        and loaded.device == torch.device(bound.device_type),
+        "loaded secondary transformer differs from binding",
+    )
+    return _probabilities(
+        secondary_transformer.score_secondary_transformer_urls(loaded, raw_urls),
+        len(raw_urls),
+        f"seed {member.seed} probabilities",
+    )
+
+
+def _completed_seed_column(bound, member, raw_urls, stage1, seed_42):
+    if not raw_urls:
+        return CompletedSeedColumn(member.seed, (), 0, 0)
+    transformer = _seed_probabilities(bound, member, raw_urls, seed_42)
+    cascade = fixed_cascade.score_fixed_cascade(
+        stage1,
+        transformer,
+        stage1_threshold=bound.stage1_threshold,
+        transformer_threshold=member.transformer_threshold,
+        half_width=member.half_width,
+    )
+    return CompletedSeedColumn(
+        member.seed,
+        _seed_scores(member, stage1, transformer, cascade),
+        0 if member.reuses_primary else len(raw_urls),
+        len(raw_urls) if member.reuses_primary else 0,
+    )
+
+
+def _seed_scores(member, stage1, transformer, cascade):
+    return tuple(
+        SecondarySeedScore(
+            member.seed,
+            transformer[index],
+            int(transformer[index] >= member.transformer_threshold),
+            transformer[index] if cascade.transformer_invoked[index] else stage1[index],
+            cascade.decisions[index],
+            cascade.transformer_invoked[index],
+        )
+        for index in range(len(stage1))
+    )
+
+
+def _scoring_result(columns, count):
+    tabular_columns = columns[: len(_TABULAR_NAMES)]
+    seed_columns = columns[len(_TABULAR_NAMES) :]
+    rows = tuple(
+        SecondaryScoredRow(
+            tuple(column.scores[index] for column in tabular_columns),
+            tuple(column.scores[index] for column in seed_columns),
+        )
+        for index in range(count)
+    )
+    counts = SecondaryInferenceCounts(
+        tuple((column.name, column.singleton_calls) for column in tabular_columns),
+        tuple(
+            (column.seed, column.transformer_singleton_calls) for column in seed_columns
+        ),
+        sum(column.reused_primary_transformer_scores for column in seed_columns),
+    )
+    return SecondaryScoring(rows, counts)
 
 
 def _probabilities(values, count, field):

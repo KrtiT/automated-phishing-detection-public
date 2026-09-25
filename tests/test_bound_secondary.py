@@ -306,6 +306,9 @@ def test_public_api_pins_accepted_reports_and_explicit_private_paths(secondary):
         "seed_45_weights",
         "seed_46_weights",
     ]
+
+
+def test_public_binding_and_scoring_signatures(secondary):
     assert list(inspect.signature(secondary.load_bound_secondary).parameters) == [
         "root",
         "paths",
@@ -316,7 +319,13 @@ def test_public_api_pins_accepted_reports_and_explicit_private_paths(secondary):
         "raw_urls",
         "stage1_probabilities",
         "seed_42_probabilities",
+        "on_completed_column",
     ]
+    callback = inspect.signature(secondary.score_bound_secondary).parameters[
+        "on_completed_column"
+    ]
+    assert callback.kind is inspect.Parameter.KEYWORD_ONLY
+    assert callback.default is None
 
 
 def test_binding_authenticates_reports_then_exact_artifacts(

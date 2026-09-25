@@ -764,6 +764,7 @@ def _verify_outputs(binding, paths, source, source_buffers, identity):
             public_summary=public_path,
             population=population,
             overlap_domains=overlap_domains,
+            manifests=reconstructed.manifests,
         )
 
 

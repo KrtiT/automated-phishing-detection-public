@@ -779,6 +779,33 @@ completed scoring followed by teardown failure. Internal lineage and model/runti
 bindings in those integration fixtures remain invented; no released source has
 been opened and no research execution has been accepted by these tests.
 
+The operational schedule now fixes all 125 cells independently of available
+inputs or outcomes: ninety fixed-cascade cells, thirty transformer-only cells
+and five serialized shift repeats. The designated physical reference is cell
+one; the five primary HTTP cells are 21--25. Strict complete-run codecs preserve
+all terminal errors, timing intervals and physical counters. HTTP records require
+1,000 warmup and 10,000 measured outcomes; shift records require the unchanged
+1,000 warmups and the full retained stream. Separate shift checkpoint checks join
+initial/reset state and each error-occurrence drain to the complete run without
+pretending a measured-phase checkpoint contains the later final drain or trace.
+
+The internal snapshot also retains its already-reconstructed typed manifests,
+including insufficient-capacity outcomes, without another read, sample or
+scientific reconstruction. These pure components establish consistency, not
+authenticated child input, successful process execution or research performance.
+The official cell/root observer and complete pre-access freeze remain required;
+no shortened workload or replacement run is authorized.
+
+The pure descriptive reducer requires all 125 scheduled runs and returns exactly
+twenty-five five-repeat groups. It joins each fixed prevalence across concurrency
+and joins transformer-only to the same 1% manifest; shift repeats must preserve
+the complete ordered raw-request plan. It pools individual float64 terminal
+latencies, including errors, rather than averaging run quantiles. Physical
+invocation fractions use summed forward attempts over all measured client
+requests. Existing run-level rates, drain intervals and actual shift N remain
+visible. These descriptive groups do not accept process lineage, replace a
+missing primary reference or change any H3 gate.
+
 `bound_external_runtime` binds primary and secondary models plus accepted saved
 MMD/PSI references before numerical ownership. The drift loader checks the
 accepted report chain, preparation/model pins, retained-byte hashes and exact

@@ -8,11 +8,15 @@ from __future__ import annotations
 
 import json
 from collections.abc import Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from .hypothesis_evaluation import SavedPopulation
 from .paired_evaluation import BinaryPrediction, EvaluationRecord
+
+if TYPE_CHECKING:
+    from .evaluation_producer import ManifestOutcome
 
 
 @dataclass(frozen=True)
@@ -21,6 +25,7 @@ class VerifiedInternalSnapshot:
     records: tuple[EvaluationRecord, ...]
     prediction_columns: tuple[tuple[str, tuple[BinaryPrediction, ...]], ...]
     overlap_domains: frozenset[str]
+    manifest_outcomes: tuple[tuple[int, ManifestOutcome], ...] = field(repr=False)
 
     def payload(self, name: str) -> bytes:
         for retained_name, content in self.payloads:
@@ -35,6 +40,10 @@ class VerifiedInternalSnapshot:
     @property
     def population(self) -> SavedPopulation:
         return SavedPopulation(self.records, dict(self.prediction_columns))
+
+    @property
+    def manifests(self) -> dict[int, ManifestOutcome]:
+        return dict(self.manifest_outcomes)
 
 
 def _payload_name(path: Path, attempt: Path, public_summary: Path) -> str:
@@ -51,6 +60,7 @@ def freeze_internal_snapshot(
     public_summary: Path,
     population: SavedPopulation,
     overlap_domains: frozenset[str],
+    manifests: Mapping[int, ManifestOutcome],
 ) -> VerifiedInternalSnapshot:
     payloads = [
         (_payload_name(path, attempt, public_summary), content)
@@ -65,4 +75,5 @@ def freeze_internal_snapshot(
         tuple(population.records),
         tuple(sorted(columns)),
         frozenset(overlap_domains),
+        tuple(sorted(manifests.items())),
     )

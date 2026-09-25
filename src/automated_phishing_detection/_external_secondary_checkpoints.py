@@ -10,7 +10,7 @@ from .bound_secondary import (
     CompletedTabularColumn,
     SecondaryScoring,
 )
-from .evaluation_producer import _json_bytes
+from .evaluation_producer import _json_bytes, _secondary_binding
 
 CompletedColumn = CompletedTabularColumn | CompletedSeedColumn
 SECONDARY_CHECKPOINTS = (
@@ -20,31 +20,35 @@ SECONDARY_CHECKPOINTS = (
 
 
 def member_bindings(bound: BoundSecondary) -> tuple[dict, ...]:
-    reports = dict(bound.report_hashes)
+    return project_member_bindings(_secondary_binding(bound, bound.stage1_threshold))
+
+
+def project_member_bindings(secondary: dict) -> tuple[dict, ...]:
+    reports = secondary["accepted_report_sha256"]
     tabular = tuple(
         {
             "kind": "tabular",
-            "name": member.name,
-            "artifact_sha256": member.artifact_sha256,
-            "threshold": member.threshold,
+            "name": member["name"],
+            "artifact_sha256": member["artifact_sha256"],
+            "threshold": member["threshold"],
             "accepted_report_sha256": reports["tabular"],
         }
-        for member in bound.tabular
+        for member in secondary["tabular"]
     )
     seeds = tuple(
         {
             "kind": "seed",
-            "seed": member.seed,
-            "weights_sha256": member.weights_sha256,
-            "transformer_threshold": member.transformer_threshold,
-            "half_width": member.half_width,
-            "stage1_threshold": bound.stage1_threshold,
-            "reuses_primary": member.reuses_primary,
-            "vocabulary_sha256": sha256(bound.vocabulary_bytes).hexdigest(),
-            "device_type": bound.device_type,
+            "seed": member["seed"],
+            "weights_sha256": member["weights_sha256"],
+            "transformer_threshold": member["transformer_threshold"],
+            "half_width": member["half_width"],
+            "stage1_threshold": secondary["stage1_threshold"],
+            "reuses_primary": member["reuses_primary"],
+            "vocabulary_sha256": secondary["vocabulary_sha256"],
+            "device_type": secondary["device_type"],
             "accepted_report_sha256": reports["seeds"],
         }
-        for member in bound.seeds
+        for member in secondary["seeds"]
     )
     return (*tabular, *seeds)
 

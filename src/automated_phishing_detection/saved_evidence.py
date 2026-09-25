@@ -19,17 +19,13 @@ from . import (
     policy_replay,
     secondary_metrics,
 )
-from .bound_secondary import (
-    SecondaryInferenceCounts,
-    SecondarySeedScore,
-    SecondaryTabularScore,
-)
+from ._saved_score_validation import validate_score_values
+from .bound_secondary import SecondaryInferenceCounts
 from .evaluation_manifest import ManifestRecord
 from .evaluation_producer import ManifestOutcome, ScoredInternalRow
 from .hypothesis_evaluation import PrimaryEvaluation, SavedPopulation, WindowCounts
 from .paired_evaluation import BinaryPrediction, EvaluationRecord
 from .selective_inference import InferenceCounts
-from .url_features import extract_url_features
 
 _TABULAR_NAMES = (
     "formatting",
@@ -44,8 +40,6 @@ _SEEDS = (42, 43, 44, 45, 46)
 _PREVALENCES = (10, 100, 500)
 _ROW_FIELDS = frozenset(ScoredInternalRow.__dataclass_fields__)
 _RECORD_FIELDS = frozenset(ManifestRecord.__dataclass_fields__)
-_TABULAR_FIELDS = frozenset(SecondaryTabularScore.__dataclass_fields__)
-_SEED_FIELDS = frozenset(SecondarySeedScore.__dataclass_fields__)
 _EXPECTED_BINDING_CORE = {
     "gmm_audit": {"alert_count": 28, "window_count": 252},
     "artifact_hashes": {
@@ -211,17 +205,6 @@ def _number(value: object, name: str) -> float:
     return float(value)
 
 
-def _probability(value: object, name: str) -> float:
-    result = _number(value, name)
-    _require(0 <= result <= 1, f"{name} must be a probability")
-    return result
-
-
-def _decision(value: object, name: str) -> int:
-    _require(type(value) is int and value in (0, 1), f"{name} must be binary")
-    return value
-
-
 def _digest(value: object, name: str) -> str:
     try:
         return fixed_cascade._lowercase_sha256(value, name)
@@ -378,17 +361,18 @@ def _bindings(content: bytes) -> dict:
         and audit["window_count"] > 0,
         "invalid authenticated audit counts",
     )
+    _validate_binding_core(value)
+    return value
+
+
+def _validate_binding_core(value: dict) -> None:
+    """Compare the raw frozen core without assuming an internal source envelope."""
+    _require(type(value) is dict, "invalid saved model binding")
+    core = {name: value.get(name) for name in _EXPECTED_BINDING_CORE}
     _require(
-        {
-            "artifact_hashes": artifacts,
-            "thresholds": thresholds,
-            "secondary": secondary,
-            "gmm_audit": audit,
-        }
-        == _EXPECTED_BINDING_CORE,
+        fixed_cascade._matches_exactly(core, _EXPECTED_BINDING_CORE),
         "saved model binding differs from frozen evidence profile",
     )
-    return value
 
 
 def _replay_models(bindings):
@@ -423,6 +407,11 @@ def _replay_models(bindings):
 
 def _verify_monitor_path(rows, bindings):
     length_model, stage1_model, gmm = _replay_models(bindings)
+    _verify_loaded_monitor_path(rows, length_model, stage1_model, gmm)
+
+
+def _verify_loaded_monitor_path(rows, length_model, stage1_model, gmm):
+    """Replay already-loaded retained models under the existing single-thread guard."""
     with threadpoolctl.threadpool_limits(limits=1):
         pools = threadpoolctl.threadpool_info()
         _require(
@@ -501,151 +490,51 @@ def _audit(value: object, name: str) -> None:
     _require(canonical == value, f"noncanonical {name}")
 
 
-def _parse_rows(content: bytes, bindings: dict) -> tuple[dict, ...]:
-    _require(type(content) is bytes and bool(content), "predictions must be bytes")
-    rows = []
-    partition_rows = []
-    previous_id = ""
-    source_hash = bindings["source_csv_sha256"]
-    thresholds = bindings["thresholds"]
-    secondary = bindings["secondary"]
-    for line in content.splitlines(keepends=True):
-        row = _loads(line, "prediction row")
-        _require(type(row) is dict and set(row) == _ROW_FIELDS, "invalid row schema")
-        record_value = row["record"]
-        _require(
-            type(record_value) is dict and set(record_value) == _RECORD_FIELDS,
-            "invalid record schema",
-        )
-        record = ManifestRecord(**record_value)
-        try:
-            observed_source = evaluation_manifest._validate_record(record)
-        except (TypeError, ValueError, UnicodeError) as exc:
-            raise SavedEvidenceError("invalid saved record") from exc
-        _require(observed_source == source_hash, "saved record source differs")
-        _require(record.record_id > previous_id, "saved record order differs")
-        previous_id = record.record_id
-        partition_rows.append(record_value)
-        features = row["features"]
-        _require(
-            type(features) is list
-            and len(features) == 25
-            and all(
-                type(item) in (int, float) and math.isfinite(item) for item in features
-            )
-            and tuple(float(item) for item in features)
-            == extract_url_features(record.raw_url),
-            "saved structural features differ",
-        )
-        length = _probability(row["length_probability"], "length probability")
-        stage1 = _probability(row["stage1_probability"], "stage1 probability")
-        transformer = _probability(
-            row["transformer_probability"], "transformer probability"
-        )
-        cascade = fixed_cascade.score_fixed_cascade(
-            (stage1,),
-            (transformer,),
-            stage1_threshold=thresholds["logistic_l1"],
-            transformer_threshold=thresholds["transformer"],
-            half_width=thresholds["half_width"],
-        )
-        invoked = cascade.transformer_invoked[0]
-        expected_probability = transformer if invoked else stage1
-        _require(
-            _decision(row["length_decision"], "length decision")
-            == int(length >= thresholds["length_only"])
-            and _decision(row["stage1_decision"], "stage1 decision")
-            == int(stage1 >= thresholds["logistic_l1"])
-            and _decision(row["transformer_decision"], "transformer decision")
-            == int(transformer >= thresholds["transformer"])
-            and _decision(row["cascade_decision"], "cascade decision")
-            == cascade.decisions[0]
-            and type(row["band_selected"]) is bool
-            and row["band_selected"] is invoked
-            and _probability(row["cascade_probability"], "cascade probability")
-            == expected_probability,
-            "saved primary decisions differ from bindings",
-        )
-        _probability(row["monitor_probability"], "monitor probability")
-        _number(row["negative_log_likelihood"], "negative log likelihood")
+def _validate_score_row(row: dict, bindings: dict) -> None:
+    """Check saved score relations without imposing internal record or label policy."""
+    try:
+        validate_score_values(row, bindings)
         _audit(row["length_scoring_audit_json"], "length audit")
         _audit(row["stage1_scoring_audit_json"], "stage1 audit")
         _require(
-            row["inference_counts"] == asdict(InferenceCounts(1, 1, 1, 0)),
+            fixed_cascade._matches_exactly(
+                row["inference_counts"], asdict(InferenceCounts(1, 1, 1, 0))
+            ),
             "saved row inference counts differ",
         )
-        tabular = row["secondary_tabular"]
-        _require(
-            type(tabular) is list and len(tabular) == len(_TABULAR_NAMES),
-            "invalid saved tabular inventory",
-        )
-        for point, score in zip(secondary["tabular"], tabular, strict=True):
-            _require(
-                type(score) is dict
-                and set(score) == _TABULAR_FIELDS
-                and score["name"] == point["name"],
-                "invalid saved tabular score",
-            )
-            probability = _probability(
-                score["probability"], f"{point['name']} probability"
-            )
-            _require(
-                _decision(score["decision"], f"{point['name']} decision")
-                == int(probability >= point["threshold"]),
-                "saved tabular decision differs from binding",
-            )
-        seeds = row["secondary_seeds"]
-        _require(
-            type(seeds) is list and len(seeds) == len(_SEEDS),
-            "invalid saved seed inventory",
-        )
-        for point, score in zip(secondary["seeds"], seeds, strict=True):
-            _require(
-                type(score) is dict
-                and set(score) == _SEED_FIELDS
-                and score["seed"] == point["seed"],
-                "invalid saved seed score",
-            )
-            seed_probability = _probability(
-                score["transformer_probability"],
-                f"seed {point['seed']} transformer probability",
-            )
-            if point["seed"] == 42:
-                _require(
-                    seed_probability == transformer,
-                    "seed 42 probability differs from primary",
-                )
-            expected = fixed_cascade.score_fixed_cascade(
-                (stage1,),
-                (seed_probability,),
-                stage1_threshold=secondary["stage1_threshold"],
-                transformer_threshold=point["transformer_threshold"],
-                half_width=point["half_width"],
-            )
-            seed_invoked = expected.transformer_invoked[0]
-            _require(
-                _decision(
-                    score["transformer_decision"],
-                    f"seed {point['seed']} transformer decision",
-                )
-                == int(seed_probability >= point["transformer_threshold"])
-                and _decision(
-                    score["cascade_decision"],
-                    f"seed {point['seed']} cascade decision",
-                )
-                == expected.decisions[0]
-                and type(score["band_selected"]) is bool
-                and score["band_selected"] is seed_invoked
-                and _probability(
-                    score["cascade_probability"],
-                    f"seed {point['seed']} cascade probability",
-                )
-                == (seed_probability if seed_invoked else stage1),
-                "saved seed decisions differ from binding",
-            )
+    except Exception:
+        raise SavedEvidenceError("invalid saved score row") from None
+
+
+def _internal_record(row: dict, source_hash: str) -> ManifestRecord:
+    record_value = row["record"]
+    _require(
+        type(record_value) is dict and set(record_value) == _RECORD_FIELDS,
+        "invalid record schema",
+    )
+    record = ManifestRecord(**record_value)
+    try:
+        observed_source = evaluation_manifest._validate_record(record)
+    except (TypeError, ValueError, UnicodeError) as exc:
+        raise SavedEvidenceError("invalid saved record") from exc
+    _require(observed_source == source_hash, "saved record source differs")
+    return record
+
+
+def _parse_rows(content: bytes, bindings: dict) -> tuple[dict, ...]:
+    _require(type(content) is bytes and bool(content), "predictions must be bytes")
+    rows = []
+    previous_id = ""
+    for line in content.splitlines(keepends=True):
+        row = _loads(line, "prediction row")
+        _require(type(row) is dict and set(row) == _ROW_FIELDS, "invalid row schema")
+        record = _internal_record(row, bindings["source_csv_sha256"])
+        _require(record.record_id > previous_id, "saved record order differs")
+        previous_id = record.record_id
+        _validate_score_row(row, bindings)
         rows.append(row)
     _require(bool(rows), "predictions must contain rows")
-    partition = b"".join(_json_bytes(value) for value in partition_rows)
+    partition = b"".join(_json_bytes(row["record"]) for row in rows)
     _require(
         sha256(partition).hexdigest() == bindings["partition_sha256"],
         "saved records differ from partition binding",

@@ -729,9 +729,17 @@ verified populations with separately supplied operational evidence and keeps
 all four Holm slots, including absent and empty components, without changing
 primary gates. An internal reconstruction companion exposes its already-verified
 population; the drift companion checks the accepted chain from retained bytes.
-These are invented-fixture checks, not research observations. Complete saved-only
-external scientific reconstruction, authenticated external execution, operational
-supervision and the final pre-access freeze remain outstanding.
+`saved_external_evidence.reconstruct_external_evidence` independently rebuilds
+the external stream from its exact thirty private byte outputs and public
+summary. It authenticates the frozen binding core and accepted drift chain,
+restores every completed column, checks all operating-point relations and
+replays retained length/L1/GMM arithmetic. Routing, monitors, rich predictions,
+all secondary aggregates and the public summary must match exactly. It performs
+no source/model-file reads, fitting or transformer/secondary forwards. These
+invented-fixture checks establish saved-byte consistency, not publisher
+provenance or successful physical execution. Authenticated external execution,
+durable internal failure-score checkpoints, operational supervision and the
+final pre-access freeze remain outstanding.
 
 `phishvn.prepare_external_rows` implements the frozen mapping and preparation
 rules on normalized records. Declared all-split coverage and file positions are

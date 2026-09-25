@@ -6,6 +6,8 @@ _NAMES = (
     "source_internal",
     "progress",
     "preparation_progress",
+    "operational_failure",
+    "study_failure",
 )
 
 

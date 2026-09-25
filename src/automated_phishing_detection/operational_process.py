@@ -123,23 +123,28 @@ async def _finish_cleanup(children, observations):
     return cancelled, progress
 
 
-async def _observe(observations, deadlines, service_command, client_command):
-    failure = None
-    with OwnedChildren(observations, deadlines) as children:
-        try:
-            await _run(children, observations, service_command, client_command)
-        except BaseException as error:
-            failure = error
-            observations.fail(
-                "parent_cancelled"
-                if isinstance(error, asyncio.CancelledError)
-                else error.check_id
-                if isinstance(error, OperationalProcessError)
-                else "parent_interrupted"
-                if isinstance(error, KeyboardInterrupt)
-                else "process_pair_failed"
-            )
-        cancelled, progress = await _finish_cleanup(children, observations)
+def _failure_code(error):
+    return (
+        "parent_cancelled"
+        if isinstance(error, asyncio.CancelledError)
+        else error.check_id
+        if isinstance(error, OperationalProcessError)
+        else "parent_interrupted"
+        if isinstance(error, KeyboardInterrupt)
+        else "process_pair_failed"
+    )
+
+
+async def _attempt(children, observations, service_command, client_command):
+    try:
+        await _run(children, observations, service_command, client_command)
+    except BaseException as error:
+        observations.fail(_failure_code(error))
+        return error
+    return None
+
+
+def _result(observations, failure, cancelled, progress):
     if cancelled or isinstance(failure, asyncio.CancelledError):
         raise OperationalProcessCancelled(progress=progress) from failure
     if isinstance(failure, (KeyboardInterrupt, SystemExit)):
@@ -150,6 +155,28 @@ async def _observe(observations, deadlines, service_command, client_command):
             observations.value["failure"], progress=progress
         ) from None
     return ProcessObservation(progress)
+
+
+async def _observe(observations, deadlines, service_command, client_command):
+    failure = None
+    try:
+        with OwnedChildren(observations, deadlines) as children:
+            failure = await _attempt(
+                children, observations, service_command, client_command
+            )
+            cancelled, progress = await _finish_cleanup(children, observations)
+            return _result(observations, failure, cancelled, progress)
+    except BaseException as error:
+        observations.fail("process_cleanup_failed")
+        if isinstance(failure, asyncio.CancelledError):
+            raise OperationalProcessCancelled(
+                progress=observations.snapshot()
+            ) from failure
+        selected = (
+            failure if isinstance(failure, (KeyboardInterrupt, SystemExit)) else error
+        )
+        selected.progress = observations.snapshot()
+        raise selected from None
 
 
 async def observe_process_pair(
@@ -175,7 +202,42 @@ async def observe_process_pair(
         "terminate": terminate_timeout_seconds,
         "kill": kill_timeout_seconds,
     }
+    return await _observe_pair_with_writer(
+        attempt,
+        service_command=service_command,
+        client_command=client_command,
+        deadlines=deadlines,
+        writer=_record,
+    )
+
+
+def _retain_claim_failure(observations, error):
+    try:
+        observations.fail(_failure_code(error))
+        error.progress = observations.snapshot()
+    except BaseException:
+        if not isinstance(error, Exception):
+            raise error from None
+        raise
+
+
+async def _observe_pair_with_writer(
+    attempt, *, service_command, client_command, deadlines, writer
+):
+    if type(deadlines) is not dict or set(deadlines) != {
+        "startup",
+        "shutdown",
+        "terminate",
+        "kill",
+    }:
+        raise OperationalProcessError("invalid_protective_deadline")
     _validate(attempt, (service_command, client_command), deadlines)
-    observations = Observations(attempt, _record)
-    observations.claim(service_command, client_command, deadlines)
+    if not callable(writer):
+        raise OperationalProcessError("invalid_process_writer")
+    observations = Observations(attempt, writer)
+    try:
+        observations.claim(service_command, client_command, deadlines)
+    except BaseException as error:
+        _retain_claim_failure(observations, error)
+        raise
     return await _observe(observations, deadlines, service_command, client_command)

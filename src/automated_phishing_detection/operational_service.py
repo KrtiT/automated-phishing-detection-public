@@ -51,13 +51,28 @@ def _record(retain, name, value):
 
 
 async def _shutdown(server, owner, completed):
+    failure = None
     try:
         if server.started and not completed:
             await server.shutdown()
         elif not completed and hasattr(server, "lifespan"):
             await asyncio.wait_for(server.lifespan.shutdown(), timeout=60)
-    finally:
+    except BaseException as error:
+        failure = error
+    try:
         await owner.shutdown()
+    except BaseException as error:
+        if failure is None or isinstance(failure, Exception):
+            failure = error
+    if failure is not None:
+        raise failure from None
+
+
+async def _cleanup_result(server, owner, completed):
+    try:
+        await _shutdown(server, owner, completed)
+    except BaseException as error:
+        return error
 
 
 async def serve_service(app, listener, stop_fd, *, retain):
@@ -121,22 +136,36 @@ async def serve_service(app, listener, stop_fd, *, retain):
     except BaseException as error:
         failure = error
     finally:
-        loop.remove_reader(stop_fd)
-    cleanup = asyncio.create_task(_shutdown(server, owner, completed))
+        try:
+            loop.remove_reader(stop_fd)
+        except BaseException as error:
+            if failure is None or isinstance(failure, Exception):
+                failure = error
+    cleanup = asyncio.create_task(_cleanup_result(server, owner, completed))
     cancelled = isinstance(failure, asyncio.CancelledError)
     while not cleanup.done():
         try:
             await asyncio.shield(cleanup)
         except asyncio.CancelledError:
             cancelled = True
-        except BaseException:
-            break
+        except BaseException as error:
+            if failure is None or isinstance(failure, Exception):
+                failure = error
     try:
-        cleanup.result()
+        cleanup_error = cleanup.result()
+        if cleanup_error is not None:
+            if failure is None or isinstance(failure, Exception):
+                failure = cleanup_error
+            cancelled = cancelled or isinstance(cleanup_error, asyncio.CancelledError)
     except asyncio.CancelledError:
         cancelled = True
     except BaseException as error:
-        failure = error
+        if failure is None or isinstance(failure, Exception):
+            failure = error
+    if failure is not None and not isinstance(
+        failure, (Exception, asyncio.CancelledError)
+    ):
+        raise failure from None
     if cancelled:
         raise asyncio.CancelledError from None
     if failure is not None:

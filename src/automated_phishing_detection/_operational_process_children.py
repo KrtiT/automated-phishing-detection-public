@@ -6,8 +6,8 @@ import signal
 import socket
 import subprocess
 import tempfile
-from contextlib import ExitStack
 
+from ._exception_cleanup import CleanupStack, preserve_cleanup
 from ._operational_process_records import OperationalProcessError, command_hash
 from ._process_support import _defer_interrupt
 
@@ -15,7 +15,7 @@ from ._process_support import _defer_interrupt
 class OwnedChildren:
     def __init__(self, observations, deadlines):
         self.observations, self.deadlines = observations, deadlines
-        self.stack = ExitStack()
+        self.stack = CleanupStack()
         self.descriptors = set()
         self.processes, self.streams = {}, {}
 
@@ -30,17 +30,18 @@ class OwnedChildren:
                 os.set_blocking(self.ready_read, False)
             return self
         except BaseException as error:
-            self.stack.close()
             self.observations.fail("process_setup_failed")
-            if not isinstance(error, Exception):
-                error.progress = self.observations.snapshot()
-                raise
-            raise OperationalProcessError(
-                "process_setup_failed", progress=self.observations.snapshot()
-            ) from None
+            selected = (
+                OperationalProcessError("process_setup_failed")
+                if isinstance(error, Exception)
+                else error
+            )
+            selected.progress = self.observations.snapshot()
+            with preserve_cleanup(self.stack.close):
+                raise selected from None
 
     def __exit__(self, *args):
-        self.stack.close()
+        return self.stack.__exit__(*args)
 
     def _pipe(self):
         descriptors = os.pipe()
@@ -50,9 +51,10 @@ class OwnedChildren:
         return descriptors
 
     def close_fd(self, descriptor):
-        if descriptor in self.descriptors:
-            self.descriptors.remove(descriptor)
-            os.close(descriptor)
+        with _defer_interrupt():
+            if descriptor in self.descriptors:
+                self.descriptors.remove(descriptor)
+                os.close(descriptor)
 
     def _environment(self, role):
         environment = {
@@ -77,9 +79,7 @@ class OwnedChildren:
         self.observations.install(
             f"{role}-intent.json", {"command_sha256": command_hash(command)}
         )
-        streams = tuple(
-            self.stack.enter_context(tempfile.TemporaryFile()) for _ in range(2)
-        )
+        streams = tuple(self._stream() for _ in range(2))
         descriptors = (
             (self.listener.fileno(), self.stop_read, self.ready_write)
             if role == "service"
@@ -102,6 +102,10 @@ class OwnedChildren:
             self.close_fd(self.stop_read)
             self.close_fd(self.ready_write)
         self.observations.install(f"{role}-started.json", {"pid": process.pid})
+
+    def _stream(self):
+        with _defer_interrupt():
+            return self.stack.enter_context(tempfile.TemporaryFile())
 
     async def wait_exit(self, role, timeout):
         async def wait():

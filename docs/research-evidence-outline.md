@@ -797,9 +797,9 @@ Strict byte codecs now transport those full internal manifests without sorting,
 resampling or URL rewriting, and restore the complete external retained stream
 without filtering roles or changing publisher order. Independent expected hashes
 precede parsing. These checks use invented inputs and establish consistency, not
-the provenance of a caller-supplied hash. The official cell/root observer and
-complete pre-access freeze remain required; no shortened workload or replacement
-run is authorized.
+the provenance of a caller-supplied hash. The complete pre-access freeze and
+actual authorized executions remain required; no shortened workload or
+replacement run is authorized.
 
 The pure descriptive reducer requires all 125 scheduled runs and returns exactly
 twenty-five five-repeat groups. It joins each fixed prevalence across concurrency
@@ -848,8 +848,41 @@ external exit and independent saved verification. Post-publication nonzero exits
 teardown failure and late held-input rejection preserve actual available failure
 lineage without retry or inferred completion. Both access gates remain closed;
 these adapters do not authorize a historical resume, adopt the proposed
-whole-study policy or provide empirical results. The joint study root, operational
-cell integration and complete prospective review remain required.
+whole-study policy or provide empirical results.
+
+The closed whole-study runner now connects one fresh preparation, the same-parent
+source workers and all 125 fixed operational cells. Its candidate profile records
+the selected whole-study hold as for-review, not adopted. If any of the thirteen
+required capacities is short, the pre-prediction barrier retains a whole-study
+hold with both source workers and every cell unattempted. Malformed or changed
+preparation instead rejects; it is not reclassified as an eligible-population
+shortage. No original population has been observed absent by these fixture tests.
+
+Each operational cell transports the exact retained inputs to two fixed child
+roles. The service loads one existing model session and checks every primary
+identity before forwarding; the client uses the existing HTTP or shift replay.
+The observing parent requires actual owned successful exits, joins the original
+phase checkpoints and complete-run accounting, and authenticates the retained
+36-file cell before return. Publication followed by a nonzero exit, forced stop,
+changed trace or late held-input failure rejects without replacement or retry.
+Integration tests exercise genuine loopback service/client processes with
+invented scoring and upstream provenance; they are not model-performance evidence.
+
+The study root advances once through the original schedule and preserves accepted,
+stopped and unattempted cells when execution or later bookkeeping fails. Only a
+complete accepted matrix reaches the unchanged operational and study reducers,
+including the original physical reference, primary HTTP repeats, audit 28/252
+and four Holm slots. Root fixtures verify all 125 orchestration positions using
+constructed cell returns; separate real-child tests verify individual HTTP and
+shift lifecycles. They do not establish a completed 125-cell research run.
+Create-only root receipts retain the hold or complete reductions without implying
+that a saved marker alone proves same-parent completion.
+
+The public execution, external-source and operational gates remain false.
+Protective process deadlines and session exclusivity still require prospective
+review with the full source, artifact, runtime and output profile. Neither this
+implementation nor passing tests supplies adoption, access, a historical resume
+or a new hypothesis result.
 
 `bound_external_runtime` binds primary and secondary models plus accepted saved
 MMD/PSI references before numerical ownership. The drift loader checks the

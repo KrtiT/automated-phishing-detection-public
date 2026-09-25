@@ -295,6 +295,7 @@ async def replay_shift_run(
         measured_started=[False] * len(plan.requests),
     )
     cancelled = False
+    original = None
     try:
         async with httpx.AsyncClient(
             base_url=base_url,
@@ -305,8 +306,10 @@ async def replay_shift_run(
         ) as client:
             try:
                 await _replay_phases(client, plan, progress, retain)
-            except asyncio.CancelledError:
-                cancelled = True
+            except BaseException as error:
+                original = error
+                cancelled = isinstance(error, asyncio.CancelledError)
+                http._retain_direct_interruption(error, progress)
                 raise
             progress.stage = "client_cleanup"
         result = ShiftRun(
@@ -324,7 +327,15 @@ async def replay_shift_run(
         progress.stage = "validation"
         validate_shift_run(result)
         return result
-    except (Exception, asyncio.CancelledError) as exc:
+    except BaseException as exc:
+        selected = (
+            original
+            if original is not None and not isinstance(original, Exception)
+            else exc
+        )
+        if not isinstance(selected, (Exception, asyncio.CancelledError)):
+            http._retain_direct_interruption(selected, progress)
+            raise selected from None
         if cancelled or http._external_cancellation(exc):
             raise http.ReplayCancelledError(
                 "shift replay cancelled; run is incomplete",

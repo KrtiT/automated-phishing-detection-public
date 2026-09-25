@@ -343,6 +343,14 @@ async def _replay_phases(client, rows, warmup_count, progress, retain):
     return warmup, measured
 
 
+def _retain_direct_interruption(error, progress):
+    if not isinstance(error, (Exception, asyncio.CancelledError)):
+        try:
+            error.progress = progress.snapshot()
+        except BaseException:
+            pass
+
+
 async def replay_run(
     base_url: str,
     requests: tuple[ReplayRequest, ...] | list[ReplayRequest],
@@ -407,6 +415,7 @@ async def replay_run(
         measured_started=[False] * len(rows),
     )
     cancelled = False
+    original = None
     try:
         async with httpx.AsyncClient(
             base_url=base_url,
@@ -419,8 +428,10 @@ async def replay_run(
                 warmup, measured = await _replay_phases(
                     client, rows, warmup_count, progress, retain
                 )
-            except asyncio.CancelledError:
-                cancelled = True
+            except BaseException as error:
+                original = error
+                cancelled = isinstance(error, asyncio.CancelledError)
+                _retain_direct_interruption(error, progress)
                 raise
             progress.stage = "client_cleanup"
         result = HttpRun(
@@ -440,7 +451,15 @@ async def replay_run(
         progress.stage = "validation"
         _validate_run(result)
         return result
-    except (Exception, asyncio.CancelledError) as exc:
+    except BaseException as exc:
+        selected = (
+            original
+            if original is not None and not isinstance(original, Exception)
+            else exc
+        )
+        if not isinstance(selected, (Exception, asyncio.CancelledError)):
+            _retain_direct_interruption(selected, progress)
+            raise selected from None
         if cancelled or _external_cancellation(exc):
             raise ReplayCancelledError(
                 "HTTP replay cancelled; run is incomplete", progress=progress.snapshot()

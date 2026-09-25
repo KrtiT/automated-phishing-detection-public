@@ -1,5 +1,6 @@
 """Synthetic source bytes and no-fit composition; no research input is opened."""
 
+import base64
 import json
 import threading
 from concurrent.futures import ThreadPoolExecutor
@@ -11,9 +12,23 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 
-from automated_phishing_detection.bound_runtime import BoundSession
+from automated_phishing_detection.bound_runtime import (
+    BoundEvaluationSession,
+    BoundSession,
+)
+from automated_phishing_detection.bound_secondary import (
+    BoundSecondary,
+    BoundSeed,
+    BoundTabular,
+    SecondaryInferenceCounts,
+    SecondaryScoredRow,
+    SecondaryScoring,
+    SecondarySeedScore,
+    SecondaryTabularScore,
+)
 from automated_phishing_detection.phiusiil import canonicalize_url, record_id_for_row
 from automated_phishing_detection.protocol_preflight import parse_suffix_rules
+from automated_phishing_detection.secondary_tabular import SecondaryModel
 from automated_phishing_detection.selective_inference import (
     InferenceCounts,
     RequestScores,
@@ -234,10 +249,14 @@ class SyntheticScorer:
 
 def synthetic_session(producer, monkeypatch):
     length_calls, portable_calls, gmm_calls = [], [], []
+    original_stage1_score = producer.fixed_cascade.score_logistic_l1_authoritative
+    original_stage1_loader = producer.fixed_cascade._load_logistic_l1_artifact_bytes
+    original_length_loader = producer.length_inference._load_length_only_artifact_bytes
+    original_gmm_loader = producer.gmm_monitor.load_gmm_artifact_bytes
 
     def length_score(model, urls):
         assert type(urls) is tuple and len(urls) == 1
-        index = len(length_calls)
+        index = int(urls[0].split("host", 1)[1].split(".", 1)[0])
         length_calls.append(urls)
         return ((0.1, 0.2, 0.1, 0.9)[index % 4],), {"length_audit": True}
 
@@ -256,21 +275,128 @@ def synthetic_session(producer, monkeypatch):
         producer.length_inference, "score_length_only_authoritative", length_score
     )
     monkeypatch.setattr(producer.gmm_monitor, "score_feature_matrix", gmm)
+    monkeypatch.setattr(
+        producer.fixed_cascade,
+        "score_logistic_l1_authoritative",
+        lambda model, urls: (
+            (
+                (
+                    (0.1, 0.8, 0.6, 0.4)[
+                        int(urls[0].split("host", 1)[1].split(".", 1)[0]) % 4
+                    ],
+                ),
+                {"synthetic_stage1_audit": True},
+            )
+            if model._artifact_bytes == b"synthetic logistic"
+            else original_stage1_score(model, urls)
+        ),
+    )
+    tabular_names = (
+        "formatting",
+        "permutation_42",
+        "permutation_43",
+        "permutation_44",
+        "permutation_45",
+        "permutation_46",
+        "random_forest",
+    )
+    seeds = (42, 43, 44, 45, 46)
+
+    def secondary_score(bound, urls, stage1, transformer):
+        assert bound is secondary
+        assert len(urls) == len(stage1) == len(transformer)
+        rows = []
+        for index in range(len(urls)):
+            tabular = tuple(
+                SecondaryTabularScore(member.name, 0.25, int(0.25 >= member.threshold))
+                for member in bound.tabular
+            )
+            seed_scores = []
+            for member in bound.seeds:
+                probability = transformer[index] if member.seed == 42 else 0.75
+                cascade = producer.fixed_cascade.score_fixed_cascade(
+                    (stage1[index],),
+                    (probability,),
+                    stage1_threshold=bound.stage1_threshold,
+                    transformer_threshold=member.transformer_threshold,
+                    half_width=member.half_width,
+                )
+                invoked = cascade.transformer_invoked[0]
+                seed_scores.append(
+                    SecondarySeedScore(
+                        member.seed,
+                        probability,
+                        int(probability >= member.transformer_threshold),
+                        probability if invoked else stage1[index],
+                        cascade.decisions[0],
+                        invoked,
+                    )
+                )
+            rows.append(SecondaryScoredRow(tabular, tuple(seed_scores)))
+        counts = SecondaryInferenceCounts(
+            tuple((name, len(urls)) for name in tabular_names),
+            tuple((seed, 0 if seed == 42 else len(urls)) for seed in seeds),
+            len(urls),
+        )
+        return SecondaryScoring(tuple(rows), counts)
+
+    secondary = _bound_secondary_fixture()
+    monkeypatch.setattr(
+        producer, "score_bound_secondary", secondary_score, raising=False
+    )
     models = SimpleNamespace(
         length_only=SimpleNamespace(
-            validation_threshold_record={"status": "selected", "threshold": 0.5}
+            validation_threshold_record={"status": "selected", "threshold": 0.5},
+            _artifact_bytes=b"synthetic length",
         ),
         cascade=SimpleNamespace(
-            stage1_model=SimpleNamespace(score_urls=portable),
+            stage1_model=SimpleNamespace(
+                score_urls=portable, _artifact_bytes=b"synthetic logistic"
+            ),
             stage1_threshold=0.5,
             transformer_threshold=0.5,
             half_width=0.11,
         ),
         gmm={"synthetic": True},
+        gmm_artifact_bytes=b"synthetic gmm",
+        audit_alert_count=28,
+        audit_window_count=252,
         monitor_boundary=3.0,
-        artifact_hashes=(("synthetic.json", "e" * 64),),
+        artifact_hashes=tuple(
+            (name, sha256(content).hexdigest())
+            for name, content in (
+                ("length-only.json", b"synthetic length"),
+                ("logistic-l1.json", b"synthetic logistic"),
+                ("gmm.json", b"synthetic gmm"),
+            )
+        ),
     )
-    session = BoundSession(models, SyntheticScorer())
+    monkeypatch.setattr(
+        producer.length_inference,
+        "_load_length_only_artifact_bytes",
+        lambda content, **kwargs: (
+            models.length_only
+            if content == b"synthetic length"
+            else original_length_loader(content, **kwargs)
+        ),
+    )
+    monkeypatch.setattr(
+        producer.fixed_cascade,
+        "_load_logistic_l1_artifact_bytes",
+        lambda content, **kwargs: (
+            models.cascade.stage1_model
+            if content == b"synthetic logistic"
+            else original_stage1_loader(content, **kwargs)
+        ),
+    )
+    monkeypatch.setattr(
+        producer.gmm_monitor,
+        "load_gmm_artifact_bytes",
+        lambda content: (
+            models.gmm if content == b"synthetic gmm" else original_gmm_loader(content)
+        ),
+    )
+    session = BoundEvaluationSession(BoundSession(models, SyntheticScorer()), secondary)
     return session, length_calls, portable_calls, gmm_calls
 
 
@@ -281,7 +407,7 @@ def test_singleton_composition_retains_all_rows_scores_and_monitor_path(
     session, lengths, portable, gmm = synthetic_session(producer, monkeypatch)
     result = producer.produce_internal_evidence(prepared, session)
     assert len(result.rows) == len(lengths) == len(portable) == len(gmm) == 4
-    assert session.scorer.urls == [row.raw_url for row in prepared.records]
+    assert session.primary.scorer.urls == [row.raw_url for row in prepared.records]
     assert result.inference_counts == InferenceCounts(4, 4, 4, 0)
     assert [row.stage1_probability for row in result.rows] == [0.1, 0.8, 0.6, 0.4]
     assert [row.monitor_probability for row in result.rows] == [0.33] * 4
@@ -311,6 +437,226 @@ def test_singleton_composition_retains_all_rows_scores_and_monitor_path(
     assert all(
         value.status == "insufficient_capacity" for value in result.manifests.values()
     )
+
+
+@pytest.mark.parametrize("boundary, alerts", [(1.0, True), (2.0, False)])
+def test_retains_complete_windows_and_future_only_routing(
+    producer, monkeypatch, boundary, alerts
+):
+    prepared = parse(producer, source_rows(320))
+    session, *_ = synthetic_session(producer, monkeypatch)
+    session.primary.models.monitor_boundary = boundary
+    result = producer.produce_internal_evidence(prepared, session)
+    routing = json.loads(result.private_outputs["routing.json"])
+    assert routing["windows"] == [
+        {"start_position": 1, "end_position": 256, "score": 2.0, "alert": alerts},
+        {"start_position": 65, "end_position": 320, "score": 2.0, "alert": alerts},
+    ]
+    assert routing["window_alert_fraction"] == float(alerts)
+    assert [row["record_id"] for row in routing["rows"]] == [
+        row.record_id for row in prepared.records
+    ]
+    assert [row["drift_override"] for row in routing["rows"]] == [False] * 256 + [
+        alerts
+    ] * 64
+    assert routing["rows"][256]["policy_decision"] == int(alerts)
+    assert routing["rows"][256]["fixed_decision"] == 0
+
+
+def test_audit_counts_come_from_authenticated_bound_models(producer, monkeypatch):
+    session, *_ = synthetic_session(producer, monkeypatch)
+    session.primary.models.audit_alert_count = 7
+    session.primary.models.audit_window_count = 80
+    result = producer.produce_internal_evidence(parse(producer), session)
+    gate = next(
+        gate
+        for gate in result.primary.hypotheses["H2"].gates
+        if gate.name == "audit_window_alerts"
+    )
+    assert (gate.numerator, gate.denominator) == (7, 80)
+    bindings = json.loads(result.private_outputs["bindings.json"])
+    assert bindings["gmm_audit"] == {"alert_count": 7, "window_count": 80}
+
+
+def test_secondary_scores_join_rows_without_changing_primary_population(
+    producer, monkeypatch
+):
+    prepared = parse(producer)
+    synthetic, *_ = synthetic_session(producer, monkeypatch)
+    session = BoundEvaluationSession(synthetic.primary, synthetic.secondary)
+    tabular_names = (
+        "formatting",
+        "permutation_42",
+        "permutation_43",
+        "permutation_44",
+        "permutation_45",
+        "permutation_46",
+        "random_forest",
+    )
+    seeds = (42, 43, 44, 45, 46)
+    secondary_rows = tuple(
+        SecondaryScoredRow(
+            tuple(
+                SecondaryTabularScore(name, 0.1 + index / 100, index % 2)
+                for name in tabular_names
+            ),
+            tuple(
+                SecondarySeedScore(
+                    seed,
+                    0.2 + index / 100,
+                    index % 2,
+                    0.3 + index / 100,
+                    (index + 1) % 2,
+                    bool(index % 2),
+                )
+                for seed in seeds
+            ),
+        )
+        for index in range(len(prepared.records))
+    )
+    counts = SecondaryInferenceCounts(
+        tuple((name, len(prepared.records)) for name in tabular_names),
+        tuple((seed, 0 if seed == 42 else len(prepared.records)) for seed in seeds),
+        len(prepared.records),
+    )
+    calls = []
+
+    def score(bound, raw_urls, stage1_probabilities, seed_42_probabilities):
+        calls.append((bound, raw_urls, stage1_probabilities, seed_42_probabilities))
+        return SecondaryScoring(secondary_rows, counts)
+
+    monkeypatch.setattr(producer, "score_bound_secondary", score, raising=False)
+    result = producer.produce_internal_evidence(prepared, session)
+
+    assert calls == [
+        (
+            session.secondary,
+            tuple(row.raw_url for row in prepared.records),
+            tuple(row.stage1_probability for row in result.rows),
+            tuple(row.transformer_probability for row in result.rows),
+        )
+    ]
+    assert [row.secondary_tabular for row in result.rows] == [
+        row.tabular for row in secondary_rows
+    ]
+    assert [row.secondary_seeds for row in result.rows] == [
+        row.seeds for row in secondary_rows
+    ]
+    assert result.secondary_inference_counts == counts
+    assert [row.record_id for row in result.population.records] == [
+        row.record_id for row in prepared.records
+    ]
+    assert result.primary.metrics["internal.cascade"].true_positives == 2
+
+
+def _bound_secondary_fixture():
+    names = (
+        "formatting",
+        "permutation_42",
+        "permutation_43",
+        "permutation_44",
+        "permutation_45",
+        "permutation_46",
+        "random_forest",
+    )
+    seeds = (42, 43, 44, 45, 46)
+    tabular = tuple(
+        BoundTabular(
+            name,
+            SecondaryModel(name.encode("ascii")),
+            0.2 + index / 100,
+            sha256(name.encode("ascii")).hexdigest(),
+        )
+        for index, name in enumerate(names)
+    )
+    bound_seeds = tuple(
+        BoundSeed(
+            seed,
+            0.3 + index / 100,
+            index / 100,
+            sha256(f"seed-{seed}".encode()).hexdigest(),
+            seed == 42,
+            None if seed == 42 else f"seed-{seed}".encode(),
+        )
+        for index, seed in enumerate(seeds)
+    )
+    return BoundSecondary(
+        tabular,
+        bound_seeds,
+        0.5,
+        b'{"invented":"vocabulary"}',
+        "mps",
+        (("tabular", "1" * 64), ("seeds", "2" * 64)),
+    )
+
+
+def test_secondary_bindings_and_counts_are_serialized_as_schema_v3(
+    producer, monkeypatch
+):
+    prepared = parse(producer)
+    synthetic, *_ = synthetic_session(producer, monkeypatch)
+    original_score = producer.score_bound_secondary
+    bound = _bound_secondary_fixture()
+    session = BoundEvaluationSession(synthetic.primary, bound)
+
+    def score(_bound, raw_urls, stage1, transformer):
+        return original_score(synthetic.secondary, raw_urls, stage1, transformer)
+
+    monkeypatch.setattr(producer, "score_bound_secondary", score)
+    result = producer.produce_internal_evidence(prepared, session)
+    bindings = json.loads(result.private_outputs["bindings.json"])
+
+    assert result.public_summary["schema_version"] == 3
+    assert result.public_summary["offline_secondary_inference_counts"] == asdict(
+        result.secondary_inference_counts
+    )
+    assert bindings == {
+        "schema_version": 3,
+        "partition_sha256": prepared.partition_sha256,
+        "source_csv_sha256": prepared.source_csv_sha256,
+        "suffix_rules_sha256": prepared.suffix_rules_sha256,
+        "artifact_hashes": dict(session.primary.models.artifact_hashes),
+        "gmm_audit": {"alert_count": 28, "window_count": 252},
+        "replay_artifacts": {
+            name: base64.b64encode(content).decode("ascii")
+            for name, content in (
+                ("length-only.json", b"synthetic length"),
+                ("logistic-l1.json", b"synthetic logistic"),
+                ("gmm.json", b"synthetic gmm"),
+            )
+        },
+        "thresholds": {
+            "length_only": 0.5,
+            "logistic_l1": 0.5,
+            "transformer": 0.5,
+            "half_width": 0.11,
+            "monitor_boundary": 3.0,
+        },
+        "secondary": {
+            "accepted_report_sha256": {"seeds": "2" * 64, "tabular": "1" * 64},
+            "device_type": "mps",
+            "stage1_threshold": 0.5,
+            "vocabulary_sha256": sha256(bound.vocabulary_bytes).hexdigest(),
+            "tabular": [
+                {
+                    "name": member.name,
+                    "artifact_sha256": member.artifact_sha256,
+                    "threshold": member.threshold,
+                }
+                for member in bound.tabular
+            ],
+            "seeds": [
+                {
+                    "seed": member.seed,
+                    "weights_sha256": member.weights_sha256,
+                    "transformer_threshold": member.transformer_threshold,
+                    "half_width": member.half_width,
+                    "reuses_primary": member.reuses_primary,
+                }
+                for member in bound.seeds
+            ],
+        },
+    }
 
 
 def test_private_serialization_is_deterministic_and_public_summary_is_aggregate_only(
@@ -348,10 +694,10 @@ def test_failure_returns_no_partially_accepted_output_or_reusable_session(
 ):
     prepared = parse(producer)
     session, *_ = synthetic_session(producer, monkeypatch)
-    session.scorer.fail_at = 2
+    session.primary.scorer.fail_at = 2
     with pytest.raises(RuntimeError, match="synthetic scorer failure"):
         producer.produce_internal_evidence(prepared, session)
-    assert len(session.scorer.urls) == 3
+    assert len(session.primary.scorer.urls) == 3
     with pytest.raises(producer.EvaluationProducerError, match="fresh"):
         producer.produce_internal_evidence(prepared, session)
 
@@ -365,8 +711,8 @@ def test_tampered_prepared_rows_and_nonfresh_counts_fail_before_scoring(
         producer.produce_internal_evidence(
             replace(prepared, records=tuple(reversed(prepared.records))), session
         )
-    assert session.scorer.urls == lengths == []
-    session.scorer.extra_attempt = True
+    assert session.primary.scorer.urls == lengths == []
+    session.primary.scorer.extra_attempt = True
     with pytest.raises(producer.EvaluationProducerError, match="fresh"):
         producer.produce_internal_evidence(prepared, session)
 
@@ -377,7 +723,7 @@ def test_invalid_scorer_outputs_fail_without_accepted_result(
 ):
     prepared = parse(producer)
     session, *_ = synthetic_session(producer, monkeypatch)
-    original = session.scorer.score_all
+    original = session.primary.scorer.score_all
 
     def invalid(url):
         scores = original(url)
@@ -385,10 +731,10 @@ def test_invalid_scorer_outputs_fail_without_accepted_result(
             return replace(scores, stage1_probability=float("nan"))
         if failure == "wrong_decision":
             return replace(scores, fixed_decision=1 - scores.fixed_decision)
-        session.scorer.extra_attempt = True
+        session.primary.scorer.extra_attempt = True
         return scores
 
-    monkeypatch.setattr(session.scorer, "score_all", invalid)
+    monkeypatch.setattr(session.primary.scorer, "score_all", invalid)
     with pytest.raises(producer.EvaluationProducerError):
         producer.produce_internal_evidence(prepared, session)
 
@@ -453,7 +799,9 @@ def test_actual_session_owner_guard_precedes_every_length_score(
     scorer = SelectiveCascade(
         _load_fixture(_build_fixture(tmp_path)), _fixture_cpu=True
     )
-    session = BoundSession(synthetic.models, scorer)
+    session = BoundEvaluationSession(
+        BoundSession(synthetic.primary.models, scorer), synthetic.secondary
+    )
 
     def rejected():
         with pytest.raises(TransformerInferenceError):

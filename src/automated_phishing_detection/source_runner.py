@@ -27,9 +27,22 @@ from . import (
     secondary_metrics,
 )
 from .bound_models import ArtifactPaths
-from .bound_runtime import open_bound_session
+from .bound_runtime import open_bound_evaluation_session
+from .bound_secondary import SecondaryArtifactPaths
 from .execution_preflight import ExecutionBinding, bind_execution, recheck_binding
 from .execution_receipt import publish_completion, record_failure, reserve_attempt
+from .paired_evaluation import BinaryPrediction
+
+_SECONDARY_TABULAR_NAMES = (
+    "formatting",
+    "permutation_42",
+    "permutation_43",
+    "permutation_44",
+    "permutation_45",
+    "permutation_46",
+    "random_forest",
+)
+_SECONDARY_SEEDS = (42, 43, 44, 45, 46)
 
 _SOURCE = "data/sources.json"
 _PREPARATION = "reports/phiusiil-preparation-summary.json"
@@ -43,6 +56,7 @@ _PUBLIC_FIELDS = frozenset(
         "domain_count",
         "class_counts",
         "offline_inference_counts",
+        "offline_secondary_inference_counts",
         "manifests",
         "primary",
         "private_sha256",
@@ -59,6 +73,7 @@ class InternalRunPaths:
     partition: Path
     suffix_rules: Path
     artifacts: ArtifactPaths
+    secondary_artifacts: SecondaryArtifactPaths
     attempt: Path
     public_summary: Path
 
@@ -158,6 +173,7 @@ def _output_paths(binding, paths):
     if (
         type(paths) is not InternalRunPaths
         or type(paths.artifacts) is not ArtifactPaths
+        or type(paths.secondary_artifacts) is not SecondaryArtifactPaths
     ):
         raise SourceExecutionError("invalid_run_paths")
     for path in (paths.attempt, paths.public_summary):
@@ -193,6 +209,45 @@ def _secondary(produced):
         )
         for model, column in columns.items()
     }
+    if any(
+        tuple(value.name for value in row.secondary_tabular) != _SECONDARY_TABULAR_NAMES
+        or tuple(value.seed for value in row.secondary_seeds) != _SECONDARY_SEEDS
+        for row in produced.rows
+    ):
+        raise SourceExecutionError("secondary_row_inventory_mismatch")
+
+    def saved_metric(scores, decisions):
+        return asdict(
+            secondary_metrics.secondary_metrics(
+                population.records,
+                tuple(
+                    secondary_metrics.ScorePrediction(row.record.record_id, score)
+                    for row, score in zip(produced.rows, scores, strict=True)
+                ),
+                tuple(
+                    BinaryPrediction(row.record.record_id, decision)
+                    for row, decision in zip(produced.rows, decisions, strict=True)
+                ),
+            )
+        )
+
+    for index, name in enumerate(_SECONDARY_TABULAR_NAMES):
+        metrics[f"tabular.{name}"] = saved_metric(
+            (row.secondary_tabular[index].probability for row in produced.rows),
+            (row.secondary_tabular[index].decision for row in produced.rows),
+        )
+    for index, seed in enumerate(_SECONDARY_SEEDS):
+        metrics[f"seed_{seed}.transformer"] = saved_metric(
+            (
+                row.secondary_seeds[index].transformer_probability
+                for row in produced.rows
+            ),
+            (row.secondary_seeds[index].transformer_decision for row in produced.rows),
+        )
+        metrics[f"seed_{seed}.cascade"] = saved_metric(
+            (row.secondary_seeds[index].cascade_probability for row in produced.rows),
+            (row.secondary_seeds[index].cascade_decision for row in produced.rows),
+        )
     positives = tuple(row for row in population.records if row.label == 1)
     positive_ids = {row.record_id for row in positives}
     predictions = {
@@ -210,7 +265,7 @@ def _secondary(produced):
         "external_gold_cascade_minus_logistic": None,
     }
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "metrics": metrics,
         "mcnemar": {
             key: asdict(value) if value is not None else None
@@ -249,7 +304,9 @@ def _run_bound_internal(binding: ExecutionBinding, paths: InternalRunPaths) -> P
             raise SourceExecutionError("suffix_hash_mismatch")
         rules = protocol_preflight.parse_suffix_rules(suffix_bytes.decode("utf-8"))
         stage = "model_loading"
-        with open_bound_session(binding, paths.artifacts) as session:
+        with open_bound_evaluation_session(
+            binding, paths.artifacts, paths.secondary_artifacts
+        ) as session:
             stage = "partition"
             content = _read_file_once(paths.partition)
             prepared = evaluation_producer.parse_internal_partition(
@@ -265,16 +322,19 @@ def _run_bound_internal(binding: ExecutionBinding, paths: InternalRunPaths) -> P
         stage = "summary"
         if set(produced.public_summary) != _PUBLIC_FIELDS or set(
             produced.private_outputs
-        ) != {"predictions.jsonl", "manifests.json", "bindings.json"}:
+        ) != {"predictions.jsonl", "manifests.json", "bindings.json", "routing.json"}:
             raise SourceExecutionError("unexpected_public_fields")
         private = dict(produced.private_outputs)
         private["secondary.json"] = evaluation_producer._json_bytes(secondary)
         public = {
-            "schema_version": 1,
+            "schema_version": 3,
             "row_count": len(produced.rows),
             "domain_count": prepared.domain_count,
             "class_counts": dict(zip(("0", "1"), prepared.class_counts)),
             "offline_inference_counts": asdict(produced.inference_counts),
+            "offline_secondary_inference_counts": asdict(
+                produced.secondary_inference_counts
+            ),
             "manifests": {
                 str(bp): evaluation_producer._manifest_summary(value)
                 for bp, value in produced.manifests.items()
@@ -375,6 +435,17 @@ def run_internal_process(
         ("logistic-l1", paths.artifacts.logistic_l1),
         ("transformer-bundle", paths.artifacts.transformer_bundle),
         ("gmm", paths.artifacts.gmm),
+        ("formatting", paths.secondary_artifacts.formatting),
+        ("permutation-42", paths.secondary_artifacts.permutation_42),
+        ("permutation-43", paths.secondary_artifacts.permutation_43),
+        ("permutation-44", paths.secondary_artifacts.permutation_44),
+        ("permutation-45", paths.secondary_artifacts.permutation_45),
+        ("permutation-46", paths.secondary_artifacts.permutation_46),
+        ("random-forest", paths.secondary_artifacts.random_forest),
+        ("seed-43-weights", paths.secondary_artifacts.seed_43_weights),
+        ("seed-44-weights", paths.secondary_artifacts.seed_44_weights),
+        ("seed-45-weights", paths.secondary_artifacts.seed_45_weights),
+        ("seed-46-weights", paths.secondary_artifacts.seed_46_weights),
         ("attempt", paths.attempt),
         ("public-summary", paths.public_summary),
     ):

@@ -87,7 +87,9 @@ def test_binding_checks_supplementary_committed_bytes_and_rechecks_base(
         api, "recheck_development_binding", lambda b: calls.append("recheck")
     )
     monkeypatch.setattr(
-        execution_preflight, "_committed_files", lambda *a: calls.append(a[2])
+        execution_preflight,
+        "_historical_v2_committed_files",
+        lambda *a: calls.append(a[2]),
     )
     digest = sha256((root / api.PROFILE_PATH).read_bytes()).hexdigest()
     bound = api.bind_correction(

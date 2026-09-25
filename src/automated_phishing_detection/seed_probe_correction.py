@@ -89,7 +89,9 @@ def bind_seed_probe_correction(
         ACCOUNTING_PATH: ACCOUNTING_SHA256,
         **HISTORY_PINS,
     }
-    execution_preflight._committed_files(base.root, base.revision, expected)
+    execution_preflight._historical_v2_committed_files(
+        base.root, base.revision, expected
+    )
     profile = execution_preflight._read_regular(base.root, PROFILE_PATH)
     _require(sha256(profile).hexdigest() == PROFILE_SHA256, "profile_hash_mismatch")
     try:

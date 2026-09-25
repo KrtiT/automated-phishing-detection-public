@@ -1,8 +1,8 @@
 """Independent acceptance of an observed successful internal producer exit.
 
-This verifier authenticates publication/source links, structural result schemas,
-and artifact byte integrity. It does not rerun models or statistical estimates,
-and an output marker is never evidence of a successful subprocess exit. The
+This verifier authenticates publication/source links and reconstructs scientific
+outputs from retained bytes, including monitor and routing replay. An output
+marker is never evidence of a successful subprocess exit. The
 caller must obtain that exit status from the actual producer it supervised.
 """
 
@@ -22,13 +22,20 @@ from . import (
     secondary_metrics,
     source_runner,
 )
-from .evaluation_producer import ManifestOutcome
-from .paired_evaluation import RecallDifference
-from .saved_metrics import DetectionMetrics, RateEstimate
+from .bound_secondary import SecondaryInferenceCounts
+from .evaluation_producer import ManifestOutcome, _json_bytes, _manifest_summary
+from .saved_evidence import reconstruct_internal_evidence
+from .saved_metrics import DetectionMetrics
 from .selective_inference import InferenceCounts
 
 _PRIVATE_NAMES = frozenset(
-    {"predictions.jsonl", "manifests.json", "bindings.json", "secondary.json"}
+    {
+        "predictions.jsonl",
+        "manifests.json",
+        "bindings.json",
+        "secondary.json",
+        "routing.json",
+    }
 )
 _ATTEMPT_NAMES = frozenset(
     {"reservation.json", "finalize.claim", "outcome.json", "evidence"}
@@ -43,6 +50,7 @@ _PUBLIC_NAMES = frozenset(
         "domain_count",
         "class_counts",
         "offline_inference_counts",
+        "offline_secondary_inference_counts",
         "manifests",
         "primary",
         "private_sha256",
@@ -51,6 +59,28 @@ _PUBLIC_NAMES = frozenset(
     }
 )
 _MODELS = frozenset({"length_only", "logistic_l1", "transformer", "cascade"})
+_SECONDARY_MODELS = frozenset(
+    {
+        *_MODELS,
+        "tabular.formatting",
+        "tabular.permutation_42",
+        "tabular.permutation_43",
+        "tabular.permutation_44",
+        "tabular.permutation_45",
+        "tabular.permutation_46",
+        "tabular.random_forest",
+        "seed_42.transformer",
+        "seed_42.cascade",
+        "seed_43.transformer",
+        "seed_43.cascade",
+        "seed_44.transformer",
+        "seed_44.cascade",
+        "seed_45.transformer",
+        "seed_45.cascade",
+        "seed_46.transformer",
+        "seed_46.cascade",
+    }
+)
 
 
 class CompletionVerificationError(ValueError):
@@ -200,53 +230,6 @@ def _primary(value, classes):
         )
     for metric in value["metrics"].values():
         _detection_counts(metric, classes)
-    _primary_gates(value)
-
-
-def _primary_gates(primary):
-    metrics = {
-        name: DetectionMetrics(
-            **{
-                **metric,
-                "recall": RateEstimate(**metric["recall"]),
-                "fpr": RateEstimate(**metric["fpr"]),
-            }
-        )
-        for name, metric in primary["metrics"].items()
-    }
-    contrasts = {}
-    for name, value in primary["contrasts"].items():
-        if value is not None:
-            _require(
-                value["status"] in {"estimated", "not_estimable"},
-                "invalid_contrast_status",
-            )
-            contrasts[name] = RecallDifference(**value)
-    # With no populations this computes only the frozen gate template, not a
-    # bootstrap. Internal gates are reconstructed from validated saved summaries.
-    template = hypothesis_evaluation.evaluate_primary(
-        audit_windows=hypothesis_evaluation.WindowCounts(28, 252)
-    )
-    expected = {}
-    for name, hypothesis in template.hypotheses.items():
-        gates = []
-        for gate in hypothesis.gates:
-            if gate.name.startswith("internal.") and gate.name.endswith(".fpr"):
-                gate = hypothesis_evaluation._fpr_gate(
-                    metrics, "internal", gate.name.split(".")[1]
-                )
-            elif gate.name in contrasts:
-                gate = hypothesis_evaluation._recall_gate(
-                    gate.name, contrasts[gate.name]
-                )
-            gates.append(gate)
-        result = hypothesis_evaluation._hypothesis(gates)
-        expected[name] = {
-            "decision": result.decision,
-            "complete": result.complete,
-            "gates": [asdict(gate) for gate in result.gates],
-        }
-    _require(_same(primary["hypotheses"], expected), "frozen_primary_gates_mismatch")
 
 
 def _default_role(value, schema, field="analysis_role"):
@@ -262,10 +245,10 @@ def _secondary(value, public):
         "invalid_secondary_schema",
     )
     _require(
-        type(value["schema_version"]) is int and value["schema_version"] == 1,
+        type(value["schema_version"]) is int and value["schema_version"] == 2,
         "invalid_secondary_version",
     )
-    _require(_keys(value["metrics"], _MODELS), "invalid_secondary_models")
+    _require(_keys(value["metrics"], _SECONDARY_MODELS), "invalid_secondary_models")
     family = secondary_metrics.ABLATION_FAMILY
     _require(_keys(value["mcnemar"], family), "invalid_mcnemar_family")
     for model, metric in value["metrics"].items():
@@ -280,10 +263,16 @@ def _secondary(value, public):
             and metric["domain_count"] == public["domain_count"],
             "secondary_population_mismatch",
         )
-        _require(
-            _same(metric["counts"], public["primary"]["metrics"][f"internal.{model}"]),
-            "secondary_primary_counts_mismatch",
-        )
+        if model in _MODELS:
+            _require(
+                _same(
+                    metric["counts"],
+                    public["primary"]["metrics"][f"internal.{model}"],
+                ),
+                "secondary_primary_counts_mismatch",
+            )
+        else:
+            _detection_counts(metric["counts"], public["class_counts"])
         bins = metric["calibration_bins"]
         _require(
             len(bins) == 10
@@ -411,7 +400,7 @@ def _public(public, binding, source, identity, reservation_hash):
     _require(_keys(public, _PUBLIC_NAMES), "invalid_public_schema")
     _require(
         type(public["schema_version"]) is int
-        and public["schema_version"] == 1
+        and public["schema_version"] == 3
         and public["status"] == "internal_evidence_published"
         and public["source_binding"] == "authenticated_public_preparation"
         and type(public["protected_evaluation_authorized"]) is bool
@@ -449,6 +438,31 @@ def _public(public, binding, source, identity, reservation_hash):
         ),
         "invalid_offline_inference_counts",
     )
+    secondary_counts = public["offline_secondary_inference_counts"]
+    _require(
+        _shape(secondary_counts, SecondaryInferenceCounts)
+        and secondary_counts["tabular_singleton_calls"]
+        == [
+            [name, public["row_count"]]
+            for name in (
+                "formatting",
+                "permutation_42",
+                "permutation_43",
+                "permutation_44",
+                "permutation_45",
+                "permutation_46",
+                "random_forest",
+            )
+        ]
+        and secondary_counts["transformer_singleton_calls"]
+        == [
+            [42, 0],
+            *[[seed, public["row_count"]] for seed in (43, 44, 45, 46)],
+        ]
+        and secondary_counts["reused_primary_transformer_scores"]
+        == public["row_count"],
+        "invalid_secondary_inference_counts",
+    )
     _require(
         _keys(public["private_sha256"], _PRIVATE_NAMES)
         and all(_digest(value) for value in public["private_sha256"].values()),
@@ -463,7 +477,20 @@ def _private_bindings(content, identity):
     value = source_runner._json(content)
     source_fields = {"partition_sha256", "source_csv_sha256", "suffix_rules_sha256"}
     _require(
-        _keys(value, source_fields | {"artifact_hashes", "thresholds"}),
+        _keys(
+            value,
+            source_fields
+            | {
+                "schema_version",
+                "artifact_hashes",
+                "thresholds",
+                "secondary",
+                "gmm_audit",
+                "replay_artifacts",
+            },
+        )
+        and type(value["schema_version"]) is int
+        and value["schema_version"] == 3,
         "invalid_private_bindings_schema",
     )
     _require(
@@ -601,6 +628,49 @@ def _verify_outputs(binding, paths, source, identity):
             "private_secondary_mismatch",
         )
         _private_bindings(contents[evidence.path / "bindings.json"], identity)
+        reconstructed = reconstruct_internal_evidence(
+            contents[evidence.path / "predictions.jsonl"],
+            contents[evidence.path / "manifests.json"],
+            contents[evidence.path / "bindings.json"],
+            contents[evidence.path / "routing.json"],
+        )
+        reconstructed_public = source_runner._json(
+            _json_bytes(
+                {
+                    "row_count": reconstructed.row_count,
+                    "domain_count": reconstructed.domain_count,
+                    "class_counts": reconstructed.class_counts,
+                    "offline_inference_counts": asdict(reconstructed.inference_counts),
+                    "offline_secondary_inference_counts": asdict(
+                        reconstructed.secondary_inference_counts
+                    ),
+                    "manifests": {
+                        str(prevalence): _manifest_summary(outcome)
+                        for prevalence, outcome in reconstructed.manifests.items()
+                    },
+                    "primary": asdict(reconstructed.primary),
+                    "secondary": reconstructed.secondary,
+                }
+            )
+        )
+        _require(
+            _same(
+                reconstructed_public,
+                {
+                    "row_count": public["row_count"],
+                    "domain_count": public["domain_count"],
+                    "class_counts": public["class_counts"],
+                    "offline_inference_counts": public["offline_inference_counts"],
+                    "offline_secondary_inference_counts": public[
+                        "offline_secondary_inference_counts"
+                    ],
+                    "manifests": public["manifests"],
+                    "primary": public["primary"],
+                    "secondary": public["secondary"],
+                },
+            ),
+            "reconstructed_evidence_mismatch",
+        )
         source_runner.recheck_binding(binding)
         _directory_contents(attempt, _ATTEMPT_NAMES)
         _directory_contents(evidence, _PRIVATE_NAMES)
@@ -617,10 +687,10 @@ def _verify_outputs(binding, paths, source, identity):
 def verify_internal_completion(binding, paths, *, producer_exit_code: int) -> dict:
     """Accept only linked, intact evidence after an externally observed zero exit.
 
-    No producer input or model file is opened. The four private outputs are read
+    No producer input or model file is opened. The five private outputs are read
     exactly once through the descriptor-checked reader, then retained in memory.
-    Prediction/manifest contents and scientific estimates are not recomputed;
-    this is publication verification, not an independent scientific replication.
+    Prediction identities, features, decisions, metrics, gates, and manifests are
+    reconstructed from retained bytes without reopening source or model inputs.
     """
     _require(
         type(producer_exit_code) is int and producer_exit_code == 0,

@@ -13,7 +13,9 @@ from hashlib import sha256
 from pathlib import Path
 
 from . import baselines, execution_preflight, fixed_cascade, phiusiil
-from .execution_preflight import ExecutionBinding, bind_execution, recheck_binding
+from .execution_preflight import ExecutionBinding
+from .execution_preflight import _bind_historical_v2_execution as bind_execution
+from .execution_preflight import _recheck_historical_v2_binding as recheck_binding
 from .secondary_development import DevelopmentPins
 
 PROFILE_PATH = "data/development-execution-contract-v1.json"
@@ -111,7 +113,7 @@ def _read_profile(base, expected_hash):
             raise
         raise DevelopmentExecutionError("invalid_profile_policy") from None
     # Reuse regular Git-mode/committed-byte checks, including all project source.
-    execution_preflight._committed_files(
+    execution_preflight._historical_v2_committed_files(
         base.root,
         base.revision,
         {PROFILE_PATH: expected_hash, METHODS_PATH: METHODS_SHA256},
@@ -134,7 +136,7 @@ def _development_inputs(base, methods):
     for relative, digest in methods["public_file_sha256"].items():
         actual = (
             base.contract_sha256
-            if relative == execution_preflight._CONTRACT_PATH
+            if relative == execution_preflight._HISTORICAL_V2_CONTRACT_PATH
             else hashes.get(relative)
         )
         _require(actual == digest, "methods_public_chain_mismatch")

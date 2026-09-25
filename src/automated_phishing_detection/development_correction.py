@@ -77,7 +77,9 @@ def bind_correction(
         ACCOUNTING_PATH: ACCOUNTING_SHA256,
         **HISTORY_PINS,
     }
-    execution_preflight._committed_files(base.root, base.revision, expected)
+    execution_preflight._historical_v2_committed_files(
+        base.root, base.revision, expected
+    )
     accounting = execution_preflight._read_regular(base.root, ACCOUNTING_PATH)
     _require(
         sha256(accounting).hexdigest() == ACCOUNTING_SHA256, "accounting_hash_mismatch"

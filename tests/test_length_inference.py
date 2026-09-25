@@ -98,6 +98,14 @@ def test_length_loader_preserves_hash_bound_state_and_threshold():
     assert model.validation_threshold_record == _artifact()["validation_threshold"]
 
 
+def test_length_loader_retains_exact_replay_bytes_without_exposing_them():
+    content = _content()
+    model = _load(content)
+
+    assert model._artifact_bytes is content
+    assert "_artifact_bytes=" not in repr(model)
+
+
 def test_public_loader_matches_explicit_synthetic_bytes_and_binds_defaults(tmp_path):
     from automated_phishing_detection import length_inference
 

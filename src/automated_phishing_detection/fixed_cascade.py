@@ -483,6 +483,7 @@ class PortableLogisticL1:
     _software_versions: tuple[tuple[str, str], ...]
     _n_samples_seen: int
     _n_iter: int
+    _artifact_bytes: bytes = dataclass_field(repr=False)
     _loader_marker: object = dataclass_field(repr=False, compare=False)
 
     @property
@@ -662,6 +663,7 @@ def _load_logistic_l1_artifact_bytes(
         _software_versions=tuple(sorted(value["software_versions"].items())),
         _n_samples_seen=value["scaler"]["n_samples_seen"],
         _n_iter=value["classifier"]["n_iter"][0],
+        _artifact_bytes=content,
         _loader_marker=_LOADED_ARTIFACT_MARKER,
     )
 

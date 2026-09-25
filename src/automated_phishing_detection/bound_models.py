@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import math
 from dataclasses import dataclass
+from dataclasses import field as dataclass_field
 from hashlib import sha256
 from pathlib import Path
 
@@ -84,6 +85,9 @@ class BoundModels:
     gmm: dict
     monitor_boundary: float
     artifact_hashes: tuple[tuple[str, str], ...]
+    gmm_artifact_bytes: bytes = dataclass_field(repr=False)
+    audit_alert_count: int
+    audit_window_count: int
 
 
 def _read_public(root: Path) -> dict[str, dict]:
@@ -229,6 +233,30 @@ def _validate_transformer(summary: dict) -> dict:
     return counts
 
 
+def _validate_gmm_audit(summary: dict) -> None:
+    alerts = summary["audit_alert_count"]
+    windows = summary["audit_window_count"]
+    if (
+        type(alerts) is not int
+        or type(windows) is not int
+        or windows < 1
+        or not 0 <= alerts <= windows
+    ):
+        raise BoundModelsError("GMM public audit counts are invalid")
+    if (
+        not fixed_cascade._matches_exactly(
+            summary["input_counts"]["audit"]["complete_windows"], windows
+        )
+        or not fixed_cascade._matches_exactly(
+            summary["audit_alert_fraction"], alerts / windows
+        )
+        or not fixed_cascade._matches_exactly(
+            summary["false_alert_gate_met"], 20 * alerts <= windows
+        )
+    ):
+        raise BoundModelsError("GMM public audit counts or gate differ")
+
+
 def _validate_public(summaries: dict[str, dict]) -> None:
     baseline, transformer, gmm = (
         summaries[name] for name in ("baseline", "transformer", "gmm")
@@ -241,6 +269,7 @@ def _validate_public(summaries: dict[str, dict]) -> None:
         "transformer artifact hashes",
     )
     gmm_monitor._validate_public_summary(gmm)
+    _validate_gmm_audit(gmm)
     for key in (
         "schema_version",
         "status",
@@ -391,6 +420,9 @@ def load_bound_models(root: Path, paths: ArtifactPaths) -> BoundModels:
             gmm,
             summaries["gmm"]["threshold"],
             tuple(sorted(artifacts.items())),
+            content,
+            summaries["gmm"]["audit_alert_count"],
+            summaries["gmm"]["audit_window_count"],
         )
     except BoundModelsError:
         raise

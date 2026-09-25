@@ -14,13 +14,14 @@ from hashlib import sha256
 import pytest
 from test_source_runner import inputs, runner  # noqa: F401
 
-from automated_phishing_detection import execution_receipt
+from automated_phishing_detection import evaluation_producer, execution_receipt
 
 PRIVATE_NAMES = {
     "predictions.jsonl",
     "manifests.json",
     "bindings.json",
     "secondary.json",
+    "routing.json",
 }
 
 
@@ -32,9 +33,22 @@ def verifier():
 
 
 @pytest.fixture
-def published(runner, inputs):
+def published(runner, inputs, monkeypatch):
+    from automated_phishing_detection import saved_evidence
+
     binding, paths, _, events = inputs
     runner._run_bound_internal(binding, paths)
+    private_binding = _load(paths.attempt / "evidence/bindings.json")
+    monkeypatch.setattr(
+        saved_evidence,
+        "_EXPECTED_BINDING_CORE",
+        {
+            "artifact_hashes": private_binding["artifact_hashes"],
+            "thresholds": private_binding["thresholds"],
+            "secondary": private_binding["secondary"],
+            "gmm_audit": private_binding["gmm_audit"],
+        },
+    )
     return binding, paths, events
 
 
@@ -84,13 +98,25 @@ def test_valid_completion_returns_public_summary_with_single_safe_reads(
         reads[path] += 1
         assert path not in (paths.partition, paths.suffix_rules)
         assert path not in vars(paths.artifacts).values()
+        assert path not in vars(paths.secondary_artifacts).values()
         return original(path, **kwargs)
 
     monkeypatch.setattr(runner, "_read_file_once", observed)
+    reconstruct = verifier.reconstruct_internal_evidence
+    reconstruction_calls = []
+
+    def observed_reconstruction(*args):
+        reconstruction_calls.append(args)
+        return reconstruct(*args)
+
+    monkeypatch.setattr(
+        verifier, "reconstruct_internal_evidence", observed_reconstruction
+    )
     assert (
         verifier.verify_internal_completion(binding, paths, producer_exit_code=0)
         == expected
     )
+    assert len(reconstruction_calls) == 1
     assert set(reads) == {
         binding.root / "data/sources.json",
         binding.root / "reports/phiusiil-preparation-summary.json",
@@ -311,6 +337,83 @@ def test_altered_private_bytes_rejected(verifier, published, name):
         verifier.verify_internal_completion(binding, paths, producer_exit_code=0)
 
 
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        "feature",
+        "primary_decision",
+        "secondary_score",
+        "seed_42_score",
+        "monitor_probability",
+        "negative_log_likelihood",
+        "length_scoring_audit_json",
+        "stage1_scoring_audit_json",
+    ],
+)
+def test_repaired_prediction_science_mutation_is_reconstructed_and_rejected(
+    verifier, published, mutation
+):
+    binding, paths, *_ = published
+    path = paths.attempt / "evidence/predictions.jsonl"
+    rows = [json.loads(line) for line in path.read_bytes().splitlines()]
+    if mutation == "feature":
+        rows[0]["features"][0] += 1.0
+    elif mutation == "primary_decision":
+        rows[0]["stage1_decision"] = 1 - rows[0]["stage1_decision"]
+    elif mutation == "secondary_score":
+        rows[0]["secondary_tabular"][0]["probability"] = 0.24
+    elif mutation == "seed_42_score":
+        rows[0]["secondary_seeds"][0]["transformer_probability"] = 0.21
+    elif mutation.endswith("audit_json"):
+        rows[0][mutation] = '{"repaired":true}'
+    else:
+        rows[0][mutation] += 0.01
+    path.write_bytes(b"".join(evaluation_producer._json_bytes(row) for row in rows))
+    _relink(paths)
+    with pytest.raises(verifier.CompletionVerificationError):
+        verifier.verify_internal_completion(binding, paths, producer_exit_code=0)
+
+
+@pytest.mark.parametrize("mutation", ["routing_mask", "window", "alert_fraction"])
+def test_repaired_routing_mutation_is_reconstructed_and_rejected(
+    verifier, published, mutation
+):
+    binding, paths, *_ = published
+    path = paths.attempt / "evidence/routing.json"
+    routing = _load(path)
+    if mutation == "routing_mask":
+        routing["rows"][0]["drift_override"] = True
+    elif mutation == "window":
+        routing["windows"].append(
+            {"start_position": 1, "end_position": 4, "score": 2.0, "alert": False}
+        )
+    else:
+        routing["window_alert_fraction"] = 0.0
+    path.write_bytes(evaluation_producer._json_bytes(routing))
+    _relink(paths)
+    with pytest.raises(verifier.CompletionVerificationError):
+        verifier.verify_internal_completion(binding, paths, producer_exit_code=0)
+
+
+@pytest.mark.parametrize(
+    "mutation", ["audit", "length-only.json", "logistic-l1.json", "gmm.json"]
+)
+def test_repaired_retained_artifact_or_audit_mutation_rejected(
+    verifier, published, mutation
+):
+    binding, paths, *_ = published
+    path = paths.attempt / "evidence/bindings.json"
+    retained = _load(path)
+    if mutation == "audit":
+        retained["gmm_audit"]["alert_count"] = 0
+    else:
+        retained["replay_artifacts"][mutation] = "Y2hhbmdlZA=="
+    path.write_bytes(evaluation_producer._json_bytes(retained))
+    _relink(paths)
+    with pytest.raises(verifier.CompletionVerificationError):
+        verifier.verify_internal_completion(binding, paths, producer_exit_code=0)
+
+
 @pytest.mark.parametrize("location", ["attempt", "evidence"])
 def test_extraneous_files_rejected(verifier, published, location):
     binding, paths, *_ = published
@@ -509,7 +612,7 @@ def test_private_threshold_bounds_are_frozen(verifier, published, field, value):
         ("half_width", 0.75),
     ],
 )
-def test_private_threshold_validation_preserves_frozen_allowed_boundaries(
+def test_any_private_threshold_change_is_rejected_even_when_numerically_valid(
     verifier, published, field, value
 ):
     binding, paths, *_ = published
@@ -518,9 +621,8 @@ def test_private_threshold_validation_preserves_frozen_allowed_boundaries(
     data["thresholds"][field] = value
     _write(path, data)
     _relink(paths)
-    assert verifier.verify_internal_completion(
-        binding, paths, producer_exit_code=0
-    ) == _load(paths.public_summary)
+    with pytest.raises(verifier.CompletionVerificationError):
+        verifier.verify_internal_completion(binding, paths, producer_exit_code=0)
 
 
 def test_external_holm_slots_remain_unavailable(verifier, published):

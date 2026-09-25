@@ -13,7 +13,9 @@ from hashlib import sha256
 from pathlib import Path
 
 from . import bound_models, development_execution, execution_preflight, fixed_cascade
-from .execution_preflight import ExecutionBinding, bind_execution, recheck_binding
+from .execution_preflight import ExecutionBinding
+from .execution_preflight import _bind_historical_v2_execution as bind_execution
+from .execution_preflight import _recheck_historical_v2_binding as recheck_binding
 from .secondary_development import DevelopmentPins
 from .source_runner import _json
 
@@ -102,7 +104,9 @@ def validate_profile(value) -> None:
 
 def _read_supplement(base, expected_hash):
     _require(expected_hash == PROFILE_SHA256, "profile_hash_mismatch")
-    execution_preflight._committed_files(base.root, base.revision, _SUPPLEMENT_HASHES)
+    execution_preflight._historical_v2_committed_files(
+        base.root, base.revision, _SUPPLEMENT_HASHES
+    )
     contents = {}
     for relative, digest in _SUPPLEMENT_HASHES.items():
         content = execution_preflight._read_regular(base.root, relative)
@@ -118,7 +122,7 @@ def _read_supplement(base, expected_hash):
 
 def _validate_methods_chain(base, methods):
     hashes = dict(base.source_hashes) | _SUPPLEMENT_HASHES
-    hashes[execution_preflight._CONTRACT_PATH] = base.contract_sha256
+    hashes[execution_preflight._HISTORICAL_V2_CONTRACT_PATH] = base.contract_sha256
     _require(
         all(
             hashes.get(relative) == digest

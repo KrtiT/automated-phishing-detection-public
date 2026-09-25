@@ -13,47 +13,49 @@ import pytest
 
 from automated_phishing_detection import execution_preflight as preflight
 
-CONTRACT_PATH = "data/execution-binding-contract-v2.json"
+CONTRACT_PATH = "data/execution-binding-contract-v3.json"
 PACKAGE = "src/automated_phishing_detection"
 TEMPLATE = Path(__file__).resolve().parents[1] / CONTRACT_PATH
-HISTORICAL_CONTRACT_PATH = "data/execution-binding-contract-v1.json"
+HISTORICAL_CONTRACT_PATH = "data/execution-binding-contract-v2.json"
 HISTORICAL_CONTRACT_SHA256 = (
-    "9170e4f4b5530784d98b1bbbbf63404ffaa0203bee83827293a3970e9e2d4572"
+    "887f771381927dfe1b9268a45f4e605baf3e9a7caee2b7005cdfe68b1be516e1"
 )
 NEW_PUBLIC_PATHS = {
-    "data/shift-execution-contract-v1.json",
-    "data/secondary-analysis-contract-v1.json",
+    "data/secondary-development-contract-v1.json",
+    "data/secondary-seed-probe-contract-v1.json",
+    "reports/secondary-development-correction-v2-summary.json",
+    "reports/secondary-seed-probe-correction-v1-summary.json",
 }
 
 
-def test_historical_v1_contract_bytes_are_preserved():
+def test_historical_v2_contract_bytes_are_preserved():
     historical = TEMPLATE.parents[1] / HISTORICAL_CONTRACT_PATH
     assert sha256(historical.read_bytes()).hexdigest() == HISTORICAL_CONTRACT_SHA256
 
 
-def test_binding_uses_only_the_fixed_v2_contract_path():
-    assert preflight._CONTRACT_PATH == "data/execution-binding-contract-v2.json"
+def test_binding_uses_only_the_fixed_v3_contract_path():
+    assert preflight._CONTRACT_PATH == CONTRACT_PATH
 
 
-def test_new_code_rejects_historical_v1_contract_schema():
+def test_new_code_rejects_historical_v2_contract_schema():
     historical = TEMPLATE.parents[1] / HISTORICAL_CONTRACT_PATH
     with pytest.raises(preflight.ExecutionPreflightError, match="contract schema"):
         preflight._contract(historical.read_bytes())
 
 
-def test_v2_profile_preserves_historical_runtime_and_all_public_pins():
-    assert TEMPLATE.is_file(), "the prospective v2 profile must exist"
+def test_v3_profile_preserves_historical_runtime_and_all_public_pins():
+    assert TEMPLATE.is_file(), "the prospective v3 profile must exist"
     historical = json.loads(
         (TEMPLATE.parents[1] / HISTORICAL_CONTRACT_PATH).read_bytes()
     )
     current = json.loads(TEMPLATE.read_bytes())
-    assert current["schema_version"] == 2
-    assert current["contract_id"] == "execution-binding-v2"
+    assert current["schema_version"] == 3
+    assert current["contract_id"] == "execution-binding-v3"
     assert current["protected_evaluation_ready"] is False
     assert current["runtime"] == historical["runtime"]
     previous_pins = historical["public_file_sha256"]
     current_pins = current["public_file_sha256"]
-    assert len(previous_pins) == 23
+    assert len(previous_pins) == 26
     assert current_pins == {
         **previous_pins,
         HISTORICAL_CONTRACT_PATH: HISTORICAL_CONTRACT_SHA256,
@@ -63,6 +65,41 @@ def test_v2_profile_preserves_historical_runtime_and_all_public_pins():
         },
     }
     assert preflight._contract(TEMPLATE.read_bytes()) == current
+
+
+def test_v3_secondary_report_pins_match_the_bound_loader():
+    from automated_phishing_detection.bound_secondary import PUBLIC_REPORTS
+
+    assert TEMPLATE.is_file(), "the prospective v3 profile must exist"
+    pins = json.loads(TEMPLATE.read_bytes())["public_file_sha256"]
+    assert {relative: pins[relative] for relative, _ in PUBLIC_REPORTS.values()} == {
+        relative: digest for relative, digest in PUBLIC_REPORTS.values()
+    }
+
+
+def test_historical_callers_use_fixed_v2_interfaces():
+    from automated_phishing_detection import (
+        development_execution,
+        seed_probe_execution,
+    )
+
+    for module in (development_execution, seed_probe_execution):
+        assert module.bind_execution is preflight._bind_historical_v2_execution
+        assert module.recheck_binding is preflight._recheck_historical_v2_binding
+
+
+def test_historical_binder_rejects_other_pins_before_reading(monkeypatch):
+    monkeypatch.setattr(
+        preflight,
+        "_read_regular",
+        lambda *args: pytest.fail("read preceded fixed historical pin validation"),
+    )
+    with pytest.raises(preflight.ExecutionPreflightError, match="historical"):
+        preflight._bind_historical_v2_execution(
+            Path("unused"),
+            expected_revision="a" * 40,
+            expected_contract_sha256="b" * 64,
+        )
 
 
 def canonical(value):
@@ -172,6 +209,94 @@ def bind(repository, **overrides):
         ).hexdigest(),
     }
     return preflight.bind_execution(repository.root, **{**arguments, **overrides})
+
+
+@pytest.fixture
+def historical_repository(repository):
+    root = TEMPLATE.parents[1]
+    content = (root / HISTORICAL_CONTRACT_PATH).read_bytes()
+    contract = json.loads(content)
+    for name in contract["public_file_sha256"]:
+        write(repository.root, name, (root / name).read_bytes())
+    write(repository.root, HISTORICAL_CONTRACT_PATH, content)
+    (repository.root / CONTRACT_PATH).unlink()
+    repository.revision = commit(repository.root)
+    repository.contract = contract
+    return repository
+
+
+def test_historical_binding_and_recheck_do_not_require_v3(historical_repository):
+    repository = historical_repository
+    result = preflight._bind_historical_v2_execution(
+        repository.root,
+        expected_revision=repository.revision,
+        expected_contract_sha256=HISTORICAL_CONTRACT_SHA256,
+    )
+    assert result.protected_evaluation_ready is False
+    assert CONTRACT_PATH not in dict(result.source_hashes)
+    assert dict(result.source_hashes)[HISTORICAL_CONTRACT_PATH] == (
+        HISTORICAL_CONTRACT_SHA256
+    )
+    preflight._recheck_historical_v2_binding(result)
+    with pytest.raises(preflight.ExecutionPreflightError, match="missing"):
+        preflight.recheck_binding(result)
+
+
+def test_historical_contract_cannot_be_replaced_with_relinked_bytes(
+    historical_repository, monkeypatch
+):
+    repository = historical_repository
+    changed = copy.deepcopy(repository.contract)
+    changed["scope"] = "changed historical contract"
+    write(repository.root, HISTORICAL_CONTRACT_PATH, canonical(changed).encode())
+    repository.revision = commit(repository.root)
+    monkeypatch.setattr(
+        preflight,
+        "_probe_runtime",
+        lambda: pytest.fail("runtime preceded historical pin authentication"),
+    )
+    with pytest.raises(preflight.ExecutionPreflightError, match="SHA-256"):
+        preflight._bind_historical_v2_execution(
+            repository.root,
+            expected_revision=repository.revision,
+            expected_contract_sha256=HISTORICAL_CONTRACT_SHA256,
+        )
+
+
+def test_historical_recheck_rejects_active_v3_binding(repository):
+    result = bind(repository)
+    with pytest.raises(preflight.ExecutionPreflightError, match="historical"):
+        preflight._recheck_historical_v2_binding(result)
+
+
+def test_historical_recheck_detects_committed_source_change(historical_repository):
+    repository = historical_repository
+    result = preflight._bind_historical_v2_execution(
+        repository.root,
+        expected_revision=repository.revision,
+        expected_contract_sha256=HISTORICAL_CONTRACT_SHA256,
+    )
+    write(repository.root, f"{PACKAGE}/model.py", b"VALUE = 2\n")
+    repository.revision = commit(repository.root)
+    with pytest.raises(preflight.ExecutionPreflightError, match="revision"):
+        preflight._recheck_historical_v2_binding(result)
+
+
+@pytest.mark.parametrize("override_pin", [False, True])
+def test_historical_committed_files_always_enforce_the_fixed_v2_bytes(
+    historical_repository, override_pin
+):
+    repository = historical_repository
+    changed = canonical({"replacement": "historical profile"}).encode()
+    write(repository.root, HISTORICAL_CONTRACT_PATH, changed)
+    repository.revision = commit(repository.root)
+    public = (
+        {HISTORICAL_CONTRACT_PATH: sha256(changed).hexdigest()} if override_pin else {}
+    )
+    with pytest.raises(preflight.ExecutionPreflightError, match="SHA-256"):
+        preflight._historical_v2_committed_files(
+            repository.root, repository.revision, public
+        )
 
 
 def test_binding_authenticates_selected_committed_bytes_and_is_frozen(repository):
@@ -384,7 +509,7 @@ def test_committed_public_summary_still_must_match_contract_digest(repository):
 
 
 @pytest.mark.parametrize("name", sorted(NEW_PUBLIC_PATHS | {HISTORICAL_CONTRACT_PATH}))
-def test_changed_v2_public_pin_is_rejected_before_runtime_or_models(
+def test_changed_v3_public_pin_is_rejected_before_runtime_or_models(
     repository, monkeypatch, name
 ):
     write(repository.root, name, b'{"changed":"public metadata"}')

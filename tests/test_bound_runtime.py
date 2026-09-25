@@ -4,6 +4,7 @@ import importlib.util
 import json
 import threading
 from contextlib import contextmanager
+from dataclasses import FrozenInstanceError, fields
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -54,6 +55,160 @@ def fixture_composition(runtime, monkeypatch, tmp_path):
     monkeypatch.setattr(runtime, "load_bound_models", load)
     monkeypatch.setattr(runtime, "SelectiveCascade", scorer)
     return binding, paths, events
+
+
+def test_bound_evaluation_session_is_immutable(runtime):
+    primary = runtime.BoundSession(SimpleNamespace(), object())
+    secondary = object()
+
+    session = runtime.BoundEvaluationSession(primary, secondary)
+
+    assert [field.name for field in fields(session)] == ["primary", "secondary"]
+    assert session.primary is primary
+    assert session.secondary is secondary
+    with pytest.raises(FrozenInstanceError):
+        session.secondary = object()
+
+
+def fixture_evaluation_composition(runtime, monkeypatch, tmp_path):
+    events = []
+    binding = SimpleNamespace(root=tmp_path)
+    primary_paths = object()
+    secondary_paths = object()
+    cascade = object()
+    models = SimpleNamespace(cascade=cascade)
+    scorer = object()
+    secondary = object()
+    state = SimpleNamespace(owner_active=False)
+
+    def check(value):
+        assert value is binding
+        assert not state.owner_active, "runtime probe ran inside numerical owner"
+        events.append("check")
+
+    def load_primary(root, supplied_paths):
+        assert root == tmp_path and supplied_paths is primary_paths
+        assert not state.owner_active
+        events.append("primary_load")
+        return models
+
+    @contextmanager
+    def open_owner(loaded):
+        assert loaded is cascade
+        state.owner_active = True
+        events.append("owner_enter")
+        try:
+            yield scorer
+        finally:
+            state.owner_active = False
+            events.append("owner_exit")
+
+    def load(root, supplied_paths, supplied_primary):
+        assert root == tmp_path
+        assert supplied_paths is secondary_paths
+        assert supplied_primary is cascade
+        assert not state.owner_active, "secondary load ran inside numerical owner"
+        events.append("secondary_load")
+        return secondary
+
+    monkeypatch.setattr(runtime, "recheck_binding", check)
+    monkeypatch.setattr(runtime, "load_bound_models", load_primary)
+    monkeypatch.setattr(runtime, "SelectiveCascade", open_owner)
+    monkeypatch.setattr(runtime, "load_bound_secondary", load)
+    return SimpleNamespace(
+        binding=binding,
+        primary_paths=primary_paths,
+        secondary_paths=secondary_paths,
+        models=models,
+        scorer=scorer,
+        secondary=secondary,
+        events=events,
+        state=state,
+    )
+
+
+@pytest.mark.parametrize("consumer_fails", [False, True])
+def test_bound_evaluation_rechecks_outside_owner_and_after_restoration(
+    runtime, monkeypatch, tmp_path, consumer_fails
+):
+    fixture = fixture_evaluation_composition(runtime, monkeypatch, tmp_path)
+
+    def consume():
+        with runtime.open_bound_evaluation_session(
+            fixture.binding, fixture.primary_paths, fixture.secondary_paths
+        ) as session:
+            assert type(session) is runtime.BoundEvaluationSession
+            assert type(session.primary) is runtime.BoundSession
+            assert session.primary.models is fixture.models
+            assert session.primary.scorer is fixture.scorer
+            assert session.secondary is fixture.secondary
+            assert fixture.state.owner_active
+            fixture.events.append("consumer")
+            if consumer_fails:
+                raise RuntimeError("consumer failed")
+
+    if consumer_fails:
+        with pytest.raises(RuntimeError, match="consumer failed"):
+            consume()
+    else:
+        consume()
+
+    assert fixture.events == [
+        "check",
+        "primary_load",
+        "secondary_load",
+        "check",
+        "owner_enter",
+        "consumer",
+        "owner_exit",
+        "check",
+    ]
+    assert not fixture.state.owner_active
+
+
+def test_failed_evaluation_secondary_load_never_enters_owner(
+    runtime, monkeypatch, tmp_path
+):
+    fixture = fixture_evaluation_composition(runtime, monkeypatch, tmp_path)
+
+    def reject(*args):
+        fixture.events.append("secondary_rejected")
+        raise ValueError("secondary artifact mismatch")
+
+    monkeypatch.setattr(runtime, "load_bound_secondary", reject)
+    with pytest.raises(ValueError, match="secondary artifact mismatch"):
+        with runtime.open_bound_evaluation_session(
+            fixture.binding, fixture.primary_paths, fixture.secondary_paths
+        ):
+            pytest.fail("invalid secondary binding reached consumer")
+
+    assert fixture.events == ["check", "primary_load", "secondary_rejected"]
+    assert not fixture.state.owner_active
+
+
+def test_changed_evaluation_binding_after_both_loads_never_enters_owner(
+    runtime, monkeypatch, tmp_path
+):
+    fixture = fixture_evaluation_composition(runtime, monkeypatch, tmp_path)
+    original = runtime.recheck_binding
+    checks = 0
+
+    def check(binding):
+        nonlocal checks
+        checks += 1
+        original(binding)
+        if checks == 2:
+            raise ValueError("binding changed during secondary loading")
+
+    monkeypatch.setattr(runtime, "recheck_binding", check)
+    with pytest.raises(ValueError, match="during secondary loading"):
+        with runtime.open_bound_evaluation_session(
+            fixture.binding, fixture.primary_paths, fixture.secondary_paths
+        ):
+            pytest.fail("stale binding reached consumer")
+
+    assert fixture.events == ["check", "primary_load", "secondary_load", "check"]
+    assert not fixture.state.owner_active
 
 
 def test_bound_loading_and_rechecks_run_on_service_owner(

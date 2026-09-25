@@ -5,7 +5,7 @@ import os
 import subprocess
 import sys
 from contextlib import contextmanager
-from dataclasses import replace
+from dataclasses import fields, replace
 from hashlib import sha256
 from pathlib import Path
 from types import SimpleNamespace
@@ -15,6 +15,7 @@ from test_evaluation_producer import SOURCE, encoded, source_rows, synthetic_ses
 
 from automated_phishing_detection import evaluation_producer, execution_preflight
 from automated_phishing_detection.bound_models import ArtifactPaths
+from automated_phishing_detection.bound_secondary import SecondaryArtifactPaths
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -27,6 +28,30 @@ def runner():
     from automated_phishing_detection import source_runner
 
     return source_runner
+
+
+def test_internal_run_paths_names_the_complete_secondary_inventory(runner):
+    assert [field.name for field in fields(runner.InternalRunPaths)] == [
+        "partition",
+        "suffix_rules",
+        "artifacts",
+        "secondary_artifacts",
+        "attempt",
+        "public_summary",
+    ]
+    assert [field.name for field in fields(SecondaryArtifactPaths)] == [
+        "formatting",
+        "permutation_42",
+        "permutation_43",
+        "permutation_44",
+        "permutation_45",
+        "permutation_46",
+        "random_forest",
+        "seed_43_weights",
+        "seed_44_weights",
+        "seed_45_weights",
+        "seed_46_weights",
+    ]
 
 
 @pytest.fixture
@@ -72,6 +97,9 @@ def inputs(tmp_path, runner, monkeypatch):
         partition,
         psl,
         ArtifactPaths(*(tmp_path / name for name in ("length", "lr", "tf", "gmm"))),
+        SecondaryArtifactPaths(
+            *(tmp_path / f"secondary-{index}" for index in range(11))
+        ),
         tmp_path / "attempt",
         tmp_path / "summary.json",
     )
@@ -84,7 +112,7 @@ def inputs(tmp_path, runner, monkeypatch):
         yield session
         events.append("exit")
 
-    monkeypatch.setattr(runner, "open_bound_session", open_session)
+    monkeypatch.setattr(runner, "open_bound_evaluation_session", open_session)
     monkeypatch.setattr(
         runner, "recheck_binding", lambda *args: events.append("recheck")
     )
@@ -102,7 +130,7 @@ def test_incomplete_freeze_rejects_before_any_supplied_path_access(
 
     monkeypatch.setattr(runner, "_read_file_once", forbidden)
     monkeypatch.setattr(runner, "reserve_attempt", forbidden)
-    monkeypatch.setattr(runner, "open_bound_session", forbidden)
+    monkeypatch.setattr(runner, "open_bound_evaluation_session", forbidden)
     monkeypatch.setattr(runner, "_output_paths", forbidden)
     with pytest.raises(runner.SourceExecutionError, match="pre_access_freeze"):
         runner.run_internal_evaluation(
@@ -137,14 +165,65 @@ def test_single_read_reserved_before_access_and_published_after_teardown(
     monkeypatch.setattr(runner, "publish_completion", checked_publish)
     result = runner._run_bound_internal(binding, paths)
     assert reads == [paths.suffix_rules, paths.partition]
-    assert len(session.scorer.urls) == 4
+    assert len(session.primary.scorer.urls) == 4
     assert result == paths.public_summary
     public = json.loads(result.read_bytes())
+    assert public["schema_version"] == 3
     assert public["source_binding"] == "authenticated_public_preparation"
     assert public["protected_evaluation_authorized"] is False
+    assert public["offline_secondary_inference_counts"] == {
+        "reused_primary_transformer_scores": 4,
+        "tabular_singleton_calls": [
+            [name, 4]
+            for name in (
+                "formatting",
+                "permutation_42",
+                "permutation_43",
+                "permutation_44",
+                "permutation_45",
+                "permutation_46",
+                "random_forest",
+            )
+        ],
+        "transformer_singleton_calls": [
+            [42, 0],
+            [43, 4],
+            [44, 4],
+            [45, 4],
+            [46, 4],
+        ],
+    }
     assert (
         public["secondary"]["metrics"]["logistic_l1"]["counts"]["recall"]["denominator"]
         == 2
+    )
+    assert public["secondary"]["schema_version"] == 2
+    assert set(public["secondary"]["metrics"]) == {
+        "length_only",
+        "logistic_l1",
+        "transformer",
+        "cascade",
+        "tabular.formatting",
+        "tabular.permutation_42",
+        "tabular.permutation_43",
+        "tabular.permutation_44",
+        "tabular.permutation_45",
+        "tabular.permutation_46",
+        "tabular.random_forest",
+        "seed_42.transformer",
+        "seed_42.cascade",
+        "seed_43.transformer",
+        "seed_43.cascade",
+        "seed_44.transformer",
+        "seed_44.cascade",
+        "seed_45.transformer",
+        "seed_45.cascade",
+        "seed_46.transformer",
+        "seed_46.cascade",
+    }
+    assert all(
+        metric["analysis_role"] == "descriptive_secondary_not_primary"
+        for metric in public["secondary"]["metrics"].values()
     )
     assert "example0.com" not in result.read_text()
     for name, digest in public["private_sha256"].items():
@@ -157,6 +236,7 @@ def test_single_read_reserved_before_access_and_published_after_teardown(
         "manifests.json",
         "bindings.json",
         "secondary.json",
+        "routing.json",
     }
 
 
@@ -166,7 +246,7 @@ def test_bad_input_hash_records_failure_without_scoring(runner, inputs, bad):
     getattr(paths, bad).write_bytes(b"bad bytes")
     with pytest.raises(runner.SourceExecutionError):
         runner._run_bound_internal(binding, paths)
-    assert session.scorer.urls == []
+    assert session.primary.scorer.urls == []
     assert not paths.public_summary.exists()
     outcome = json.loads((paths.attempt / "outcome.json").read_bytes())
     assert outcome["status"] == "failed"
@@ -204,7 +284,7 @@ def test_model_loading_follows_reservation_and_precedes_partition_read(
         yield
 
     monkeypatch.setattr(runner, "_read_file_once", guarded)
-    monkeypatch.setattr(runner, "open_bound_session", broken)
+    monkeypatch.setattr(runner, "open_bound_evaluation_session", broken)
     with pytest.raises(runner.SourceExecutionError, match="model_loading"):
         runner._run_bound_internal(binding, paths)
     assert not paths.public_summary.exists()
@@ -279,6 +359,20 @@ def test_fresh_process_entry_has_no_readiness_override(runner, tmp_path):
     )
     assert result.returncode == 0
     assert "--expected-revision" in result.stdout
+    for name in (
+        "formatting",
+        "permutation-42",
+        "permutation-43",
+        "permutation-44",
+        "permutation-45",
+        "permutation-46",
+        "random-forest",
+        "seed-43-weights",
+        "seed-44-weights",
+        "seed-45-weights",
+        "seed-46-weights",
+    ):
+        assert f"--{name}" in result.stdout
     assert "--authorize" not in result.stdout and "--force" not in result.stdout
     result = subprocess.run(
         [
@@ -301,6 +395,28 @@ def test_fresh_process_entry_has_no_readiness_override(runner, tmp_path):
             "--transformer-bundle",
             "missing",
             "--gmm",
+            "missing",
+            "--formatting",
+            "missing",
+            "--permutation-42",
+            "missing",
+            "--permutation-43",
+            "missing",
+            "--permutation-44",
+            "missing",
+            "--permutation-45",
+            "missing",
+            "--permutation-46",
+            "missing",
+            "--random-forest",
+            "missing",
+            "--seed-43-weights",
+            "missing",
+            "--seed-44-weights",
+            "missing",
+            "--seed-45-weights",
+            "missing",
+            "--seed-46-weights",
             "missing",
             "--attempt",
             str(tmp_path / "attempt"),
@@ -460,6 +576,22 @@ def test_parent_passes_actual_exit_to_independent_verifier(
     ]
     assert command[command.index("--partition") + 1] == str(paths.partition)
     assert command[command.index("--expected-revision") + 1] == binding.revision
+    for option, field in (
+        ("formatting", "formatting"),
+        ("permutation-42", "permutation_42"),
+        ("permutation-43", "permutation_43"),
+        ("permutation-44", "permutation_44"),
+        ("permutation-45", "permutation_45"),
+        ("permutation-46", "permutation_46"),
+        ("random-forest", "random_forest"),
+        ("seed-43-weights", "seed_43_weights"),
+        ("seed-44-weights", "seed_44_weights"),
+        ("seed-45-weights", "seed_45_weights"),
+        ("seed-46-weights", "seed_46_weights"),
+    ):
+        assert command[command.index(f"--{option}") + 1] == str(
+            getattr(paths.secondary_artifacts, field)
+        )
 
 
 def test_session_teardown_failure_never_publishes(runner, inputs, monkeypatch):
@@ -470,7 +602,7 @@ def test_session_teardown_failure_never_publishes(runner, inputs, monkeypatch):
         yield session
         raise RuntimeError("private-url-that-must-not-be-reported")
 
-    monkeypatch.setattr(runner, "open_bound_session", broken)
+    monkeypatch.setattr(runner, "open_bound_evaluation_session", broken)
     with pytest.raises(runner.SourceExecutionError) as caught:
         runner._run_bound_internal(binding, paths)
     assert "private-url" not in str(caught.value)

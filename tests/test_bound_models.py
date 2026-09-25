@@ -269,6 +269,44 @@ def test_bound_models_preserve_thresholds_all_provenance_and_do_not_fit(
         paths.gmm = root
 
 
+def test_binding_retains_gmm_bytes_from_its_single_read(module, fixture, monkeypatch):
+    root, paths, _, _ = fixture
+    original_read = fixed_cascade._read_regular_file
+    captured = []
+
+    def read(path):
+        content = original_read(path)
+        if path == paths.gmm:
+            captured.append(content)
+        return content
+
+    monkeypatch.setattr(fixed_cascade, "_read_regular_file", read)
+    result = module.load_bound_models(root, paths)
+
+    assert len(captured) == 1
+    assert result.gmm_artifact_bytes is captured[0]
+    assert "gmm_artifact_bytes=" not in repr(result)
+
+
+def test_binding_derives_audit_counts_from_authenticated_summary(module, fixture):
+    root, paths, _, _ = fixture
+
+    def update_audit(summary):
+        summary.update(
+            audit_alert_count=2,
+            audit_window_count=20,
+            audit_alert_fraction=0.1,
+            false_alert_gate_met=False,
+        )
+        summary["input_counts"]["audit"]["complete_windows"] = 20
+
+    rewrite_public(module, fixture, "gmm", update_audit)
+    result = module.load_bound_models(root, paths)
+
+    assert result.audit_alert_count == 2
+    assert result.audit_window_count == 20
+
+
 @pytest.mark.parametrize("name", PUBLIC_PATHS)
 def test_public_hash_failure_precedes_every_private_read(
     module, fixture, monkeypatch, name
@@ -307,6 +345,17 @@ def test_public_hash_failure_precedes_every_private_read(
         ("transformer", lambda value: value["cascade"].update(accepted_cascade=False)),
         ("gmm", lambda value: value.update(threshold=True)),
         ("gmm", lambda value: value.update(selected_component_count=True)),
+        ("gmm", lambda value: value.update(audit_alert_count=True)),
+        ("gmm", lambda value: value.update(audit_alert_count=-1)),
+        ("gmm", lambda value: value.update(audit_alert_count=253)),
+        ("gmm", lambda value: value.update(audit_window_count=True)),
+        ("gmm", lambda value: value.update(audit_window_count=0)),
+        ("gmm", lambda value: value.update(audit_alert_fraction=0.0)),
+        ("gmm", lambda value: value.update(false_alert_gate_met=True)),
+        (
+            "gmm",
+            lambda value: value["input_counts"]["audit"].update(complete_windows=251),
+        ),
         (
             "gmm",
             lambda value: value["input_hashes"].update(logistic_l1_artifact="0" * 64),

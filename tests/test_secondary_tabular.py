@@ -2,6 +2,7 @@
 
 import importlib.util
 import json
+from contextlib import contextmanager, nullcontext
 from dataclasses import FrozenInstanceError
 from itertools import islice, permutations
 
@@ -229,6 +230,149 @@ def test_loaded_scoring_has_no_fit_dependency(tabular, monkeypatch):
     monkeypatch.setattr(tabular.LogisticRegression, "fit", no_fit)
     model = tabular.load_secondary_model_bytes(result.artifact_bytes)
     assert model.score_urls(inputs()[2]) == result.validation_scores
+
+
+def invented_formatting_model(tabular):
+    state = {
+        "scaler": {
+            "mean": [0.0] * 5,
+            "scale": [1.0] * 5,
+            "variance": [1.0] * 5,
+            "n_samples_seen": 2,
+        },
+        "coefficients": [[0.0] * 5],
+        "intercept": [0.0],
+        "n_iter": [1],
+    }
+    artifact = tabular._artifact("formatting", 2, state, None)
+    return tabular.load_secondary_model_bytes(canonical(artifact))
+
+
+def test_loaded_singleton_ordered_scoring_reuses_validation_and_runtime(
+    tabular, monkeypatch
+):
+    model = invented_formatting_model(tabular)
+    urls = (
+        "HTTPS://SAFE.example:443",
+        "https://safe.example/b",
+        "https://safe.example/a",
+    )
+    original_decode = tabular._decode_model
+    original_features = tabular._features
+    original_score = tabular._score_state
+    calls = {"decode": 0, "runtime": 0, "urls": [], "shapes": []}
+
+    def decode(content):
+        calls["decode"] += 1
+        return original_decode(content)
+
+    @contextmanager
+    def runtime():
+        calls["runtime"] += 1
+        yield
+
+    def features(supplied, kind):
+        assert type(supplied) is tuple and len(supplied) == 1
+        calls["urls"].append(supplied[0])
+        return original_features(supplied, kind)
+
+    def score(artifact, matrix):
+        calls["shapes"].append(matrix.shape)
+        return original_score(artifact, matrix)
+
+    monkeypatch.setattr(tabular, "_decode_model", decode)
+    monkeypatch.setattr(tabular, "_numerical_runtime", runtime)
+    monkeypatch.setattr(tabular, "_features", features)
+    monkeypatch.setattr(tabular, "_score_state", score)
+    monkeypatch.setattr(
+        tabular.LogisticRegression,
+        "fit",
+        lambda *args, **kwargs: pytest.fail("singleton scoring attempted to fit"),
+    )
+    monkeypatch.setattr(
+        baselines,
+        "select_validation_threshold",
+        lambda *args, **kwargs: pytest.fail("singleton scoring attempted to calibrate"),
+    )
+
+    assert model.score_urls_singleton_ordered(urls) == (0.5, 0.5, 0.5)
+    assert calls == {
+        "decode": 1,
+        "runtime": 1,
+        "urls": list(urls),
+        "shapes": [(1, 5)] * len(urls),
+    }
+
+
+@pytest.mark.parametrize(
+    "raw_urls",
+    [
+        (),
+        [],
+        "https://invented.example/path",
+        b"https://invented.example/path",
+        {"https://invented.example/path"},
+        ("https://invented.example/valid", None),
+    ],
+)
+def test_singleton_ordered_scoring_prevalidates_every_url(
+    tabular, monkeypatch, raw_urls
+):
+    model = invented_formatting_model(tabular)
+    scored = []
+
+    def score(*args):
+        scored.append(1)
+        return np.asarray([0.5]), {}
+
+    monkeypatch.setattr(tabular, "_numerical_runtime", nullcontext)
+    monkeypatch.setattr(tabular, "_score_state", score)
+
+    with pytest.raises(tabular.SecondaryTabularError):
+        model.score_urls_singleton_ordered(raw_urls)
+    assert scored == []
+
+
+def test_singleton_ordered_scoring_rejects_nonfinite_features_before_scoring(
+    tabular, monkeypatch
+):
+    model = invented_formatting_model(tabular)
+    monkeypatch.setattr(tabular, "_numerical_runtime", nullcontext)
+    monkeypatch.setattr(
+        tabular.secondary_probes,
+        "extract_formatting_features",
+        lambda raw_url: (0.0, 0.0, float("nan"), 0.0, 0.0),
+    )
+    monkeypatch.setattr(
+        tabular,
+        "_score_state",
+        lambda *args: pytest.fail("nonfinite features reached model scoring"),
+    )
+
+    with pytest.raises(
+        tabular.SecondaryTabularError, match="secondary features must be finite"
+    ):
+        model.score_urls_singleton_ordered(("https://invented.example/path",))
+
+
+@pytest.mark.parametrize(
+    "scores",
+    [
+        np.asarray([], dtype=np.float64),
+        np.asarray([0.25, 0.75], dtype=np.float64),
+        np.asarray([float("nan")], dtype=np.float64),
+        np.asarray([float("inf")], dtype=np.float64),
+    ],
+)
+def test_singleton_ordered_scoring_rejects_invalid_probability(
+    tabular, monkeypatch, scores
+):
+    model = invented_formatting_model(tabular)
+    monkeypatch.setattr(tabular, "_numerical_runtime", nullcontext)
+    monkeypatch.setattr(tabular, "_score_state", lambda *args: (scores, {}))
+
+    with pytest.raises(tabular.SecondaryTabularError, match="singleton probability"):
+        model.score_urls_singleton_ordered(("https://invented.example/path",))
 
 
 def test_runtime_rejects_other_blas_before_extracting_any_input(tabular, monkeypatch):

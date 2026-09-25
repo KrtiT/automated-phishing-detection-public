@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 
 from automated_phishing_detection.bound_models import ArtifactPaths
+from automated_phishing_detection.bound_secondary import SecondaryArtifactPaths
 from automated_phishing_detection.source_runner import (
     InternalRunPaths,
     run_internal_evaluation,
@@ -28,6 +29,17 @@ def parser():
         "logistic-l1",
         "transformer-bundle",
         "gmm",
+        "formatting",
+        "permutation-42",
+        "permutation-43",
+        "permutation-44",
+        "permutation-45",
+        "permutation-46",
+        "random-forest",
+        "seed-43-weights",
+        "seed-44-weights",
+        "seed-45-weights",
+        "seed-46-weights",
         "attempt",
         "public-summary",
     ):
@@ -42,6 +54,19 @@ def main(argv=None):
         args.suffix_rules,
         ArtifactPaths(
             args.length_only, args.logistic_l1, args.transformer_bundle, args.gmm
+        ),
+        SecondaryArtifactPaths(
+            args.formatting,
+            args.permutation_42,
+            args.permutation_43,
+            args.permutation_44,
+            args.permutation_45,
+            args.permutation_46,
+            args.random_forest,
+            args.seed_43_weights,
+            args.seed_44_weights,
+            args.seed_45_weights,
+            args.seed_46_weights,
         ),
         args.attempt,
         args.public_summary,

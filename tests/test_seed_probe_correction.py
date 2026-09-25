@@ -187,7 +187,7 @@ def _binding_fixture(api, tmp_path, monkeypatch):
     )
     monkeypatch.setattr(
         execution_preflight,
-        "_committed_files",
+        "_historical_v2_committed_files",
         lambda supplied_root, revision, pins: calls.append(
             ("committed", supplied_root, revision, pins)
         ),

@@ -19,9 +19,13 @@ from dataclasses import dataclass
 from hashlib import sha256
 from pathlib import Path, PurePosixPath
 
-_CONTRACT_PATH = "data/execution-binding-contract-v2.json"
+_CONTRACT_PATH = "data/execution-binding-contract-v3.json"
+_HISTORICAL_V2_CONTRACT_PATH = "data/execution-binding-contract-v2.json"
+_HISTORICAL_V2_CONTRACT_SHA256 = (
+    "887f771381927dfe1b9268a45f4e605baf3e9a7caee2b7005cdfe68b1be516e1"
+)
 _PACKAGE_ROOT = "src/automated_phishing_detection"
-_PUBLIC_PATHS = frozenset(
+_HISTORICAL_V2_PUBLIC_PATHS = frozenset(
     {
         "data/evaluation-contract-v1.json",
         "data/evaluation-manifest-contract-v1.json",
@@ -51,6 +55,13 @@ _PUBLIC_PATHS = frozenset(
         "reports/rq2-gmm-development-v1-summary.json",
     }
 )
+_PUBLIC_PATHS = _HISTORICAL_V2_PUBLIC_PATHS | {
+    _HISTORICAL_V2_CONTRACT_PATH,
+    "data/secondary-development-contract-v1.json",
+    "data/secondary-seed-probe-contract-v1.json",
+    "reports/secondary-development-correction-v2-summary.json",
+    "reports/secondary-seed-probe-correction-v1-summary.json",
+}
 _RUNTIME_PACKAGES = (
     "annotated-doc",
     "annotated-types",
@@ -256,6 +267,18 @@ def _read_regular(root: Path, relative: str) -> bytes:
 
 
 def _contract(content: bytes) -> dict:
+    return _parse_contract(content, 3, _PUBLIC_PATHS)
+
+
+def _historical_v2_contract(content: bytes) -> dict:
+    if sha256(content).hexdigest() != _HISTORICAL_V2_CONTRACT_SHA256:
+        raise ExecutionPreflightError("historical execution contract bytes changed")
+    return _parse_contract(content, 2, _HISTORICAL_V2_PUBLIC_PATHS)
+
+
+def _parse_contract(
+    content: bytes, schema_version: int, public_paths: frozenset
+) -> dict:
     def unique(pairs):
         result = {}
         for name, value in pairs:
@@ -291,8 +314,8 @@ def _contract(content: bytes) -> dict:
         type(value) is not dict
         or set(value) != required
         or type(value["schema_version"]) is not int
-        or value["schema_version"] != 2
-        or value["contract_id"] != "execution-binding-v2"
+        or value["schema_version"] != schema_version
+        or value["contract_id"] != f"execution-binding-v{schema_version}"
         or value["status"] != "specified_synthetic_preflight"
         or value["protected_evaluation_ready"] is not False
     ):
@@ -300,7 +323,7 @@ def _contract(content: bytes) -> dict:
             "execution contract schema or access status is invalid"
         )
     public = value["public_file_sha256"]
-    if type(public) is not dict or set(public) != _PUBLIC_PATHS:
+    if type(public) is not dict or set(public) != public_paths:
         raise ExecutionPreflightError(
             "contract public file allowlist must match exactly"
         )
@@ -360,7 +383,24 @@ def _contract(content: bytes) -> dict:
 
 
 def _committed_files(root: Path, revision: str, public: dict) -> dict[str, str]:
-    required = set(public) | {_CONTRACT_PATH, "pyproject.toml", "uv.lock"}
+    return _profile_committed_files(root, revision, public, _CONTRACT_PATH)
+
+
+def _historical_v2_committed_files(
+    root: Path, revision: str, public: dict
+) -> dict[str, str]:
+    return _profile_committed_files(
+        root,
+        revision,
+        {**public, _HISTORICAL_V2_CONTRACT_PATH: _HISTORICAL_V2_CONTRACT_SHA256},
+        _HISTORICAL_V2_CONTRACT_PATH,
+    )
+
+
+def _profile_committed_files(
+    root: Path, revision: str, public: dict, contract_path: str
+) -> dict[str, str]:
+    required = set(public) | {contract_path, "pyproject.toml", "uv.lock"}
     selected = {}
     tree = _git(root, "ls-tree", "-r", "-z", "--full-tree", revision)
     for entry in tree.split(b"\0"):
@@ -578,6 +618,40 @@ def bind_execution(
     root: Path, *, expected_revision: str, expected_contract_sha256: str
 ) -> ExecutionBinding:
     """Authenticate public execution identity only, never protected-data readiness."""
+    return _bind_profile(
+        root,
+        expected_revision=expected_revision,
+        expected_contract_sha256=expected_contract_sha256,
+        contract_path=_CONTRACT_PATH,
+        parse_contract=_contract,
+        committed_files=_committed_files,
+    )
+
+
+def _bind_historical_v2_execution(
+    root: Path, *, expected_revision: str, expected_contract_sha256: str
+) -> ExecutionBinding:
+    if expected_contract_sha256 != _HISTORICAL_V2_CONTRACT_SHA256:
+        raise ExecutionPreflightError("historical execution contract pin is fixed")
+    return _bind_profile(
+        root,
+        expected_revision=expected_revision,
+        expected_contract_sha256=expected_contract_sha256,
+        contract_path=_HISTORICAL_V2_CONTRACT_PATH,
+        parse_contract=_historical_v2_contract,
+        committed_files=_historical_v2_committed_files,
+    )
+
+
+def _bind_profile(
+    root: Path,
+    *,
+    expected_revision: str,
+    expected_contract_sha256: str,
+    contract_path: str,
+    parse_contract,
+    committed_files,
+) -> ExecutionBinding:
     _exact_hex(expected_revision, 40, "expected_revision")
     _exact_hex(expected_contract_sha256, 64, "expected_contract_sha256")
     _environment()
@@ -586,13 +660,13 @@ def bind_execution(
     except (OSError, TypeError) as exc:
         raise ExecutionPreflightError("checkout root is invalid") from exc
     _check_checkout(root, expected_revision)
-    content = _read_regular(root, _CONTRACT_PATH)
+    content = _read_regular(root, contract_path)
     if sha256(content).hexdigest() != expected_contract_sha256:
         raise ExecutionPreflightError(
             "execution contract SHA-256 differs from reviewed pin"
         )
-    contract = _contract(content)
-    hashes = _committed_files(root, expected_revision, contract["public_file_sha256"])
+    contract = parse_contract(content)
+    hashes = committed_files(root, expected_revision, contract["public_file_sha256"])
     _check_imports(root, hashes)
     runtime = _probe_runtime()
     _check_runtime(runtime, contract["runtime"])
@@ -617,6 +691,20 @@ def recheck_binding(binding: ExecutionBinding) -> None:
     if type(binding) is not ExecutionBinding:
         raise ExecutionPreflightError("use a typed execution binding")
     current = bind_execution(
+        binding.root,
+        expected_revision=binding.revision,
+        expected_contract_sha256=binding.contract_sha256,
+    )
+    if current != binding:
+        raise ExecutionPreflightError(
+            "execution identity differs from the prior binding"
+        )
+
+
+def _recheck_historical_v2_binding(binding: ExecutionBinding) -> None:
+    if type(binding) is not ExecutionBinding:
+        raise ExecutionPreflightError("use a typed execution binding")
+    current = _bind_historical_v2_execution(
         binding.root,
         expected_revision=binding.revision,
         expected_contract_sha256=binding.contract_sha256,

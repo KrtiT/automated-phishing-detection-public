@@ -13,6 +13,11 @@ from automated_phishing_detection.bound_models import (
     BoundModels,
     load_bound_models,
 )
+from automated_phishing_detection.bound_secondary import (
+    BoundSecondary,
+    SecondaryArtifactPaths,
+    load_bound_secondary,
+)
 from automated_phishing_detection.execution_preflight import (
     ExecutionBinding,
     recheck_binding,
@@ -30,6 +35,12 @@ class BoundSession:
     scorer: SelectiveCascade
 
 
+@dataclass(frozen=True)
+class BoundEvaluationSession:
+    primary: BoundSession
+    secondary: BoundSecondary
+
+
 @contextmanager
 def open_bound_session(
     binding: ExecutionBinding, paths: ArtifactPaths
@@ -41,6 +52,24 @@ def open_bound_session(
     try:
         with SelectiveCascade(models.cascade) as scorer:
             yield BoundSession(models, scorer)
+    finally:
+        recheck_binding(binding)
+
+
+@contextmanager
+def open_bound_evaluation_session(
+    binding: ExecutionBinding,
+    primary_paths: ArtifactPaths,
+    secondary_paths: SecondaryArtifactPaths,
+) -> Iterator[BoundEvaluationSession]:
+    """Bind all artifacts before ownership and recheck after numerical restoration."""
+    recheck_binding(binding)
+    models = load_bound_models(binding.root, primary_paths)
+    secondary = load_bound_secondary(binding.root, secondary_paths, models.cascade)
+    recheck_binding(binding)
+    try:
+        with SelectiveCascade(models.cascade) as scorer:
+            yield BoundEvaluationSession(BoundSession(models, scorer), secondary)
     finally:
         recheck_binding(binding)
 

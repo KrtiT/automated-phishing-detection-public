@@ -151,6 +151,40 @@ class SecondaryModel:
         except Exception as exc:
             raise SecondaryTabularError("secondary scoring failed") from exc
 
+    def score_urls_singleton_ordered(self, raw_urls) -> tuple[float, ...]:
+        """Score supplied URLs in order with one portable model call per URL."""
+        try:
+            _require(
+                isinstance(raw_urls, Sequence)
+                and not isinstance(raw_urls, (str, bytes)),
+                "URLs must be a nonempty ordered sequence",
+            )
+            _require(
+                len(raw_urls) > 0 and all(type(url) is str for url in raw_urls),
+                "URLs must be exact strings",
+            )
+            urls = tuple(raw_urls)
+            with _numerical_runtime():
+                artifact = _decode_model(self.artifact_bytes)
+                probabilities = []
+                for raw_url in urls:
+                    matrix = _features((raw_url,), artifact["model_kind"])
+                    scores, _ = _score_state(artifact, matrix)
+                    _require(
+                        type(scores) is np.ndarray
+                        and scores.shape == (1,)
+                        and np.issubdtype(scores.dtype, np.floating)
+                        and math.isfinite(float(scores[0]))
+                        and 0 <= scores[0] <= 1,
+                        "invalid singleton probability",
+                    )
+                    probabilities.append(float(scores[0]))
+                return tuple(probabilities)
+        except SecondaryTabularError:
+            raise
+        except Exception as exc:
+            raise SecondaryTabularError("secondary scoring failed") from exc
+
 
 def _json_bytes(value) -> bytes:
     return (

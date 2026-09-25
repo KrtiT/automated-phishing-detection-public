@@ -594,15 +594,19 @@ with the service owner lifecycle, including a post-restoration identity check.
 the public completion marker without replacing existing records. Installed
 records survive failure; acceptance requires successful producer exit and
 verification of all installed evidence, not merely the presence of a marker.
-The internal file/process composition is implemented. The remaining secondary
-outputs and external source execution still need integration.
+The internal file/process composition now includes all accepted secondary
+tabular and transformer-seed outputs. External source execution and official
+HTTP process supervision still need integration.
 
 `evaluation_producer.parse_internal_partition` checks the supplied bytes against
 an expected hash before parsing, then validates canonical rows, source IDs,
 domains, split membership and counts. `produce_internal_evidence` requires a
 fresh owner-thread session before any scoring and makes one in-memory pass for
-all four detectors, portable monitor features and NLLs. It returns paired
-evidence, private payloads, primary evaluation and the three replay manifests,
+all four primary detectors, the seven accepted tabular models, and transformer
+seeds 42--46. Seed 42 reuses the primary transformer score under its separately
+accepted secondary cutoff; seeds 43--46 load sequentially. It retains portable
+monitor features and NLLs, complete windows and future-only routing traces.
+It returns paired evidence, private payloads, primary evaluation and the three replay manifests,
 or an explicit capacity shortfall. Caller-supplied hashes do not authenticate a
 file by themselves. `source_runner` now derives those pins from the authenticated
 public source and preparation records, checks their exact cross-binding, and
@@ -619,13 +623,22 @@ including the reservation, claim, outcome and saved-file hashes. Captured child
 diagnostics are not forwarded into public records. Both parent and worker stop
 before supplied-input path access under the current profile, whose readiness
 remains false. The private composition is tested on temporary invented files;
-there is no flag to enable protected access. Completing the remaining secondary
-models and one-pass outputs requires a reviewed future profile, not a command-line
-bypass. Receipt verification establishes execution consistency, not scientific
-truth or a replacement for recomputing analyses from saved evidence. It checks
-fixed gate and role semantics but does not recompute prediction or manifest
-contents; model identities and carried-forward cutoffs remain authenticated by
-the worker's loader, not by a second artifact read in the parent.
+there is no flag to enable protected access. The five private outputs are
+`predictions.jsonl`, `manifests.json`, `bindings.json`, `routing.json` and
+`secondary.json`. Output and binding schemas are version 3; descriptive
+secondary metrics retain schema 2. `saved_evidence` reconstructs row identities,
+features, decisions, populations, metrics, hypothesis components and manifests
+from these retained bytes. It also recomputes singleton length/L1 scores and
+audits, the portable monitor probability and GMM NLL from exact retained artifact
+bytes authenticated against the frozen hashes, then reconstructs every window
+and routing decision. No source or model path is reopened. Transformer and
+secondary probabilities remain observations from the authenticated worker;
+completion reconstructs their decisions and statistics without another forward.
+GMM audit counts are carried from the authenticated public report. The closed
+successor profile does not itself authorize protected evaluation. Both model
+families bind before the inference owner starts; execution-binding probes run
+before ownership and after restoration. Saved monitor replay independently
+enforces one numerical thread and restores the previous limits even on failure.
 
 `phishvn.prepare_external_rows` implements the frozen mapping and preparation
 rules on normalized records. Declared all-split coverage and file positions are
@@ -1053,12 +1066,17 @@ Use independently reviewed literal identities, not values discovered and
 accepted automatically at execution time. The command checks readiness of
 public code and runtime only; its output explicitly reports no research
 measurement and no protected-evaluation readiness.
-Current code accepts only `data/execution-binding-contract-v2.json`, SHA-256
-`887f771381927dfe1b9268a45f4e605baf3e9a7caee2b7005cdfe68b1be516e1`.
-Its 26 public pins retain all 23 v1 pins and add the original v1 profile and the
-shift and secondary supplements. Runtime requirements are unchanged. The v1
-command remains reproducible at commit `d119443b928f9c23840ad7fd9ee1f67d882a8108`;
-current code does not fall back to it.
+The active command accepts only `data/execution-binding-contract-v3.json`, SHA-256
+`b3847581d73cba2a01d9f25d39548bb6cd96903129b0e382359faa6df97ab7c4`.
+Its 31 public pins preserve all 26 v2 pins and add the exact v2 profile, the
+secondary development and seed/probe methods, and both accepted correction
+reports. Runtime requirements and closed readiness remain unchanged. Historical
+development and seed/probe verification use package-private APIs fixed to the
+original v2 profile, SHA-256
+`887f771381927dfe1b9268a45f4e605baf3e9a7caee2b7005cdfe68b1be516e1`;
+the active binder and rechecker do not accept historical bindings or select a
+profile from caller input. The v1 command remains reproducible at commit
+`d119443b928f9c23840ad7fd9ee1f67d882a8108`.
 
 The [workload specification](../data/operational-workloads-v1.json) separates
 three measurements. Fixed cascade retains its original primary H3 rules.
@@ -1085,10 +1103,10 @@ conventions without changing the frozen workload or H3 definition.
 
 | Order | Work product | What completion must demonstrate |
 |---|---|---|
-| 1 | Complete paired evaluator integration | Internal file/process execution, primary/score-metric composition and receipt verification are implemented on fixtures behind the closed readiness gate. Complete remaining secondary-model outputs and external execution before opening that gate. The singleton convention is adopted by explicit amendment, not equivalence acceptance. |
+| 1 | Complete paired evaluator integration | Internal file/process execution includes primary, all accepted secondary models, monitor/routing evidence and independent saved-evidence reconstruction on fixtures. External execution and full pre-access review remain before opening the gate. The singleton convention is adopted by explicit amendment, not equivalence acceptance. |
 | 2 | Composed H2 policy replay | Full-stream routing followed by outcome-stratum selection and normalized external preparation are implemented on fixtures. Bind the verified publisher schema, complete source inventory and saved-score inputs. Preserve the failed development false-alert component; this characterizes RQ2 and cannot rescue H2. |
 | 3 | Selective inference service and real-HTTP harness | Fixed cascade, transformer-only and serialized live-monitor modes are tested, including real TCP, phase reset and offline trace agreement. Bind service, client, process lifecycle and saved outputs in the official producer before measurements. |
-| 4 | Frozen evaluation and replay-manifest contracts | Sampling, stream integration, runtime identity and all three workloads have supplements. The separate September 23 execution accepted the retained audit and corrected RF; both earlier stops remain preserved. The v2 seed/probe family remains failed, while the separate correction accepted all five retained seed stages together and completed one zero-fit descriptive probe. Complete secondary output coverage and external/operational integration before the pre-access freeze. Control interpretation and missing historical label digests remain explicit limitations. |
+| 4 | Frozen evaluation and replay-manifest contracts | Sampling, stream integration, runtime identity and all three workloads have supplements. The separate September 23 execution accepted the retained audit and corrected RF; both earlier stops remain preserved. The v2 seed/probe family remains failed, while the separate correction accepted all five retained seed stages together and completed one zero-fit descriptive probe. Secondary output coverage is implemented; external/operational integration remains before the pre-access freeze. Control interpretation and missing historical label digests remain explicit limitations. |
 | 5 | Independent execution and one gate table | The single internal raw-partition pass produces paired predictions and replay manifests. Later HTTP runs use only those manifests. External schema verification, preparation, and evaluation follow the separate frozen access sequence. |
 
 The existing offline cascade scorer accepts transformer probabilities for every

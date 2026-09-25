@@ -72,7 +72,7 @@ def checkout(tmp_path, api, monkeypatch):
         assert expected_revision == revision
         assert expected_contract_sha256 == BASE_HASH
         execution_preflight._check_checkout(root, revision)
-        execution_preflight._committed_files(root, revision, public)
+        execution_preflight._historical_v2_committed_files(root, revision, public)
         calls.append("base")
         return base
 

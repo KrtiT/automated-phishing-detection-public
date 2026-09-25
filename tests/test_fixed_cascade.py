@@ -172,6 +172,19 @@ def test_strict_content_loader_matches_the_public_path_loader(tmp_path):
     )
 
 
+def test_logistic_loader_retains_exact_replay_bytes_without_exposing_them(tmp_path):
+    path, digest = _write_artifact(tmp_path)
+    content = path.read_bytes()
+    model = fixed_cascade._load_logistic_l1_artifact_bytes(
+        content,
+        expected_sha256=digest,
+        expected_contract_sha256="0" * 64,
+    )
+
+    assert model._artifact_bytes is content
+    assert "_artifact_bytes=" not in repr(model)
+
+
 def test_strict_content_loader_enforces_the_same_hash_and_schema_rules(tmp_path):
     path, digest = _write_artifact(tmp_path)
     content = path.read_bytes()

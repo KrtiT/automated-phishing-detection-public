@@ -13,7 +13,8 @@ import json
 import math
 import re
 import time
-from dataclasses import dataclass
+from collections.abc import Callable
+from dataclasses import asdict, dataclass
 from urllib.parse import urlsplit
 
 import httpx
@@ -40,6 +41,46 @@ ERRORS = frozenset(
 
 class ReplayError(ValueError):
     """A run is incomplete or cannot support the declared measurement."""
+
+    def __init__(self, *args, progress: bytes | None = None):
+        super().__init__(*args)
+        self.progress = progress
+
+
+class ReplayCancelledError(asyncio.CancelledError):
+    """Cancellation with an immutable snapshot of completed HTTP evidence."""
+
+    def __init__(self, *args, progress: bytes):
+        super().__init__(*args)
+        self.progress = progress
+
+
+def _exception_chain(error):
+    seen = set()
+    while isinstance(error, BaseException) and id(error) not in seen:
+        seen.add(id(error))
+        yield error
+        error = error.__cause__ if error.__cause__ is not None else error.__context__
+
+
+def _external_cancellation(error):
+    for current in _exception_chain(error):
+        if isinstance(current, asyncio.CancelledError):
+            return True
+        if isinstance(current, (asyncio.TimeoutError, httpx.TimeoutException)):
+            break
+    return False
+
+
+def replay_progress(error: BaseException) -> bytes | None:
+    """Recover retained bytes, including Python 3.10 task-cancellation context."""
+    for current in _exception_chain(error):
+        if (
+            isinstance(current, (ReplayError, ReplayCancelledError))
+            and type(current.progress) is bytes
+        ):
+            return current.progress
+    return None
 
 
 @dataclass(frozen=True)
@@ -72,6 +113,48 @@ class HttpRun:
     workload: str = "fixed_cascade"
     measured_elapsed_ms: float | None = None
     measured_drain_ms: float | None = None
+
+
+@dataclass
+class _ReplayProgress:
+    manifest_sha256: str
+    prevalence_basis_points: int
+    concurrency: int
+    run_index: int
+    workload: str
+    warmup: list[HttpOutcome | None]
+    measured: list[HttpOutcome | None]
+    warmup_started: list[bool]
+    measured_started: list[bool]
+    stage: str = "client_start"
+    initial: DrainResponse | None = None
+    after_warmup: DrainResponse | None = None
+    after_measured: DrainResponse | None = None
+    measured_elapsed_ms: float | None = None
+    measured_drain_ms: float | None = None
+
+    def snapshot(self) -> bytes:
+        def wire_model(value):
+            if type(value) in (ScanResponse, DrainResponse):
+                return value.model_dump()
+            raise TypeError("invalid HTTP progress value")
+
+        return (
+            json.dumps(
+                {"schema_version": 1, **asdict(self)},
+                allow_nan=False,
+                ensure_ascii=True,
+                sort_keys=True,
+                separators=(",", ":"),
+                default=wire_model,
+            )
+            + "\n"
+        ).encode("ascii")
+
+    def checkpoint(self, phase, retain):
+        self.stage = f"{phase}_checkpoint"
+        if retain is not None:
+            retain(f"{phase}.json", self.snapshot())
 
 
 def _metadata(sha, prevalence, concurrency, run_index):
@@ -175,13 +258,13 @@ async def _scan(client, row, request_id):
     )
 
 
-async def _phase(client, rows, sha, concurrency, run_index, phase):
+async def _phase(client, rows, sha, concurrency, run_index, phase, outcomes, started):
     remaining = iter(enumerate(rows))
-    outcomes = [None] * len(rows)
 
     async def worker():
         for position, row in remaining:
             request_id = _request_id(sha, concurrency, run_index, phase, position)
+            started[position] = True
             outcomes[position] = await _scan(client, row, request_id)
 
     tasks = [asyncio.create_task(worker()) for _ in range(min(concurrency, len(rows)))]
@@ -218,6 +301,48 @@ async def _drain(client, request_ids):
         raise ReplayError("drain failed; run is incomplete") from exc
 
 
+async def _replay_phases(client, rows, warmup_count, progress, retain):
+    progress.stage = "initial_drain"
+    progress.initial = await _drain(client, ())
+    if any(progress.initial.model_dump().values()):
+        raise ReplayError("each run requires a fresh service and scorer session")
+    progress.stage = "warmup"
+    warmup = await _phase(
+        client,
+        rows[:warmup_count],
+        progress.manifest_sha256,
+        progress.concurrency,
+        progress.run_index,
+        "warmup",
+        progress.warmup,
+        progress.warmup_started,
+    )
+    progress.checkpoint("warmup", retain)
+    progress.stage = "warmup_drain"
+    progress.after_warmup = await _drain(client, (row.request_id for row in warmup))
+    progress.stage = "measured"
+    measured_started = time.perf_counter_ns()
+    measured = await _phase(
+        client,
+        rows,
+        progress.manifest_sha256,
+        progress.concurrency,
+        progress.run_index,
+        "measured",
+        progress.measured,
+        progress.measured_started,
+    )
+    progress.measured_elapsed_ms = (
+        time.perf_counter_ns() - measured_started
+    ) / 1_000_000
+    progress.checkpoint("measured", retain)
+    progress.stage = "measured_drain"
+    drain_started = time.perf_counter_ns()
+    progress.after_measured = await _drain(client, (row.request_id for row in measured))
+    progress.measured_drain_ms = (time.perf_counter_ns() - drain_started) / 1_000_000
+    return warmup, measured
+
+
 async def replay_run(
     base_url: str,
     requests: tuple[ReplayRequest, ...] | list[ReplayRequest],
@@ -228,16 +353,21 @@ async def replay_run(
     run_index: int,
     warmup_count: int = 1000,
     workload: str = "fixed_cascade",
+    retain: Callable[[str, bytes], None] | None = None,
 ) -> HttpRun:
     """Measure one fresh service session. Cancelled/incomplete runs raise.
 
     requests must be the manifest order, with original raw URLs. The supplied
     manifest hash is a provenance claim authenticated by the future runner, not
     by this label-free client. Fixture-sized inputs cannot form primary evidence.
+    An optional synchronous retain callback receives each completed phase once,
+    outside request timing. Failures carry canonical private JSON in progress.
     """
     _metadata(manifest_sha256, prevalence_basis_points, concurrency, run_index)
     if type(workload) is not str or workload not in HTTP_WORKLOADS:
         raise ReplayError("unsupported HTTP workload")
+    if retain is not None and not callable(retain):
+        raise ReplayError("retain must be a callable or None")
     base_url = _loopback_url(base_url)
     if type(requests) not in (tuple, list) or not requests:
         raise ReplayError("use a nonempty materialized request sequence")
@@ -265,49 +395,58 @@ async def replay_run(
     transport = httpx.AsyncHTTPTransport(
         retries=0, limits=limits, http1=True, http2=False
     )
-    async with httpx.AsyncClient(
-        base_url=base_url,
-        transport=transport,
-        timeout=DEADLINE_SECONDS,
-        follow_redirects=False,
-        trust_env=False,
-    ) as client:
-        initial = await _drain(client, ())
-        if any(initial.model_dump().values()):
-            raise ReplayError("each run requires a fresh service and scorer session")
-        warmup = await _phase(
-            client,
-            rows[:warmup_count],
+    progress = _ReplayProgress(
+        manifest_sha256=manifest_sha256,
+        prevalence_basis_points=prevalence_basis_points,
+        concurrency=concurrency,
+        run_index=run_index,
+        workload=workload,
+        warmup=[None] * warmup_count,
+        measured=[None] * len(rows),
+        warmup_started=[False] * warmup_count,
+        measured_started=[False] * len(rows),
+    )
+    cancelled = False
+    try:
+        async with httpx.AsyncClient(
+            base_url=base_url,
+            transport=transport,
+            timeout=DEADLINE_SECONDS,
+            follow_redirects=False,
+            trust_env=False,
+        ) as client:
+            try:
+                warmup, measured = await _replay_phases(
+                    client, rows, warmup_count, progress, retain
+                )
+            except asyncio.CancelledError:
+                cancelled = True
+                raise
+            progress.stage = "client_cleanup"
+        result = HttpRun(
             manifest_sha256,
+            prevalence_basis_points,
             concurrency,
             run_index,
-            "warmup",
+            warmup,
+            measured,
+            progress.initial,
+            progress.after_warmup,
+            progress.after_measured,
+            workload,
+            progress.measured_elapsed_ms,
+            progress.measured_drain_ms,
         )
-        after_warmup = await _drain(client, (r.request_id for r in warmup))
-        measured_started = time.perf_counter_ns()
-        measured = await _phase(
-            client, rows, manifest_sha256, concurrency, run_index, "measured"
-        )
-        measured_elapsed_ms = (time.perf_counter_ns() - measured_started) / 1_000_000
-        drain_started = time.perf_counter_ns()
-        after_measured = await _drain(client, (r.request_id for r in measured))
-        measured_drain_ms = (time.perf_counter_ns() - drain_started) / 1_000_000
-    result = HttpRun(
-        manifest_sha256,
-        prevalence_basis_points,
-        concurrency,
-        run_index,
-        warmup,
-        measured,
-        initial,
-        after_warmup,
-        after_measured,
-        workload,
-        measured_elapsed_ms,
-        measured_drain_ms,
-    )
-    _validate_run(result)
-    return result
+        progress.stage = "validation"
+        _validate_run(result)
+        return result
+    except (Exception, asyncio.CancelledError) as exc:
+        if cancelled or _external_cancellation(exc):
+            raise ReplayCancelledError(
+                "HTTP replay cancelled; run is incomplete", progress=progress.snapshot()
+            ) from exc
+        message = str(exc) if isinstance(exc, ReplayError) else "HTTP replay failed"
+        raise ReplayError(message, progress=progress.snapshot()) from exc
 
 
 def _check_phase(run, phase, before, after):

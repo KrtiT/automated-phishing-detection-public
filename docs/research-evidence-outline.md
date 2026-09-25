@@ -584,6 +584,25 @@ these choices before measurements. Real-loopback tests use temporary synthetic
 CPU scorers, including forwards that succeed or fail after client timeout;
 they are integration checks, not latency or detection results.
 
+The HTTP client retains immutable private progress on incomplete execution:
+indexed outcomes, explicit started positions, available drained counters and
+completed timing intervals. Concurrent completion is not represented as a
+contiguous source prefix. Optional warmup and measured checkpoints run outside
+individual request timing; the measured clock stops before its checkpoint.
+Cancellation remains cancellation, including when client cleanup also fails;
+Python 3.10 task callers recover the retained bytes through `replay_progress`.
+Installed checkpoints can survive a killed worker, but missing observations
+cannot be reconstructed as successful requests or authorize replacement runs.
+
+`operational_service` supplies the tested child-lifecycle boundary, not a complete
+official supervisor. It retains readiness after listening, uses the frozen
+Uvicorn configuration and a parent stop pipe, and explicitly joins the scoring
+owner after Uvicorn returns. Only successful scorer teardown and numerical-state
+restoration permit a cleanup receipt. Synthetic process tests distinguish a
+clean exit from cleanup failure that Uvicorn itself can swallow. The official
+parent must still authenticate both children, observe their actual exits and
+verify their saved evidence before any cell is accepted.
+
 `execution_preflight.bind_execution` checks an externally supplied reviewed
 commit and binding-contract hash against the clean nested checkout, committed
 and working source bytes, loaded package origins, public evidence pins and
@@ -597,6 +616,20 @@ verification of all installed evidence, not merely the presence of a marker.
 The internal file/process composition now includes all accepted secondary
 tabular and transformer-seed outputs. External source execution and official
 HTTP process supervision still need integration.
+
+`source_overlap.reconstruct_source_overlap` closes a separate preparation gap:
+the exclusion rule covers all valid PhiUSIIL domains, including domains whose
+rows were quarantined before fitting. The byte-only helper checks the original
+CSV, PSL, source specification and accepted preparation report against all four
+caller-supplied pins before parsing; official identity binding remains future
+integration work. It reconstructs every historical partition/quarantine hash and
+the full preparation report, retains one membership entry per original row, and returns
+the exact accepted group-test bytes alongside complete private overlap evidence.
+Invalid URL/domain rows remain explicitly accounted for. Public output contains
+only counts and hashes. Fixture tests do not authorize reading the original CSV,
+which itself contains protected holdout records. The proposed official source
+route must be frozen before that single read; it will score the reconstructed
+group-test bytes in memory rather than open the separate raw partition again.
 
 `evaluation_producer.parse_internal_partition` checks the supplied bytes against
 an expected hash before parsing, then validates canonical rows, source IDs,

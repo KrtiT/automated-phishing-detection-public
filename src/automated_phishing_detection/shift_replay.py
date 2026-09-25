@@ -1,22 +1,32 @@
 """Serialized live-monitor HTTP characterization, separate from primary H3."""
 
 import asyncio
+import json
 import math
 import time
-from dataclasses import dataclass
+from collections.abc import Callable
+from dataclasses import asdict, dataclass, field
 
 import httpx
 import numpy as np
 
 from . import gmm_monitor, policy_replay
 from . import http_replay as http
-from .http_schema import DrainResponse
+from .http_schema import DrainResponse, ScanResponse
 from .shift_schema import ShiftPlan, ShiftStateResponse
 
 
 class ShiftReplayError(http.ReplayError):
-    def __init__(self, message, *, phase="preflight", outcomes=(), warmup_outcomes=()):
-        super().__init__(message)
+    def __init__(
+        self,
+        message,
+        *,
+        phase="preflight",
+        outcomes=(),
+        warmup_outcomes=(),
+        progress=None,
+    ):
+        super().__init__(message, progress=progress)
         self.phase = phase
         self.outcomes = tuple(outcomes)
         self.warmup_outcomes = tuple(warmup_outcomes)
@@ -50,6 +60,63 @@ class ShiftRun:
     @property
     def workload(self):
         return "shift_period"
+
+
+@dataclass
+class _ShiftProgress:
+    manifest_sha256: str
+    run_index: int
+    warmup_count: int
+    measured_count: int
+    warmup_started: list[bool]
+    measured_started: list[bool]
+    warmup: list[http.HttpOutcome] = field(default_factory=list)
+    measured: list[http.HttpOutcome] = field(default_factory=list)
+    phase: str = "preflight"
+    stage: str = "client_start"
+    initial_state: ShiftStateResponse | None = None
+    reset_state: ShiftStateResponse | None = None
+    trace: ShiftStateResponse | None = None
+    initial: DrainResponse | None = None
+    after_warmup: DrainResponse | None = None
+    after_measured: DrainResponse | None = None
+    occurrence_drains: list[dict] = field(default_factory=list)
+    measured_elapsed_ms: float | None = None
+    measured_drain_ms: float | None = None
+    measured_timeout_drain_ms: float | None = None
+
+    def snapshot(self) -> bytes:
+        def wire_model(value):
+            if type(value) in (ScanResponse, DrainResponse, ShiftStateResponse):
+                return value.model_dump()
+            raise TypeError("invalid shift progress value")
+
+        payload = {
+            "schema_version": 1,
+            "workload": "shift_period",
+            "concurrency": 1,
+            **asdict(self),
+        }
+        for phase in ("warmup", "measured"):
+            payload[phase].extend(
+                [None] * (getattr(self, f"{phase}_count") - len(payload[phase]))
+            )
+        return (
+            json.dumps(
+                payload,
+                allow_nan=False,
+                ensure_ascii=True,
+                sort_keys=True,
+                separators=(",", ":"),
+                default=wire_model,
+            )
+            + "\n"
+        ).encode("ascii")
+
+    def checkpoint(self, phase, retain):
+        self.stage = f"{phase}_checkpoint"
+        if retain is not None:
+            retain(f"{phase}.json", self.snapshot())
 
 
 async def _control(client, path, payload=None):
@@ -93,16 +160,19 @@ def _complete_counts(counts, expected):
     )
 
 
-async def _phase(client, plan, phase, outcomes):
+async def _phase(client, plan, phase, outcomes, progress):
     rows = plan.requests[: plan.warmup_count] if phase == "warmup" else plan.requests
     offset = 0 if phase == "warmup" else plan.warmup_count
     drain_ms = 0.0
     for position, row in enumerate(rows):
         identity = plan.request_id(phase, position)
+        progress.stage = phase
+        getattr(progress, f"{phase}_started")[position] = True
         outcome = await http._scan(client, row, identity)
         outcomes.append(outcome)
         expected_sequence = offset + position + 1
         if outcome.error is not None:
+            progress.stage = f"{phase}_occurrence_drain"
             started = time.perf_counter_ns()
             try:
                 drained = await http._drain(client, (identity,))
@@ -110,7 +180,16 @@ async def _phase(client, plan, phase, outcomes):
                 raise ShiftReplayError(
                     "occurrence drain failed", phase=phase, outcomes=outcomes
                 ) from exc
-            drain_ms += (time.perf_counter_ns() - started) / 1_000_000
+            elapsed_ms = (time.perf_counter_ns() - started) / 1_000_000
+            drain_ms += elapsed_ms
+            progress.occurrence_drains.append(
+                {
+                    "phase": phase,
+                    "position": position,
+                    "counts": drained,
+                    "elapsed_ms": elapsed_ms,
+                }
+            )
             if not _complete_counts(drained, expected_sequence):
                 raise ShiftReplayError(
                     "missing or failed row; stream is incomplete",
@@ -124,7 +203,70 @@ async def _phase(client, plan, phase, outcomes):
     return tuple(outcomes), drain_ms
 
 
-async def replay_shift_run(base_url: str, plan: ShiftPlan) -> ShiftRun:
+async def _replay_phases(client, plan, progress, retain):
+    progress.stage = "initial_control"
+    progress.initial_state = await _control(client, "/v1/shift/state")
+    state = progress.initial_state
+    progress.initial = state.counts
+    progress.stage = "initial_validation"
+    _identity(state, plan)
+    if (
+        state.phase != "warmup"
+        or state.broken
+        or state.complete
+        or state.rows
+        or any(state.counts.model_dump().values())
+    ):
+        raise ShiftReplayError("shift run requires a fresh service")
+    progress.phase = "warmup"
+    await _phase(client, plan, "warmup", progress.warmup, progress)
+    progress.checkpoint("warmup", retain)
+    progress.stage = "warmup_drain"
+    progress.after_warmup = await http._drain(
+        client, (row.request_id for row in progress.warmup)
+    )
+    if not _complete_counts(progress.after_warmup, plan.warmup_count):
+        raise ShiftReplayError("warmup stream is incomplete")
+    progress.stage = "warmup_reset"
+    progress.reset_state = await _control(
+        client,
+        "/v1/shift/reset",
+        {"request_ids": [row.request_id for row in progress.warmup]},
+    )
+    reset = progress.reset_state
+    progress.stage = "warmup_reset_validation"
+    _identity(reset, plan)
+    if (
+        reset.phase != "measured"
+        or reset.broken
+        or reset.complete
+        or reset.rows
+        or reset.counts != progress.after_warmup
+    ):
+        raise ShiftReplayError("warmup reset changed counters or retained state")
+    progress.phase = "measured"
+    started = time.perf_counter_ns()
+    _, progress.measured_timeout_drain_ms = await _phase(
+        client, plan, "measured", progress.measured, progress
+    )
+    progress.measured_elapsed_ms = (time.perf_counter_ns() - started) / 1_000_000
+    progress.checkpoint("measured", retain)
+    progress.stage = "measured_drain"
+    started = time.perf_counter_ns()
+    progress.after_measured = await http._drain(
+        client, (row.request_id for row in progress.measured)
+    )
+    progress.measured_drain_ms = (time.perf_counter_ns() - started) / 1_000_000
+    progress.stage = "trace_control"
+    progress.trace = await _control(client, "/v1/shift/state")
+
+
+async def replay_shift_run(
+    base_url: str,
+    plan: ShiftPlan,
+    *,
+    retain: Callable[[str, bytes], None] | None = None,
+) -> ShiftRun:
     """Retain terminal errors; acknowledge their completion before the next row.
 
     Plan identity is a claim until the producer binds its private manifest. A
@@ -133,6 +275,8 @@ async def replay_shift_run(base_url: str, plan: ShiftPlan) -> ShiftRun:
     """
     if type(plan) is not ShiftPlan:
         raise ShiftReplayError("use a typed shift plan")
+    if retain is not None and not callable(retain):
+        raise ShiftReplayError("retention callback must be callable")
     base_url = http._loopback_url(base_url)
     transport = httpx.AsyncHTTPTransport(
         retries=0,
@@ -142,8 +286,15 @@ async def replay_shift_run(base_url: str, plan: ShiftPlan) -> ShiftRun:
         http1=True,
         http2=False,
     )
-    warmup, measured = [], []
-    phase = "preflight"
+    progress = _ShiftProgress(
+        manifest_sha256=plan.manifest_sha256,
+        run_index=plan.run_index,
+        warmup_count=plan.warmup_count,
+        measured_count=len(plan.requests),
+        warmup_started=[False] * plan.warmup_count,
+        measured_started=[False] * len(plan.requests),
+    )
+    cancelled = False
     try:
         async with httpx.AsyncClient(
             base_url=base_url,
@@ -152,71 +303,44 @@ async def replay_shift_run(base_url: str, plan: ShiftPlan) -> ShiftRun:
             follow_redirects=False,
             trust_env=False,
         ) as client:
-            state = await _control(client, "/v1/shift/state")
-            _identity(state, plan)
-            if (
-                state.phase != "warmup"
-                or state.broken
-                or state.complete
-                or state.rows
-                or any(state.counts.model_dump().values())
-            ):
-                raise ShiftReplayError("shift run requires a fresh service")
-            initial = state.counts
-            phase = "warmup"
-            await _phase(client, plan, phase, warmup)
-            after_warmup = await http._drain(client, (row.request_id for row in warmup))
-            if not _complete_counts(after_warmup, plan.warmup_count):
-                raise ShiftReplayError("warmup stream is incomplete")
-            reset = await _control(
-                client,
-                "/v1/shift/reset",
-                {"request_ids": [row.request_id for row in warmup]},
-            )
-            _identity(reset, plan)
-            if (
-                reset.phase != "measured"
-                or reset.broken
-                or reset.complete
-                or reset.rows
-                or reset.counts != after_warmup
-            ):
-                raise ShiftReplayError(
-                    "warmup reset changed counters or retained state"
-                )
-            phase = "measured"
-            started = time.perf_counter_ns()
-            _, timeout_drain_ms = await _phase(client, plan, phase, measured)
-            elapsed_ms = (time.perf_counter_ns() - started) / 1_000_000
-            started = time.perf_counter_ns()
-            after_measured = await http._drain(
-                client, (row.request_id for row in measured)
-            )
-            drain_ms = (time.perf_counter_ns() - started) / 1_000_000
-            trace = await _control(client, "/v1/shift/state")
+            try:
+                await _replay_phases(client, plan, progress, retain)
+            except asyncio.CancelledError:
+                cancelled = True
+                raise
+            progress.stage = "client_cleanup"
         result = ShiftRun(
             plan,
-            tuple(warmup),
-            tuple(measured),
-            initial,
-            after_warmup,
-            after_measured,
-            trace,
-            elapsed_ms,
-            drain_ms,
-            timeout_drain_ms,
+            tuple(progress.warmup),
+            tuple(progress.measured),
+            progress.initial,
+            progress.after_warmup,
+            progress.after_measured,
+            progress.trace,
+            progress.measured_elapsed_ms,
+            progress.measured_drain_ms,
+            progress.measured_timeout_drain_ms,
         )
+        progress.stage = "validation"
         validate_shift_run(result)
         return result
-    except Exception as exc:
+    except (Exception, asyncio.CancelledError) as exc:
+        if cancelled or http._external_cancellation(exc):
+            raise http.ReplayCancelledError(
+                "shift replay cancelled; run is incomplete",
+                progress=progress.snapshot(),
+            ) from exc
         message = (
             str(exc) if isinstance(exc, http.ReplayError) else "shift execution failed"
         )
         raise ShiftReplayError(
             message,
-            phase=phase,
-            outcomes=measured if phase == "measured" else warmup,
-            warmup_outcomes=warmup,
+            phase=progress.phase,
+            outcomes=(
+                progress.measured if progress.phase == "measured" else progress.warmup
+            ),
+            warmup_outcomes=progress.warmup,
+            progress=progress.snapshot(),
         ) from exc
 
 

@@ -1,6 +1,7 @@
 """Exercise the client across real loopback sockets, not an ASGI transport."""
 
 import asyncio
+import json
 import socket
 import threading
 import time
@@ -192,8 +193,12 @@ def test_connection_refusal_is_incomplete_run_not_zero_error_evidence():
     with socket.socket() as sock:
         sock.bind(("127.0.0.1", 0))
         port = sock.getsockname()[1]
-    with pytest.raises(ReplayError, match="drain"):
+    with pytest.raises(ReplayError, match="drain") as caught:
         run_small(f"http://127.0.0.1:{port}")
+    progress = json.loads(caught.value.progress)
+    assert progress["stage"] == "initial_drain"
+    assert progress["warmup_started"] == progress["measured_started"] == [False]
+    assert progress["warmup"] == progress["measured"] == [None]
 
 
 def test_synchronous_validation_time_is_inside_total_deadline(monkeypatch):
@@ -214,8 +219,17 @@ def test_synchronous_validation_time_is_inside_total_deadline(monkeypatch):
     assert result.measured[0].response is None
 
 
-def test_cancellation_does_not_return_partial_run():
+@pytest.mark.parametrize("cleanup_failure", [False, True])
+def test_cancellation_does_not_return_partial_run(monkeypatch, cleanup_failure):
     app, state = fixture_app("timeout")
+    if cleanup_failure:
+        original = http_replay.httpx.AsyncClient.__aexit__
+
+        async def fail(client, *args):
+            await original(client, *args)
+            raise RuntimeError("invented cleanup failure during cancellation")
+
+        monkeypatch.setattr(http_replay.httpx.AsyncClient, "__aexit__", fail)
 
     async def cancel(url):
         task = asyncio.create_task(
@@ -232,11 +246,70 @@ def test_cancellation_does_not_return_partial_run():
         while len(state["calls"]) < 2:
             await asyncio.sleep(0.01)
         task.cancel()
-        with pytest.raises(asyncio.CancelledError):
+        with pytest.raises(asyncio.CancelledError) as caught:
             await task
+        assert task.cancelled()
+        progress = json.loads(http_replay.replay_progress(caught.value))
+        assert progress["stage"] == "measured"
+        assert progress["warmup_started"] == [True]
+        assert progress["warmup"][0]["error"] is None
+        assert progress["measured_started"] == [True]
+        assert progress["measured"] == [None]
 
     with loopback_server(app) as url:
         asyncio.run(asyncio.wait_for(cancel(url), timeout=5))
+
+
+@pytest.mark.parametrize("external_cancellation", [True, False])
+def test_cleanup_failure_preserves_external_cancellation_but_not_timeout(
+    monkeypatch, external_cancellation
+):
+    original = http_replay.httpx.AsyncClient.__aexit__
+
+    async def run(url):
+        cleanup_started = asyncio.Event()
+
+        async def fail(client, *args):
+            cleanup_started.set()
+            try:
+                if external_cancellation:
+                    await asyncio.Event().wait()
+                else:
+                    await asyncio.wait_for(asyncio.Event().wait(), timeout=0.001)
+            except (asyncio.CancelledError, asyncio.TimeoutError) as exc:
+                await original(client, *args)
+                raise RuntimeError("invented cleanup failure") from exc
+
+        monkeypatch.setattr(http_replay.httpx.AsyncClient, "__aexit__", fail)
+        task = asyncio.create_task(
+            replay_run(
+                url,
+                (ReplayRequest("row-1", "https://example.test/a"),),
+                manifest_sha256=SHA,
+                prevalence_basis_points=100,
+                concurrency=1,
+                run_index=1,
+                warmup_count=1,
+            )
+        )
+        await cleanup_started.wait()
+        if external_cancellation:
+            task.cancel()
+        expected_error = (
+            asyncio.CancelledError if external_cancellation else ReplayError
+        )
+        with pytest.raises(expected_error) as caught:
+            await task
+        assert task.cancelled() is external_cancellation
+        progress = json.loads(http_replay.replay_progress(caught.value))
+        assert progress["stage"] == "client_cleanup"
+        assert progress["warmup"][0]["error"] is None
+        assert progress["measured"][0]["error"] is None
+        assert progress["after_measured"]["completed_requests"] == 2
+
+    app, _ = fixture_app()
+    with loopback_server(app) as url:
+        asyncio.run(asyncio.wait_for(run(url), timeout=5))
 
 
 def test_warmup_failures_do_not_cause_retry_or_skip_measurement():
@@ -256,6 +329,206 @@ def test_warmup_failures_do_not_cause_retry_or_skip_measurement():
     assert result.after_warmup.admitted_requests == 0
     assert result.measured[0].error is None
     assert len(state["calls"]) == 2
+
+
+@pytest.mark.parametrize(
+    "failed_drain,stage,measured_count",
+    [(2, "warmup_drain", 0), (3, "measured_drain", 3)],
+)
+@pytest.mark.parametrize("drain_timeout", [False, True])
+def test_failed_drain_retains_completed_phases(
+    monkeypatch, failed_drain, stage, measured_count, drain_timeout
+):
+    original = http_replay._drain
+    calls = 0
+
+    async def fail(client, request_ids):
+        nonlocal calls
+        calls += 1
+        if calls == failed_drain:
+            if drain_timeout:
+                try:
+                    await asyncio.wait_for(asyncio.Event().wait(), timeout=0.001)
+                except asyncio.TimeoutError as exc:
+                    raise ReplayError("invented drain timeout") from exc
+            raise ReplayError("invented drain failure")
+        return await original(client, request_ids)
+
+    monkeypatch.setattr(http_replay, "_drain", fail)
+    records = tuple(
+        ReplayRequest(f"row-{index}", f"https://example.test/{index}")
+        for index in range(3)
+    )
+    app, _ = fixture_app()
+    with loopback_server(app) as url:
+        with pytest.raises(ReplayError) as caught:
+            run_small(url, records)
+    assert type(caught.value.progress) is bytes
+    progress = json.loads(caught.value.progress)
+    assert progress["stage"] == stage
+    assert progress["manifest_sha256"] == SHA
+    assert progress["workload"] == "fixed_cascade"
+    assert progress["prevalence_basis_points"] == 100
+    assert progress["concurrency"] == progress["run_index"] == 1
+    assert progress["warmup_started"] == [True]
+    assert progress["measured_started"] == [bool(measured_count)] * 3
+    assert progress["warmup"][0]["record_id"] == "row-0"
+    assert sum(value is not None for value in progress["measured"]) == measured_count
+    assert progress["initial"]["admitted_requests"] == 0
+    assert (progress["after_warmup"] is None) is (failed_drain == 2)
+    assert progress["after_measured"] is None
+    assert (progress["measured_elapsed_ms"] is None) is (measured_count == 0)
+    assert progress["measured_drain_ms"] is None
+
+
+@pytest.mark.parametrize("failure", ["validation", "client_cleanup"])
+def test_final_failures_preserve_all_collected_evidence(monkeypatch, failure):
+    if failure == "validation":
+
+        def fail(run):
+            raise ReplayError("invented final validation failure")
+
+        monkeypatch.setattr(http_replay, "_validate_run", fail)
+    else:
+        original = http_replay.httpx.AsyncClient.__aexit__
+
+        async def fail(client, *args):
+            await original(client, *args)
+            raise RuntimeError("invented client cleanup failure")
+
+        monkeypatch.setattr(http_replay.httpx.AsyncClient, "__aexit__", fail)
+    app, _ = fixture_app()
+    with loopback_server(app) as url:
+        with pytest.raises(ReplayError) as caught:
+            run_small(url)
+    progress = json.loads(caught.value.progress)
+    assert progress["stage"] == failure
+    assert len(progress["warmup"]) == len(progress["measured"]) == 1
+    assert progress["measured"][0]["error"] is None
+    assert progress["after_measured"]["completed_requests"] == 2
+    assert progress["measured_elapsed_ms"] > 0
+    assert progress["measured_drain_ms"] > 0
+
+
+def test_concurrent_failure_retains_holes_after_joining_workers(monkeypatch):
+    original = http_replay._scan
+    completed = None
+    stopped = []
+
+    async def scan(client, row, request_id):
+        if ".warmup." in request_id:
+            return await original(client, row, request_id)
+        position = int(request_id.rsplit(".", 1)[1])
+        if position == 1:
+            result = await original(client, row, request_id)
+            completed.set()
+            return result
+        if position == 2:
+            await completed.wait()
+            raise RuntimeError("invented worker failure")
+        try:
+            await asyncio.Event().wait()
+        finally:
+            stopped.append(position)
+
+    async def run(url, records):
+        nonlocal completed
+        completed = asyncio.Event()
+        return await replay_run(
+            url,
+            records,
+            manifest_sha256=SHA,
+            prevalence_basis_points=100,
+            concurrency=8,
+            run_index=1,
+            warmup_count=1,
+        )
+
+    monkeypatch.setattr(http_replay, "_scan", scan)
+    records = tuple(
+        ReplayRequest(f"row-{index}", f"https://example.test/{index}")
+        for index in range(11)
+    )
+    app, _ = fixture_app()
+    with loopback_server(app) as url:
+        with pytest.raises(ReplayError) as caught:
+            asyncio.run(asyncio.wait_for(run(url, records), timeout=5))
+    progress = json.loads(caught.value.progress)
+    assert sorted(stopped) == [0, 3, 4, 5, 6, 7, 8]
+    assert progress["stage"] == "measured"
+    assert progress["measured_started"] == [True] * 9 + [False] * 2
+    assert progress["measured"][0] is None
+    assert progress["measured"][1]["record_id"] == "row-1"
+    assert progress["measured"][2] is None
+    assert progress["measured"][3:] == [None] * 8
+    assert progress["measured_elapsed_ms"] is None
+
+
+@pytest.mark.parametrize("failed_checkpoint", ["warmup.json", "measured.json"])
+def test_checkpoint_failure_stops_without_retry(monkeypatch, failed_checkpoint):
+    checkpoints = []
+
+    def retain(name, content):
+        assert type(content) is bytes
+        checkpoints.append((name, content))
+        if name == failed_checkpoint:
+            raise OSError("invented checkpoint failure")
+
+    app, state = fixture_app()
+    with loopback_server(app) as url:
+        with pytest.raises(ReplayError) as caught:
+            run_small(url, retain=retain)
+    expected_names = ["warmup.json"]
+    if failed_checkpoint == "measured.json":
+        expected_names.append("measured.json")
+    assert [name for name, _ in checkpoints] == expected_names
+    assert len(state["calls"]) == len(expected_names)
+    progress = json.loads(caught.value.progress)
+    assert progress["stage"] == failed_checkpoint.replace(".json", "_checkpoint")
+    assert progress["warmup_started"] == [True]
+    assert progress["measured_started"] == [failed_checkpoint == "measured.json"]
+
+
+def test_checkpoints_are_immutable_and_outside_measured_phase_timing(monkeypatch):
+    checkpoints = []
+    ticks = 0
+
+    def clock():
+        nonlocal ticks
+        ticks += 1_000_000
+        return ticks
+
+    def retain(name, content):
+        nonlocal ticks
+        checkpoints.append((name, content))
+        ticks += 100_000_000_000
+
+    monkeypatch.setattr(http_replay.time, "perf_counter_ns", clock)
+    app, _ = fixture_app()
+    with loopback_server(app) as url:
+        result = run_small(url, retain=retain)
+    assert [name for name, _ in checkpoints] == ["warmup.json", "measured.json"]
+    assert result.measured_elapsed_ms < 100
+    assert result.measured_drain_ms < 100
+    assert result.measured[0].elapsed_ms < 100
+    before = checkpoints[1][1]
+    result.measured[0].response.probability = 0.9
+    result.after_measured.completed_requests = 999
+    retained = json.loads(before)
+    assert retained["measured"][0]["response"]["probability"] == 0.1
+    assert retained["after_measured"] is None
+    assert json.loads(checkpoints[0][1])["measured"] == [None]
+
+
+def test_progress_accessor_follows_preserved_cancellation_context_without_loops():
+    retained = http_replay.ReplayCancelledError("cancelled", progress=b"{}\n")
+    received = asyncio.CancelledError()
+    received.__context__ = retained
+    retained.__context__ = received
+    assert http_replay.replay_progress(received) == b"{}\n"
+    plain = ValueError("no replay evidence")
+    plain.__context__ = plain
+    assert http_replay.replay_progress(plain) is None
 
 
 @pytest.mark.parametrize(

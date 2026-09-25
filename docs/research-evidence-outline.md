@@ -730,6 +730,26 @@ bare URLs remain unchanged and face the existing quarantine rule. Publisher
 metadata and code, not released records, informed this decoder. Its expected
 release metadata and caller pins are not protected-access authority.
 
+Saved publisher restoration now validates canonical retained headers, cells,
+positions and normalization before rebuilding every split through the unchanged
+mapping. It rejects text that the original UTF-8 CSV decoder cannot represent,
+without inventing CSV serialization or a replacement full table. A six-payload
+provenance layer links the retained publisher snapshot, summary, approved PSL,
+complete internal overlap and same-parent handoff to reservation/execution and
+exact prepared outputs. Independent expected bytes and receipt bindings precede
+reconstruction; pure preparation must reproduce all four retained outputs.
+The handoff binds all thirty-five internal snapshot hashes but its serialized
+exit fields remain parent-declared provenance, not portable process proof.
+
+A create-only external writer retains those six provenance payloads followed
+by the existing thirty scientific callbacks, without changing their bytes.
+Failed or ambiguous writes keep attempted bytes and refuse retries; original
+interruptions survive authentication and installation cleanup. Retention
+completion is not observed worker success. These invented-fixture checks do not
+reproduce the original compressed archive or independently establish its full-
+table completeness. The official same-parent transport, source/process wrapper
+and complete pre-access profile remain required.
+
 `bound_external_runtime` binds primary and secondary models plus accepted saved
 MMD/PSI references before numerical ownership. The drift loader checks the
 accepted report chain, preparation/model pins, retained-byte hashes and exact

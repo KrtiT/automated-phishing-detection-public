@@ -27,6 +27,8 @@ from .evaluation_producer import ManifestOutcome, _json_bytes, _manifest_summary
 from .saved_evidence import reconstruct_internal_evidence
 from .saved_metrics import DetectionMetrics
 from .selective_inference import InferenceCounts
+from .source_checkpoint_verification import verify_source_checkpoints
+from .source_checkpoints import CHECKPOINT_NAMES
 
 _PRIVATE_NAMES = frozenset(
     {
@@ -38,7 +40,7 @@ _PRIVATE_NAMES = frozenset(
     }
 )
 _ATTEMPT_NAMES = frozenset(
-    {"reservation.json", "finalize.claim", "outcome.json", "evidence"}
+    {"reservation.json", "finalize.claim", "outcome.json", "evidence", "checkpoints"}
 )
 _PUBLIC_NAMES = frozenset(
     {
@@ -56,6 +58,8 @@ _PUBLIC_NAMES = frozenset(
         "private_sha256",
         "execution",
         "secondary",
+        "source_reconstruction",
+        "checkpoint_sha256",
     }
 )
 _MODELS = frozenset({"length_only", "logistic_l1", "transformer", "cascade"})
@@ -156,6 +160,7 @@ def _expected_identity(binding, source):
     pins = dict(binding.source_hashes)
     return {
         "kind": "internal_evaluation",
+        "source_interface": "original_csv_reconstruction_v1",
         "revision": binding.revision,
         "execution_contract_sha256": binding.contract_sha256,
         "source_spec_sha256": pins["data/sources.json"],
@@ -400,7 +405,7 @@ def _public(public, binding, source, identity, reservation_hash):
     _require(_keys(public, _PUBLIC_NAMES), "invalid_public_schema")
     _require(
         type(public["schema_version"]) is int
-        and public["schema_version"] == 3
+        and public["schema_version"] == 4
         and public["status"] == "internal_evidence_published"
         and public["source_binding"] == "authenticated_public_preparation"
         and type(public["protected_evaluation_authorized"]) is bool
@@ -536,9 +541,12 @@ def _directory_contents(directory, expected):
     )
 
 
-def _output_snapshot(attempt, evidence, public_parent, public_name):
-    records = [(attempt, name) for name in sorted(_ATTEMPT_NAMES - {"evidence"})]
+def _output_snapshot(attempt, evidence, checkpoints, public_parent, public_name):
+    records = [
+        (attempt, name) for name in sorted(_ATTEMPT_NAMES - {"evidence", "checkpoints"})
+    ]
     records += [(evidence, name) for name in sorted(_PRIVATE_NAMES)]
+    records += [(checkpoints, name) for name in sorted(CHECKPOINT_NAMES)]
     records.append((public_parent, public_name))
     result = []
     for directory, name in records:
@@ -548,7 +556,7 @@ def _output_snapshot(attempt, evidence, public_parent, public_name):
     return result
 
 
-def _verify_outputs(binding, paths, source, identity):
+def _verify_outputs(binding, paths, source, source_buffers, identity):
     attempt_path = execution_receipt._absolute_path(paths.attempt)
     public_path = execution_receipt._absolute_path(paths.public_summary)
     _require(
@@ -560,11 +568,15 @@ def _verify_outputs(binding, paths, source, identity):
     with (
         execution_receipt._directory(attempt_path) as attempt,
         execution_receipt._directory(attempt_path / "evidence") as evidence,
+        execution_receipt._directory(attempt_path / "checkpoints") as checkpoints,
         execution_receipt._directory(public_path.parent) as public_parent,
     ):
         _directory_contents(attempt, _ATTEMPT_NAMES)
         _directory_contents(evidence, _PRIVATE_NAMES)
-        snapshot = _output_snapshot(attempt, evidence, public_parent, public_path.name)
+        _directory_contents(checkpoints, CHECKPOINT_NAMES)
+        snapshot = _output_snapshot(
+            attempt, evidence, checkpoints, public_parent, public_path.name
+        )
         contents = {
             (directory.path / name): source_runner._read_file_once(
                 directory.path / name, expected_state=initial
@@ -628,6 +640,15 @@ def _verify_outputs(binding, paths, source, identity):
             "private_secondary_mismatch",
         )
         _private_bindings(contents[evidence.path / "bindings.json"], identity)
+        verify_source_checkpoints(
+            {name: contents[checkpoints.path / name] for name in CHECKPOINT_NAMES},
+            public,
+            source,
+            source_runner._json(source_buffers[source_runner._PREPARATION]),
+            identity,
+            reservation_hash,
+            contents[evidence.path / "predictions.jsonl"],
+        )
         reconstructed = reconstruct_internal_evidence(
             contents[evidence.path / "predictions.jsonl"],
             contents[evidence.path / "manifests.json"],
@@ -674,6 +695,7 @@ def _verify_outputs(binding, paths, source, identity):
         source_runner.recheck_binding(binding)
         _directory_contents(attempt, _ATTEMPT_NAMES)
         _directory_contents(evidence, _PRIVATE_NAMES)
+        _directory_contents(checkpoints, CHECKPOINT_NAMES)
         public_parent.check()
         for directory, name, initial in snapshot:
             current = execution_receipt._entry(directory, name)
@@ -687,7 +709,7 @@ def _verify_outputs(binding, paths, source, identity):
 def verify_internal_completion(binding, paths, *, producer_exit_code: int) -> dict:
     """Accept only linked, intact evidence after an externally observed zero exit.
 
-    No producer input or model file is opened. The five private outputs are read
+    No producer input or model file is opened. Private evidence and checkpoints are read
     exactly once through the descriptor-checked reader, then retained in memory.
     Prediction identities, features, decisions, metrics, gates, and manifests are
     reconstructed from retained bytes without reopening source or model inputs.
@@ -699,9 +721,9 @@ def verify_internal_completion(binding, paths, *, producer_exit_code: int) -> di
     try:
         source_runner.recheck_binding(binding)
         _require(type(paths) is source_runner.InternalRunPaths, "invalid_run_paths")
-        source = source_runner._public_sources(binding)
+        source, source_buffers = source_runner._public_sources(binding)
         identity = _expected_identity(binding, source)
-        return _verify_outputs(binding, paths, source, identity)
+        return _verify_outputs(binding, paths, source, source_buffers, identity)
     except CompletionVerificationError:
         raise
     except Exception:

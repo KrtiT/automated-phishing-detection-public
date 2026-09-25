@@ -1,5 +1,7 @@
 """Run the file/publication boundary on temporary invented evidence only."""
 
+import csv
+import io
 import json
 import os
 import subprocess
@@ -11,9 +13,14 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
-from test_evaluation_producer import SOURCE, encoded, source_rows, synthetic_session
+from test_evaluation_producer import synthetic_session
 
-from automated_phishing_detection import evaluation_producer, execution_preflight
+from automated_phishing_detection import (
+    evaluation_producer,
+    execution_preflight,
+    phiusiil,
+    protocol_preflight,
+)
 from automated_phishing_detection.bound_models import ArtifactPaths
 from automated_phishing_detection.bound_secondary import SecondaryArtifactPaths
 
@@ -32,7 +39,7 @@ def runner():
 
 def test_internal_run_paths_names_the_complete_secondary_inventory(runner):
     assert [field.name for field in fields(runner.InternalRunPaths)] == [
-        "partition",
+        "source_csv",
         "suffix_rules",
         "artifacts",
         "secondary_artifacts",
@@ -61,25 +68,68 @@ def inputs(tmp_path, runner, monkeypatch):
     (root / "reports").mkdir()
     psl = tmp_path / "rules.dat"
     psl.write_bytes(b"com\nco.uk\n")
-    partition = tmp_path / "group_test.jsonl"
-    partition.write_bytes(encoded(source_rows()))
+    rules = protocol_preflight.parse_suffix_rules(psl.read_text())
+    domains = [f"example{index}.com" for index in range(28)]
+    preliminary = phiusiil.resolve_rows(
+        phiusiil._parse_csv_rows(
+            (
+                "URL,label\n"
+                + "".join(
+                    f"https://{domain}/{label},{label}\n"
+                    for domain in domains
+                    for label in (0, 1)
+                )
+            ).encode()
+        ),
+        csv_sha256="a" * 64,
+        suffix_rules=rules,
+    )
+    splits = {
+        row.registrable_domain: row.split
+        for row in phiusiil.assign_splits(preliminary.retained)
+    }
+    domains = [
+        domain
+        for split in ("group_test", "validation", "train")
+        for domain in domains
+        if splits[domain] == split
+    ]
+    raw_rows = [
+        (f"https://host{index}.{domain}/path", str(1 - index % 2))
+        for index, domain in enumerate(domains)
+    ]
+    raw_rows.extend(
+        [
+            ("https://quarantined-label.com/", "invalid"),
+            ("https://quarantined-conflict.com/", "0"),
+            ("https://QUARANTINED-CONFLICT.com:443/", "1"),
+            raw_rows[0],
+            ("invalid-url-private-canary", "0"),
+        ]
+    )
+    stream = io.StringIO(newline="")
+    writer = csv.writer(stream)
+    writer.writerow(("URL", "label"))
+    writer.writerows(raw_rows)
+    source_csv = tmp_path / "original.csv"
+    source_csv.write_bytes(stream.getvalue().encode())
     source = json.loads((ROOT / "data/sources.json").read_bytes())
-    source["phiusiil"]["csv_sha256"] = SOURCE
+    source["phiusiil"]["csv_sha256"] = sha256(source_csv.read_bytes()).hexdigest()
     source["public_suffix_list"]["sha256"] = sha256(psl.read_bytes()).hexdigest()
     source_bytes = json.dumps(source).encode()
-    summary = json.loads(
-        (ROOT / "reports/phiusiil-preparation-summary.json").read_bytes()
+    resolution = phiusiil.resolve_rows(
+        phiusiil._parse_csv_rows(source_csv.read_bytes()),
+        csv_sha256=source["phiusiil"]["csv_sha256"],
+        suffix_rules=rules,
     )
-    summary["declared_sources"] = source
-    summary["source_spec_sha256"] = sha256(source_bytes).hexdigest()
-    summary["splits"]["group_test"] = {
-        "row_count": 4,
-        "domain_count": 4,
-        "class_counts": {"0": 2, "1": 2},
-    }
-    summary["output_hashes"]["group_test.jsonl"] = sha256(
-        partition.read_bytes()
-    ).hexdigest()
+    assigned = phiusiil.assign_splits(resolution.retained)
+    outputs = phiusiil._private_output_contents(assigned, resolution)
+    hashes = {name: sha256(content).hexdigest() for name, content in outputs.items()}
+    sums = "".join(f"{hashes[name]}  {name}\n" for name in sorted(hashes)).encode()
+    hashes["SHA256SUMS"] = sha256(sums).hexdigest()
+    summary = phiusiil._build_summary(
+        assigned, resolution, source, sha256(source_bytes).hexdigest(), hashes
+    )
     contents = {
         "data/sources.json": source_bytes,
         "reports/phiusiil-preparation-summary.json": json.dumps(summary).encode(),
@@ -94,7 +144,7 @@ def inputs(tmp_path, runner, monkeypatch):
         '{"fixture":true}',
     )
     paths = runner.InternalRunPaths(
-        partition,
+        source_csv,
         psl,
         ArtifactPaths(*(tmp_path / name for name in ("length", "lr", "tf", "gmm"))),
         SecondaryArtifactPaths(
@@ -108,6 +158,8 @@ def inputs(tmp_path, runner, monkeypatch):
 
     @contextmanager
     def open_session(*args):
+        assert args[0].root == binding.root
+        assert args[1:] == (paths.artifacts, paths.secondary_artifacts)
         events.append("enter")
         yield session
         events.append("exit")
@@ -150,8 +202,9 @@ def test_single_read_reserved_before_access_and_published_after_teardown(
     reads = []
 
     def observed(path):
-        if path in (paths.partition, paths.suffix_rules):
+        if path in (paths.source_csv, paths.suffix_rules):
             assert (paths.attempt / "reservation.json").is_file()
+            assert "enter" in events
             reads.append(path)
         return read(path)
 
@@ -164,11 +217,12 @@ def test_single_read_reserved_before_access_and_published_after_teardown(
     monkeypatch.setattr(runner, "_read_file_once", observed)
     monkeypatch.setattr(runner, "publish_completion", checked_publish)
     result = runner._run_bound_internal(binding, paths)
-    assert reads == [paths.suffix_rules, paths.partition]
+    assert reads == [paths.suffix_rules, paths.source_csv]
     assert len(session.primary.scorer.urls) == 4
     assert result == paths.public_summary
     public = json.loads(result.read_bytes())
-    assert public["schema_version"] == 3
+    assert public["schema_version"] == 4
+    assert public["execution"]["source_interface"] == "original_csv_reconstruction_v1"
     assert public["source_binding"] == "authenticated_public_preparation"
     assert public["protected_evaluation_authorized"] is False
     assert public["offline_secondary_inference_counts"] == {
@@ -240,7 +294,7 @@ def test_single_read_reserved_before_access_and_published_after_teardown(
     }
 
 
-@pytest.mark.parametrize("bad", ["partition", "suffix_rules"])
+@pytest.mark.parametrize("bad", ["source_csv", "suffix_rules"])
 def test_bad_input_hash_records_failure_without_scoring(runner, inputs, bad):
     binding, paths, session, _ = inputs
     getattr(paths, bad).write_bytes(b"bad bytes")
@@ -259,7 +313,7 @@ def test_duplicate_attempt_does_not_reopen_source(runner, inputs, monkeypatch):
     original = runner._read_file_once
 
     def guarded(path):
-        assert path not in (paths.partition, paths.suffix_rules)
+        assert path not in (paths.source_csv, paths.suffix_rules)
         return original(path)
 
     monkeypatch.setattr(runner, "_read_file_once", guarded)
@@ -267,14 +321,119 @@ def test_duplicate_attempt_does_not_reopen_source(runner, inputs, monkeypatch):
         runner._run_bound_internal(binding, paths)
 
 
-def test_model_loading_follows_reservation_and_precedes_partition_read(
+def test_complete_reconstruction_is_checkpointed_before_scoring_failure(runner, inputs):
+    binding, paths, session, _ = inputs
+    session.primary.scorer.fail_at = 0
+    with pytest.raises(runner.SourceExecutionError, match="scoring"):
+        runner._run_bound_internal(binding, paths)
+    checkpoints = paths.attempt / "checkpoints"
+    assert {path.name for path in checkpoints.iterdir()} == {
+        "group_test.jsonl",
+        "source-overlap.json",
+        "source-reconstruction.json",
+    }
+    overlap = json.loads((checkpoints / "source-overlap.json").read_bytes())
+    assert {"quarantined-label.com", "quarantined-conflict.com"} <= set(
+        overlap["domains"]
+    )
+    assert len(overlap["rows"]) == 33
+    assert overlap["rows"][-1]["status"] == "invalid_url_or_domain"
+    report = json.loads(
+        (binding.root / "reports/phiusiil-preparation-summary.json").read_bytes()
+    )
+    group_test = (checkpoints / "group_test.jsonl").read_bytes()
+    assert sha256(group_test).hexdigest() == report["output_hashes"]["group_test.jsonl"]
+    receipt = json.loads((checkpoints / "source-reconstruction.json").read_bytes())
+    assert (
+        receipt["reservation_sha256"]
+        == sha256((paths.attempt / "reservation.json").read_bytes()).hexdigest()
+    )
+    assert receipt["reconstruction"]["counts"]["quarantined_only_domains"] == 2
+    assert not paths.public_summary.exists()
+    assert (
+        json.loads((paths.attempt / "outcome.json").read_bytes())["stage"] == "scoring"
+    )
+    assert all(path.stat().st_mode & 0o777 == 0o600 for path in checkpoints.iterdir())
+    assert checkpoints.stat().st_mode & 0o777 == 0o700
+
+
+def test_reconstruction_mismatch_rejects_before_checkpoint_or_scoring(runner, inputs):
+    binding, paths, session, _ = inputs
+    report_path = binding.root / "reports/phiusiil-preparation-summary.json"
+    report = json.loads(report_path.read_bytes())
+    report["output_hashes"]["train.jsonl"] = "a" * 64
+    content = json.dumps(report).encode()
+    report_path.write_bytes(content)
+    pins = dict(binding.source_hashes)
+    pins["reports/phiusiil-preparation-summary.json"] = sha256(content).hexdigest()
+    binding = replace(binding, source_hashes=tuple(pins.items()))
+    with pytest.raises(runner.SourceExecutionError, match="source_reconstruction"):
+        runner._run_bound_internal(binding, paths)
+    assert session.primary.scorer.urls == []
+    assert not (paths.attempt / "checkpoints").exists()
+    assert not paths.public_summary.exists()
+
+
+def test_checkpoint_installation_does_not_finalize_and_post_install_failure_retains_it(
+    runner, inputs, monkeypatch
+):
+    binding, paths, session, _ = inputs
+    original = runner.retain_source_checkpoints
+
+    def fail_after_install(*args):
+        original(*args)
+        assert not (paths.attempt / "finalize.claim").exists()
+        assert not (paths.attempt / "outcome.json").exists()
+        assert not (paths.attempt / "evidence").exists()
+        raise OSError("invented checkpoint post-install failure")
+
+    monkeypatch.setattr(runner, "retain_source_checkpoints", fail_after_install)
+    with pytest.raises(runner.SourceExecutionError, match="source_checkpoints"):
+        runner._run_bound_internal(binding, paths)
+    assert session.primary.scorer.urls == []
+    assert (paths.attempt / "checkpoints/source-overlap.json").is_file()
+    assert (paths.attempt / "checkpoints/group_test.jsonl").is_file()
+    assert (
+        json.loads((paths.attempt / "outcome.json").read_bytes())["status"] == "failed"
+    )
+
+
+def test_existing_checkpoint_destination_is_not_replaced(runner, inputs, monkeypatch):
+    binding, paths, session, _ = inputs
+    original = runner.retain_source_checkpoints
+
+    def collide(attempt, *args):
+        (attempt.directory / "checkpoints").mkdir()
+        (attempt.directory / "checkpoints/existing").write_bytes(b"must survive")
+        return original(attempt, *args)
+
+    monkeypatch.setattr(runner, "retain_source_checkpoints", collide)
+    with pytest.raises(runner.SourceExecutionError, match="source_checkpoints"):
+        runner._run_bound_internal(binding, paths)
+    assert session.primary.scorer.urls == []
+    assert (paths.attempt / "checkpoints/existing").read_bytes() == b"must survive"
+
+
+def test_cli_exposes_only_original_source_csv():
+    result = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/run_internal_evaluation.py"), "--help"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0
+    assert "--source-csv" in result.stdout
+    assert "--partition" not in result.stdout
+
+
+def test_model_loading_follows_reservation_and_precedes_source_read(
     runner, inputs, monkeypatch
 ):
     binding, paths, _, _ = inputs
     original = runner._read_file_once
 
     def guarded(path):
-        assert path != paths.partition
+        assert path not in (paths.source_csv, paths.suffix_rules)
         return original(path)
 
     @contextmanager
@@ -384,7 +543,7 @@ def test_fresh_process_entry_has_no_readiness_override(runner, tmp_path):
             "not-a-commit",
             "--expected-contract-sha256",
             "d" * 64,
-            "--partition",
+            "--source-csv",
             str(tmp_path / "missing"),
             "--suffix-rules",
             str(tmp_path / "missing"),
@@ -574,7 +733,8 @@ def test_parent_passes_actual_exit_to_independent_verifier(
         str(binding.root / "scripts/run_internal_evaluation.py"),
         "--worker",
     ]
-    assert command[command.index("--partition") + 1] == str(paths.partition)
+    assert command[command.index("--source-csv") + 1] == str(paths.source_csv)
+    assert "--partition" not in command
     assert command[command.index("--expected-revision") + 1] == binding.revision
     for option, field in (
         ("formatting", "formatting"),

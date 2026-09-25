@@ -23,6 +23,11 @@ PRIVATE_NAMES = {
     "secondary.json",
     "routing.json",
 }
+CHECKPOINT_NAMES = {
+    "group_test.jsonl",
+    "source-overlap.json",
+    "source-reconstruction.json",
+}
 
 
 @pytest.fixture
@@ -96,7 +101,7 @@ def test_valid_completion_returns_public_summary_with_single_safe_reads(
 
     def observed(path, **kwargs):
         reads[path] += 1
-        assert path not in (paths.partition, paths.suffix_rules)
+        assert path not in (paths.source_csv, paths.suffix_rules)
         assert path not in vars(paths.artifacts).values()
         assert path not in vars(paths.secondary_artifacts).values()
         return original(path, **kwargs)
@@ -125,9 +130,135 @@ def test_valid_completion_returns_public_summary_with_single_safe_reads(
         paths.attempt / "outcome.json",
         paths.public_summary,
         *(paths.attempt / "evidence" / name for name in PRIVATE_NAMES),
+        *(paths.attempt / "checkpoints" / name for name in CHECKPOINT_NAMES),
     }
     assert set(reads.values()) == {1}
     assert events.count("recheck") == initial_rechecks + 2
+
+
+def _relink_checkpoints(paths):
+    directory = paths.attempt / "checkpoints"
+    receipt = _load(directory / "source-reconstruction.json")
+    receipt["checkpoint_sha256"] = {
+        name: sha256((directory / name).read_bytes()).hexdigest()
+        for name in CHECKPOINT_NAMES - {"source-reconstruction.json"}
+    }
+    receipt["reconstruction"]["private_sha256"]["source-overlap.json"] = receipt[
+        "checkpoint_sha256"
+    ]["source-overlap.json"]
+    (directory / "source-reconstruction.json").write_bytes(
+        evaluation_producer._json_bytes(receipt)
+    )
+    public = _load(paths.public_summary)
+    public["checkpoint_sha256"] = {
+        name: sha256((directory / name).read_bytes()).hexdigest()
+        for name in CHECKPOINT_NAMES
+    }
+    public["source_reconstruction"] = receipt["reconstruction"]
+    _write(paths.public_summary, public)
+    _relink(paths)
+
+
+@pytest.mark.parametrize("name", sorted(CHECKPOINT_NAMES))
+def test_changed_checkpoint_bytes_rejected(verifier, published, name):
+    binding, paths, *_ = published
+    path = paths.attempt / "checkpoints" / name
+    path.write_bytes(path.read_bytes() + b" ")
+    with pytest.raises(verifier.CompletionVerificationError):
+        verifier.verify_internal_completion(binding, paths, producer_exit_code=0)
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        "missing_row",
+        "duplicate_ordinal",
+        "wrong_record",
+        "extra_domain",
+        "retained_domain",
+        "counts",
+        "execution",
+        "partition",
+    ],
+)
+def test_relinked_source_checkpoint_tampering_rejected(verifier, published, mutation):
+    binding, paths, *_ = published
+    directory = paths.attempt / "checkpoints"
+    path = directory / "source-overlap.json"
+    overlap = _load(path)
+    if mutation == "missing_row":
+        overlap["rows"].pop()
+    elif mutation == "duplicate_ordinal":
+        overlap["rows"][1]["source_ordinal"] = 1
+    elif mutation == "wrong_record":
+        overlap["rows"][0]["record_id"] = overlap["rows"][1]["record_id"]
+    elif mutation == "extra_domain":
+        overlap["domains"].append("invented.com")
+    elif mutation == "retained_domain":
+        overlap["rows"][0]["registrable_domain"] = overlap["rows"][1][
+            "registrable_domain"
+        ]
+    elif mutation in {"counts", "execution"}:
+        receipt_path = directory / "source-reconstruction.json"
+        receipt = _load(receipt_path)
+        if mutation == "counts":
+            receipt["reconstruction"]["counts"]["input_rows"] += 1
+        else:
+            receipt["execution"]["source_interface"] = "partition_only"
+        receipt_path.write_bytes(evaluation_producer._json_bytes(receipt))
+    else:
+        partition = directory / "group_test.jsonl"
+        rows = [json.loads(line) for line in partition.read_bytes().splitlines()]
+        rows[0]["raw_url"] += "changed"
+        partition.write_bytes(
+            b"".join(evaluation_producer._json_bytes(row) for row in rows)
+        )
+    path.write_bytes(evaluation_producer._json_bytes(overlap))
+    _relink_checkpoints(paths)
+    with pytest.raises(verifier.CompletionVerificationError):
+        verifier.verify_internal_completion(binding, paths, producer_exit_code=0)
+
+
+@pytest.mark.parametrize("kind", ["symlink", "hardlink", "directory"])
+def test_checkpoint_aliases_rejected(verifier, published, tmp_path, kind):
+    binding, paths, *_ = published
+    path = paths.attempt / "checkpoints"
+    if kind != "directory":
+        path /= "source-overlap.json"
+    detached = tmp_path / "detached-checkpoint"
+    path.rename(detached)
+    if kind == "hardlink":
+        os.link(detached, path)
+    else:
+        path.symlink_to(detached, target_is_directory=kind == "directory")
+    with pytest.raises(verifier.CompletionVerificationError):
+        verifier.verify_internal_completion(binding, paths, producer_exit_code=0)
+
+
+@pytest.mark.parametrize("source_ordinal", [31, 32])
+def test_relinked_canonical_group_with_conflicting_domains_rejected(
+    verifier, published, source_ordinal
+):
+    binding, paths, *_ = published
+    path = paths.attempt / "checkpoints/source-overlap.json"
+    overlap = _load(path)
+    duplicate = overlap["rows"][source_ordinal - 1]
+    assert (
+        sum(
+            row["canonical_url_sha256"] == duplicate["canonical_url_sha256"]
+            for row in overlap["rows"]
+        )
+        == 2
+    )
+    duplicate["registrable_domain"] = next(
+        domain
+        for domain in overlap["domains"]
+        if domain != duplicate["registrable_domain"]
+    )
+    path.write_bytes(evaluation_producer._json_bytes(overlap))
+    _relink_checkpoints(paths)
+    with pytest.raises(verifier.CompletionVerificationError):
+        verifier.verify_internal_completion(binding, paths, producer_exit_code=0)
 
 
 @pytest.mark.parametrize("exit_code", [True, False, None, "0", 0.0, 1, -9])

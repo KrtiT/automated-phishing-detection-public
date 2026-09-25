@@ -36,6 +36,7 @@ from .bound_secondary import (
 from .evaluation_manifest import ManifestRecord, ReplayManifest
 from .hypothesis_evaluation import PrimaryEvaluation, SavedPopulation, WindowCounts
 from .paired_evaluation import BinaryPrediction, EvaluationRecord
+from .primary_scores import PrimaryURLScores
 from .selective_inference import InferenceCounts, RequestScores
 from .url_features import extract_url_features
 
@@ -301,13 +302,12 @@ def _thresholds(session: BoundSession) -> dict:
     return values
 
 
-def _score_row(record: ManifestRecord, session: BoundSession, thresholds, position):
-    urls = (record.raw_url,)
+def _detector_scores(raw_url: str, session: BoundSession, thresholds: dict) -> tuple:
     length_values, length_audit = length_inference.score_length_only_authoritative(
-        session.models.length_only, urls
+        session.models.length_only, (raw_url,)
     )
     length = _singleton(length_values, "length probability")
-    scores = session.scorer.score_all(record.raw_url)
+    scores = session.scorer.score_all(raw_url)
     if type(scores) is not RequestScores:
         raise EvaluationProducerError("scorer must return typed RequestScores")
     stage1 = _probability(scores.stage1_probability, "stage1 probability")
@@ -322,6 +322,19 @@ def _score_row(record: ManifestRecord, session: BoundSession, thresholds, positi
         half_width=thresholds["half_width"],
     )
     band, decision = fixed.transformer_invoked[0], fixed.decisions[0]
+    _validate_score_flags(scores, band, decision)
+    return (
+        length,
+        stage1,
+        transformer,
+        band,
+        decision,
+        length_audit,
+        scores.stage1_scoring_audit,
+    )
+
+
+def _validate_score_flags(scores: RequestScores, band: bool, decision: int) -> None:
     flags = (
         scores.band_selected,
         scores.drift_override,
@@ -337,20 +350,20 @@ def _score_row(record: ManifestRecord, session: BoundSession, thresholds, positi
         or scores.decision != decision
     ):
         raise EvaluationProducerError("scorer decisions differ from frozen cascade")
-    _expected_counts(session.scorer, position)
 
-    # The monitor's portable probability is deliberately not the detector score.
+
+def _monitor_scores(raw_url: str, session: BoundSession) -> tuple:
     try:
         features = tuple(
             float(value)
             for value in gmm_monitor._finite_array(
-                extract_url_features(record.raw_url), (25,), "structural features"
+                extract_url_features(raw_url), (25,), "structural features"
             )
         )
     except gmm_monitor.GMMMonitorError as exc:
         raise EvaluationProducerError(str(exc)) from exc
     portable = _singleton(
-        session.models.cascade.stage1_model.score_urls(urls),
+        session.models.cascade.stage1_model.score_urls((raw_url,)),
         "portable monitor probability",
     )
     nll = gmm_monitor.score_feature_matrix(((*features, portable),), session.models.gmm)
@@ -360,8 +373,19 @@ def _score_row(record: ManifestRecord, session: BoundSession, thresholds, positi
         )
     except gmm_monitor.GMMMonitorError as exc:
         raise EvaluationProducerError(str(exc)) from exc
-    return ScoredInternalRow(
-        record,
+    return features, portable, score
+
+
+def score_primary_url(
+    raw_url: str, session: BoundSession, thresholds: dict, position: int
+) -> PrimaryURLScores:
+    """Score one raw URL without constructing or consulting a scientific label."""
+    length, stage1, transformer, band, decision, length_audit, stage1_audit = (
+        _detector_scores(raw_url, session, thresholds)
+    )
+    _expected_counts(session.scorer, position)
+    features, portable, score = _monitor_scores(raw_url, session)
+    return PrimaryURLScores(
         features,
         length,
         stage1,
@@ -375,9 +399,14 @@ def _score_row(record: ManifestRecord, session: BoundSession, thresholds, positi
         portable,
         score,
         _json_bytes(length_audit).decode("ascii").rstrip("\n"),
-        _json_bytes(scores.stage1_scoring_audit).decode("ascii").rstrip("\n"),
+        _json_bytes(stage1_audit).decode("ascii").rstrip("\n"),
         InferenceCounts(1, 1, 1, 0),
     )
+
+
+def _score_row(record: ManifestRecord, session: BoundSession, thresholds, position):
+    scores = score_primary_url(record.raw_url, session, thresholds, position)
+    return ScoredInternalRow(record, **vars(scores))
 
 
 def _manifests(records):

@@ -603,6 +603,15 @@ clean exit from cleanup failure that Uvicorn itself can swallow. The official
 parent must still authenticate both children, observe their actual exits and
 verify their saved evidence before any cell is accepted.
 
+`operational_process` adds a lifecycle-only parent primitive for one reserved
+fresh service/client pair. It validates readiness and cleanup against the owned
+service PID, retains process observations without replacement, and joins both
+children after failure or cancellation. Shutdown has explicit stop, terminate
+and kill bounds; forced shutdown or unavailable exit status cannot become a
+successful observation. This is not the authenticated 125-cell supervisor:
+command identities, the frozen schedule, scientific payload validation and
+aggregate acceptance still require composition before operational measurement.
+
 `execution_preflight.bind_execution` checks an externally supplied reviewed
 commit and binding-contract hash against the clean nested checkout, committed
 and working source bytes, loaded package origins, public evidence pins and
@@ -621,15 +630,20 @@ HTTP process supervision still need integration.
 the exclusion rule covers all valid PhiUSIIL domains, including domains whose
 rows were quarantined before fitting. The byte-only helper checks the original
 CSV, PSL, source specification and accepted preparation report against all four
-caller-supplied pins before parsing; official identity binding remains future
-integration work. It reconstructs every historical partition/quarantine hash and
-the full preparation report, retains one membership entry per original row, and returns
+caller-supplied pins before parsing. The closed internal runner now derives those
+pins from its authenticated public records. It reconstructs every historical
+partition/quarantine hash and the full preparation report, retains one membership
+entry per original row, and returns
 the exact accepted group-test bytes alongside complete private overlap evidence.
 Invalid URL/domain rows remain explicitly accounted for. Public output contains
 only counts and hashes. Fixture tests do not authorize reading the original CSV,
-which itself contains protected holdout records. The proposed official source
-route must be frozen before that single read; it will score the reconstructed
-group-test bytes in memory rather than open the separate raw partition again.
+which itself contains protected holdout records. The sole prospective CLI input
+is now `--source-csv`, not a selectable partition shortcut. Before scoring, the
+runner atomically preserves reconstructed group-test bytes, complete original-row
+overlap membership and a reservation-bound reconstruction receipt under private
+`checkpoints/`. A later scoring failure cannot require a raw-source rescan to
+recover this evidence. The source route still requires the complete pre-access
+freeze; its implementation does not open the current gate.
 
 `evaluation_producer.parse_internal_partition` checks the supplied bytes against
 an expected hash before parsing, then validates canonical rows, source IDs,
@@ -643,9 +657,11 @@ It returns paired evidence, private payloads, primary evaluation and the three r
 or an explicit capacity shortfall. Caller-supplied hashes do not authenticate a
 file by themselves. `source_runner` now derives those pins from the authenticated
 public source and preparation records, checks their exact cross-binding, and
-reserves an attempt before reading PSL, models or partition bytes. It hashes the
-same PSL and partition buffers that it parses, rejecting aliases and changes to
-the open file or its pathname. It composes primary evidence and secondary score
+reserves an attempt before reading PSL, models or original CSV bytes. Both model
+families bind before the sole CSV read. It hashes the same PSL and CSV buffers
+that it parses, rejecting aliases and changes to the open file or its pathname,
+then scores the exact reconstructed group-test bytes without opening a separate
+raw partition. It composes primary evidence and secondary score
 metrics, closes the owner, and rechecks the execution binding before publishing.
 Outputs stay outside the clean authenticated checkout. Failure after publication
 starts does not replace the installed claim or imply successful completion.
@@ -658,8 +674,14 @@ before supplied-input path access under the current profile, whose readiness
 remains false. The private composition is tested on temporary invented files;
 there is no flag to enable protected access. The five private outputs are
 `predictions.jsonl`, `manifests.json`, `bindings.json`, `routing.json` and
-`secondary.json`. Output and binding schemas are version 3; descriptive
-secondary metrics retain schema 2. `saved_evidence` reconstructs row identities,
+`secondary.json`. The producer summary and `bindings.json` retain schema 3;
+existing scientific record layouts are unchanged. The public source-completion
+envelope is version 4 and authenticates the three additional private checkpoints.
+Descriptive secondary metrics retain schema 2.
+Saved checkpoint verification checks every original ordinal/ID, canonical-domain
+consistency, counts, and exact group-test agreement with prediction records. It
+does not independently re-extract quarantined domains without the raw source.
+`saved_evidence` reconstructs row identities,
 features, decisions, populations, metrics, hypothesis components and manifests
 from these retained bytes. It also recomputes singleton length/L1 scores and
 audits, the portable monitor probability and GMM NLL from exact retained artifact
@@ -672,6 +694,24 @@ successor profile does not itself authorize protected evaluation. Both model
 families bind before the inference owner starts; execution-binding probes run
 before ownership and after restoration. Saved monitor replay independently
 enforces one numerical thread and restores the previous limits even on failure.
+
+The publisher-byte decoder targets the documented PhishVN v3.1.0
+[release layout](https://github.com/vuthainguyen1602/phishvn/blob/bdebc126097d18e0837253f6367726ceb7303202/scripts/make_release.py).
+It verifies caller-supplied archive size/hash, exact member inventory and the
+publisher manifest before parsing strict CSV records. It checks full-table versus
+all-split multiset equality, preserves original cells and positions privately,
+and maps only documented source/tier/label tuples. Channels do not filter rows;
+bare URLs remain unchanged and face the existing quarantine rule. Publisher
+metadata and code, not released records, informed this decoder. Its expected
+release metadata and caller pins are not protected-access authority.
+
+`bound_external_runtime` binds primary and secondary models plus accepted saved
+MMD/PSI references before numerical ownership. The drift loader checks the
+accepted report chain, preparation/model pins, retained-byte hashes and exact
+primary scaler/portable-state agreement without fitting or recalibration. The
+shared `score_primary_url` arithmetic needs no label, so external controls need
+no invented binary outcome. The complete external producer, saved-output reducer
+and official execution binding still need integration.
 
 `phishvn.prepare_external_rows` implements the frozen mapping and preparation
 rules on normalized records. Declared all-split coverage and file positions are

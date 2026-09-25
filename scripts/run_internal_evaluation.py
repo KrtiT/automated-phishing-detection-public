@@ -23,7 +23,7 @@ def parser():
     command.add_argument("--expected-contract-sha256", required=True)
     command.add_argument("--worker", action="store_true", help=argparse.SUPPRESS)
     for name in (
-        "partition",
+        "source-csv",
         "suffix-rules",
         "length-only",
         "logistic-l1",
@@ -50,7 +50,7 @@ def parser():
 def main(argv=None):
     args = parser().parse_args(argv)
     paths = InternalRunPaths(
-        args.partition,
+        args.source_csv,
         args.suffix_rules,
         ArtifactPaths(
             args.length_only, args.logistic_l1, args.transformer_bundle, args.gmm

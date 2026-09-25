@@ -25,6 +25,7 @@ from . import (
     phiusiil,
     protocol_preflight,
     secondary_metrics,
+    source_overlap,
 )
 from .bound_models import ArtifactPaths
 from .bound_runtime import open_bound_evaluation_session
@@ -32,6 +33,7 @@ from .bound_secondary import SecondaryArtifactPaths
 from .execution_preflight import ExecutionBinding, bind_execution, recheck_binding
 from .execution_receipt import publish_completion, record_failure, reserve_attempt
 from .paired_evaluation import BinaryPrediction
+from .source_checkpoints import retain_source_checkpoints
 
 _SECONDARY_TABULAR_NAMES = (
     "formatting",
@@ -70,7 +72,7 @@ class SourceExecutionError(ValueError):
 
 @dataclass(frozen=True)
 class InternalRunPaths:
-    partition: Path
+    source_csv: Path
     suffix_rules: Path
     artifacts: ArtifactPaths
     secondary_artifacts: SecondaryArtifactPaths
@@ -166,7 +168,7 @@ def _public_sources(binding):
         "expected_row_count": split["row_count"],
         "expected_domain_count": split["domain_count"],
         "expected_class_counts": dict(split["class_counts"]),
-    }
+    }, contents
 
 
 def _output_paths(binding, paths):
@@ -282,11 +284,12 @@ def _run_bound_internal(binding: ExecutionBinding, paths: InternalRunPaths) -> P
     stage = "public_preflight"
     try:
         recheck_binding(binding)
-        source = _public_sources(binding)
+        source, source_buffers = _public_sources(binding)
         _output_paths(binding, paths)
         pins = dict(binding.source_hashes)
         identity = {
             "kind": "internal_evaluation",
+            "source_interface": "original_csv_reconstruction_v1",
             "revision": binding.revision,
             "execution_contract_sha256": binding.contract_sha256,
             "source_spec_sha256": pins[_SOURCE],
@@ -298,19 +301,37 @@ def _run_bound_internal(binding: ExecutionBinding, paths: InternalRunPaths) -> P
         }
         stage = "reservation"
         attempt = reserve_attempt(paths.attempt, identity=identity)
-        stage = "suffix_rules"
-        suffix_bytes = _read_file_once(paths.suffix_rules)
-        if sha256(suffix_bytes).hexdigest() != source["suffix_rules_sha256"]:
-            raise SourceExecutionError("suffix_hash_mismatch")
-        rules = protocol_preflight.parse_suffix_rules(suffix_bytes.decode("utf-8"))
         stage = "model_loading"
         with open_bound_evaluation_session(
             binding, paths.artifacts, paths.secondary_artifacts
         ) as session:
-            stage = "partition"
-            content = _read_file_once(paths.partition)
-            prepared = evaluation_producer.parse_internal_partition(
+            stage = "suffix_rules"
+            suffix_bytes = _read_file_once(paths.suffix_rules)
+            if sha256(suffix_bytes).hexdigest() != source["suffix_rules_sha256"]:
+                raise SourceExecutionError("suffix_hash_mismatch")
+            stage = "source_csv"
+            content = _read_file_once(paths.source_csv)
+            stage = "source_reconstruction"
+            reconstructed = source_overlap.reconstruct_source_overlap(
                 content,
+                suffix_bytes,
+                source_buffers[_SOURCE],
+                source_buffers[_PREPARATION],
+                pins=source_overlap.SourceOverlapPins(
+                    source["source_csv_sha256"],
+                    source["suffix_rules_sha256"],
+                    pins[_SOURCE],
+                    pins[_PREPARATION],
+                ),
+            )
+            stage = "source_checkpoints"
+            checkpoint_hashes = retain_source_checkpoints(
+                attempt, identity, reconstructed
+            )
+            stage = "partition"
+            rules = protocol_preflight.parse_suffix_rules(suffix_bytes.decode("utf-8"))
+            prepared = evaluation_producer.parse_internal_partition(
+                reconstructed.group_test_bytes,
                 suffix_rules=rules,
                 **source,
             )
@@ -327,7 +348,9 @@ def _run_bound_internal(binding: ExecutionBinding, paths: InternalRunPaths) -> P
         private = dict(produced.private_outputs)
         private["secondary.json"] = evaluation_producer._json_bytes(secondary)
         public = {
-            "schema_version": 3,
+            "schema_version": 4,
+            "source_reconstruction": reconstructed.public_summary,
+            "checkpoint_sha256": checkpoint_hashes,
             "row_count": len(produced.rows),
             "domain_count": prepared.domain_count,
             "class_counts": dict(zip(("0", "1"), prepared.class_counts)),
@@ -429,7 +452,7 @@ def run_internal_process(
         expected_contract_sha256,
     ]
     for name, path in (
-        ("partition", paths.partition),
+        ("source-csv", paths.source_csv),
         ("suffix-rules", paths.suffix_rules),
         ("length-only", paths.artifacts.length_only),
         ("logistic-l1", paths.artifacts.logistic_l1),

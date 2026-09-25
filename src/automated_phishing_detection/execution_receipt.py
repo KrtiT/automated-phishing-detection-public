@@ -29,6 +29,7 @@ from hashlib import sha256
 from pathlib import Path
 
 from . import transformer_pipeline
+from ._exception_cleanup import CleanupStack, preserve_cleanup
 
 _SYMBOL = re.compile(r"[A-Za-z][A-Za-z0-9_]{0,127}")
 _FILENAME = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,254}")
@@ -98,14 +99,17 @@ def _open_directory(path: Path) -> int:
     try:
         for component in path.parts[1:]:
             child = os.open(component, flags, dir_fd=descriptor)
-            os.close(descriptor)
+            previous = descriptor
             descriptor = child
+            os.close(previous)
         return descriptor
-    except OSError as exc:
-        os.close(descriptor)
-        raise ExecutionReceiptError(
-            "directory and parents must exist without aliases"
-        ) from exc
+    except BaseException as error:
+        with preserve_cleanup(lambda: os.close(descriptor)):
+            if isinstance(error, OSError):
+                raise ExecutionReceiptError(
+                    "directory and parents must exist without aliases"
+                ) from error
+            raise
 
 
 @dataclass(frozen=True)
@@ -115,23 +119,19 @@ class _Directory:
 
     def check(self) -> None:
         current = _open_directory(self.path)
-        try:
+        with preserve_cleanup(lambda: os.close(current)):
             if _identity(os.fstat(current)) != _identity(os.fstat(self.descriptor)):
                 raise ExecutionReceiptError(
                     "directory identity changed during publication"
                 )
-        finally:
-            os.close(current)
 
 
 @contextmanager
 def _directory(path: Path):
     absolute = _absolute_path(path)
     descriptor = _open_directory(absolute)
-    try:
+    with preserve_cleanup(lambda: os.close(descriptor)):
         yield _Directory(absolute, descriptor)
-    finally:
-        os.close(descriptor)
 
 
 def _entry(directory: _Directory, name: str):
@@ -161,7 +161,8 @@ def _write_file(directory: _Directory, name: str, content: bytes, mode: int) -> 
         mode,
         dir_fd=directory.descriptor,
     )
-    with os.fdopen(descriptor, "wb") as stream:
+    with preserve_cleanup(lambda: os.close(descriptor)), CleanupStack() as cleanup:
+        stream = cleanup.enter_context(os.fdopen(descriptor, "wb", closefd=False))
         os.fchmod(stream.fileno(), mode)
         stream.write(content)
         stream.flush()
@@ -241,26 +242,27 @@ def _staging_directory(parent: _Directory, prefix: str):
     descriptor = os.open(
         name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=parent.descriptor
     )
-    staging = _Directory(parent.path / name, descriptor)
-    try:
+    with (
+        preserve_cleanup(lambda: os.close(descriptor)),
+        preserve_cleanup(lambda: _clean_staging(parent, name, descriptor)),
+    ):
+        staging = _Directory(parent.path / name, descriptor)
         if before is None or _identity(before) != _identity(os.fstat(descriptor)):
             raise ExecutionReceiptError("staging directory identity changed")
         parent.check()
         staging.check()
         yield staging, name
-    finally:
-        # Never enumerate/clean an fd whose directory has already been installed.
-        current = _entry(parent, name)
-        if current is not None and _identity(current) == _identity(
-            os.fstat(descriptor)
-        ):
-            try:
-                for child in os.listdir(descriptor):
-                    os.unlink(child, dir_fd=descriptor)
-                os.rmdir(name, dir_fd=parent.descriptor)
-            except OSError:
-                pass
-        os.close(descriptor)
+
+
+def _clean_staging(parent: _Directory, name: str, descriptor: int) -> None:
+    current = _entry(parent, name)
+    if current is not None and _identity(current) == _identity(os.fstat(descriptor)):
+        try:
+            for child in os.listdir(descriptor):
+                os.unlink(child, dir_fd=descriptor)
+            os.rmdir(name, dir_fd=parent.descriptor)
+        except OSError:
+            pass
 
 
 def _install_record(directory: _Directory, name: str, content: bytes) -> None:
@@ -306,7 +308,7 @@ def _read_reservation(directory: _Directory) -> bytes:
         os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK,
         dir_fd=directory.descriptor,
     )
-    try:
+    with preserve_cleanup(lambda: os.close(descriptor)):
         before = os.fstat(descriptor)
         if (
             before_path is None
@@ -317,11 +319,10 @@ def _read_reservation(directory: _Directory) -> bytes:
             raise ExecutionReceiptError(
                 "reservation must be a regular file without aliases"
             )
-        with os.fdopen(descriptor, "rb", closefd=False) as stream:
+        with CleanupStack() as cleanup:
+            stream = cleanup.enter_context(os.fdopen(descriptor, "rb", closefd=False))
             content = stream.read()
         after = os.fstat(descriptor)
-    finally:
-        os.close(descriptor)
     after_path = _entry(directory, "reservation.json")
     before_state = (
         before.st_dev,
@@ -448,6 +449,13 @@ def _private_payloads(outputs: Mapping[str, bytes]) -> dict[str, bytes]:
     return snapshot
 
 
+def _remove_temporary(directory: _Directory, name: str) -> None:
+    try:
+        os.unlink(name, dir_fd=directory.descriptor)
+    except FileNotFoundError:
+        pass
+
+
 def publish_completion(
     attempt: Attempt,
     *,
@@ -490,7 +498,7 @@ def publish_completion(
         )
         _claim(attempt, directory, "completion")
         temporary_name = f".{destination.name}.tmp-{secrets.token_hex(16)}"
-        try:
+        with preserve_cleanup(lambda: _remove_temporary(public_parent, temporary_name)):
             with _staging_directory(directory, "evidence") as (staging, staging_name):
                 for name, content in sorted(outputs.items()):
                     _write_file(staging, name, content, 0o600)
@@ -503,9 +511,4 @@ def publish_completion(
                 _publish(public_parent, temporary_name, public_parent, destination.name)
                 _sync_directory(public_parent)
                 directory.check()
-        finally:
-            try:
-                os.unlink(temporary_name, dir_fd=public_parent.descriptor)
-            except FileNotFoundError:
-                pass
     return destination

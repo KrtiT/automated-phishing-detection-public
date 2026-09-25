@@ -8,13 +8,13 @@ This module neither reads research inputs nor supplies an HTTP measurement.
 from __future__ import annotations
 
 import threading
-from contextlib import ExitStack
 from dataclasses import dataclass
 
 import threadpoolctl
 import torch
 
 from . import fixed_cascade, gmm_monitor, transformer_scoring
+from ._exception_cleanup import CleanupStack, preserve_cleanup
 from .transformer_inference import LoadedTransformerCascade, TransformerInferenceError
 
 _PROCESS_SESSION = threading.Lock()
@@ -60,7 +60,7 @@ class SelectiveCascade:
     ) -> None:
         self._loaded = loaded
         self._fixture_cpu = _fixture_cpu
-        self._stack: ExitStack | None = None
+        self._stack: CleanupStack | None = None
         self._owner: int | None = None
         self._used = False
         self._forward_attempts = 0
@@ -69,12 +69,12 @@ class SelectiveCascade:
         self._failed = 0
 
     def __enter__(self) -> SelectiveCascade:
+        stack = CleanupStack()
+        stack.callback(_PROCESS_SESSION.release)
         if self._used or not _PROCESS_SESSION.acquire(blocking=False):
             raise TransformerInferenceError(
                 "an inference session is already active or used"
             )
-        stack = ExitStack()
-        stack.callback(_PROCESS_SESSION.release)
         try:
             transformer_scoring._validate_model(self._loaded)
             if type(self._fixture_cpu) is not bool:
@@ -122,8 +122,8 @@ class SelectiveCascade:
             self._used = True
             return self
         except BaseException:
-            stack.close()
-            raise
+            with preserve_cleanup(stack.close):
+                raise
 
     def __exit__(self, exc_type, exc, traceback) -> bool:
         self._require_owner()

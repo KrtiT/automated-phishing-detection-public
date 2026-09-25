@@ -4,6 +4,7 @@ from collections.abc import Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass
 
+from ._exception_cleanup import CleanupStack, preserve_cleanup
 from .bound_drift import BoundDrift, DriftArtifactPaths, load_bound_drift
 from .bound_models import ArtifactPaths, load_bound_models
 from .bound_runtime import BoundEvaluationSession, BoundSession
@@ -31,9 +32,8 @@ def open_bound_external_session(
     secondary = load_bound_secondary(binding.root, secondary_paths, models.cascade)
     drift = load_bound_drift(binding, drift_paths, models)
     recheck_binding(binding)
-    try:
-        with SelectiveCascade(models.cascade) as scorer:
+    with preserve_cleanup(lambda: recheck_binding(binding)):
+        with CleanupStack() as cleanup:
+            scorer = cleanup.enter_context(SelectiveCascade(models.cascade))
             evaluation = BoundEvaluationSession(BoundSession(models, scorer), secondary)
             yield BoundExternalSession(evaluation, drift)
-    finally:
-        recheck_binding(binding)

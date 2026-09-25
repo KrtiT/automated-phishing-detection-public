@@ -747,8 +747,37 @@ Failed or ambiguous writes keep attempted bytes and refuse retries; original
 interruptions survive authentication and installation cleanup. Retention
 completion is not observed worker success. These invented-fixture checks do not
 reproduce the original compressed archive or independently establish its full-
-table completeness. The official same-parent transport, source/process wrapper
-and complete pre-access profile remain required.
+table completeness.
+
+The external source/process wrapper now composes these boundaries on invented
+fixtures. Its candidate source profile authenticates existing public pins and
+implementation identity, but independently reports readiness false. The public
+worker and source-pair parent require both that gate and the still-false execution
+binding gate before supplied source paths or transport files are inspected.
+A complete internal/external/operational pre-access freeze remains required.
+
+The same observing parent carries the accepted internal snapshot into a private
+0700 directory with two 0600 handoff files. These files are retained, not deleted
+during execution; descriptor closure and final snapshot checks cannot turn a
+failed transport into acceptance. Separate cleanup is required outside execution.
+The child authenticates the parent's expected handoff digest, reserves its
+attempt, binds models and reads the approved PSL and archive once each. Six
+provenance checkpoints precede scientific scoring; all thirty scientific outputs
+remain distinct. Numerical restoration and a binding recheck precede public-last
+publication. Private failure retention preserves existing producer progress and
+completed outputs through teardown failures without inventing unavailable counts
+or retrying a failed attempt or publication.
+
+The parent requires an actual owned successful exit for the exact command before
+saved acceptance. It reads all 76 declared completion files once under held
+directory identities, authenticates independent source/profile/handoff and public
+drift pins, reproduces preparation and reconstructs all thirty scientific outputs.
+Final binding, file-state and transport checks precede return. Existing markers
+with nonzero, signaled or externally reaped exits reject. Tests include actual
+invented producer children, including publication followed by nonzero exit and
+completed scoring followed by teardown failure. Internal lineage and model/runtime
+bindings in those integration fixtures remain invented; no released source has
+been opened and no research execution has been accepted by these tests.
 
 `bound_external_runtime` binds primary and secondary models plus accepted saved
 MMD/PSI references before numerical ownership. The drift loader checks the

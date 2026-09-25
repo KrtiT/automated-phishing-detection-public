@@ -111,6 +111,8 @@ def _file_state(value):
 
 def _read_file_once(path: Path, *, expected_state: tuple | None = None) -> bytes:
     """Read one pinned descriptor, checking the pathname without reopening bytes."""
+    from ._exception_cleanup import CleanupStack, preserve_cleanup
+
     try:
         path = execution_receipt._absolute_path(path)
         with execution_receipt._directory(path.parent) as parent:
@@ -120,7 +122,7 @@ def _read_file_once(path: Path, *, expected_state: tuple | None = None) -> bytes
                 os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK,
                 dir_fd=parent.descriptor,
             )
-            try:
+            with preserve_cleanup(lambda: os.close(descriptor)):
                 before = os.fstat(descriptor)
                 if (
                     before_path is None
@@ -133,7 +135,10 @@ def _read_file_once(path: Path, *, expected_state: tuple | None = None) -> bytes
                     )
                 ):
                     raise SourceExecutionError("unsafe_input_file")
-                with os.fdopen(descriptor, "rb", closefd=False) as stream:
+                with CleanupStack() as cleanup:
+                    stream = cleanup.enter_context(
+                        os.fdopen(descriptor, "rb", closefd=False)
+                    )
                     content = stream.read()
                 after = os.fstat(descriptor)
                 after_path = execution_receipt._entry(parent, path.name)
@@ -146,8 +151,6 @@ def _read_file_once(path: Path, *, expected_state: tuple | None = None) -> bytes
                 ):
                     raise SourceExecutionError("input_changed_during_read")
                 return content
-            finally:
-                os.close(descriptor)
     except (OSError, execution_receipt.ExecutionReceiptError):
         raise SourceExecutionError("unsafe_input_path") from None
 

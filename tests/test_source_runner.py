@@ -586,7 +586,7 @@ def test_fresh_process_entry_has_no_readiness_override(runner, tmp_path):
         text=True,
     )
     assert result.returncode == 2
-    assert "ExecutionPreflightError" in result.stderr
+    assert result.stderr == "Internal execution stopped: execution_failed\n"
     assert "Traceback" not in result.stderr
     assert not (tmp_path / "attempt").exists()
 
@@ -651,8 +651,8 @@ def test_arbitrary_nested_producer_summary_is_not_forwarded(
     binding, paths, *_ = inputs
     original = evaluation_producer.produce_internal_evidence
 
-    def canary(*args):
-        produced = original(*args)
+    def canary(*args, **kwargs):
+        produced = original(*args, **kwargs)
         return replace(
             produced,
             public_summary={

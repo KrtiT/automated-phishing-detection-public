@@ -666,6 +666,20 @@ metrics, closes the owner, and rechecks the execution binding before publishing.
 Outputs stay outside the clean authenticated checkout. Failure after publication
 starts does not replace the installed claim or imply successful completion.
 
+The internal producer also retains its validated primary prefix and actual
+available counters in parent-owned private state. Completed primary scores and
+each of the twelve secondary columns reach a create-only scientific checkpoint
+before later inference. Joined predictions precede derived reductions. The
+twenty-one-file `scientific-checkpoints/` protocol links those observations to
+the source checkpoints, reservation, binding bytes and unchanged five final
+outputs. Independent completion verification checks their exact inventory and
+byte projections. Catchable failures attempt one private progress sidecar and
+failure finalization, preserving an original interruption through cleanup and
+writer errors. Unknown partial counts stay unknown. A failed or ambiguous write
+is never retried; unfinished primary prefixes are not guaranteed durable after
+abrupt process death. The CLI emits closed symbolic failures and nonzero exit
+codes, including a failed body that raises `SystemExit(0)`.
+
 `scripts/run_internal_evaluation.py` uses a fresh worker process. Its parent
 requires a successful worker exit and independent completion verification,
 including the reservation, claim, outcome and saved-file hashes. Captured child
@@ -678,6 +692,10 @@ there is no flag to enable protected access. The five private outputs are
 existing scientific record layouts are unchanged. The public source-completion
 envelope is version 4 and authenticates the three additional private checkpoints.
 Descriptive secondary metrics retain schema 2.
+The shared owned-child probe now distinguishes an observed kernel exit from
+lost ownership and is used by the operational observer. Integrating it into
+the single-worker parent remains required: a cached subprocess return code
+alone is insufficient, because external reaping can erase the real exit status.
 Saved checkpoint verification checks every original ordinal/ID, canonical-domain
 consistency, counts, and exact group-test agreement with prediction records. It
 does not independently re-extract quarantined domains without the raw source.
@@ -738,7 +756,7 @@ all secondary aggregates and the public summary must match exactly. It performs
 no source/model-file reads, fitting or transformer/secondary forwards. These
 invented-fixture checks establish saved-byte consistency, not publisher
 provenance or successful physical execution. Authenticated external execution,
-durable internal failure-score checkpoints, operational supervision and the
+owned-exit internal acceptance and handoff, operational supervision and the
 final pre-access freeze remain outstanding.
 
 `phishvn.prepare_external_rows` implements the frozen mapping and preparation

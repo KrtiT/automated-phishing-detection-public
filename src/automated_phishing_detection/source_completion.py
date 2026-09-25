@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import math
 import os
+import stat
 import types
 from dataclasses import asdict, fields, is_dataclass
 from hashlib import sha256
@@ -24,6 +25,11 @@ from . import (
 )
 from .bound_secondary import SecondaryInferenceCounts
 from .evaluation_producer import ManifestOutcome, _json_bytes, _manifest_summary
+from .internal_scientific_checkpoints import (
+    SCIENTIFIC_CHECKPOINT_NAMES,
+    SCIENTIFIC_CHECKPOINT_PROTOCOL,
+)
+from .internal_scientific_verification import verify_scientific_checkpoints
 from .saved_evidence import reconstruct_internal_evidence
 from .saved_metrics import DetectionMetrics
 from .selective_inference import InferenceCounts
@@ -40,7 +46,14 @@ _PRIVATE_NAMES = frozenset(
     }
 )
 _ATTEMPT_NAMES = frozenset(
-    {"reservation.json", "finalize.claim", "outcome.json", "evidence", "checkpoints"}
+    {
+        "reservation.json",
+        "finalize.claim",
+        "outcome.json",
+        "evidence",
+        "checkpoints",
+        "scientific-checkpoints",
+    }
 )
 _PUBLIC_NAMES = frozenset(
     {
@@ -161,6 +174,7 @@ def _expected_identity(binding, source):
     return {
         "kind": "internal_evaluation",
         "source_interface": "original_csv_reconstruction_v1",
+        "scientific_checkpoint_protocol": SCIENTIFIC_CHECKPOINT_PROTOCOL,
         "revision": binding.revision,
         "execution_contract_sha256": binding.contract_sha256,
         "source_spec_sha256": pins["data/sources.json"],
@@ -541,12 +555,34 @@ def _directory_contents(directory, expected):
     )
 
 
-def _output_snapshot(attempt, evidence, checkpoints, public_parent, public_name):
+def _scientific_permissions(directory: execution_receipt._Directory) -> None:
+    _require(
+        stat.S_IMODE(os.fstat(directory.descriptor).st_mode) == 0o700,
+        "unsafe_scientific_directory_permissions",
+    )
+    for name in SCIENTIFIC_CHECKPOINT_NAMES:
+        state = execution_receipt._entry(directory, name)
+        _require(
+            state is not None
+            and stat.S_ISREG(state.st_mode)
+            and state.st_nlink == 1
+            and stat.S_IMODE(state.st_mode) == 0o600,
+            "unsafe_scientific_file",
+        )
+
+
+def _output_snapshot(
+    attempt, evidence, checkpoints, scientific, public_parent, public_name
+):
     records = [
-        (attempt, name) for name in sorted(_ATTEMPT_NAMES - {"evidence", "checkpoints"})
+        (attempt, name)
+        for name in sorted(
+            _ATTEMPT_NAMES - {"evidence", "checkpoints", "scientific-checkpoints"}
+        )
     ]
     records += [(evidence, name) for name in sorted(_PRIVATE_NAMES)]
     records += [(checkpoints, name) for name in sorted(CHECKPOINT_NAMES)]
+    records += [(scientific, name) for name in sorted(SCIENTIFIC_CHECKPOINT_NAMES)]
     records.append((public_parent, public_name))
     result = []
     for directory, name in records:
@@ -569,13 +605,18 @@ def _verify_outputs(binding, paths, source, source_buffers, identity):
         execution_receipt._directory(attempt_path) as attempt,
         execution_receipt._directory(attempt_path / "evidence") as evidence,
         execution_receipt._directory(attempt_path / "checkpoints") as checkpoints,
+        execution_receipt._directory(
+            attempt_path / "scientific-checkpoints"
+        ) as scientific,
         execution_receipt._directory(public_path.parent) as public_parent,
     ):
         _directory_contents(attempt, _ATTEMPT_NAMES)
         _directory_contents(evidence, _PRIVATE_NAMES)
         _directory_contents(checkpoints, CHECKPOINT_NAMES)
+        _directory_contents(scientific, SCIENTIFIC_CHECKPOINT_NAMES)
+        _scientific_permissions(scientific)
         snapshot = _output_snapshot(
-            attempt, evidence, checkpoints, public_parent, public_path.name
+            attempt, evidence, checkpoints, scientific, public_parent, public_path.name
         )
         contents = {
             (directory.path / name): source_runner._read_file_once(
@@ -649,6 +690,16 @@ def _verify_outputs(binding, paths, source, source_buffers, identity):
             reservation_hash,
             contents[evidence.path / "predictions.jsonl"],
         )
+        verify_scientific_checkpoints(
+            {
+                name: contents[scientific.path / name]
+                for name in SCIENTIFIC_CHECKPOINT_NAMES
+            },
+            {name: contents[evidence.path / name] for name in _PRIVATE_NAMES},
+            identity=identity,
+            reservation_sha256=reservation_hash,
+            source_checkpoint_sha256=public["checkpoint_sha256"],
+        )
         reconstructed = reconstruct_internal_evidence(
             contents[evidence.path / "predictions.jsonl"],
             contents[evidence.path / "manifests.json"],
@@ -696,6 +747,8 @@ def _verify_outputs(binding, paths, source, source_buffers, identity):
         _directory_contents(attempt, _ATTEMPT_NAMES)
         _directory_contents(evidence, _PRIVATE_NAMES)
         _directory_contents(checkpoints, CHECKPOINT_NAMES)
+        _directory_contents(scientific, SCIENTIFIC_CHECKPOINT_NAMES)
+        _scientific_permissions(scientific)
         public_parent.check()
         for directory, name, initial in snapshot:
             current = execution_receipt._entry(directory, name)

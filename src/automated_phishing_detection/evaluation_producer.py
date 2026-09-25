@@ -9,9 +9,9 @@ publish the returned payloads without replacement. Tests use synthetic bytes.
 
 from __future__ import annotations
 
-import base64
 import json
 from dataclasses import asdict, dataclass, field, replace
+from functools import partial
 from hashlib import sha256
 
 from . import (
@@ -24,6 +24,17 @@ from . import (
     policy_replay,
     protocol_preflight,
 )
+from ._checkpoint_codec import canonical_bytes, secondary_binding
+from ._internal_producer_bindings import binding_bytes
+from ._internal_producer_checkpoints import (
+    COLUMN_NAMES,
+    completed_column_bytes,
+    primary_completion_bytes,
+    validate_completed_scoring,
+    validated_column_index,
+)
+from ._internal_producer_progress import InternalProgress
+from ._internal_producer_rows import validate_primary_values
 from .bound_runtime import BoundEvaluationSession, BoundSession
 from .bound_secondary import (
     BoundSecondary,
@@ -105,16 +116,7 @@ class ProducedInternal:
 
 def _json_bytes(value: object) -> bytes:
     try:
-        return (
-            json.dumps(
-                value,
-                allow_nan=False,
-                ensure_ascii=True,
-                sort_keys=True,
-                separators=(",", ":"),
-            )
-            + "\n"
-        ).encode("ascii")
+        return canonical_bytes(value)
     except (TypeError, ValueError, UnicodeError) as exc:
         raise EvaluationProducerError("evidence must be finite JSON") from exc
 
@@ -442,53 +444,22 @@ def _manifest_summary(outcome):
 
 
 def _secondary_binding(bound: BoundSecondary, stage1_threshold: float) -> dict:
-    if type(bound) is not BoundSecondary or bound.stage1_threshold != stage1_threshold:
-        raise EvaluationProducerError("secondary binding differs from primary")
-    return {
-        "accepted_report_sha256": dict(bound.report_hashes),
-        "device_type": bound.device_type,
-        "stage1_threshold": bound.stage1_threshold,
-        "vocabulary_sha256": sha256(bound.vocabulary_bytes).hexdigest(),
-        "tabular": [
-            {
-                "name": member.name,
-                "artifact_sha256": member.artifact_sha256,
-                "threshold": member.threshold,
-            }
-            for member in bound.tabular
-        ],
-        "seeds": [
-            {
-                "seed": member.seed,
-                "weights_sha256": member.weights_sha256,
-                "transformer_threshold": member.transformer_threshold,
-                "half_width": member.half_width,
-                "reuses_primary": member.reuses_primary,
-            }
-            for member in bound.seeds
-        ],
-    }
+    try:
+        return secondary_binding(bound, stage1_threshold)
+    except ValueError as exc:
+        raise EvaluationProducerError("secondary binding differs from primary") from exc
 
 
-def produce_internal_evidence(
-    prepared: PreparedInternal, session: BoundEvaluationSession
-) -> ProducedInternal:
-    """Score each validated row once; return nothing if any operation fails.
-
-    Only a fresh, already-open BoundEvaluationSession may be used. Counts measure full
-    offline scoring, not physical selective invocation on a reference replay.
-    Missing external/HTTP evidence stays pending. This callable neither consumes
-    an official attempt nor grants permission to obtain its input bytes.
-    """
+def _validate_internal_inputs(prepared, session, state):
     if (
         type(prepared) is not PreparedInternal
         or type(session) is not BoundEvaluationSession
+        or type(session.primary) is not BoundSession
     ):
         raise EvaluationProducerError(
             "use typed prepared input and BoundEvaluationSession"
         )
-    primary_session = session.primary
-    state = (
+    snapshot = (
         prepared.records,
         prepared.partition_sha256,
         prepared.source_csv_sha256,
@@ -496,42 +467,126 @@ def produce_internal_evidence(
         prepared.domain_count,
         prepared.class_counts,
     )
-    if state != prepared._parsed_state:
+    if snapshot != prepared._parsed_state:
         raise EvaluationProducerError("prepared state differs from parsed snapshot")
+    primary_session = session.primary
     primary_session.scorer._require_owner()
     if primary_session.scorer.counts != _ZERO_COUNTS:
         raise EvaluationProducerError("producer requires a fresh inference session")
     _expected_counts(primary_session.scorer, 0)
-    thresholds = _thresholds(primary_session)
+    state.record_ids = tuple(record.record_id for record in prepared.records)
+    state.observe_counts(primary_session.scorer)
+
+
+def _initial_internal_checkpoints(prepared, session, state, retain):
+    thresholds = _thresholds(session.primary)
+    content = binding_bytes(prepared, session, thresholds)
+    state.stage = "binding_retention"
+    state.store("bindings.json", content, retain)
+    state.stage = "manifest_preparation"
     manifests = _manifests(prepared.records)
-    rows = tuple(
-        _score_row(record, primary_session, thresholds, position)
-        for position, record in enumerate(prepared.records, start=1)
+    state.stage = "manifest_retention"
+    state.store(
+        "manifests.json",
+        _json_bytes({str(bp): asdict(value) for bp, value in manifests.items()}),
+        retain,
     )
-    counts = _expected_counts(primary_session.scorer, len(rows))
+    return thresholds, manifests
+
+
+def _retain_primary(prepared, session, state, retain):
+    counts = _expected_counts(session.scorer, len(state.rows))
+    content = b"".join(_json_bytes(asdict(row)) for row in state.rows)
+    receipt = primary_completion_bytes(
+        state.outputs["bindings.json"],
+        content,
+        len(state.rows),
+        counts,
+        prepared.partition_sha256,
+    )
+    state.stage = "primary_phase_retention"
+    state.store("primary-scores.jsonl", content, retain)
+    state.store("primary-completion.json", receipt, retain)
+
+
+def _score_primary_rows(prepared, session, thresholds, state, retain):
+    for position, record in enumerate(prepared.records, start=1):
+        state.stage = "primary_scoring"
+        state.started_primary_position = position
+        row = _score_row(record, session, thresholds, position)
+        _validate_completed_primary(row, record, thresholds)
+        state.rows.append(row)
+        state.started_primary_position = None
+        state.observe_counts(session.scorer)
+    _retain_primary(prepared, session, state, retain)
+
+
+def _validate_completed_primary(row, record, thresholds):
+    try:
+        if type(row) is not ScoredInternalRow or row.record is not record:
+            raise ValueError("invalid_internal_primary_type")
+        validate_primary_values(row, thresholds)
+    except Exception:
+        raise EvaluationProducerError("invalid completed primary row") from None
+
+
+def _retain_secondary_column(state, retain, binding, column):
+    state.stage = "secondary_column_validation"
+    position = validated_column_index(state, column)
+    state.columns.append(column)
+    index = len(state.columns)
+    state.next_expected_member = (
+        COLUMN_NAMES[index] if index < len(COLUMN_NAMES) else None
+    )
+    state.stage = "secondary_column_encoding"
+    name, content = completed_column_bytes(state, column, binding, position)
+    state.stage = "secondary_column_retention"
+    state.store(name, content, retain)
+    state.stage = "secondary_scoring"
+
+
+def _score_secondary_rows(session, state, retain) -> SecondaryScoring:
+    state.stage = "secondary_scoring"
+    state.next_expected_member = COLUMN_NAMES[0]
+    binding = json.loads(state.outputs["bindings.json"])["secondary"]
     secondary = score_bound_secondary(
         session.secondary,
-        tuple(row.record.raw_url for row in rows),
-        tuple(row.stage1_probability for row in rows),
-        tuple(row.transformer_probability for row in rows),
+        tuple(row.record.raw_url for row in state.rows),
+        tuple(row.stage1_probability for row in state.rows),
+        tuple(row.transformer_probability for row in state.rows),
+        on_completed_column=partial(_retain_secondary_column, state, retain, binding),
     )
-    if type(secondary) is not SecondaryScoring or len(secondary.rows) != len(rows):
-        raise EvaluationProducerError("secondary scores must align with primary rows")
+    state.stage = "secondary_completion_validation"
+    validate_completed_scoring(state, secondary)
+    return secondary
+
+
+def _joined_internal_rows(state, secondary, retain):
     rows = tuple(
         replace(
             row,
             secondary_tabular=secondary_row.tabular,
             secondary_seeds=secondary_row.seeds,
         )
-        for row, secondary_row in zip(rows, secondary.rows, strict=True)
+        for row, secondary_row in zip(state.rows, secondary.rows, strict=True)
     )
+    state.stage = "prediction_retention"
+    state.store(
+        "predictions.jsonl",
+        b"".join(_json_bytes(asdict(row)) for row in rows),
+        retain,
+    )
+    return rows
+
+
+def _internal_population(rows):
     decisions = {
         "length_only": "length_decision",
         "logistic_l1": "stage1_decision",
         "transformer": "transformer_decision",
         "cascade": "cascade_decision",
     }
-    population = SavedPopulation(
+    return SavedPopulation(
         tuple(
             EvaluationRecord(
                 row.record.record_id,
@@ -548,15 +603,10 @@ def produce_internal_evidence(
             for model, attribute in decisions.items()
         },
     )
-    audit = {
-        "alert_count": primary_session.models.audit_alert_count,
-        "window_count": primary_session.models.audit_window_count,
-    }
-    primary = hypothesis_evaluation.evaluate_primary(
-        populations={"internal": population},
-        audit_windows=WindowCounts(audit["alert_count"], audit["window_count"]),
-    )
-    routing = policy_replay.replay_policy(
+
+
+def _internal_routing(rows, thresholds):
+    return policy_replay.replay_policy(
         tuple(
             policy_replay.PairedProbabilities(
                 row.record.record_id,
@@ -576,68 +626,121 @@ def produce_internal_evidence(
         half_width=thresholds["half_width"],
         monitor_boundary=thresholds["monitor_boundary"],
     )
-    replay_artifacts = {
-        "length-only.json": primary_session.models.length_only._artifact_bytes,
-        "logistic-l1.json": primary_session.models.cascade.stage1_model._artifact_bytes,
-        "gmm.json": primary_session.models.gmm_artifact_bytes,
-    }
-    for name, content in replay_artifacts.items():
-        if type(content) is not bytes or sha256(content).hexdigest() != dict(
-            primary_session.models.artifact_hashes
-        ).get(name):
-            raise EvaluationProducerError(
-                "retained replay artifact differs from binding"
-            )
-    secondary_binding = _secondary_binding(session.secondary, thresholds["logistic_l1"])
-    private = {
-        "predictions.jsonl": b"".join(_json_bytes(asdict(row)) for row in rows),
-        "routing.json": _json_bytes(asdict(routing)),
-        "manifests.json": _json_bytes(
-            {str(bp): asdict(value) for bp, value in manifests.items()}
-        ),
-        "bindings.json": _json_bytes(
-            {
-                "schema_version": 3,
-                "partition_sha256": prepared.partition_sha256,
-                "source_csv_sha256": prepared.source_csv_sha256,
-                "suffix_rules_sha256": prepared.suffix_rules_sha256,
-                "artifact_hashes": dict(primary_session.models.artifact_hashes),
-                "thresholds": thresholds,
-                "secondary": secondary_binding,
-                "gmm_audit": audit,
-                "replay_artifacts": {
-                    name: base64.b64encode(content).decode("ascii")
-                    for name, content in replay_artifacts.items()
-                },
-            }
-        ),
-    }
-    summary = {
+
+
+def _internal_summary(prepared, result):
+    return {
         "schema_version": 3,
         "status": "internal_evidence_composed",
         "protected_evaluation_authorized": False,
         "source_binding": "caller_supplied_pins_only",
-        "row_count": len(rows),
+        "row_count": len(result.rows),
         "domain_count": prepared.domain_count,
         "class_counts": dict(zip(("0", "1"), prepared.class_counts)),
-        "offline_inference_counts": asdict(counts),
-        "offline_secondary_inference_counts": asdict(secondary.counts),
+        "offline_inference_counts": asdict(result.inference_counts),
+        "offline_secondary_inference_counts": asdict(result.secondary_inference_counts),
         "manifests": {
-            str(bp): _manifest_summary(value) for bp, value in manifests.items()
+            str(bp): _manifest_summary(value) for bp, value in result.manifests.items()
         },
-        "primary": asdict(primary),
+        "primary": asdict(result.primary),
         "private_sha256": {
-            name: sha256(content).hexdigest() for name, content in private.items()
+            name: sha256(content).hexdigest()
+            for name, content in result.private_outputs.items()
         },
     }
-    _json_bytes(summary)
-    return ProducedInternal(
-        rows,
-        population,
-        manifests,
-        primary,
-        counts,
-        secondary.counts,
-        private,
-        summary,
+
+
+def _derived_internal(rows, thresholds, state, retain):
+    state.stage = "derived"
+    population = _internal_population(rows)
+    audit = json.loads(state.outputs["bindings.json"])["gmm_audit"]
+    primary = hypothesis_evaluation.evaluate_primary(
+        populations={"internal": population},
+        audit_windows=WindowCounts(audit["alert_count"], audit["window_count"]),
     )
+    routing = _internal_routing(rows, thresholds)
+    state.stage = "routing_retention"
+    state.store("routing.json", _json_bytes(asdict(routing)), retain)
+    return population, primary
+
+
+def _finish_internal(
+    prepared, session, state, manifests, rows, secondary, population, primary
+):
+    state.stage = "final_binding"
+    if (
+        binding_bytes(prepared, session, _thresholds(session.primary))
+        != state.outputs["bindings.json"]
+    ):
+        raise EvaluationProducerError("internal binding changed during scoring")
+    counts = _expected_counts(session.primary.scorer, len(rows))
+    private = {
+        name: state.outputs[name]
+        for name in (
+            "predictions.jsonl",
+            "routing.json",
+            "manifests.json",
+            "bindings.json",
+        )
+    }
+    result = ProducedInternal(
+        rows, population, manifests, primary, counts, secondary.counts, private, {}
+    )
+    state.stage = "summary"
+    summary = _internal_summary(prepared, result)
+    _json_bytes(summary)
+    state.status, state.stage = "complete", "complete"
+    return replace(result, public_summary=summary)
+
+
+def _produce_internal(prepared, session, state, retain):
+    _validate_internal_inputs(prepared, session, state)
+    thresholds, manifests = _initial_internal_checkpoints(
+        prepared, session, state, retain
+    )
+    _score_primary_rows(prepared, session.primary, thresholds, state, retain)
+    secondary = _score_secondary_rows(session, state, retain)
+    rows = _joined_internal_rows(state, secondary, retain)
+    population, primary = _derived_internal(rows, thresholds, state, retain)
+    return _finish_internal(
+        prepared, session, state, manifests, rows, secondary, population, primary
+    )
+
+
+def _begin_internal_progress(progress, retain):
+    state = InternalProgress() if progress is None else progress
+    if (
+        type(state) is not InternalProgress
+        or retain is not None
+        and not callable(retain)
+    ):
+        raise EvaluationProducerError("invalid internal retention inputs")
+    try:
+        state.begin()
+    except ValueError as exc:
+        raise EvaluationProducerError("internal progress must be fresh") from exc
+    return state
+
+
+def produce_internal_evidence(
+    prepared: PreparedInternal,
+    session: BoundEvaluationSession,
+    *,
+    retain=None,
+    progress=None,
+) -> ProducedInternal:
+    """Score once, retaining complete prefixes without authorizing or resuming an attempt."""
+    state = _begin_internal_progress(progress, retain)
+    try:
+        return _produce_internal(prepared, session, state, retain)
+    except BaseException as error:
+        state.status = "failed"
+        if (
+            type(session) is BoundEvaluationSession
+            and type(session.primary) is BoundSession
+        ):
+            state.observe_counts(
+                session.primary.scorer,
+                suppress_interruptions=not isinstance(error, Exception),
+            )
+        raise

@@ -3,7 +3,7 @@
 The current execution profile is not a complete pre-access freeze. The public
 entry therefore stops before inspecting any supplied input/output path. The
 private composition is exercised on temporary fixtures, not research records.
-Secondary models and external schema/process integration remain separate work.
+External and operational process composition remain separate work.
 """
 
 from __future__ import annotations
@@ -32,6 +32,12 @@ from .bound_runtime import open_bound_evaluation_session
 from .bound_secondary import SecondaryArtifactPaths
 from .execution_preflight import ExecutionBinding, bind_execution, recheck_binding
 from .execution_receipt import publish_completion, record_failure, reserve_attempt
+from .internal_failure import InternalFailureState, failure_kind, propagate_interruption
+from .internal_scientific_checkpoints import (
+    SCIENTIFIC_CHECKPOINT_PROTOCOL,
+    ScientificCheckpointWriter,
+    retain_failure_progress,
+)
 from .paired_evaluation import BinaryPrediction
 from .source_checkpoints import retain_source_checkpoints
 
@@ -282,6 +288,9 @@ def _run_bound_internal(binding: ExecutionBinding, paths: InternalRunPaths) -> P
     attempt = None
     publishing = False
     stage = "public_preflight"
+    progress = evaluation_producer.InternalProgress()
+    failures = InternalFailureState(progress)
+    identity = None
     try:
         recheck_binding(binding)
         source, source_buffers = _public_sources(binding)
@@ -290,6 +299,7 @@ def _run_bound_internal(binding: ExecutionBinding, paths: InternalRunPaths) -> P
         identity = {
             "kind": "internal_evaluation",
             "source_interface": "original_csv_reconstruction_v1",
+            "scientific_checkpoint_protocol": SCIENTIFIC_CHECKPOINT_PROTOCOL,
             "revision": binding.revision,
             "execution_contract_sha256": binding.contract_sha256,
             "source_spec_sha256": pins[_SOURCE],
@@ -302,9 +312,12 @@ def _run_bound_internal(binding: ExecutionBinding, paths: InternalRunPaths) -> P
         stage = "reservation"
         attempt = reserve_attempt(paths.attempt, identity=identity)
         stage = "model_loading"
-        with open_bound_evaluation_session(
-            binding, paths.artifacts, paths.secondary_artifacts
-        ) as session:
+        with (
+            open_bound_evaluation_session(
+                binding, paths.artifacts, paths.secondary_artifacts
+            ) as session,
+            failures.capture_body(session.primary.scorer),
+        ):
             stage = "suffix_rules"
             suffix_bytes = _read_file_once(paths.suffix_rules)
             if sha256(suffix_bytes).hexdigest() != source["suffix_rules_sha256"]:
@@ -328,6 +341,7 @@ def _run_bound_internal(binding: ExecutionBinding, paths: InternalRunPaths) -> P
             checkpoint_hashes = retain_source_checkpoints(
                 attempt, identity, reconstructed
             )
+            failures.source_checkpoint_sha256 = checkpoint_hashes
             stage = "partition"
             rules = protocol_preflight.parse_suffix_rules(suffix_bytes.decode("utf-8"))
             prepared = evaluation_producer.parse_internal_partition(
@@ -335,9 +349,27 @@ def _run_bound_internal(binding: ExecutionBinding, paths: InternalRunPaths) -> P
                 suffix_rules=rules,
                 **source,
             )
+            failures.writer = ScientificCheckpointWriter(
+                attempt,
+                identity=identity,
+                source_checkpoint_sha256=checkpoint_hashes,
+                record_ids=tuple(record.record_id for record in prepared.records),
+            )
             stage = "scoring"
-            produced = evaluation_producer.produce_internal_evidence(prepared, session)
+            produced = evaluation_producer.produce_internal_evidence(
+                prepared, session, retain=failures.writer, progress=progress
+            )
             secondary = _secondary(produced)
+            failures.writer(
+                "secondary.json", evaluation_producer._json_bytes(secondary)
+            )
+            failures.writer.complete(
+                inference_counts=produced.inference_counts,
+                secondary_inference_counts=produced.secondary_inference_counts,
+            )
+        failures.session_closed = True
+        if failures.original_error is not None:
+            raise failures.original_error
         stage = "final_binding"
         recheck_binding(binding)
         stage = "summary"
@@ -388,16 +420,34 @@ def _run_bound_internal(binding: ExecutionBinding, paths: InternalRunPaths) -> P
             public_summary=public,
             public_path=paths.public_summary,
         )
-    except Exception as exc:
+    except BaseException as exc:
+        selected = failures.selected_error(exc)
+        private_progress = None
+        persistence_failed = False
         if attempt is not None and not publishing:
             try:
-                record_failure(attempt, stage=stage, error_type=type(exc).__name__)
-            except Exception:
-                # A reservation still records an incomplete attempt if finalization fails.
-                raise SourceExecutionError(
-                    f"{stage}: failure_record_incomplete"
-                ) from None
-        raise SourceExecutionError(f"{stage}: {type(exc).__name__}") from None
+                private_progress = failures.snapshot(attempt, identity, stage, exc)
+                retain_failure_progress(attempt, private_progress)
+            except BaseException as persistence_error:
+                persistence_failed = True
+                if isinstance(selected, Exception) and not isinstance(
+                    persistence_error, Exception
+                ):
+                    selected = persistence_error
+            try:
+                record_failure(attempt, stage=stage, error_type=failure_kind(selected))
+            except BaseException as persistence_error:
+                persistence_failed = True
+                if isinstance(selected, Exception) and not isinstance(
+                    persistence_error, Exception
+                ):
+                    selected = persistence_error
+        if not isinstance(selected, Exception):
+            propagate_interruption(selected, private_progress)
+        symbol = (
+            "failure_record_incomplete" if persistence_failed else "execution_failed"
+        )
+        raise SourceExecutionError(f"{stage}: {symbol}") from None
 
 
 def run_internal_evaluation(
@@ -410,8 +460,8 @@ def run_internal_evaluation(
     """Require a complete frozen profile before any supplied-path inspection.
 
     The current profile always returns False. There is no override parameter;
-    adding secondary artifacts and complete output coverage requires a separately
-    reviewed execution-profile change before this command can process records.
+    complete source/process/output coverage requires a separately reviewed
+    execution-profile change before this command can process records.
     """
     binding = bind_execution(
         root,

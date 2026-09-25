@@ -15,6 +15,9 @@ import pytest
 from test_source_runner import inputs, runner  # noqa: F401
 
 from automated_phishing_detection import evaluation_producer, execution_receipt
+from automated_phishing_detection.internal_scientific_checkpoints import (
+    SCIENTIFIC_CHECKPOINT_NAMES,
+)
 
 PRIVATE_NAMES = {
     "predictions.jsonl",
@@ -131,6 +134,10 @@ def test_valid_completion_returns_public_summary_with_single_safe_reads(
         paths.public_summary,
         *(paths.attempt / "evidence" / name for name in PRIVATE_NAMES),
         *(paths.attempt / "checkpoints" / name for name in CHECKPOINT_NAMES),
+        *(
+            paths.attempt / "scientific-checkpoints" / name
+            for name in SCIENTIFIC_CHECKPOINT_NAMES
+        ),
     }
     assert set(reads.values()) == {1}
     assert events.count("recheck") == initial_rechecks + 2

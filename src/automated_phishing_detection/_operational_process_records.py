@@ -1,11 +1,11 @@
 """Create-only observations of owned processes, not scientific authorization."""
 
 import json
-import os
 from dataclasses import dataclass
 from hashlib import sha256
 
 from . import execution_receipt as receipt
+from ._owned_process_exit import observe_owned_exit
 from .source_runner import _json, _read_file_once
 
 
@@ -149,18 +149,14 @@ class Observations:
     def exited(self, role, process):
         if role in self.exited_roles:
             return True
-        try:
-            waited_pid, status = os.waitpid(process.pid, os.WNOHANG)
-        except ChildProcessError:
-            self.exited_roles.add(role)
+        observed = observe_owned_exit(process)
+        if observed is None:
+            return False
+        self.exited_roles.add(role)
+        if not observed.exit_observed:
             self.fail(f"{role}_exit_unobserved")
             return True
-        if waited_pid == 0:
-            return False
-        code = os.waitstatus_to_exitcode(status)
-        self.value[role].update(exit_code=code, exit_observed=True)
-        process.returncode = code
-        self.exited_roles.add(role)
+        self.value[role].update(exit_code=observed.exit_code, exit_observed=True)
         return True
 
     def exits(self, children):

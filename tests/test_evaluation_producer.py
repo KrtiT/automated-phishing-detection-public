@@ -11,6 +11,7 @@ from types import SimpleNamespace
 
 import numpy as np
 import pytest
+from internal_secondary_fixture_callbacks import completed_columns
 
 from automated_phishing_detection.bound_runtime import (
     BoundEvaluationSession,
@@ -302,7 +303,7 @@ def synthetic_session(producer, monkeypatch):
     )
     seeds = (42, 43, 44, 45, 46)
 
-    def secondary_score(bound, urls, stage1, transformer):
+    def secondary_score(bound, urls, stage1, transformer, *, on_completed_column=None):
         assert bound is secondary
         assert len(urls) == len(stage1) == len(transformer)
         rows = []
@@ -338,7 +339,9 @@ def synthetic_session(producer, monkeypatch):
             tuple((seed, 0 if seed == 42 else len(urls)) for seed in seeds),
             len(urls),
         )
-        return SecondaryScoring(tuple(rows), counts)
+        return completed_columns(
+            SecondaryScoring(tuple(rows), counts), on_completed_column
+        )
 
     secondary = _bound_secondary_fixture()
     monkeypatch.setattr(
@@ -521,9 +524,18 @@ def test_secondary_scores_join_rows_without_changing_primary_population(
     )
     calls = []
 
-    def score(bound, raw_urls, stage1_probabilities, seed_42_probabilities):
+    def score(
+        bound,
+        raw_urls,
+        stage1_probabilities,
+        seed_42_probabilities,
+        *,
+        on_completed_column=None,
+    ):
         calls.append((bound, raw_urls, stage1_probabilities, seed_42_probabilities))
-        return SecondaryScoring(secondary_rows, counts)
+        return completed_columns(
+            SecondaryScoring(secondary_rows, counts), on_completed_column
+        )
 
     monkeypatch.setattr(producer, "score_bound_secondary", score, raising=False)
     result = producer.produce_internal_evidence(prepared, session)
@@ -599,8 +611,14 @@ def test_secondary_bindings_and_counts_are_serialized_as_schema_v3(
     bound = _bound_secondary_fixture()
     session = BoundEvaluationSession(synthetic.primary, bound)
 
-    def score(_bound, raw_urls, stage1, transformer):
-        return original_score(synthetic.secondary, raw_urls, stage1, transformer)
+    def score(_bound, raw_urls, stage1, transformer, *, on_completed_column=None):
+        return original_score(
+            synthetic.secondary,
+            raw_urls,
+            stage1,
+            transformer,
+            on_completed_column=on_completed_column,
+        )
 
     monkeypatch.setattr(producer, "score_bound_secondary", score)
     result = producer.produce_internal_evidence(prepared, session)

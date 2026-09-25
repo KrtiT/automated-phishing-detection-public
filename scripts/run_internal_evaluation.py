@@ -9,6 +9,10 @@ from pathlib import Path
 
 from automated_phishing_detection.bound_models import ArtifactPaths
 from automated_phishing_detection.bound_secondary import SecondaryArtifactPaths
+from automated_phishing_detection.internal_failure import (
+    failure_exit_code,
+    failure_kind,
+)
 from automated_phishing_detection.source_runner import (
     InternalRunPaths,
     run_internal_evaluation,
@@ -79,9 +83,9 @@ def main(argv=None):
             expected_contract_sha256=args.expected_contract_sha256,
             paths=paths,
         )
-    except Exception as exc:
-        print(f"Internal execution stopped: {type(exc).__name__}", file=sys.stderr)
-        return 2
+    except BaseException as exc:
+        print(f"Internal execution stopped: {failure_kind(exc)}", file=sys.stderr)
+        return failure_exit_code(exc)
     print(
         "Internal evidence published."
         if args.worker

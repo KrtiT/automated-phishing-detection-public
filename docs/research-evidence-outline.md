@@ -806,6 +806,26 @@ requests. Existing run-level rates, drain intervals and actual shift N remain
 visible. These descriptive groups do not accept process lineage, replace a
 missing primary reference or change any H3 gate.
 
+A separate preparation-only entry now composes both source preparations before
+any numerical session. Both public access gates remain closed. On invented
+inputs, it reserves first, authenticates one shared PSL buffer, retains internal
+source checkpoints before archive access, and retains publisher decoder bytes
+before external preparation. Twelve ordered private files preserve preparation,
+necessary population-capacity counts and a reservation-linked preparation-only
+receipt. Failed writes retain predecessors and partial files without retry or
+cleanup; no public scientific-completion marker is emitted.
+
+The capacity record distinguishes primary, sensitivity and descriptive shortages,
+including positive-domain clusters, fixed replay class counts, offline windows
+and live-shift warmup. Secondary population zeros remain descriptive counts.
+Neither an empty shortage list nor completed preparation proves that every
+prediction-dependent estimate will exist, adopts an administrative stop policy,
+authorizes scoring or decides a hypothesis. The terminal stage never launches
+models, including when all listed capacities are present. Later retained-byte
+scoring integration and the reviewed prospective continuation boundary remain
+required; existing scientific workers, source rules and hypothesis gates are
+unchanged. No required population is claimed absent from these fixture checks.
+
 `bound_external_runtime` binds primary and secondary models plus accepted saved
 MMD/PSI references before numerical ownership. The drift loader checks the
 accepted report chain, preparation/model pins, retained-byte hashes and exact

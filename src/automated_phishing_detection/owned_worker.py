@@ -11,6 +11,7 @@ from hashlib import sha256
 
 from ._owned_process_exit import OwnedProcessExit, observe_owned_exit
 from ._process_support import _defer_interrupt, _InterruptGuard, command_hash
+from ._study_admission_parent import validate_launch_admission
 
 
 class WorkerExecutionError(ValueError):
@@ -36,8 +37,9 @@ def _stream_hash(stream):
 
 
 class _Worker:
-    def __init__(self):
+    def __init__(self, admission=None):
         self.stack, self.streams = ExitStack(), ()
+        self.admission = admission
         self.process, self.terminal = None, None
         self.stage = "worker_setup_failed"
         self.value = {
@@ -73,23 +75,25 @@ class _Worker:
             self.terminal = observe_owned_exit(self.process, block=block)
         if self.terminal is not None and not self.terminal.exit_observed:
             self.process._child_created = False
+        if self.terminal is not None and self.admission is not None:
+            self.admission.observed(
+                self.terminal.exit_observed, self.terminal.exit_code
+            )
         return self.terminal
 
     def run(self, command):
         self.value["command_sha256"] = command_hash(command)
         with _defer_interrupt():
+            if self.admission is not None:
+                validate_launch_admission(
+                    self.admission, ("internal", "external"), command
+                )
+                self.stack.enter_context(self.admission)
             self.streams = tuple(
                 self.stack.enter_context(tempfile.TemporaryFile()) for _ in range(2)
             )
         self.stage = "worker_launch_failed"
-        with _defer_interrupt():
-            self.process = subprocess.Popen(
-                command,
-                stdin=subprocess.DEVNULL,
-                stdout=self.streams[0],
-                stderr=self.streams[1],
-                close_fds=True,
-            )
+        self.launch(command)
         self.stage = "worker_wait_failed"
         if self.observe(block=True) is None:
             raise ValueError("worker_exit_pending")
@@ -102,6 +106,28 @@ class _Worker:
             self.value["stdout_sha256"],
             self.value["stderr_sha256"],
         )
+
+    def launch(self, command):
+        options = {}
+        if self.admission is not None:
+            environment = {
+                key: value
+                for key, value in os.environ.items()
+                if not key.startswith("APD_")
+            }
+            environment.update(self.admission.environment)
+            options = dict(env=environment, pass_fds=(self.admission.read_fd,))
+        with _defer_interrupt():
+            self.process = subprocess.Popen(
+                command,
+                stdin=subprocess.DEVNULL,
+                stdout=self.streams[0],
+                stderr=self.streams[1],
+                close_fds=True,
+                **options,
+            )
+            if self.admission is not None:
+                self.admission.launched(self.process.pid)
 
     def stop(self):
         if self.process is None:
@@ -136,7 +162,15 @@ class _Worker:
 
 
 def observe_worker(command: tuple[str, ...]) -> WorkerObservation:
-    worker, failure = _Worker(), None
+    return _observe_owned_worker(command, _Worker())
+
+
+def _observe_study_worker(command, admission):
+    return _observe_owned_worker(command, _Worker(admission))
+
+
+def _observe_owned_worker(command, worker):
+    failure = None
     with _InterruptGuard(worker.interruption_progress) as interrupts:
         try:
             observed = interrupts.run(worker.run, command)

@@ -88,7 +88,7 @@ def _inputs(cleanup, paths, accepted, selected, attempt):
     return inputs
 
 
-async def _observe(state, commands, deadlines):
+async def _observe(state, commands, deadlines, *, study_admissions=None):
     with held_attempt_writer(state.attempt, names=_PARENT_NAMES) as writer:
 
         def retain(attempt, name, content):
@@ -96,12 +96,18 @@ async def _observe(state, commands, deadlines):
             writer.retain(name, content)
 
         try:
+            extra = (
+                {}
+                if study_admissions is None
+                else {"study_admissions": study_admissions}
+            )
             state.observation = await _observe_pair_with_writer(
                 state.attempt,
                 service_command=commands[0],
                 client_command=commands[1],
                 deadlines=deadlines,
                 writer=retain,
+                **extra,
             )
         except BaseException as error:
             state.original = error
@@ -109,7 +115,16 @@ async def _observe(state, commands, deadlines):
 
 
 async def _execute(
-    state, cleanup, binding, profile, accepted, selected, paths, artifacts, deadlines
+    state,
+    cleanup,
+    binding,
+    profile,
+    accepted,
+    selected,
+    paths,
+    artifacts,
+    deadlines,
+    study_admissions=None,
 ):
     identity = cell_identity(accepted, selected.descriptor_bytes)
     state.stage = "reservation"
@@ -133,7 +148,13 @@ async def _execute(
         artifacts=artifacts,
     )
     state.stage = "observation"
-    await _observe(state, commands, deadlines)
+    if study_admissions is None:
+        await _observe(state, commands, deadlines)
+    else:
+        from ._study_authorized_cell import commands_and_admissions
+
+        commands, admit = commands_and_admissions(study_admissions, inputs)
+        await _observe(state, commands, deadlines, study_admissions=admit)
     return _complete(state, inputs, accepted, commands, deadlines)
 
 
@@ -151,7 +172,17 @@ def _complete(state, inputs, accepted, commands, deadlines):
     return ObservedOperationalCell(state.observation, snapshot)
 
 
-async def _run(state, binding, profile, accepted, cell, paths, artifacts, deadlines):
+async def _run(
+    state,
+    binding,
+    profile,
+    accepted,
+    cell,
+    paths,
+    artifacts,
+    deadlines,
+    study_admissions=None,
+):
     with CleanupStack() as cleanup:
         try:
             context.validate(
@@ -163,6 +194,11 @@ async def _run(state, binding, profile, accepted, cell, paths, artifacts, deadli
             files.deferred(context.absent_outputs, paths)
             state.stage = "selection"
             selected = build_cell_descriptor(accepted, cell)
+            extra = (
+                {}
+                if study_admissions is None
+                else {"study_admissions": study_admissions}
+            )
             return await _execute(
                 state,
                 cleanup,
@@ -173,6 +209,7 @@ async def _run(state, binding, profile, accepted, cell, paths, artifacts, deadli
                 paths,
                 artifacts,
                 deadlines.copy(),
+                **extra,
             )
         except BaseException as error:
             if state.original is None:

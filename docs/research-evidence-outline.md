@@ -884,6 +884,19 @@ review with the full source, artifact, runtime and output profile. Neither this
 implementation nor passing tests supplies adoption, access, a historical resume
 or a new hypothesis result.
 
+The separate [study-only authorization route](study-execution-authorization.md)
+adds a committed prospective policy and an immutable post-commit private profile,
+without changing v3 or enabling those legacy gates. A complete envelope must
+record actual method, advisor, exact-profile and protected-access decisions.
+Fixed internal, external, service and client children consume bounded inherited
+parent-owned admissions before private inputs. An explicitly versioned adopted
+root joins approval scope, the retained barrier and actual owned observations;
+saved authorization checks require independently supplied profile/envelope pins.
+The original scientific records, 125-cell schedule, inventories and reducers
+remain unchanged. Session commitments are prospective obligations, not observed
+host conditions. These engineering controls do not establish approval or answer
+any unmeasured research component.
+
 `bound_external_runtime` binds primary and secondary models plus accepted saved
 MMD/PSI references before numerical ownership. The drift loader checks the
 accepted report chain, preparation/model pins, retained-byte hashes and exact

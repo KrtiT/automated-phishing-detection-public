@@ -10,14 +10,19 @@ import tempfile
 from ._exception_cleanup import CleanupStack, preserve_cleanup
 from ._operational_process_records import OperationalProcessError, command_hash
 from ._process_support import _defer_interrupt
+from ._study_admission_parent import StudyAdmissions, validate_launch_admission
 
 
 class OwnedChildren:
-    def __init__(self, observations, deadlines):
+    def __init__(
+        self, observations, deadlines, study_admissions: StudyAdmissions | None = None
+    ):
         self.observations, self.deadlines = observations, deadlines
         self.stack = CleanupStack()
         self.descriptors = set()
         self.processes, self.streams = {}, {}
+        self.study_admissions, self.admissions = study_admissions, {}
+        self.admission_failure = None
 
     def __enter__(self):
         try:
@@ -80,15 +85,11 @@ class OwnedChildren:
             f"{role}-intent.json", {"command_sha256": command_hash(command)}
         )
         streams = tuple(self._stream() for _ in range(2))
-        descriptors = (
-            (self.listener.fileno(), self.stop_read, self.ready_write)
-            if role == "service"
-            else ()
-        )
+        descriptors, environment = self._launch_options(role, command)
         with _defer_interrupt():
             process = subprocess.Popen(
                 command,
-                env=self._environment(role),
+                env=environment,
                 stdin=subprocess.DEVNULL,
                 stdout=streams[0],
                 stderr=streams[1],
@@ -97,11 +98,29 @@ class OwnedChildren:
             )
             self.processes[role], self.streams[role] = process, streams
             self.observations.value[role]["pid"] = process.pid
+            if role in self.admissions:
+                self.admissions[role].launched(process.pid)
         if role == "service":
             self.listener.close()
             self.close_fd(self.stop_read)
             self.close_fd(self.ready_write)
         self.observations.install(f"{role}-started.json", {"pid": process.pid})
+
+    def _launch_options(self, role, command):
+        descriptors = (
+            (self.listener.fileno(), self.stop_read, self.ready_write)
+            if role == "service"
+            else ()
+        )
+        environment = self._environment(role)
+        if self.study_admissions is not None:
+            with _defer_interrupt():
+                admission = self.study_admissions(role, command)
+                validate_launch_admission(admission, (role,), command)
+                self.admissions[role] = self.stack.enter_context(admission)
+            descriptors += (admission.read_fd,)
+            environment.update(admission.environment)
+        return descriptors, environment
 
     def _stream(self):
         with _defer_interrupt():
@@ -116,7 +135,28 @@ class OwnedChildren:
 
     def exited(self, role):
         with _defer_interrupt():
-            return self.observations.exited(role, self.processes[role])
+            exited = self.observations.exited(role, self.processes[role])
+            if exited and role in self.admissions:
+                self._record_admission_exit(role)
+            return exited
+
+    def _record_admission_exit(self, role):
+        observed = self.observations.value[role]
+        try:
+            self.admissions[role].observed(
+                observed["exit_observed"], observed["exit_code"]
+            )
+        except BaseException as error:
+            if self.admission_failure is None or (
+                isinstance(self.admission_failure, Exception)
+                and not isinstance(error, Exception)
+            ):
+                self.admission_failure = error
+            self.observations.fail(
+                "admission_observation_failed"
+                if isinstance(error, Exception)
+                else "parent_interrupted"
+            )
 
     async def force(self, role):
         process = self.processes[role]

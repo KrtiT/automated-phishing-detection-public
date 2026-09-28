@@ -32,10 +32,17 @@ async def _run_bound_service(
         await _serve(held, binding, artifacts)
 
 
-async def _serve(held, binding, artifacts):
+async def _serve(held, binding, artifacts, *, lifecycle_check=None):
+    if lifecycle_check is not None:
+        lifecycle_check()
     listener, stop_fd, ready_fd = held.handles
 
     def retain(name, content):
+        if lifecycle_check is not None and name in {
+            "service-ready.json",
+            "service-cleanup.json",
+        }:
+            lifecycle_check()
         held.retain(name, content)
         if name == "service-ready.json":
             files.deferred(_notify_ready, ready_fd)

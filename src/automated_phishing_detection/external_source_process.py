@@ -22,6 +22,8 @@ from ._external_worker_commands import (
     _worker_options,
 )
 from ._prepared_external_io import io_scope
+from ._study_child_commands import external_command
+from ._study_source_observation import observe_admitted as _observe_admitted
 from .execution_preflight import bind_execution
 from .external_source_completion import verify_external_completion_snapshot
 from .external_source_handoff import ObservedExternalCompletion
@@ -46,7 +48,9 @@ class ObservedSourceCompletion:
     external: ObservedExternalCompletion
 
 
-def _run_observed_external(binding, paths, handoff, *, preparation=None):
+def _run_observed_external(
+    binding, paths, handoff, *, preparation=None, study_admissions=None
+):
     state = ExternalObservationState(binding, handoff, preparation=preparation)
     try:
         with io_scope(preparation):
@@ -55,7 +59,12 @@ def _run_observed_external(binding, paths, handoff, *, preparation=None):
         external_identity(binding, profile, handoff, **extra)
         state.stage = "transport"
         with retain_internal_handoff(handoff) as transport, state.capture_body():
-            _observe_and_verify(state, paths, transport)
+            if study_admissions is None:
+                _observe_and_verify(state, paths, transport)
+            else:
+                _observe_and_verify(
+                    state, paths, transport, study_admissions=study_admissions
+                )
             state.stage = "transport_finalization"
         return ObservedExternalCompletion(state.worker, state.snapshot)
     except BaseException as error:
@@ -63,15 +72,26 @@ def _run_observed_external(binding, paths, handoff, *, preparation=None):
         raise
 
 
-def _observe_and_verify(state, paths, transport):
+def _observe_and_verify(state, paths, transport, *, study_admissions=None):
     preparation = state.preparation
     state.command = (
-        _worker_command(state.binding, paths, transport)
+        external_command(study_admissions.authorization, transport)
+        if study_admissions is not None
+        else _worker_command(state.binding, paths, transport)
         if preparation is None
         else _prepared_worker_command(state.binding, paths, transport, preparation)
     )
     state.stage = "worker_observation"
-    state.worker = observe_worker(state.command)
+    state.worker = (
+        observe_worker(state.command)
+        if study_admissions is None
+        else _observe_admitted(
+            state.command,
+            study_admissions,
+            "external",
+            predecessor_sha256=transport.expected_handoff_sha256,
+        )
+    )
     source_runner._require_successful_worker(state.worker, state.command)
     state.stage = "completion_verification"
     extra = {} if preparation is None else {"expected_preparation": preparation}

@@ -38,7 +38,7 @@ def test_second_sigint_at_cleanup_transition_preserves_first_and_reaps(
 
     monkeypatch.setattr(module, "observe_owned_exit", interrupt)
     function, text = {
-        "transition": (module.observe_worker, "worker.finish("),
+        "transition": (module._observe_owned_worker, "worker.finish("),
         "loop": (module._Worker.finish, "for action in"),
         "action": (module._Worker.finish, "action()"),
     }[point]
@@ -92,7 +92,7 @@ def test_first_signal_during_guard_exit_is_reported(owned_resources, point):
 def test_first_signal_during_successful_cleanup_is_reported(owned_resources, point):
     module, processes, streams = owned_resources
     text = "worker.finish(" if point == "cleanup" else "return observed"
-    sys.settrace(_interrupt_at(module.observe_worker, text))
+    sys.settrace(_interrupt_at(module._observe_owned_worker, text))
     try:
         with pytest.raises(KeyboardInterrupt) as caught:
             module.observe_worker(_command("raise SystemExit(0)"))
@@ -131,7 +131,9 @@ def test_buffered_first_interrupt_survives_cleanup_exception(
 
 def test_signal_before_guard_run_never_launches_worker(owned_resources):
     module, processes, streams = owned_resources
-    sys.settrace(_interrupt_at(module.observe_worker, "observed = interrupts.run"))
+    sys.settrace(
+        _interrupt_at(module._observe_owned_worker, "observed = interrupts.run")
+    )
     try:
         with pytest.raises(KeyboardInterrupt) as caught:
             module.observe_worker(_command("raise SystemExit(0)"))

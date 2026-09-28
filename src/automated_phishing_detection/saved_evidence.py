@@ -657,7 +657,8 @@ def _validated_internal_inputs(predictions, manifests, bindings, routing):
     outcomes = _manifests(records)
     saved_manifests = _loads(manifests, "manifests")
     _require(
-        saved_manifests == {str(key): asdict(value) for key, value in outcomes.items()},
+        _json_bytes(saved_manifests)
+        == _json_bytes({str(key): asdict(value) for key, value in outcomes.items()}),
         "saved manifests differ from reconstructed manifests",
     )
     return bound, rows, records, outcomes

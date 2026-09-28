@@ -7,6 +7,8 @@ from ._exception_cleanup import CleanupStack
 from ._prepared_failure_context import carry_failure_context
 from ._prepared_internal_process import _worker_command, retain_held_worker
 from ._prepared_internal_records import PreparedInternalRunPaths, require_paths
+from ._study_child_commands import internal_command
+from ._study_source_observation import observe_admitted as _observe_admitted
 from .execution_preflight import bind_execution
 from .internal_process_handoff import ObservedInternalCompletion, retain_worker_failure
 from .owned_worker import observe_worker
@@ -24,24 +26,37 @@ __all__ = [
 ]
 
 
-def _run_bound_prepared_internal(binding, paths, preparation):
+def _run_bound_prepared_internal(binding, paths, preparation, *, lifecycle_check=None):
     """Reuse the sole scientific lifecycle; this private seam grants no access."""
-    return source_runner._run_bound_internal(binding, paths, preparation=preparation)
+    keywords = {} if lifecycle_check is None else {"lifecycle_check": lifecycle_check}
+    return source_runner._run_bound_internal(
+        binding, paths, preparation=preparation, **keywords
+    )
 
 
-def _run_observed_prepared_internal(binding, paths, *, preparation):
+def _run_observed_prepared_internal(
+    binding, paths, *, preparation, study_admissions=None
+):
     """Use the observing parent's retained expectation, never child-selected hashes."""
     if type(preparation) is not RestoredStudyPreparation:
         raise SourceExecutionError("invalid_retained_preparation")
-    command = _worker_command(
-        binding,
-        paths,
-        reservation_sha256=preparation.reservation_sha256,
-        completion_sha256=preparation.completion_sha256,
+    command = (
+        _worker_command(
+            binding,
+            paths,
+            reservation_sha256=preparation.reservation_sha256,
+            completion_sha256=preparation.completion_sha256,
+        )
+        if study_admissions is None
+        else internal_command(study_admissions.authorization)
     )
     stage, observed = "worker_acceptance", None
     try:
-        observed = observe_worker(command)
+        observed = (
+            observe_worker(command)
+            if study_admissions is None
+            else _observe_admitted(command, study_admissions, "internal")
+        )
         source_runner._require_successful_worker(observed, command)
         stage = "completion_verification"
         snapshot = verify_prepared_internal_completion_snapshot(
@@ -71,11 +86,16 @@ def _enter_preparation(cleanup, paths, context, reservation, completion):
     return context.__enter__()
 
 
-def _run_held(binding, paths, context, reservation, completion, observed):
+def _run_held(
+    binding, paths, context, reservation, completion, observed, *, lifecycle_check=None
+):
     require_paths(paths)
     completed, body_error = None, None
+    keywords = {} if lifecycle_check is None else {"lifecycle_check": lifecycle_check}
     try:
         with CleanupStack() as cleanup:
+            if lifecycle_check is not None:
+                lifecycle_check()
             preparation = _enter_preparation(
                 cleanup, paths, context, reservation, completion
             )
@@ -85,7 +105,9 @@ def _run_held(binding, paths, context, reservation, completion, observed):
                         binding, paths, preparation=preparation
                     )
                     if observed
-                    else _run_bound_prepared_internal(binding, paths, preparation)
+                    else _run_bound_prepared_internal(
+                        binding, paths, preparation, **keywords
+                    )
                 )
             except BaseException as error:
                 body_error = error

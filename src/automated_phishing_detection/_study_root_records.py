@@ -99,6 +99,12 @@ def _barrier(contents, execution, success):
 
 
 def public_bytes(attempt, identity, contents, outputs, success, public):
+    if identity.get("protocol") == "adopted-study-root-v1":
+        from ._adopted_study_records import public_bytes as adopted_public_bytes
+
+        return adopted_public_bytes(
+            attempt, identity, contents, outputs, success, public
+        )
     execution = identity | {"reservation_sha256": attempt.reservation_sha256}
     feasibility = _barrier(contents, execution, success)
     expected = {

@@ -45,14 +45,24 @@ def held_preparation(binding, paths, reservation_sha256, completion_sha256):
 
 
 def run_held_preparation(
-    binding, paths, transport, handoff_sha256, reservation, completion
+    binding,
+    paths,
+    transport,
+    handoff_sha256,
+    reservation,
+    completion,
+    *,
+    lifecycle_check=None,
 ):
     from . import external_source_runner as runner
 
+    if lifecycle_check is not None:
+        lifecycle_check()
+    keywords = {} if lifecycle_check is None else {"lifecycle_check": lifecycle_check}
     with held_preparation(binding, paths, reservation, completion) as preparation:
         handoff = runner.read_internal_handoff_transport(
             transport, expected_handoff_sha256=handoff_sha256
         )
         return runner._run_bound_prepared_external(
-            binding, paths, handoff=handoff, preparation=preparation
+            binding, paths, handoff=handoff, preparation=preparation, **keywords
         )

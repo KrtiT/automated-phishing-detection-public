@@ -12,6 +12,7 @@ from ._operational_process_records import (
     ProcessObservation,
     _record,
 )
+from ._study_admission_parent import StudyAdmissions
 
 
 class OperationalProcessCancelled(asyncio.CancelledError):
@@ -139,6 +140,7 @@ async def _attempt(children, observations, service_command, client_command):
     try:
         await _run(children, observations, service_command, client_command)
     except BaseException as error:
+        error = _admission_failure(children, error, admission_precedes=True)
         observations.fail(_failure_code(error))
         return error
     return None
@@ -157,16 +159,31 @@ def _result(observations, failure, cancelled, progress):
     return ProcessObservation(progress)
 
 
-async def _observe(observations, deadlines, service_command, client_command):
-    failure = None
+def _admission_failure(children, failure, *, admission_precedes=False):
+    error = children.admission_failure if children is not None else None
+    if error is not None and (
+        failure is None
+        or (isinstance(failure, Exception) and not isinstance(error, Exception))
+        or (admission_precedes and not isinstance(error, Exception))
+    ):
+        return error
+    return failure
+
+
+async def _observe(
+    observations, deadlines, service_command, client_command, study_admissions=None
+):
+    failure, children = None, None
     try:
-        with OwnedChildren(observations, deadlines) as children:
+        with OwnedChildren(observations, deadlines, study_admissions) as children:
             failure = await _attempt(
                 children, observations, service_command, client_command
             )
             cancelled, progress = await _finish_cleanup(children, observations)
+            failure = _admission_failure(children, failure)
             return _result(observations, failure, cancelled, progress)
     except BaseException as error:
+        failure = _admission_failure(children, failure)
         observations.fail("process_cleanup_failed")
         if isinstance(failure, asyncio.CancelledError):
             raise OperationalProcessCancelled(
@@ -222,7 +239,13 @@ def _retain_claim_failure(observations, error):
 
 
 async def _observe_pair_with_writer(
-    attempt, *, service_command, client_command, deadlines, writer
+    attempt,
+    *,
+    service_command,
+    client_command,
+    deadlines,
+    writer,
+    study_admissions: StudyAdmissions | None = None,
 ):
     if type(deadlines) is not dict or set(deadlines) != {
         "startup",
@@ -234,10 +257,14 @@ async def _observe_pair_with_writer(
     _validate(attempt, (service_command, client_command), deadlines)
     if not callable(writer):
         raise OperationalProcessError("invalid_process_writer")
+    if study_admissions is not None and not callable(study_admissions):
+        raise OperationalProcessError("invalid_study_admissions")
     observations = Observations(attempt, writer)
     try:
         observations.claim(service_command, client_command, deadlines)
     except BaseException as error:
         _retain_claim_failure(observations, error)
         raise
-    return await _observe(observations, deadlines, service_command, client_command)
+    return await _observe(
+        observations, deadlines, service_command, client_command, study_admissions
+    )

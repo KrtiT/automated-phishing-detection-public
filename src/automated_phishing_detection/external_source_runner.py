@@ -70,9 +70,11 @@ def _failed(state, error):
     raise ExternalSourceExecutionError(f"{state.stage}: {symbol}") from None
 
 
-def _complete(state):
+def _complete(state, *, lifecycle_check=None):
     state.stage = "final_binding"
     with io_scope(state.preparation):
+        if lifecycle_check is not None:
+            lifecycle_check()
         recheck_binding(state.binding)
     state.stage = "summary"
     public = build_external_public(
@@ -106,10 +108,14 @@ def _run_bound_external(
     return _run(state)
 
 
-def _run(state):
+def _run(state, *, lifecycle_check=None):
     try:
+        if lifecycle_check is not None:
+            lifecycle_check()
         body.preflight(state)
         state.stage = "model_loading"
+        if lifecycle_check is not None:
+            lifecycle_check()
         with (
             open_bound_external_session(
                 state.binding,
@@ -123,7 +129,7 @@ def _run(state):
         state.failures.session_closed = True
         if state.failures.original_error is not None:
             raise state.failures.original_error
-        return _complete(state)
+        return _complete(state, lifecycle_check=lifecycle_check)
     except BaseException as error:
         _failed(state, error)
 
@@ -154,9 +160,11 @@ def run_external_evaluation(
     return _run_bound_external(binding, paths, handoff=handoff)
 
 
-def _run_bound_prepared_external(binding, paths, *, handoff, preparation):
+def _run_bound_prepared_external(
+    binding, paths, *, handoff, preparation, lifecycle_check=None
+):
     state = body.ExternalRun(binding, paths, handoff, preparation=preparation)
-    return _run(state)
+    return _run(state, lifecycle_check=lifecycle_check)
 
 
 def run_prepared_external_evaluation(

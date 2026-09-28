@@ -156,10 +156,22 @@ def held_child(
 
 
 @contextmanager
-def _held(binding, profile, role, environment, paths, expected_binding_sha256):
+def _held(
+    binding,
+    profile,
+    role,
+    environment,
+    paths,
+    expected_binding_sha256,
+    *,
+    lifecycle_check=None,
+):
     original = None
     try:
         with CleanupStack() as cleanup:
+            if lifecycle_check is not None:
+                files.deferred(lifecycle_check)
+                cleanup.callback(files.deferred, lifecycle_check)
             files.deferred(recheck_binding, binding)
             cleanup.callback(files.deferred, recheck_binding, binding)
             try:

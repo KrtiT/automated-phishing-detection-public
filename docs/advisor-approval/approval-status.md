@@ -30,6 +30,14 @@ audit failed the 5% gate (28/252 windows, 11.11%), without retuning.
 H2 is not supported because that mandatory conjunctive gate failed. H1 and H3
 remain undecided. The group test remains analyst-exposed but model-unscored.
 
+The September 28 engineering choice selects a
+[study-only authorization route](../study-execution-authorization.md) over the
+unchanged v3 binding, with live parent-owned child admissions and legacy runners
+still closed. This choice approves implementation only. It is not adoption of
+the whole-study amendment, advisor approval, final execution-profile approval or
+protected-data access. Actual decisions and authorized frozen measurements remain
+required; the hypothesis statuses above are unchanged.
+
 The September 18 implementation adds no-fit scoring for all four detectors,
 paired domain-clustered recall intervals, and label-blind future-only policy
 replay, checked with synthetic fixtures. The shared singleton scoring core

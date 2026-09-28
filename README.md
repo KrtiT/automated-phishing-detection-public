@@ -18,12 +18,15 @@ Forest models. A separate development runner checks input and execution
 identities, saves each comparison before starting the next, and verifies the
 complete worker output.
 
-The closed whole-study runner now connects joint source preparation, the selected
+The whole-study runner connects joint source preparation, the selected
 pre-prediction whole-study hold, retained-input scoring and the fixed 125-cell
 operational program. Invented fixtures exercise real HTTP/shift child processes
-and complete schedule bookkeeping. The hold remains a review proposal; all public
-access gates remain false. Full prospective review and authorized measurements
-are still required before these components can provide scientific results.
+and complete schedule bookkeeping. The distinct
+[study-only authorization route](docs/study-execution-authorization.md) requires
+actual method, advisor, exact-profile and access decisions plus live parent-owned
+child admissions over unchanged v3. Legacy access gates remain false. The hold
+remains a review proposal until actual adoption; full prospective review and
+authorized measurements are still required for scientific results.
 
 The September 23 [accepted development execution](reports/secondary-development-correction-v2-summary.json)
 audited the seven retained drift/formatting/permutation members without refitting,

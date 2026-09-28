@@ -306,7 +306,11 @@ def _secondary(produced):
 
 
 def _run_bound_internal(
-    binding: ExecutionBinding, paths: InternalRunPaths, *, preparation=None
+    binding: ExecutionBinding,
+    paths: InternalRunPaths,
+    *,
+    preparation=None,
+    lifecycle_check=None,
 ) -> Path:
     """Compose the boundary on fixtures; this helper grants no research access."""
     attempt = None
@@ -317,6 +321,8 @@ def _run_bound_internal(
     identity = None
     try:
         with io_scope(preparation is not None):
+            if lifecycle_check is not None:
+                lifecycle_check()
             recheck_binding(binding)
             source, source_buffers = _public_sources(binding)
             if preparation is None:
@@ -345,6 +351,8 @@ def _run_bound_internal(
         with io_scope(preparation is not None):
             attempt = reserve_attempt(paths.attempt, identity=identity)
         stage = "model_loading"
+        if lifecycle_check is not None:
+            lifecycle_check()
         with (
             open_bound_evaluation_session(
                 binding, paths.artifacts, paths.secondary_artifacts
@@ -420,6 +428,8 @@ def _run_bound_internal(
             raise failures.original_error
         stage = "final_binding"
         with io_scope(preparation is not None):
+            if lifecycle_check is not None:
+                lifecycle_check()
             recheck_binding(binding)
         stage = "summary"
         if set(produced.public_summary) != _PUBLIC_FIELDS or set(

@@ -23,10 +23,12 @@ pre-prediction whole-study hold, retained-input scoring and the fixed 125-cell
 operational program. Invented fixtures exercise real HTTP/shift child processes
 and complete schedule bookkeeping. The distinct
 [study-only authorization route](docs/study-execution-authorization.md) requires
-actual method, advisor, exact-profile and access decisions plus live parent-owned
-child admissions over unchanged v3. Legacy access gates remain false. The hold
-remains a review proposal until actual adoption; full prospective review and
-authorized measurements are still required for scientific results.
+actual method, exact-profile and access authority plus either the original advisor
+decision or an explicit operator-directed waiver under its separate v2 policy.
+The waiver is never represented as advisor approval. Live parent-owned child
+admissions remain required over unchanged v3; legacy access gates remain false.
+Verified frozen execution and retained evidence are still required for scientific
+results; authorization does not establish a measured hypothesis outcome.
 
 The September 23 [accepted development execution](reports/secondary-development-correction-v2-summary.json)
 audited the seven retained drift/formatting/permutation members without refitting,

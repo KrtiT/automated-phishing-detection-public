@@ -3,8 +3,9 @@
 This implementation provides a separate whole-study route over the unchanged,
 non-authorizing v3 binding. It is not an approval record or a research result.
 Every legacy standalone entry and candidate readiness property remains closed.
-The [policy supplement](../data/study-execution-policy-v1.json) is a specification
-requiring explicit adoption. It does not authorize access by being committed.
+The original [policy supplement](../data/study-execution-policy-v1.json) and the
+separate [operator-authority policy](../data/study-execution-policy-v2.json) require
+explicit adoption. Neither authorizes access merely by being committed.
 
 ## Review Before Access
 
@@ -24,7 +25,7 @@ Profile construction uses public metadata and lexical paths; it is not permissio
 to inspect protected source files, archives or models. The session declaration is
 an obligation, not a claim that live host conditions have already been checked.
 
-A separate private envelope must contain actual method, advisor, exact-profile
+A separate original-v1 private envelope must contain actual method, advisor, exact-profile
 and protected-access decisions. Final profile/access decisions reference the
 immutable profile digest. Earlier method/advisor decisions retain their actual
 method or policy scope; they are not rewritten as approval of a later revision.
@@ -38,6 +39,31 @@ extracts belong in it, not full chats, credentials or unrelated material.
 
 Decision records are trusted operator records, not cryptographic proof of consent.
 Names, timestamps and an `approved` value alone do not establish human approval.
+
+### Explicit Operator Authority
+
+The separately versioned v2 route records an operator's instruction to proceed
+without fresh advisor concurrence. It never fills the original `advisor` slot
+with an invented approval and does not change v1 policy bytes or interpretation.
+The original reviewed profile and its digest, named operator, verbatim directive
+and actual recording time remain in the new private envelope. A technical-rebind
+record identifies the recorder/time, directive digest and effective profile digest,
+expressly states `governance_only`, and records that no advisor decision was obtained.
+
+The four v2 decisions are method, advisor-requirement waiver, effective profile and
+protected access. The three authorizations use `authorized_by_operator_directive`;
+the waiver uses `waived_by_operator`. They retain the real operator/directive and
+effective subject, not a claim that the operator personally inspected a later hash.
+An advisor-approved substitute, missing directive, altered scope or mismatched
+decision rejects. Paths, operator/session, v3 and scientific policy stay unchanged;
+public source-scope changes are restricted to the fixed governance implementation.
+Before sealing, the recorder independently audits the code diff, runtime and
+scientific-artifact pins against the reviewed source scope.
+
+This route supersedes only the project's advisor-concurrence prerequisite under
+explicit operator instruction. It does not waive dataset licensing, an independently
+applicable external obligation, frozen scientific rules or exclusive-session
+conditions. It supplies neither advisor endorsement nor scientific results.
 
 ## One Fresh Study
 

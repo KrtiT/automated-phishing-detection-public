@@ -9,6 +9,7 @@ from pathlib import Path
 from . import _study_execution_policy as policy
 from ._checkpoint_codec import canonical_bytes
 from ._study_cli_protocol import PATH_ARGUMENTS
+from ._study_policy_variants import select_policy
 
 PROFILE_FIELDS = (
     "schema_version",
@@ -132,6 +133,10 @@ def _decision(value, allowed):
 
 def envelope(content, expected_sha256):
     value = parse(content, expected_sha256)
+    if type(value) is dict and value.get("envelope_id") == "study-adoption-envelope-v2":
+        from ._study_operator_authority import envelope as operator_envelope
+
+        return operator_envelope(value)
     closed(value, ("schema_version", "envelope_id", "profile", "decisions", "revoked"))
     require(type(value["schema_version"]) is int and value["schema_version"] == 1)
     require(value["envelope_id"] == "study-adoption-envelope-v1")
@@ -158,7 +163,11 @@ def joined(
     retained = parse(profile_content, profile_pin)
     require(canonical_bytes(value) == profile_content and retained == value)
     selected_policy = parse(policy_content, value["policy_sha256"])
-    require(policy_content == policy.policy_bytes())
+    require(policy_content == select_policy(value["policy_sha256"])[1])
+    require(
+        json.loads(envelope_content)["schema_version"]
+        == selected_policy["schema_version"]
+    )
     require(
         value["method_sha256"]
         == sha256(canonical_bytes(selected_policy["method"])).hexdigest()

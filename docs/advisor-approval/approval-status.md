@@ -38,6 +38,14 @@ the whole-study amendment, advisor approval, final execution-profile approval or
 protected-data access. Actual decisions and authorized frozen measurements remain
 required; the hypothesis statuses above are unchanged.
 
+Krti subsequently directed the study to proceed under operator authorization
+without seeking fresh advisor approval. The separately versioned operator-authority
+policy records that directive and explicit waiver, retaining the reviewed profile
+and governance-only technical rebind. It does not assert Etemadi approval or alter
+scientific criteria. Original v1 policy/approval semantics remain unchanged.
+Execution still requires verified effective profile/envelope identities and actual
+exclusive-session conditions; no hypothesis result follows from this instruction.
+
 The September 18 implementation adds no-fit scoring for all four detectors,
 paired domain-clustered recall intervals, and label-blind future-only policy
 replay, checked with synthetic fixtures. The shared singleton scoring core

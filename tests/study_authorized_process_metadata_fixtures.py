@@ -15,15 +15,18 @@ from automated_phishing_detection._study_execution_policy import CONTRACT_SHA256
 
 
 def patch_public(case, monkeypatch):
+    policy_path = {
+        "study-execution-policy-v1": "data/study-execution-policy-v1.json",
+        "study-execution-policy-v2": "data/study-execution-policy-v2.json",
+    }[json.loads(case.policy)["policy_id"]]
     monkeypatch.setattr(preflight, "bind_execution", lambda *args, **kwargs: case.base)
     monkeypatch.setattr(preflight, "recheck_binding", lambda binding: None)
     monkeypatch.setattr(external, "EXPECTED_FORMAT", case.archive_pins)
 
     def git(root, *arguments):
         if arguments[0] == "ls-tree":
-            return (
-                b"100644 blob " + b"c" * 40 + b"\tdata/study-execution-policy-v1.json\0"
-            )
+            assert arguments[-1] == policy_path
+            return b"100644 blob " + b"c" * 40 + b"\t" + policy_path.encode() + b"\0"
         assert arguments == ("cat-file", "blob", "c" * 40)
         return case.policy
 

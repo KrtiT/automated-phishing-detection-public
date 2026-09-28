@@ -887,7 +887,11 @@ or a new hypothesis result.
 The separate [study-only authorization route](study-execution-authorization.md)
 adds a committed prospective policy and an immutable post-commit private profile,
 without changing v3 or enabling those legacy gates. A complete envelope must
-record actual method, advisor, exact-profile and protected-access decisions.
+record actual method, exact-profile and protected-access authority. Original v1
+requires an advisor decision; separate v2 requires an explicit operator-directed
+waiver instead, retaining the original reviewed profile, verbatim instruction and
+governance-only technical rebind without claiming advisor approval. The original
+v1 policy and scientific rules remain unchanged.
 Fixed internal, external, service and client children consume bounded inherited
 parent-owned admissions before private inputs. An explicitly versioned adopted
 root joins approval scope, the retained barrier and actual owned observations;

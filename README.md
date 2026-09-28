@@ -7,6 +7,14 @@ completed and pending runs. Contracts and the matrix retain their status at the
 time they were frozen. The [remaining evaluation work](docs/research-evidence-outline.md#remaining-executable-work)
 separates tested software from scientific analyses that have not yet run.
 
+The September 28 [authorized study attempt](reports/study-only-v1-2026-09-28-execution.json)
+completed joint preparation and enforced the selected whole-study hold before
+predictions. The [retained capacity result](reports/study-only-v1-2026-09-28-attempt-1.json)
+has zero eligible gold-positive domains, zero Tranco rows and 294 external rows
+against the 1,000-row shift warmup requirement. Neither source scorer nor any of
+the 125 operational cells ran. This is an administrative hold, not a hypothesis
+test or completed study; H2's original non-support remains unchanged.
+
 The software includes a selective HTTP service, serialized live GMM routing,
 internal evidence production, preparation of normalized external records, and
 secondary score metrics. Tests use invented fixtures, including real loopback

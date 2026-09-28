@@ -40,6 +40,15 @@ missing. Frozen contracts and dated artifacts retain their historical status
 fields; the current conclusion above includes the later accepted development
 records. No result is inferred from another experiment.
 
+The September 28 [authorized study](../reports/study-only-v1-2026-09-28-execution.json)
+performed joint preparation once and stopped at the selected whole-study capacity
+barrier. Its [retained summary](../reports/study-only-v1-2026-09-28-attempt-1.json)
+records zero eligible gold-positive domains, zero Tranco rows and 294 external
+rows against the 1,000-row shift warmup requirement. Both source scorers and all
+125 operational cells remain unattempted. This preparation exposure and hold do
+not decide H1/H3 or complete any missing RQ measurements. Later references to
+unopened external records describe historical milestones, not the current state.
+
 The [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1)
 GitHub Release is the source-freeze record for the completed preparation
 milestone. It holds the exact licensed UCI archive outside Git history and

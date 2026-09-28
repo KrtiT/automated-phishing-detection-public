@@ -1,0 +1,61 @@
+{
+  "advisor_decision_obtained": false,
+  "authorization_basis": "operator_directive_governance_only_rebind",
+  "continuation": "No retry, resume, alternate preprocessing, subset execution or replacement attempt is authorized by this record.",
+  "envelope_sha256": "20432d88ab259bbcd878227249cff8253e236a39b3611242feae31acfbb992b6",
+  "execution_accounting": {
+    "child_admissions": 0,
+    "external_scorer": "unattempted",
+    "internal_scorer": "unattempted",
+    "operational_cells_unattempted": 125,
+    "predictions_started": false
+  },
+  "execution_revision": "a10bacb8b3f654255a43d0511d31b21258cc4dcb",
+  "operator": "Krti Tallam",
+  "preparation_complete_sha256": "9ca4726d88a44ffcf3dcb96af9b1314c254dfc5027c89ce64be1fd4fa7c2b2f6",
+  "preparation_reservation_sha256": "1773012b0dea7e5fdd7d57a496b5ef7585c2620f48538aedbac891639b371ceb",
+  "process_observation": {
+    "automatic_retry": false,
+    "exit_code": 0,
+    "exited_by": "2026-09-28T20:37:50.336500+00:00",
+    "launched_at": "2026-09-28T20:35:02.360218+00:00",
+    "stderr_empty": true,
+    "stdout": "Study held: insufficient population capacity.\n"
+  },
+  "profile_sha256": "6d97998f7cb7e85360a9fee3f5e85cc7f6408ee0f52ec523e34da81bd6dd39b8",
+  "public_summary": {
+    "path": "reports/study-only-v1-2026-09-28-attempt-1.json",
+    "sha256": "84150fbdc95ff54957f5966f6b6faf64fec8677afeb1e74180a153187147377e"
+  },
+  "root_reservation_sha256": "d00abb79afbae3d78d9357ea57d1df5fdc953dba42b51978391e1e72222d92db",
+  "saved_verification": {
+    "authorization": "passed",
+    "new_inference_performed": false,
+    "original_inputs_reread": false,
+    "preparation_snapshot_members": 12,
+    "preparation_structure_and_feasibility": "passed",
+    "root_snapshot_members": 10,
+    "verified_at": "2026-09-28T20:40:47.627508+00:00"
+  },
+  "schema_version": 1,
+  "scientific_status": {
+    "H1": "undecided",
+    "H2": "not_supported",
+    "H2_basis": "original 28/252 false-alert audit exceeds the unchanged 5% gate",
+    "H3": "undecided",
+    "complete_RQ_H_synthesis": false,
+    "hold_is_hypothesis_test": false
+  },
+  "session_observation": {
+    "background_processes": "OS and existing application processes were recorded; zero background CPU usage is not claimed",
+    "condition_sampling_seconds": 60,
+    "energy_mode_pre_post": "Automatic (powermode 0)",
+    "global_power_settings_changed": false,
+    "observed_violation": null,
+    "operator_reserved_host": true,
+    "power_pre_post": "AC",
+    "sleep_inhibition": "owned caffeinate assertions retained through root exit, then released",
+    "thermal_pre_post": "no recorded thermal or performance warning"
+  },
+  "status": "verified_whole_study_hold"
+}

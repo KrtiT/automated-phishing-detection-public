@@ -1,5 +1,44 @@
 # Research Status
 
+## September 28 Authorized Study Hold
+
+The [execution record](../../reports/study-only-v1-2026-09-28-execution.json)
+records one actual study-only launch from
+`a10bacb8b3f654255a43d0511d31b21258cc4dcb` under Krti's sealed operator directive,
+not advisor approval. The exact-head local and CI suites both passed 9,059 tests
+before execution. AC power, Automatic mode and owned sleep inhibition were
+recorded; no session violation or thermal warning was observed.
+
+The root exited zero with `whole_study_hold`, not `study_evidence_published`.
+Independent retained-byte authorization and preparation verification passed.
+The [unchanged public capacity summary](../../reports/study-only-v1-2026-09-28-attempt-1.json)
+records 34,593 internal rows and 294 retained external test rows from 8,941 input
+test rows. External retention comprises 266 certified and 28 bronze rows, with
+zero eligible gold-positive domains and zero Tranco rows. The third shortage is
+294 rows against the unchanged 1,000-row live-shift warmup requirement.
+
+The prediction barrier remained closed: both source scorers, all child admissions
+and all 125 operational cells were unattempted. No retry, partial-study execution,
+threshold change or URL substitution followed. This establishes neither a failed
+H1/H3 effect nor project completion. H1 and H3 remain unmeasured; H2 remains not
+supported by its original 28/252 audit, with its external characterization still
+unrun. Required-population absence is eligibility under the frozen rules, not a
+claim that the publisher supplied no such records. Any new source-representation
+method requires a separately scoped prospective amendment that discloses the
+observed preparation counts and preserves this attempt.
+
+A subsequent aggregate-only diagnosis of authenticated retained publisher and
+quarantine records found that the test release contains 69 gold-phishing rows
+and 1,241 Tranco rows. All lack a raw URL scheme; their publisher-normalized
+strings add a scheme, and all were excluded by the original invalid-URL rule.
+Test exclusions reconcile as 8,553 invalid-URL rows plus 94 overlap rows, leaving
+294 retained. This diagnosis uses no new preparation or predictions and establishes
+no capacity under an alternate rule. The
+[retained diagnostic](../../reports/study-only-v1-2026-09-28-url-diagnostic.json)
+is post-hold descriptive provenance, not a new evaluation or authorized amendment.
+
+## Historical Milestones
+
 **Status:** The September 3 advisor report, SHA-256
 `b72da89a4cc8a5b06f6ca88d79fe78dd54e3199a96b7450209ea53b4a4c04215`,
 directed the study to complete and freeze the source-provenance release, then

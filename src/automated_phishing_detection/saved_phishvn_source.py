@@ -179,9 +179,14 @@ def restore_phishvn_source(
     """
     try:
         require(type(publisher_summary) is bytes, "invalid_saved_summary_bytes")
-        return _restore(
-            _document(publisher_source), publisher_source, publisher_summary, pins
-        )
+        source = _document(publisher_source)
+        if type(source.get("schema_version")) is int and source["schema_version"] == 2:
+            from .publisher_urlnorm import restore_derived_publisher
+
+            return restore_derived_publisher(
+                publisher_source, publisher_summary, pins=pins
+            )
+        return _restore(source, publisher_source, publisher_summary, pins)
     except PhishVNSourceError:
         raise
     except (ValueError, TypeError, KeyError, RecursionError, OverflowError):

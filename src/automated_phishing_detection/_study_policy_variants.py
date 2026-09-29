@@ -1,4 +1,4 @@
-"""Two exact governance policies; neither changes science or grants consent."""
+"""Fixed historical policies and a separately adopted scientific amendment."""
 
 from hashlib import sha256
 
@@ -39,9 +39,12 @@ def operator_policy_bytes():
 
 
 def select_policy(expected_sha256):
+    from . import _study_urlnorm_policy as amendment
+
     for path, content in (
         (original.POLICY_PATH, original.policy_bytes()),
         (OPERATOR_POLICY_PATH, operator_policy_bytes()),
+        (amendment.POLICY_PATH, amendment.policy_bytes()),
     ):
         if sha256(content).hexdigest() == expected_sha256:
             return path, content

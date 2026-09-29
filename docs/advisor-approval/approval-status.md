@@ -24,8 +24,8 @@ H1/H3 effect nor project completion. H1 and H3 remain unmeasured; H2 remains not
 supported by its original 28/252 audit, with its external characterization still
 unrun. Required-population absence is eligibility under the frozen rules, not a
 claim that the publisher supplied no such records. Any new source-representation
-method requires a separately scoped prospective amendment that discloses the
-observed preparation counts and preserves this attempt.
+method required a separately scoped amendment disclosing the observed
+preparation counts and preserving this attempt; the later approval is below.
 
 A subsequent aggregate-only diagnosis of authenticated retained publisher and
 quarantine records found that the test release contains 69 gold-phishing rows
@@ -36,6 +36,24 @@ Test exclusions reconcile as 8,553 invalid-URL rows plus 94 overlap rows, leavin
 no capacity under an alternate rule. The
 [retained diagnostic](../../reports/study-only-v1-2026-09-28-url-diagnostic.json)
 is post-hold descriptive provenance, not a new evaluation or authorized amendment.
+
+## Approved Retained-Only URL Amendment
+
+Krti subsequently replied, “Proceed with the disclosed URL amendment.” The
+consent was recorded at `2026-09-28T23:54:01Z`, separately from the earlier
+governance-only waiver; no advisor approval or personal review of future hashes
+is claimed. The [amendment record](../publisher-url-amendment.md) specifies exact
+publisher `url_norm` for all external parsing and model inputs, preserving raw
+publisher cells and provenance. All thresholds, models, overlap checks and the
+thirteen-condition whole-study hold remain unchanged.
+
+The authorization is for a fresh retained-only continuation that preserves the
+old hold and never reopens the original sources. It is preparation-informed and
+label-count-informed, but prediction-blind. Implementation verification, an exact
+new execution freeze and amended measurements remain pending. No original
+contract or held report is rewritten; no new hypothesis result follows from the
+approval. H2 remains `not_supported`; H1/H3 and the final RQ/H synthesis still
+require their missing measurements.
 
 ## Historical Milestones
 

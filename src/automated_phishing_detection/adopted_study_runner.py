@@ -1,5 +1,7 @@
 """The distinct fresh-root route requires one exact adopted execution envelope."""
 
+import json
+
 from . import _adopted_study_body as body
 from . import _adopted_study_records as records
 from . import _study_run_body as original
@@ -39,7 +41,13 @@ def _reserve(state, cleanup):
 
 
 async def _work(state, cleanup):
-    original.prepare(state, cleanup)
+    profile = json.loads(state.authorization.profile_bytes)
+    if profile.get("profile_id") == "study-urlnorm-profile-v1":
+        from ._study_urlnorm_preparation import prepare
+
+        prepare(state, cleanup)
+    else:
+        original.prepare(state, cleanup)
     if not state.held:
         state.admissions.barrier_retained(
             state.preparation,

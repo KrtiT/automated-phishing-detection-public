@@ -15,6 +15,15 @@ against the 1,000-row shift warmup requirement. Neither source scorer nor any of
 the 125 operational cells ran. This is an administrative hold, not a hypothesis
 test or completed study; H2's original non-support remains unchanged.
 
+Krti subsequently approved the separate
+[publisher URL amendment](docs/publisher-url-amendment.md): use exact published
+`url_norm` uniformly for external parsing and model inputs, preserving raw cells
+and every other scientific rule. This preparation-informed, label-count-informed
+but prediction-blind amendment permits a fresh retained-only continuation, not
+a retry of the held attempt or advisor approval. The thirteen-condition
+whole-study hold remains mandatory. Verification, the exact execution freeze
+and amended measurements remain pending; no new RQ/H result is claimed.
+
 The software includes a selective HTTP service, serialized live GMM routing,
 internal evidence production, preparation of normalized external records, and
 secondary score metrics. Tests use invented fixtures, including real loopback

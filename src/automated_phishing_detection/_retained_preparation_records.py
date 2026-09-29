@@ -23,18 +23,6 @@ _HASH_FIELDS = frozenset(
     }
 )
 _IDENTITY_FIELDS = _HASH_FIELDS | {"kind", "protocol", "revision", "archive_size_bytes"}
-_COMPLETION_FIELDS = frozenset(
-    {
-        "schema_version",
-        "protocol",
-        "status",
-        "protected_evaluation_authorized",
-        "scoring_authorized",
-        "execution",
-        "reservation_sha256",
-        "input_sha256",
-    }
-)
 
 
 class StudyPreparationRestoreError(ValueError):
@@ -96,7 +84,6 @@ def authenticate(snapshot, expected_identity, reservation, completion):
     content = outputs["preparation-complete.json"]
     require(sha256(content).hexdigest() == completion)
     envelope = load(content)
-    require(type(envelope) is dict and set(envelope) == _COMPLETION_FIELDS)
     expected = {
         "schema_version": 1,
         "protocol": "study-preparation-v1",
@@ -109,7 +96,9 @@ def authenticate(snapshot, expected_identity, reservation, completion):
             name: sha256(outputs[name]).hexdigest() for name in PREPARATION_ORDER[:-1]
         },
     }
-    require(content == canonical_bytes(expected))
+    from ._study_urlnorm_completion import project
+
+    require(content == canonical_bytes(project(envelope, expected, outputs)))
     return outputs, execution
 
 

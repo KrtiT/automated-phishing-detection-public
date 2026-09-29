@@ -85,10 +85,24 @@ def _session(value):
     )
 
 
+def _profile_header(value):
+    require(type(value) is dict)
+    amended = value.get("profile_id") == "study-urlnorm-profile-v1"
+    closed(value, (*PROFILE_FIELDS, "continuation") if amended else PROFILE_FIELDS)
+    require(type(value["schema_version"]) is int)
+    require(value["schema_version"] == (2 if amended else 1))
+    require(
+        value["profile_id"]
+        == ("study-urlnorm-profile-v1" if amended else "study-execution-profile-v1")
+    )
+    if amended:
+        from ._study_urlnorm_scope import profile_scope
+
+        profile_scope(value)
+
+
 def profile(value):
-    closed(value, PROFILE_FIELDS)
-    require(type(value["schema_version"]) is int and value["schema_version"] == 1)
-    require(value["profile_id"] == "study-execution-profile-v1")
+    _profile_header(value)
     closed(value["execution"], ("revision", "contract_sha256"))
     digest(value["execution"]["revision"], 40)
     require(value["execution"]["contract_sha256"] == policy.CONTRACT_SHA256)
@@ -133,6 +147,10 @@ def _decision(value, allowed):
 
 def envelope(content, expected_sha256):
     value = parse(content, expected_sha256)
+    if type(value) is dict and value.get("envelope_id") == "study-adoption-envelope-v3":
+        from ._study_urlnorm_authority import envelope as amendment_envelope
+
+        return amendment_envelope(value)
     if type(value) is dict and value.get("envelope_id") == "study-adoption-envelope-v2":
         from ._study_operator_authority import envelope as operator_envelope
 

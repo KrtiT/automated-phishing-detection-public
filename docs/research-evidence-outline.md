@@ -49,6 +49,16 @@ rows against the 1,000-row shift warmup requirement. Both source scorers and all
 not decide H1/H3 or complete any missing RQ measurements. Later references to
 unopened external records describe historical milestones, not the current state.
 
+The separately approved [publisher URL amendment](publisher-url-amendment.md)
+uses exact publisher `url_norm` for external parsing and all external model
+inputs, with raw cells preserved. Krti's actual approval is operator authority,
+not advisor approval. The original hold remains immutable, and the continuation
+must use retained data without reopening original sources. This is explicitly
+preparation-informed and label-count-informed, but prediction-blind; all models,
+thresholds, overlap checks and thirteen capacity conditions remain fixed.
+Verification, a new exact execution freeze and amended measurements remain
+pending. No hypothesis decision or completed RQ/H synthesis is inferred.
+
 The [`phiusiil-development-v1`](https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/phiusiil-development-v1)
 GitHub Release is the source-freeze record for the completed preparation
 milestone. It holds the exact licensed UCI archive outside Git history and
@@ -463,8 +473,10 @@ The corrected transformer/cascade development run and reviewed no-fit bundle
 loader are complete. Saved artifacts support scoring with length-only,
 Logistic-L1, transformer, and cascade models. `selective_inference.py` uses the
 same one-URL-at-a-time scoring path for full paired scoring and selective requests.
-Stage one receives the original raw URL; character normalization remains
-specific to the transformer. A selective request skips the transformer outside
+Stage one receives the supplied scientific URL string: unchanged raw input for
+the internal population and exact publisher `url_norm` for the approved external
+continuation. Character normalization remains specific to the transformer.
+A selective request skips the transformer outside
 the band unless a prior alert overrides routing. Forward attempts and validated
 successful scores are counted separately. These behaviors have been tested on
 synthetic fixtures, not measured as HTTP performance.

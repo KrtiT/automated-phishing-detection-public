@@ -1,10 +1,14 @@
 """Private series cell orchestration must not become an independent access route."""
 
+import json
+from dataclasses import replace
 from importlib import import_module
 from importlib.util import find_spec
 
 import pytest
 from study_series_input_fixtures import candidates, manifests, series_case
+
+from automated_phishing_detection._checkpoint_codec import canonical_bytes
 
 __all__ = ["candidates", "manifests", "series_case"]
 
@@ -59,6 +63,13 @@ def test_development_policy_rejects_before_creating_cell_outputs(
     from study_series_cell_runner_fixtures import execute, setup
 
     case = setup(tmp_path, series_case, monkeypatch, allow_candidate=False)
+    candidate = json.loads(case.prefix.binding.policy_bytes) | {
+        "status": "development_candidate_header_only"
+    }
+    case.prefix.binding = replace(
+        case.prefix.binding, policy_bytes=canonical_bytes(candidate)
+    )
+    case.ledger._public = case.prefix.binding
     with pytest.raises(ValueError):
         execute(case)
     assert not case.selected.attempt.directory.exists()

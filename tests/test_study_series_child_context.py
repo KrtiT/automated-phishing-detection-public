@@ -1,10 +1,14 @@
 """The live parent, current public binding and final policy precede private IO."""
 
+import json
 import sys
+from dataclasses import replace
 
 import pytest
 from study_series_child_context_fixtures import api, change_frame, setup
 from study_series_execution_fixtures import public_case
+
+from automated_phishing_detection._checkpoint_codec import canonical_bytes
 
 __all__ = ["public_case"]
 
@@ -24,6 +28,10 @@ def test_missing_live_channel_prevents_even_public_binding(public_case, monkeypa
 
 def test_current_candidate_rejects_before_private_prefix(public_case, monkeypatch):
     case = setup(public_case, monkeypatch, allow_execution=False)
+    candidate = json.loads(case.binding.policy_bytes) | {
+        "status": "development_candidate_header_only"
+    }
+    case.binding = replace(case.binding, policy_bytes=canonical_bytes(candidate))
     with pytest.raises(ValueError, match="series_child_execution_not_adopted"):
         with case.module.held_authorization(case.arguments):
             pytest.fail("candidate reached private IO")

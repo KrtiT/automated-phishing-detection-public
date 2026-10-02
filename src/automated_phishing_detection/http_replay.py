@@ -14,6 +14,7 @@ import math
 import re
 import time
 from collections.abc import Callable
+from contextlib import AsyncExitStack, asynccontextmanager
 from dataclasses import asdict, dataclass
 from urllib.parse import urlsplit
 
@@ -261,13 +262,19 @@ async def _scan(client, row, request_id):
 async def _phase(client, rows, sha, concurrency, run_index, phase, outcomes, started):
     remaining = iter(enumerate(rows))
 
-    async def worker():
+    async def worker(worker_index):
+        worker_client = (
+            client.clients[worker_index] if type(client) is _WorkerClients else client
+        )
         for position, row in remaining:
             request_id = _request_id(sha, concurrency, run_index, phase, position)
             started[position] = True
-            outcomes[position] = await _scan(client, row, request_id)
+            outcomes[position] = await _scan(worker_client, row, request_id)
 
-    tasks = [asyncio.create_task(worker()) for _ in range(min(concurrency, len(rows)))]
+    tasks = [
+        asyncio.create_task(worker(worker_index))
+        for worker_index in range(min(concurrency, len(rows)))
+    ]
     try:
         await asyncio.gather(*tasks)
     finally:
@@ -351,6 +358,44 @@ def _retain_direct_interruption(error, progress):
             pass
 
 
+@dataclass(frozen=True)
+class _WorkerClients:
+    clients: tuple[httpx.AsyncClient, ...]
+
+    async def post(self, *args, **kwargs):
+        return await self.clients[0].post(*args, **kwargs)
+
+
+@asynccontextmanager
+async def _client_context(base_url, concurrency, *, worker_connections):
+    count = concurrency if worker_connections else 1
+    connections = 1 if worker_connections else concurrency
+    clients = []
+    async with AsyncExitStack() as stack:
+        for _ in range(count):
+            transport = httpx.AsyncHTTPTransport(
+                retries=0,
+                limits=httpx.Limits(
+                    max_connections=connections,
+                    max_keepalive_connections=connections,
+                    keepalive_expiry=5.0,
+                ),
+                http1=True,
+                http2=False,
+            )
+            client = httpx.AsyncClient(
+                base_url=base_url,
+                transport=transport,
+                timeout=DEADLINE_SECONDS,
+                follow_redirects=False,
+                trust_env=False,
+            )
+            stack.push_async_callback(client.aclose)
+            await stack.enter_async_context(client)
+            clients.append(client)
+        yield _WorkerClients(tuple(clients)) if worker_connections else clients[0]
+
+
 async def replay_run(
     base_url: str,
     requests: tuple[ReplayRequest, ...] | list[ReplayRequest],
@@ -371,6 +416,33 @@ async def replay_run(
     An optional synchronous retain callback receives each completed phase once,
     outside request timing. Failures carry canonical private JSON in progress.
     """
+    return await _replay_run(
+        base_url,
+        requests,
+        manifest_sha256=manifest_sha256,
+        prevalence_basis_points=prevalence_basis_points,
+        concurrency=concurrency,
+        run_index=run_index,
+        warmup_count=warmup_count,
+        workload=workload,
+        retain=retain,
+        worker_connections=False,
+    )
+
+
+async def _replay_run(
+    base_url,
+    requests,
+    *,
+    manifest_sha256,
+    prevalence_basis_points,
+    concurrency,
+    run_index,
+    warmup_count,
+    workload,
+    retain,
+    worker_connections,
+):
     _metadata(manifest_sha256, prevalence_basis_points, concurrency, run_index)
     if type(workload) is not str or workload not in HTTP_WORKLOADS:
         raise ReplayError("unsupported HTTP workload")
@@ -395,14 +467,6 @@ async def replay_run(
         raise ReplayError(
             "warmup_count must be positive and no larger than the manifest"
         )
-    limits = httpx.Limits(
-        max_connections=concurrency,
-        max_keepalive_connections=concurrency,
-        keepalive_expiry=5.0,
-    )
-    transport = httpx.AsyncHTTPTransport(
-        retries=0, limits=limits, http1=True, http2=False
-    )
     progress = _ReplayProgress(
         manifest_sha256=manifest_sha256,
         prevalence_basis_points=prevalence_basis_points,
@@ -417,12 +481,8 @@ async def replay_run(
     cancelled = False
     original = None
     try:
-        async with httpx.AsyncClient(
-            base_url=base_url,
-            transport=transport,
-            timeout=DEADLINE_SECONDS,
-            follow_redirects=False,
-            trust_env=False,
+        async with _client_context(
+            base_url, concurrency, worker_connections=worker_connections
         ) as client:
             try:
                 warmup, measured = await _replay_phases(

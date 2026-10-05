@@ -88,3 +88,14 @@ does not rewrite the historical run or imply scientific support.
 Read [VERIFICATION.md](VERIFICATION.md) for exact verification scope. Institutional
 review, committee-role confirmation and academic-integrity clearance are separate
 from repository checks.
+
+## Privacy-Projected Historical Reports
+
+Three reports in the repository are now privacy-projected reading copies with
+separate original and public SHA-256 identities in the
+[privacy record](../../privacy/2026-10-04/publication.json). Their personal machine
+paths are removed; scientific values and failures are unchanged. Frozen contracts
+still bind the original bytes and reject these derivatives. Use the recorded
+frozen revision and authorized retained originals for historical execution;
+do not alter a pin to make a reading copy executable. Public saved-observation
+recomputation against the nine research archives is unaffected.

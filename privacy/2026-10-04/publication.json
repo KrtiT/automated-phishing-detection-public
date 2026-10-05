@@ -1,0 +1,95 @@
+{
+  "base_commit": "4d6c78883d9bc39dec397ab709064952ba726cc3",
+  "scientific_results_changed": false,
+  "frozen_execution_rules_changed": false,
+  "history_rewritten": false,
+  "report_projections": {
+    "reports/inference-compatibility-v1.json": {
+      "original_sha256": "6f27b23a88e40455a186ce21cddebec0f9ab827919c663b345a6a14ca14bb670",
+      "public_sha256": "9121d039b365c36a5e954021c092026cb890f67e308345f145e40b651c552b6f",
+      "changed_json_pointers": [
+        "/environments/reference/interpreter",
+        "/processes/0/interpreter",
+        "/processes/1/interpreter"
+      ],
+      "projection": "Only absolute local filesystem path strings replaced with SHA-256 placeholders; all other typed JSON values preserved.",
+      "unchanged_scientific_values": true,
+      "execution_authority": false
+    },
+    "reports/inference-compatibility-v1-preflight-correction.json": {
+      "original_sha256": "66272dceee640f6b1a7f42f90a5776db4f30673df09660003a4b4250cd286eb5",
+      "public_sha256": "e17d8ea70df6bdaab4d98ac0d1bb72448c6ce1bb969628d6aeb3c7a48934c464",
+      "changed_json_pointers": [
+        "/environments/candidate/interpreter",
+        "/environments/reference/interpreter",
+        "/processes/0/interpreter",
+        "/processes/1/interpreter",
+        "/processes/2/interpreter",
+        "/processes/3/interpreter"
+      ],
+      "projection": "Only absolute local filesystem path strings replaced with SHA-256 placeholders; all other typed JSON values preserved.",
+      "unchanged_scientific_values": true,
+      "execution_authority": false
+    },
+    "reports/secondary-development-correction-v1-attempt-1.json": {
+      "original_sha256": "aa9aac8b02d611ed362069abd5b8103d863f8d01acd39d0f99292830b725ddee",
+      "public_sha256": "30d059606af0115bdef589178981f8f1644da81544e0167fd508a84d45ca8d3b",
+      "changed_json_pointers": [
+        "/receipts/reservation.json/directory",
+        "/receipts/retained_audit/reservation.json/directory"
+      ],
+      "projection": "Only absolute local filesystem path strings replaced with SHA-256 placeholders; all other typed JSON values preserved.",
+      "unchanged_scientific_values": true,
+      "execution_authority": false
+    }
+  },
+  "office_derivatives": {
+    "dissertation/2026-10-04/advisor/Tallam_Praxis_Advisor_Integrated_2026-10-04.pptx": {
+      "original_sha256": "32fcf49a1d40d1ed4a430363fc5ae70135a5813c1398f6a90a792780e9b3adf5",
+      "public_sha256": "febd1e8b34f540bb1c0d45b891e60e99db0ed028e16b85c9ae3b213cb7618013",
+      "changed_parts": [
+        "ppt/notesSlides/notesSlide11.xml",
+        "docProps/core.xml",
+        "docProps/app.xml"
+      ],
+      "removed_metadata_fields": [
+        "lastModifiedBy",
+        "revision",
+        "created",
+        "modified",
+        "TotalTime",
+        "Company"
+      ],
+      "visible_document_parts_preserved": true
+    },
+    "dissertation/2026-10-04/manuscript/Tallam_Krti_Praxis_Integrated_2026-10-04.docx": {
+      "original_sha256": "1ce68062fca6710380146d099257c5266c6b0e31cef8de55efad39e6cf008696",
+      "public_sha256": "9bfb5805eeb77fffe276b136660405c65a835dbb6e2a5baa493bdb52fd3ead78",
+      "changed_parts": [
+        "docProps/app.xml",
+        "docProps/core.xml"
+      ],
+      "removed_metadata_fields": [
+        "Template",
+        "TotalTime",
+        "Company",
+        "lastModifiedBy",
+        "revision",
+        "created",
+        "modified"
+      ],
+      "visible_document_parts_preserved": true
+    }
+  },
+  "document_outputs": {
+    "dissertation/2026-10-04/manuscript/Tallam_Krti_Praxis_Integrated_2026-10-04.md": "22b6c6056513abe681a875938cce29fc7dc1747ca04e86be80aca519c46ea6a3",
+    "dissertation/2026-10-04/manuscript/Tallam_Krti_Praxis_Integrated_2026-10-04.pdf": "2729e5469b3d60f3657cd83f7b08b8cc96477ccc91c42dc8395fc775af90c497",
+    "dissertation/2026-10-04/manuscript/Tallam_Krti_Praxis_Integrated_2026-10-04.docx": "9bfb5805eeb77fffe276b136660405c65a835dbb6e2a5baa493bdb52fd3ead78",
+    "dissertation/2026-10-04/advisor/Tallam_Praxis_Advisor_Integrated_2026-10-04_Speaker_Notes.txt": "21fce1034630ee780ebf47fdcd180f1d89a40ea23f746ece130197b48c130b48",
+    "dissertation/2026-10-04/advisor/Tallam_Praxis_Advisor_Integrated_2026-10-04.pdf": "fea3c672874c744b58a7c4ce2aa28529d48b92010806b66c72a48894fdf296bc",
+    "dissertation/2026-10-04/advisor/Tallam_Praxis_Advisor_Integrated_2026-10-04.pptx": "febd1e8b34f540bb1c0d45b891e60e99db0ed028e16b85c9ae3b213cb7618013"
+  },
+  "gwu_exception": "The supplied GWU Praxis title-page template includes prior-degree lines. Those author-supplied lines remain only in manuscript front matter and its identical PDF rendering, not in repository prose, presentation notes or copied tests.",
+  "retained_attribution": "Research author, advisor acknowledgments, GWU identification and third-party scholarly/dataset credits are preserved. Assistance disclosure remains unchanged.",
+  "history_limitation": "This current-file cleanup does not erase original personal machine paths or email identities from previously published commits, tags, source archives or third-party copies."
+}

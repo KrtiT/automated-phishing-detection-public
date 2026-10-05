@@ -1,0 +1,114 @@
+{
+  "status": "passed",
+  "archives": [
+    {
+      "archive": "development-data-and-models.tar.gz",
+      "sha256": "edc25ed26817c05b116ced1c67e039700fd463c4f2929acdc5a91f0705031f58",
+      "members_scanned": 45
+    },
+    {
+      "archive": "secondary-development.tar.gz",
+      "sha256": "a72aba7ef24e4581a8383597a9814866f4be8767b67de26ea541f23bb636a5e0",
+      "members_scanned": 65726
+    },
+    {
+      "archive": "original-hold-and-interrupted-attempts.tar.gz",
+      "sha256": "81a750653a9316d5e413142e58d947d44a3150740e21c7d8f4afa76eb8db64b0",
+      "members_scanned": 632
+    },
+    {
+      "archive": "original-attempt-4.tar.gz",
+      "sha256": "b951db9a0434446caf7ad7cefef205e1c5b5d8f45c883de1a7e259e13cd38c31",
+      "members_scanned": 1609
+    },
+    {
+      "archive": "original-continuation.tar.gz",
+      "sha256": "45fe1a9ce15005b13718f700410c7c1bf193e2a8d2967b0111a17f45dec67dea",
+      "members_scanned": 1152
+    },
+    {
+      "archive": "followup-detection.tar.gz",
+      "sha256": "a9e3da8442428429e25ce7fdcbe87f48ebd19de120b02435499fd5f6d461348f",
+      "members_scanned": 16
+    },
+    {
+      "archive": "followup-service-interrupted.tar.gz",
+      "sha256": "08df21dc84ef937cb92c049f00f4eb96277db49266b5a3c08e0ada48eeaec7a5",
+      "members_scanned": 328
+    },
+    {
+      "archive": "followup-service-complete.tar.gz",
+      "sha256": "60ce29ba0cae50bbd6d6a059ee360dd9ff9c9918d1b4b8ebb6164c576e218962",
+      "members_scanned": 571
+    },
+    {
+      "archive": "freeze-and-recovery-metadata.tar.gz",
+      "sha256": "2237cf9c01a6a1f189b990f55706aa8fdc05a60645dc0ccc1d1b7d5f2a7ee682",
+      "members_scanned": 70
+    }
+  ],
+  "unique_payloads_scanned": 70076,
+  "personal_email_patterns_checked": 2,
+  "pattern_categories": [
+    "personal_local_path",
+    "private_key",
+    "token_shape",
+    "author_biography",
+    "unrelated_workspace"
+  ],
+  "findings": [],
+  "reviewed_benign_matches": [
+    {
+      "sha256": "a8d0cb97616bf08c027ca9467a8c61c776727ebfbd2055fc09a3ae473daf5a24",
+      "occurrences": 4,
+      "reason": "Only known public benchmark domain names or their source-published labels matched; not personal host or workspace metadata."
+    },
+    {
+      "sha256": "575f2fb13a0766020e29d78bf8e633a185b381abde7060bdd1ed04cc4a5e38a0",
+      "occurrences": 4,
+      "reason": "Only known public benchmark domain names or their source-published labels matched; not personal host or workspace metadata."
+    },
+    {
+      "sha256": "a236549cd369cd80bd478ff8e1779cbf44c58d5c3f79f7a51a1adbed7d06d1c6",
+      "occurrences": 12,
+      "reason": "Only known public benchmark domain names or their source-published labels matched; not personal host or workspace metadata."
+    },
+    {
+      "sha256": "3b15ac8a8e32960e15ecb3dc83c23261d9f811a9b76f21ca56f863e369133304",
+      "occurrences": 2,
+      "reason": "Only known public benchmark domain names or their source-published labels matched; not personal host or workspace metadata."
+    },
+    {
+      "sha256": "10f824f87e4b451d62d77350872c94dff48b909dce9526c77703fd04149164d4",
+      "occurrences": 8,
+      "reason": "Only known public benchmark domain names or their source-published labels matched; not personal host or workspace metadata."
+    },
+    {
+      "sha256": "12d6b7062c0320d8d72f8c12a2b93e6cd345905c4696b5c8e3b61ac1b5aede93",
+      "occurrences": 2,
+      "reason": "Only known public benchmark domain names or their source-published labels matched; not personal host or workspace metadata."
+    },
+    {
+      "sha256": "94a9e33b4ff425ef36473fa8e8c8778483d85ea66858201bfb00760c97dbd6e0",
+      "occurrences": 4,
+      "reason": "Only known public benchmark domain names or their source-published labels matched; not personal host or workspace metadata."
+    },
+    {
+      "sha256": "827323a5525992332247011e1cb55a661e2b90d4ee350d65eaee0d136dc52c39",
+      "occurrences": 4,
+      "reason": "Only known public benchmark domain names or their source-published labels matched; not personal host or workspace metadata."
+    },
+    {
+      "sha256": "b775fa090235312ed0dc5726cadd1fac673e1514c4adf1711963531e892544df",
+      "occurrences": 4,
+      "reason": "Only known public benchmark domain names or their source-published labels matched; not personal host or workspace metadata."
+    },
+    {
+      "sha256": "99fe0e85b038b00ff6fb89bdb11a09cf45ae80d630f17e32a63318afb9c205c6",
+      "occurrences": 2,
+      "reason": "Only known public benchmark domain names or their source-published labels matched; not personal host or workspace metadata."
+    }
+  ],
+  "scope": "Hash-authenticated previously published research archives, including every inventory and blob. No models loaded, predictions run, or original dataset sources reopened.",
+  "limitations": "Selected personal-identifier and credential patterns; not proof against all possible private information. Benchmark URL records remain licensed research data, not author biography."
+}

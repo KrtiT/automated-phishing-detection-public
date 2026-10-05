@@ -66,7 +66,7 @@ class GWUManuscriptFormatTests(unittest.TestCase):
 
     def test_current_front_matter_preserves_personal_wording(self):
         text = "\n".join(paragraph.text for paragraph in self.document.paragraphs)
-        for expected in ["Ph.D. in Computational Sciences, Stanford University", "Dedication", "Acknowledgements", "Abstract of Praxis", "Table of Contents", "List of Tables", "List of Symbols", "List of Acronyms"]:
+        for expected in ["The George Washington University", "Dedication", "Acknowledgements", "Abstract of Praxis", "Table of Contents", "List of Tables", "List of Symbols", "List of Acronyms"]:
             self.assertIn(expected, text)
         self.assertIn(BUILDER.ABSTRACT, text)
         for obsolete in ["Results-complete dissertation reading edition", "has passed the Final Examination", "final and approved form", "2,111,133 URL records", "Lorem ipsum"]:

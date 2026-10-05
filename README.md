@@ -119,6 +119,11 @@ distinguishes public saved-observation recomputation from new training or timing
 
 ## Publication and Review Boundaries
 
+The [privacy review](privacy/README.md) records the current-file cleanup and its
+limits. Prior-degree details are confined to the GWU-template manuscript front
+matter and matching PDF. Personal machine paths in three reports are replaced
+with disclosed hash placeholders. Earlier Git history is preserved, not erased.
+
 The package is an author review edition, not institutional acceptance.
 Committee titles, institutional manuscript-length requirements and current
 academic-integrity clearance remain matters for the author and university.

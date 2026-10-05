@@ -212,12 +212,19 @@ def bind(repository, **overrides):
 
 
 @pytest.fixture
-def historical_repository(repository):
+def historical_repository(repository, monkeypatch):
     root = TEMPLATE.parents[1]
     content = (root / HISTORICAL_CONTRACT_PATH).read_bytes()
     contract = json.loads(content)
     for name in contract["public_file_sha256"]:
-        write(repository.root, name, (root / name).read_bytes())
+        synthetic = canonical({"synthetic_historical_path": name}).encode()
+        write(repository.root, name, synthetic)
+        contract["public_file_sha256"][name] = sha256(synthetic).hexdigest()
+    content = canonical(contract).encode()
+    repository.contract_sha256 = sha256(content).hexdigest()
+    monkeypatch.setattr(
+        preflight, "_HISTORICAL_V2_CONTRACT_SHA256", repository.contract_sha256
+    )
     write(repository.root, HISTORICAL_CONTRACT_PATH, content)
     (repository.root / CONTRACT_PATH).unlink()
     repository.revision = commit(repository.root)
@@ -230,12 +237,12 @@ def test_historical_binding_and_recheck_do_not_require_v3(historical_repository)
     result = preflight._bind_historical_v2_execution(
         repository.root,
         expected_revision=repository.revision,
-        expected_contract_sha256=HISTORICAL_CONTRACT_SHA256,
+        expected_contract_sha256=repository.contract_sha256,
     )
     assert result.protected_evaluation_ready is False
     assert CONTRACT_PATH not in dict(result.source_hashes)
     assert dict(result.source_hashes)[HISTORICAL_CONTRACT_PATH] == (
-        HISTORICAL_CONTRACT_SHA256
+        repository.contract_sha256
     )
     preflight._recheck_historical_v2_binding(result)
     with pytest.raises(preflight.ExecutionPreflightError, match="missing"):
@@ -259,7 +266,7 @@ def test_historical_contract_cannot_be_replaced_with_relinked_bytes(
         preflight._bind_historical_v2_execution(
             repository.root,
             expected_revision=repository.revision,
-            expected_contract_sha256=HISTORICAL_CONTRACT_SHA256,
+            expected_contract_sha256=repository.contract_sha256,
         )
 
 
@@ -269,12 +276,29 @@ def test_historical_recheck_rejects_active_v3_binding(repository):
         preflight._recheck_historical_v2_binding(result)
 
 
+def test_original_report_pin_rejects_a_committed_privacy_projection(repository):
+    name = "reports/inference-compatibility-v1.json"
+    root = TEMPLATE.parents[1]
+    projection = json.loads((root / "privacy/2026-10-04/publication.json").read_text())[
+        "report_projections"
+    ][name]
+    write(repository.root, name, (root / name).read_bytes())
+    repository.revision = commit(repository.root)
+    with pytest.raises(preflight.ExecutionPreflightError, match="public file SHA-256"):
+        preflight._profile_committed_files(
+            repository.root,
+            repository.revision,
+            {name: projection["original_sha256"]},
+            CONTRACT_PATH,
+        )
+
+
 def test_historical_recheck_detects_committed_source_change(historical_repository):
     repository = historical_repository
     result = preflight._bind_historical_v2_execution(
         repository.root,
         expected_revision=repository.revision,
-        expected_contract_sha256=HISTORICAL_CONTRACT_SHA256,
+        expected_contract_sha256=repository.contract_sha256,
     )
     write(repository.root, f"{PACKAGE}/model.py", b"VALUE = 2\n")
     repository.revision = commit(repository.root)

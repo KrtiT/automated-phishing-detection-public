@@ -1,0 +1,41 @@
+{
+  "status": "verified",
+  "base_commit": "4d6c78883d9bc39dec397ab709064952ba726cc3",
+  "scanned": {
+    "files": 1417,
+    "text_files": 1405,
+    "pdf_pages": 179,
+    "office_parts": 179,
+    "binary_files": 4
+  },
+  "findings": [],
+  "explicit_exceptions": [
+    {
+      "file": "dissertation/2026-10-04/manuscript/Tallam_Krti_Praxis_Integrated_2026-10-04.docx:word/document.xml",
+      "category": "gwu_template_degree_lines"
+    },
+    {
+      "file": "dissertation/2026-10-04/manuscript/Tallam_Krti_Praxis_Integrated_2026-10-04.pdf:page-1",
+      "category": "gwu_template_degree_lines"
+    }
+  ],
+  "personal_email_patterns_checked": 2,
+  "report_path_values_projected": 11,
+  "all_other_report_values_preserved": true,
+  "office_visible_document_parts_identical": true,
+  "all_pdf_files_byte_identical": true,
+  "protected_paths_unchanged": [
+    "src",
+    "scripts",
+    "data",
+    "uv.lock",
+    "pyproject.toml",
+    "research-archive",
+    "dissertation/2026-10-04/aggregate-data"
+  ],
+  "original_author_word_preserved": true,
+  "archive_audit": "archive-audit.json",
+  "history": "Preserved at the author's explicit request; historical personal identifiers remain accessible.",
+  "scope": "Current tracked files and candidate additions; Office XML, PDF metadata/text/links; personal commit emails, author-specific machine paths, credential shapes and author degree institutions. All nine published research archives separately authenticated and scanned.",
+  "limitations": "Bounded verification, not a guarantee against all possible private data, hidden binary encodings, prior Git-history exposure or external cached copies. Scholarly attributions and licensed URL benchmarks remain intact."
+}

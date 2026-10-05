@@ -133,7 +133,7 @@ Public evidence base: https://github.com/KrtiT/automated-phishing-detection-publ
 Retained data, models and freezes: https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/research-record-2026-10-04
 
 SLIDE 19
-- The original October 1 package, author manuscript, frozen source and interrupted evidence are preserved. On October 2 the operator explicitly authorized one full recovery schedule after transient AC loss. The first 45 arms never enter the primary S result. The new run retained 37 preflight samples over 184.66 seconds and 414 schedule samples, with zero recorded guard violations. No advisor or institutional approval is claimed. Deliverables retain the original credential wording and updated abstract/navigation.
+- The original October 1 package, author manuscript, frozen source and interrupted evidence are preserved. On October 2 the operator explicitly authorized one full recovery schedule after transient AC loss. The first 45 arms never enter the primary S result. The new run retained 37 preflight samples over 184.66 seconds and 414 schedule samples, with zero recorded guard violations. No advisor or institutional approval is claimed. The manuscript follows the supplied GWU template, with an updated abstract and navigation.
 Public sources: VERIFICATION.md; provenance/followup/service-recovery-amendment-v2.md
 Public evidence base: https://github.com/KrtiT/automated-phishing-detection-public/tree/research-record-2026-10-04/dissertation/2026-10-04/
 Retained data, models and freezes: https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/research-record-2026-10-04

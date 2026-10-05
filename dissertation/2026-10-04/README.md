@@ -74,9 +74,12 @@ research record, corrects data-availability wording and Appendix A locators, and
 links the manuscript, deck and archive through the [evidence map](EVIDENCE_MAP.md).
 Its [change ledger](document-checks/integration/editorial-ledger.json) and
 [verification](document-checks/integration/verification.json) identify the exact
-Word/PDF/Markdown files. Scientific tables and figure bytes are unchanged; the
-only table edit corrects a section reference in Table A.1. Your original review
-file, credential wording and both advisors' acknowledgments are preserved.
+Word/PDF/Markdown files before the subsequent privacy cleanup. Scientific tables
+and figure bytes are unchanged; the only table edit corrects a section reference
+in Table A.1. The original review file and both advisors' acknowledgments are
+preserved. The [privacy record](../../privacy/2026-10-04/publication.json) binds
+the current document copies. Prior-degree lines appear only in the GWU-template
+manuscript front matter and its matching PDF, not in the presentation or copied tests.
 
 The [earlier Word copy record](provenance/publication-copy.json) records only the
 preceding privacy cleanup, not this editorial revision. That earlier edition and
@@ -95,7 +98,9 @@ Assisted editorial preparation must be handled according to the program's rules.
 From this directory, run `shasum -a 256 -c SHA256SUMS.txt`. The
 [source inventory](provenance/public-source-inventory.json) records the earlier
 assembly of byte-identical copies, identified by the release tag and original
-hashes; current editorial derivatives have the separate integration record above.
+hashes; editorial and privacy derivatives have the separate records above.
+The [privacy review](../../privacy/README.md) distinguishes current-file cleanup
+from earlier commits and tags, which have not been rewritten.
 Hashes establish file identity;
 the archive's separate recomputation checks arithmetic against retained observations.
 Neither is an independent repeat of model fitting or measurement.

@@ -117,7 +117,7 @@ def test_public_word_file_has_no_comments_or_local_file_links():
             if name.endswith((".xml", ".rels")):
                 data = archive.read(name).decode("utf-8")
                 assert "file:///" not in data, name
-                assert "/Users/ktallam/" not in data, name
+                assert not re.search(r"/Users/[^/\s]+/", data), name
     record = json.loads((PACKAGE / "provenance/publication-copy.json").read_text())
     assert record["visible_text_unchanged"] is True
     assert record["tables_unchanged"] is True
@@ -125,7 +125,10 @@ def test_public_word_file_has_no_comments_or_local_file_links():
     integration = json.loads(
         (PACKAGE / "document-checks/integration/verification.json").read_text()
     )
+    privacy = json.loads((ROOT / "privacy/2026-10-04/publication.json").read_text())
     for name, digest in integration["outputs"].items():
+        relative = f"dissertation/2026-10-04/{name}"
+        digest = privacy["document_outputs"].get(relative, digest)
         assert sha256((PACKAGE / name).read_bytes()).hexdigest() == digest, name
     assert integration["all_scientific_table_xml_preserved"] is True
     assert integration["all_figure_bytes_preserved"] is True
@@ -147,6 +150,7 @@ def test_current_markdown_local_file_links_resolve():
     paths = [
         ROOT / "README.md",
         ROOT / "REVIEWER_GUIDE.md",
+        ROOT / "privacy/README.md",
         ROOT / "research-archive/2026-10-04/README.md",
         ROOT / "research-archive/2026-10-04/PROVENANCE.md",
         ROOT / "research-archive/2026-10-04/LICENSES.md",

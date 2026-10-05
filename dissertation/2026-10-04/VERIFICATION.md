@@ -1,5 +1,23 @@
 # Verification scope and chronology
 
+## Current Privacy Derivative
+
+The [privacy record](../../privacy/2026-10-04/publication.json) identifies the
+current Word, PowerPoint and notes copies. Earlier integration receipts remain
+historical records of their own file hashes rather than being reissued.
+
+Only editing-history metadata and one presentation-notes sentence change in the
+Office files. All visible manuscript parts, tables, figures, slide visuals and
+PDF bytes are preserved. Three repository reports replace eleven personal
+filesystem path values with hash placeholders; all other typed report values
+are unchanged. Frozen execution contracts retain their original pins and do not
+accept these reading copies as execution authority.
+
+The [current-file audit](../../privacy/2026-10-04/content-audit.json) and
+[research-archive audit](../../privacy/2026-10-04/archive-audit.json) record the
+checked scope and permitted GWU front-matter exception. The author requested
+that earlier Git history be preserved; historical exposure has not been erased.
+
 ## Scientific Evidence Retained from Completed Verification
 
 - Original: [verification.json](aggregate-data/verification.json) records 238,159

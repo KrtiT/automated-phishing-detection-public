@@ -77,6 +77,14 @@ def test_binding_checks_supplementary_committed_bytes_and_rechecks_base(
         path = root / name
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes((ROOT / name).read_bytes())
+    monkeypatch.setattr(
+        api,
+        "HISTORY_PINS",
+        {
+            name: sha256((root / name).read_bytes()).hexdigest()
+            for name in api.HISTORY_PINS
+        },
+    )
     base = execution_preflight.ExecutionBinding(root, "a" * 40, "b" * 64, (), "{}")
     legacy = development_execution.DevelopmentExecutionBinding(
         base, api.BASE_PROFILE_SHA256, development_execution.METHODS_SHA256, None, b"{}"

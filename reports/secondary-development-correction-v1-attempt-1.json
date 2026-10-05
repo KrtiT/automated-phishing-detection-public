@@ -58,7 +58,7 @@
   },
   "receipts": {
     "reservation.json": {
-      "directory": "/Users/ktallam/conductor/workspaces/kamiwaza/honolulu/.context/gwu_working/secondary-development-correction-v1-2026-09-22-attempt-1",
+      "directory": "<private-local-path-sha256:755999352a923048ddb1ea5d9e4ab15e73103660ff778b7de6d04d126b5bb4f7>",
       "identity": {
         "base_development_profile_sha256": "67146228d636c16f02484998741c7a1545da68b209e693620efab22b2676cd43",
         "base_methods_sha256": "f592352593ae64b178a468d5800e780267275a62046a05b31b952f69e424f44f",
@@ -115,7 +115,7 @@
       "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "retained_audit/reservation.json": {
-      "directory": "/Users/ktallam/conductor/workspaces/kamiwaza/honolulu/.context/gwu_working/secondary-development-correction-v1-2026-09-22-attempt-1/retained_audit",
+      "directory": "<private-local-path-sha256:264fb0b26b302c8d55aa4335aa99f301221b95cddc4206ec3212830ad7637321>",
       "identity": {
         "root_reservation_sha256": "8d2090e457b398b7203b3a2a83c4c8ccf5ef3149293333db733f8b48e46bb1aa",
         "stage": "retained_audit"

@@ -117,3 +117,8 @@ identify this edition. Earlier citation, source-copy and publication records
 remain historical events tied to their original hashes; they are not silently
 reissued for a different file. GitHub CI tests source code and package checks;
 it does not certify research efficacy, source attribution or university acceptance.
+
+The subsequent [privacy record](../../privacy/2026-10-04/publication.json) binds
+the current document copies after editing-history metadata and one notes sentence
+were removed or revised. Visible manuscript text, tables, figures, slides and
+PDF renderings are unchanged. The original integration receipt remains historical.

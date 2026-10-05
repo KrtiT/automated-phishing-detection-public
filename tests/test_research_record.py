@@ -67,6 +67,19 @@ def _compact(text: str) -> str:
     return " ".join(text.lower().split())
 
 
+def _assert_published_identity(path, original_digest):
+    projections = json.loads(
+        (ROOT / "privacy/2026-10-04/publication.json").read_text()
+    )["report_projections"]
+    projection = projections.get(path.relative_to(ROOT).as_posix())
+    if projection is None:
+        assert sha256(path.read_bytes()).hexdigest() == original_digest
+    else:
+        assert projection["original_sha256"] == original_digest
+        assert sha256(path.read_bytes()).hexdigest() == projection["public_sha256"]
+        assert projection["execution_authority"] is False
+
+
 def test_singleton_amendment_preserves_failed_bridge_and_historical_calibration():
     amendment = json.loads(INFERENCE_AMENDMENT.read_text())
     assert amendment["status"] == "adopted_method_pending_complete_evaluation_freeze"
@@ -80,7 +93,7 @@ def test_singleton_amendment_preserves_failed_bridge_and_historical_calibration(
     assert amendment["calibration"]["singleton_selection_optimality_claimed"] is False
     assert amendment["additional_compatibility_executions"] == 0
     for path, expected in amendment["preserved_sha256"].items():
-        assert sha256((ROOT / path).read_bytes()).hexdigest() == expected
+        _assert_published_identity(ROOT / path, expected)
     original = json.loads((ROOT / "data/evaluation-contract-v1.json").read_text())
     assert amendment["runtime_source"] == {
         "path": "data/evaluation-contract-v1.json",
@@ -587,8 +600,8 @@ def test_transformer_summary_is_accepted_development_only_and_immutable():
 
 def test_inference_compatibility_preflight_stop_is_preserved():
     path = ROOT / "reports" / "inference-compatibility-v1.json"
-    assert sha256(path.read_bytes()).hexdigest() == (
-        "6f27b23a88e40455a186ce21cddebec0f9ab827919c663b345a6a14ca14bb670"
+    _assert_published_identity(
+        path, "6f27b23a88e40455a186ce21cddebec0f9ab827919c663b345a6a14ca14bb670"
     )
     receipt = json.loads(path.read_bytes())
     assert receipt["head"] == "6977cec7acaa5491caaad8b1bba140b4134a7fcf"
@@ -612,8 +625,8 @@ def test_inference_compatibility_preflight_stop_is_preserved():
 
 def test_inference_compatibility_retains_the_measured_non_equivalence():
     path = ROOT / "reports" / "inference-compatibility-v1-preflight-correction.json"
-    assert sha256(path.read_bytes()).hexdigest() == (
-        "66272dceee640f6b1a7f42f90a5776db4f30673df09660003a4b4250cd286eb5"
+    _assert_published_identity(
+        path, "66272dceee640f6b1a7f42f90a5776db4f30673df09660003a4b4250cd286eb5"
     )
     receipt = json.loads(path.read_bytes())
     assert receipt["status"] == "not_equivalent"

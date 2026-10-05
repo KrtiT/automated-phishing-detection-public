@@ -1,0 +1,25 @@
+VISUAL INSPECTION — 4 OCTOBER 2026
+
+Artifact: manuscript/Tallam_Krti_Praxis_Citations_Expanded_2026-10-04.pdf
+SHA-256: 6e1fc7db97fc3b3e07f8e445bb6586950505bf1ed8d65cfbc7b6a7d71bc4848d
+
+Reviewed all four citations-*.png contact sheets, covering PDF pages:
+33, 35, 36, 38, 44, 58, 64, 70, 129, 135, 136, 139 and 142.
+Also reviewed continuation pages 37 and 45 at larger scale.
+The added citations and literature paragraphs remain within the text column.
+Hanging indents, italicized publication names and wrapped URLs remain legible.
+No overlap, clipped citation text or collision with page numbers was observed.
+
+Reviewed the current manuscript-scale renders of all four figures on PDF
+pages 48, 81, 110 and 111. Diagram boxes and arrows remain separate from text;
+the recall target label is clear of the reference line; the calibration legend
+is above the data region. Captions and following prose do not overlap figures.
+
+comparison.json records 113 unchanged page bodies out of 150, excluding the
+footer. All four figure-page bodies are pixel-identical to the prior edition:
+48 -> 47; 81 -> 80; 110 -> 109; 111 -> 110.
+
+This is targeted visual review plus the separately logged all-table and
+navigation checks, not a claim of manual inspection of every page or identical
+Word-native pagination. The original open Word document was not opened,
+saved, closed or overwritten by this review.

@@ -1,0 +1,6 @@
+confidence_tier,domain_count,is_phishing,negative_count,positive_count,role,row_count,source_class,source_group,unlabeled_count
+bronze,2294,1,0,4555,secondary,4555,phishing,chongluadao_openphish,0
+gold,69,1,0,69,gold,69,phishing,ncsc,0
+silver,412,1,0,417,secondary,417,phishing,ncsc,0
+control,1163,,0,0,tranco,1163,reference_negative,tranco,1163
+certified,234,0,2497,0,certified,2497,legitimate,trusted_registry,0

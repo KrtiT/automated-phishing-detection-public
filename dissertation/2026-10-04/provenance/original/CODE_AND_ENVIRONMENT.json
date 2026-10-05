@@ -1,0 +1,16 @@
+{
+  "measured_revision": "77d128377ce5b401437d7179f5cd78fb4294b72c",
+  "test_only_publication_revision": "6ddc39274de88ed8c5a9d4ab923ca3886b069243",
+  "repository": "https://github.com/KrtiT/automated-phishing-detection-public",
+  "publication_branch": "praxis-realignment-v3",
+  "measured_source_paths": "provenance/measured-source; exact frozen public contracts and environment pins",
+  "historical_status_boundary": "Frozen docs and the historical checklist retain earlier pending statuses. Final research status is in primary-results.json, the current manuscript and COVERAGE_AND_VERIFICATION.txt.",
+  "source_dependencies": "Analysis and builder scripts preserve original workspace paths and require the controlled evidence, original manuscript/template/decks and specified dependencies. They are audit source, not a standalone measurement rerun.",
+  "excluded": [
+    "original datasets",
+    "row-level research URLs or predictions",
+    "models and weights",
+    "private execution profiles and capabilities",
+    "credentials"
+  ]
+}

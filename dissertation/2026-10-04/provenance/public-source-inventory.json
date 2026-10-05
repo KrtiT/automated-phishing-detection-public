@@ -1,0 +1,1200 @@
+{
+  "assembled_at": "2026-10-05T00:32:46.955329+00:00",
+  "files": [
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/calibration-bins.csv",
+      "published": "aggregate-data/calibration-bins.csv",
+      "sha256": "324bacbee76295ef809ca1d8315399ee6e06758902e8313cad714e8b8758f041",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/complete-secondary-results.json",
+      "published": "aggregate-data/complete-secondary-results.json",
+      "sha256": "5d70b492ba8a54e9c0e92db771548388306a33a0f2d845380fda4a0a41c59a91",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/detection-D/calibration-bins.csv",
+      "published": "aggregate-data/detection-D/calibration-bins.csv",
+      "sha256": "fe81453985049762b6c531cf813f2775e0179cc30fb9c4715ad97b5e7afabfa1",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/detection-D/detection-metrics.csv",
+      "published": "aggregate-data/detection-D/detection-metrics.csv",
+      "sha256": "44c025b361b94e80330a1a02a3692ad5336eeab842872d4b7a40257c63d7bfaf",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/detection-D/domain-size-distribution.csv",
+      "published": "aggregate-data/detection-D/domain-size-distribution.csv",
+      "sha256": "02f3c58460fae7d74886778c5647146196317b54b5087443ab24eb7684fe0dc2",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/detection-D/scheme-invariance.csv",
+      "published": "aggregate-data/detection-D/scheme-invariance.csv",
+      "sha256": "19e60bab1b54d4338faba14020ba5dfa7f13acb3a558b26b6618053de1cbb1a1",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/detection-D/verification.json",
+      "published": "aggregate-data/detection-D/verification.json",
+      "sha256": "e26713637a8daa3336927627d8fc85c86ef1d484ce92aee6a4eb6922d4664836",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/external-monitor-windows.csv",
+      "published": "aggregate-data/external-monitor-windows.csv",
+      "sha256": "a5202d5765e4f671b5bb60bb1a34e0021f7da9cc04392a1141eb0122413b4d2a",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/external-psi-features.csv",
+      "published": "aggregate-data/external-psi-features.csv",
+      "sha256": "6e98206310be3108aed8f5996e3b4de5ec63e8abe9d111e1c7028db9c9930b50",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/low-fpr-score-curves.csv",
+      "published": "aggregate-data/low-fpr-score-curves.csv",
+      "sha256": "7a50a5f6da1cc8ab32f1bda261bef8640331fe90b1b104870a48757782b22c55",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/operational-groups.csv",
+      "published": "aggregate-data/operational-groups.csv",
+      "sha256": "248fd97b44a46e6d6284ba69df6ba02e1945445eab3055f57e0271decd1b06f7",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/operational-runs.csv",
+      "published": "aggregate-data/operational-runs.csv",
+      "sha256": "e74b7fc3d96a1c309db335539141ef601c908e2d7b4909fcdd9168f5e589d617",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/original/calibration-bins.csv",
+      "published": "aggregate-data/original/calibration-bins.csv",
+      "sha256": "324bacbee76295ef809ca1d8315399ee6e06758902e8313cad714e8b8758f041",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/original/complete-secondary-results.json",
+      "published": "aggregate-data/original/complete-secondary-results.json",
+      "sha256": "5d70b492ba8a54e9c0e92db771548388306a33a0f2d845380fda4a0a41c59a91",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/original/external-monitor-windows.csv",
+      "published": "aggregate-data/original/external-monitor-windows.csv",
+      "sha256": "a5202d5765e4f671b5bb60bb1a34e0021f7da9cc04392a1141eb0122413b4d2a",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/original/external-psi-features.csv",
+      "published": "aggregate-data/original/external-psi-features.csv",
+      "sha256": "6e98206310be3108aed8f5996e3b4de5ec63e8abe9d111e1c7028db9c9930b50",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/original/low-fpr-score-curves.csv",
+      "published": "aggregate-data/original/low-fpr-score-curves.csv",
+      "sha256": "7a50a5f6da1cc8ab32f1bda261bef8640331fe90b1b104870a48757782b22c55",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/original/operational-groups.csv",
+      "published": "aggregate-data/original/operational-groups.csv",
+      "sha256": "248fd97b44a46e6d6284ba69df6ba02e1945445eab3055f57e0271decd1b06f7",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/original/operational-runs.csv",
+      "published": "aggregate-data/original/operational-runs.csv",
+      "sha256": "e74b7fc3d96a1c309db335539141ef601c908e2d7b4909fcdd9168f5e589d617",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/original/paired-contrasts.csv",
+      "published": "aggregate-data/original/paired-contrasts.csv",
+      "sha256": "9cf96da33e8606793984340dae74a980f1d6f1bfba9749ddbee7fe2d38dabbbd",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/original/prevalence-projections.csv",
+      "published": "aggregate-data/original/prevalence-projections.csv",
+      "sha256": "360008af344c703bb42b9d41ac421ee452010b0960c81050cb5e371a25677059",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/original/primary-gates.csv",
+      "published": "aggregate-data/original/primary-gates.csv",
+      "sha256": "35f2c142d3858ea5e9d791c7b513a9c2946fb858079943f092dd5a72603a07f6",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/original/primary-results.json",
+      "published": "aggregate-data/original/primary-results.json",
+      "sha256": "a3745f77f4949c59ed753985e179114250abdb642cd6ae797f309f539ba3ef46",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/original/probe-decisions-and-scores.csv",
+      "published": "aggregate-data/original/probe-decisions-and-scores.csv",
+      "sha256": "2f36572b9ae694a6c2b1d90ef966973e215e9e6da800b6c0eef5a78a7c747a43",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/original/probe-monitors-and-scores.csv",
+      "published": "aggregate-data/original/probe-monitors-and-scores.csv",
+      "sha256": "ba14cca995bff501ba81297ad703caa2095945481e40fa39c1d3f4b5c27284f9",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/original/secondary-metrics.csv",
+      "published": "aggregate-data/original/secondary-metrics.csv",
+      "sha256": "81de8dca1f7c770337ba02bf522e99ce4372da01cf33b114d46269559a320415",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/original/secondary-verification.json",
+      "published": "aggregate-data/original/secondary-verification.json",
+      "sha256": "220c1dbfc81a86d911fc731079ff77cf9007fa0c2e785c3282bd1e55ddbda00f",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/original/seed-logical-invocations.csv",
+      "published": "aggregate-data/original/seed-logical-invocations.csv",
+      "sha256": "278507dc1ff09f78fd52def9de9ee4652031e1c5995e3e653bccc2254281cc72",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/original/source-contingency.csv",
+      "published": "aggregate-data/original/source-contingency.csv",
+      "sha256": "57ffc39b4b2c395e3bbb3d753aff242038a6434f2996a8f6626a9fb07a30d8ed",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/original/verification.json",
+      "published": "aggregate-data/original/verification.json",
+      "sha256": "558cbe9b1204875f8422eb1614b81e9512128d00ca0719370e4ea24a65241ef6",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/paired-contrasts.csv",
+      "published": "aggregate-data/paired-contrasts.csv",
+      "sha256": "9cf96da33e8606793984340dae74a980f1d6f1bfba9749ddbee7fe2d38dabbbd",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/prevalence-projections.csv",
+      "published": "aggregate-data/prevalence-projections.csv",
+      "sha256": "360008af344c703bb42b9d41ac421ee452010b0960c81050cb5e371a25677059",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/primary-gates.csv",
+      "published": "aggregate-data/primary-gates.csv",
+      "sha256": "35f2c142d3858ea5e9d791c7b513a9c2946fb858079943f092dd5a72603a07f6",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/primary-results.json",
+      "published": "aggregate-data/primary-results.json",
+      "sha256": "a3745f77f4949c59ed753985e179114250abdb642cd6ae797f309f539ba3ef46",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/probe-decisions-and-scores.csv",
+      "published": "aggregate-data/probe-decisions-and-scores.csv",
+      "sha256": "2f36572b9ae694a6c2b1d90ef966973e215e9e6da800b6c0eef5a78a7c747a43",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/probe-monitors-and-scores.csv",
+      "published": "aggregate-data/probe-monitors-and-scores.csv",
+      "sha256": "ba14cca995bff501ba81297ad703caa2095945481e40fa39c1d3f4b5c27284f9",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/secondary-metrics.csv",
+      "published": "aggregate-data/secondary-metrics.csv",
+      "sha256": "81de8dca1f7c770337ba02bf522e99ce4372da01cf33b114d46269559a320415",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/secondary-verification.json",
+      "published": "aggregate-data/secondary-verification.json",
+      "sha256": "220c1dbfc81a86d911fc731079ff77cf9007fa0c2e785c3282bd1e55ddbda00f",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/seed-logical-invocations.csv",
+      "published": "aggregate-data/seed-logical-invocations.csv",
+      "sha256": "278507dc1ff09f78fd52def9de9ee4652031e1c5995e3e653bccc2254281cc72",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/service-S/arm-metrics.csv",
+      "published": "aggregate-data/service-S/arm-metrics.csv",
+      "sha256": "dc62d9398d0b2de537e2daede3026336039683a6dd64662555b6bbc63b9ba0e6",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/service-S/group-metrics.csv",
+      "published": "aggregate-data/service-S/group-metrics.csv",
+      "sha256": "fe69acd6ffacc9aca5cb5428c4357e068ac703411755869090e02f32669a1d17",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/service-S/pair-metrics.csv",
+      "published": "aggregate-data/service-S/pair-metrics.csv",
+      "sha256": "7c84413ea6aa6dac787c23e7b2851bc39d77787e59f6c84cd902f7e8b5eab466",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/service-S/primary-pairs.csv",
+      "published": "aggregate-data/service-S/primary-pairs.csv",
+      "sha256": "efcdc5a4e4d3ecc74c7642bf8f9070c6adf4144399857b40da642a04562ea95f",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/service-S/requirements.csv",
+      "published": "aggregate-data/service-S/requirements.csv",
+      "sha256": "c0e140e573c53d52c3796d4110179d113d8a35e701fea2d419f94b3e878b4d0d",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/service-S/verification.json",
+      "published": "aggregate-data/service-S/verification.json",
+      "sha256": "93aa8cb31a697464efbcf4d638635cb3c0cc5513dfe55d3c8676cf10de94982d",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/source-contingency.csv",
+      "published": "aggregate-data/source-contingency.csv",
+      "sha256": "57ffc39b4b2c395e3bbb3d753aff242038a6434f2996a8f6626a9fb07a30d8ed",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/aggregate-data/verification.json",
+      "published": "aggregate-data/verification.json",
+      "sha256": "558cbe9b1204875f8422eb1614b81e9512128d00ca0719370e4ea24a65241ef6",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/advisor/build_advisor_results_20261001.py",
+      "published": "analysis-scripts/advisor/build_advisor_results_20261001.py",
+      "sha256": "d6d17ec11e6f667a878878f2a224f9c5ec409014c53c4277368e8a21210f9aeb",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/advisor/build_advisor_update_2026_09_03.py",
+      "published": "analysis-scripts/advisor/build_advisor_update_2026_09_03.py",
+      "sha256": "87242c76def46f002c1b219c07cb30986cb5b9254941602ddeb08b4a0cdca5a6",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/advisor/build_followup_deck_20261001.py",
+      "published": "analysis-scripts/advisor/build_followup_deck_20261001.py",
+      "sha256": "7e4eba45836a63470b7068e48ce9cb922cd102cdf59bdf45399cddd692707f33",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/advisor/check_followup_deck_render_20261001.py",
+      "published": "analysis-scripts/advisor/check_followup_deck_render_20261001.py",
+      "sha256": "2de7cf985e82028cc17bf603debea0aa2d8540e5188e2ca95ebc2f095e00d2db",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/advisor/test_followup_deck_20261001.py",
+      "published": "analysis-scripts/advisor/test_followup_deck_20261001.py",
+      "sha256": "21844ef7156db402afb531a47b6ade140dbb77e756de2118bdb2bd9580074b21",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/advisor/test_followup_deck_render_20261001.py",
+      "published": "analysis-scripts/advisor/test_followup_deck_render_20261001.py",
+      "sha256": "df126fca00a8b2f9041a0a53c908354e32bf2b453270cfdb5aee2259711108f1",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/build_complete_revision_20261002.py",
+      "published": "analysis-scripts/dissertation/build_complete_revision_20261002.py",
+      "sha256": "0eaf46b6afc329a7d569bc80cfe85af0bd692f0d2a00fdb410e213de1a8d9a25",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/build_followup_working_20261001.py",
+      "published": "analysis-scripts/dissertation/build_followup_working_20261001.py",
+      "sha256": "f855b68f021bda35b16e802bbb43f8d203e594e6abcc51d7776a81c9ae109f0c",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/build_results_reading_edition_20261001.py",
+      "published": "analysis-scripts/dissertation/build_results_reading_edition_20261001.py",
+      "sha256": "1f9977eea5f6673ea880d473a311aba005d474ac1b1ecdc8f8d04382e731b4b4",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/build_v3_working_manuscript.py",
+      "published": "analysis-scripts/dissertation/build_v3_working_manuscript.py",
+      "sha256": "ef4291b79442b42cbcdf02af5339d05f9d899729ddd960025d55e1e29b0c5543",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/check_complete_package_20261002.py",
+      "published": "analysis-scripts/dissertation/check_complete_package_20261002.py",
+      "sha256": "5b902ad241eaf16b9a850ce3fc996b48e8f0c2ef97f66bbb2e7fc03ea7877ee6",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/check_final_deliverables_20261001.py",
+      "published": "analysis-scripts/dissertation/check_final_deliverables_20261001.py",
+      "sha256": "e5541a72b5dbf8f7198d41dfee5e0761875529e0a826de27b91cd8eb8d6b53ea",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/check_followup_render_20261001.py",
+      "published": "analysis-scripts/dissertation/check_followup_render_20261001.py",
+      "sha256": "037a01cde5d982facce6ac0c22c95ce4eab938ed654d0e506b388e3d7e309dda",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/check_gwu_render_20261001.py",
+      "published": "analysis-scripts/dissertation/check_gwu_render_20261001.py",
+      "sha256": "02923a5797f6f425337499d681f54efacc69c6537e6542a1753e8169033b2327",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/draw_followup_detection_20261001.py",
+      "published": "analysis-scripts/dissertation/draw_followup_detection_20261001.py",
+      "sha256": "1ee2c11f11a0d6fb9f76f2ab191834af7dc1196542484ca3b97686ddf37ed201",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/draw_system_dataflow_20261001.py",
+      "published": "analysis-scripts/dissertation/draw_system_dataflow_20261001.py",
+      "sha256": "af9ab7bdab5bc46cf02c5494b0b30c0894763fd45ad39db542cef0c61f6d5a17",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/export_final_secondary_20261001.py",
+      "published": "analysis-scripts/dissertation/export_final_secondary_20261001.py",
+      "sha256": "afbf7b28df6ed7b227d8e0722c80fb0df93b7fb63b6017a4b47bea6ef71b20df",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/integrate_followup_manuscript_20261001.py",
+      "published": "analysis-scripts/dissertation/integrate_followup_manuscript_20261001.py",
+      "sha256": "e5fc6da4fde32ab94d76f746a4977431291c668b18f5aaac5f2cc1971becb080",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/package_complete_20261002.py",
+      "published": "analysis-scripts/dissertation/package_complete_20261002.py",
+      "sha256": "933d4ac5460db40556e5c165094d37936102c8c6cdb2c8e908d75d4ca25458b9",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/package_final_20261001.py",
+      "published": "analysis-scripts/dissertation/package_final_20261001.py",
+      "sha256": "e146f884ca6057fd72a5a54f24a8fd972c5504f8696b9b8df1e1d161f61dd1f0",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/run_followup_service_recovery_20261002.py",
+      "published": "analysis-scripts/dissertation/run_followup_service_recovery_20261002.py",
+      "sha256": "06be83a3453fdb4f6a9519da611ddb8ee5d566220104d176b572c36296fe3483",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/synthesize_final_20261001.py",
+      "published": "analysis-scripts/dissertation/synthesize_final_20261001.py",
+      "sha256": "0aa1ebf9dfeeb5435ac219461da07c616778663c79ab82b1c1f723638ab93e32",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/test_build_v3_working_manuscript.py",
+      "published": "analysis-scripts/dissertation/test_build_v3_working_manuscript.py",
+      "sha256": "3013a34f4219ec665231a27db5d63e5b40e719c065977a2d56b79be63bcbce56",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/test_complete_package_20261002.py",
+      "published": "analysis-scripts/dissertation/test_complete_package_20261002.py",
+      "sha256": "ed4378fc8a37b4d95ee61ca58a740a8406d57d3bda4c0e55ab4fab33a71a85d7",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/test_complete_revision_20261002.py",
+      "published": "analysis-scripts/dissertation/test_complete_revision_20261002.py",
+      "sha256": "7987c482aee64196d8e67ff90fda5c92007d075ad2aabb1262965c43b8566b82",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/test_final_package_20261001.py",
+      "published": "analysis-scripts/dissertation/test_final_package_20261001.py",
+      "sha256": "1b20897a99f616334b99d0acafa1c41c2e374216b1bbd51b5d6dc075d701b869",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/test_followup_figures_20261001.py",
+      "published": "analysis-scripts/dissertation/test_followup_figures_20261001.py",
+      "sha256": "e455ef93ee3bc7ed0b62429f4ddbadb49da0ec40372a2cdb68b717f820edae47",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/test_followup_gwu_format_20261001.py",
+      "published": "analysis-scripts/dissertation/test_followup_gwu_format_20261001.py",
+      "sha256": "f233f3bad284375291485dba4e92e8934702789eee528c76b133424441bb9d95",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/test_followup_manuscript_20261001.py",
+      "published": "analysis-scripts/dissertation/test_followup_manuscript_20261001.py",
+      "sha256": "6679a75c17e6be57565a96dc772f05f23cc05112e72e668cde07fc7d207b1ff1",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/test_followup_render_20261001.py",
+      "published": "analysis-scripts/dissertation/test_followup_render_20261001.py",
+      "sha256": "4c0f3241be50af73ddc8a996ecf12465ff06061c84333cfb5252c0139dd073f6",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/test_followup_service_recovery_20261002.py",
+      "published": "analysis-scripts/dissertation/test_followup_service_recovery_20261002.py",
+      "sha256": "34fe5f3d06a2ccf3aba5b4d08b56d557c6cf17d98b80d303093e1d699e24b828",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/test_gwu_manuscript_format_20261001.py",
+      "published": "analysis-scripts/dissertation/test_gwu_manuscript_format_20261001.py",
+      "sha256": "db364adb2dc9888a78299f3319067b050e58e1d88505b19c4ecf4d43eb632996",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/test_verify_followup_detection_20261001.py",
+      "published": "analysis-scripts/dissertation/test_verify_followup_detection_20261001.py",
+      "sha256": "e2e3881eafd0d775bc52493c0fdb0132712ac5b01cb573564861661fc3f78a9f",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/test_verify_followup_service_20261002.py",
+      "published": "analysis-scripts/dissertation/test_verify_followup_service_20261002.py",
+      "sha256": "e58b194d0a2974ba46c29ffb4837db898a61f5b56d1ced935c2bfd720a26a084",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/verify_final_evidence_20261001.py",
+      "published": "analysis-scripts/dissertation/verify_final_evidence_20261001.py",
+      "sha256": "cd5142ef7cbcf87a58cf386f16c93501544cb17734f8f035ba2f7e3ac9721f42",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/verify_followup_detection_20261001.py",
+      "published": "analysis-scripts/dissertation/verify_followup_detection_20261001.py",
+      "sha256": "e80bcc55df333b59b0f337c6868c15760fa77ad2879503a67e2fc064398ba8b8",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/dissertation/verify_followup_service_20261002.py",
+      "published": "analysis-scripts/dissertation/verify_followup_service_20261002.py",
+      "sha256": "5ba05c53548c340ac04dfc4449ed9efc0678e3d5a54057cd601dcb18bfd9354a",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/analysis-scripts/supplemental-fixture/test_operational_child_interruptions.py",
+      "published": "analysis-scripts/supplemental-fixture/test_operational_child_interruptions.py",
+      "sha256": "decef6970aa47fcc0d327827f6425849f6fc52fd52227f94f6619b17dd128ec2",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/CODE_AND_ENVIRONMENT.json",
+      "published": "provenance/CODE_AND_ENVIRONMENT.json",
+      "sha256": "1cb53d38ee22c3db22bd689b1c3f56880d7428321e304f7fb1a9ef6c92df30eb",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/Historical_Evidence_Supplement_2026-10-01.md",
+      "published": "provenance/Historical_Evidence_Supplement_2026-10-01.md",
+      "sha256": "148dabd345ee7fa804ba31a35b842f91d7cfb9bab00efce9df6f079204f63956",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/advisor-deck-scope-crosswalk-20261001.md",
+      "published": "provenance/advisor-deck-scope-crosswalk-20261001.md",
+      "sha256": "1fc5583e204735103ee970cf115b201a5539cf414d24d5abf2edc1782f7bb67c",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup/comparison-specification-v1.md",
+      "published": "provenance/followup/comparison-specification-v1.md",
+      "sha256": "c8b3df21961f8ab15b0ff4a249334d758dd453140e19b02634fce12db9ea69ec",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup/diagnosis-and-design.md",
+      "published": "provenance/followup/diagnosis-and-design.md",
+      "sha256": "ab6f0d072d4578858d5d8b7e6868aeeaf4a2ac82933e74dd07165879f74a3ce1",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup/implementation-clarifications-v1.md",
+      "published": "provenance/followup/implementation-clarifications-v1.md",
+      "sha256": "6596f7093bf2bdd9ae36e2b12bd9e3b747e7067b1f6db218d36956c90c41ecad",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup/implementation-review-v1.md",
+      "published": "provenance/followup/implementation-review-v1.md",
+      "sha256": "25bc5243491424f2fb1425ae7b0d9f87a19297ff775d8ecf15d4e5f3682fdc15",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup/methodological-source-review.md",
+      "published": "provenance/followup/methodological-source-review.md",
+      "sha256": "30fc6f88bc502ce1caad33a5615293f59d2dfaf24eb6955e31c65faa02fd1ecc",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup/regression-verification-v1.md",
+      "published": "provenance/followup/regression-verification-v1.md",
+      "sha256": "b66de3fbc87043428410361ebaeb375e8efb123ebca6b20cb2c352c6b2a1e3f0",
+      "transformation": "Public projection: unrelated application name replaced with a generic description; outcomes, commands and hashes unchanged."
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup/retrieval-correction-1.md",
+      "published": "provenance/followup/retrieval-correction-1.md",
+      "sha256": "75e3d172bd0944341fb4459682c6a10e87b95fb6e0d87de03c4ad017d01ef7b7",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup/service-implementation-clarifications-v1.md",
+      "published": "provenance/followup/service-implementation-clarifications-v1.md",
+      "sha256": "bf201d865926f77b333a8ffe59878fce684e5010cd59d36cdd706d7272b092f1",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup/service-recovery-amendment-v2.md",
+      "published": "provenance/followup/service-recovery-amendment-v2.md",
+      "sha256": "93df0b2b634d835959dc38eebb367060f672b78933f19761317159fe7a960023",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup/service-v1-preservation.json",
+      "published": "provenance/followup/service-v1-preservation.json",
+      "sha256": "3f70c5da3a5f8378b6f87dbbe69932ef3a6806c6af1bdf16ad7d0859d71888bb",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup-source/CITATION.cff",
+      "published": "provenance/followup-source/CITATION.cff",
+      "sha256": "0af858239e19b417271a47ac447aa06e692a55eb0ef896ed2ea1f0938cb9d72c",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup-source/LICENSE",
+      "published": "provenance/followup-source/LICENSE",
+      "sha256": "fb1ba6bada63bf9b1a1cee50683e9bcc58a82cd011274ef2046080e6aa4e044b",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup-source/docs/bounded-followup.md",
+      "published": "provenance/followup-source/docs/bounded-followup.md",
+      "sha256": "7265ef441b7a2b60a259aa2df843d2f220be83c64d4fa0531b6c572a9dac7183",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup-source/pyproject.toml",
+      "published": "provenance/followup-source/pyproject.toml",
+      "sha256": "87d2286c51400b872e57597663b653944f933575285994389c8e51e6cdc67ba6",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup-source/scripts/prepare_followup_population.py",
+      "published": "provenance/followup-source/scripts/prepare_followup_population.py",
+      "sha256": "00a4f27c2949737fb09d26dd35f85ef3427fa72cf0631e182f859ce724cddc30",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup-source/scripts/run_followup_detection.py",
+      "published": "provenance/followup-source/scripts/run_followup_detection.py",
+      "sha256": "186bd227de301426e2d14c0c8435e5f959f73ac34f5131757ed9f447a058d67e",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup-source/scripts/run_followup_service.py",
+      "published": "provenance/followup-source/scripts/run_followup_service.py",
+      "sha256": "893330a7f66f7096a19137a0b8a75c0fcce1b72ae475cf4742fb37f12b4f22a9",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup-source/src/automated_phishing_detection/followup_metrics.py",
+      "published": "provenance/followup-source/src/automated_phishing_detection/followup_metrics.py",
+      "sha256": "901258d57ebe0515fedbb2fb8a99aa8f4d2c8b21da12dd2391b888cce4db2b0d",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup-source/src/automated_phishing_detection/followup_population.py",
+      "published": "provenance/followup-source/src/automated_phishing_detection/followup_population.py",
+      "sha256": "d8106dbc01aeac09471720d84d1a376cf31b1e57328cb6a8864f0245c3b71be3",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup-source/src/automated_phishing_detection/followup_service.py",
+      "published": "provenance/followup-source/src/automated_phishing_detection/followup_service.py",
+      "sha256": "6b9ac87d1a270fd5016666ad26186d0ce8672b8749721847058c936631c69556",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup-source/src/automated_phishing_detection/http_replay.py",
+      "published": "provenance/followup-source/src/automated_phishing_detection/http_replay.py",
+      "sha256": "831115caa30148ae7b9b34563be4636453a4f3313b6163792df2b9c1e8f69951",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup-source/src/automated_phishing_detection/transport_neutral_features.py",
+      "published": "provenance/followup-source/src/automated_phishing_detection/transport_neutral_features.py",
+      "sha256": "93cdc729a0cbc92a30cf756dd9e981603cf1ccb2cd7aae41f81781621b9d706c",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup-source/src/automated_phishing_detection/transport_neutral_model.py",
+      "published": "provenance/followup-source/src/automated_phishing_detection/transport_neutral_model.py",
+      "sha256": "13223e5b8a9596098a2f57beb51bdd5f67eb1a82253b258a41f1208422bc2cfa",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup-source/src/automated_phishing_detection/worker_connection_replay.py",
+      "published": "provenance/followup-source/src/automated_phishing_detection/worker_connection_replay.py",
+      "sha256": "469c6f2a5788e363fb31f7e0183ed755c724cc8b2f45b65eb999751b5a6ff2ce",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup-source/tests/test_followup_detection_script.py",
+      "published": "provenance/followup-source/tests/test_followup_detection_script.py",
+      "sha256": "1c77522872c26f8e3118a87df432c36192f962769f83821db49ed395bd8fea64",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup-source/tests/test_followup_metrics.py",
+      "published": "provenance/followup-source/tests/test_followup_metrics.py",
+      "sha256": "e40ddf8da25071abddec0112dd587b7731670ad069174bf9391419d566dd96ed",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup-source/tests/test_followup_population.py",
+      "published": "provenance/followup-source/tests/test_followup_population.py",
+      "sha256": "c05dec27159be8253ca2cb9ef4e7c7a7f459275de374071953fb2a33e231a606",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup-source/tests/test_followup_service.py",
+      "published": "provenance/followup-source/tests/test_followup_service.py",
+      "sha256": "364d776e988726709cb11457600e4a4bb2d1f6c03cd2668216c364e955e609b8",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup-source/tests/test_transport_neutral_features.py",
+      "published": "provenance/followup-source/tests/test_transport_neutral_features.py",
+      "sha256": "5502aae469dd5a97e0514089dc59b05e0da7f0b08259f81a10f3e73fb9849c0c",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup-source/tests/test_transport_neutral_model.py",
+      "published": "provenance/followup-source/tests/test_transport_neutral_model.py",
+      "sha256": "ad4d9affa6ddf8d4c1459c078069a6d94e34a923b48e3af5a3ff42ef16e7ad93",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup-source/tests/test_worker_connection_replay.py",
+      "published": "provenance/followup-source/tests/test_worker_connection_replay.py",
+      "sha256": "8b68e46c9432dc09161657e4b4766752f4224cd8554daac823d01c1b8cab8351",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/followup-source/uv.lock",
+      "published": "provenance/followup-source/uv.lock",
+      "sha256": "6b1ce90ae56dbdb87ff955bc05ca236de65b2dc6373f26c0bd7343de7a404167",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/CODE_AND_ENVIRONMENT.json",
+      "published": "provenance/original/CODE_AND_ENVIRONMENT.json",
+      "sha256": "98f153a05f0a3e55e21d0d519302ed29ecf3fbde4ab834dd95bd2219820b70d1",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/Historical_Evidence_Supplement_2026-10-01.md",
+      "published": "provenance/original/Historical_Evidence_Supplement_2026-10-01.md",
+      "sha256": "148dabd345ee7fa804ba31a35b842f91d7cfb9bab00efce9df6f079204f63956",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/advisor-deck-scope-crosswalk-20261001.md",
+      "published": "provenance/original/advisor-deck-scope-crosswalk-20261001.md",
+      "sha256": "1fc5583e204735103ee970cf115b201a5539cf414d24d5abf2edc1782f7bb67c",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/historical-synthesis-requirements-checklist.md",
+      "published": "provenance/original/historical-synthesis-requirements-checklist.md",
+      "sha256": "f39ed5bd0c63284e0dd099a512e0562eb8b37b4fc6d5ecce3864b489a309c307",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/CITATION.cff",
+      "published": "provenance/original/measured-source/CITATION.cff",
+      "sha256": "0af858239e19b417271a47ac447aa06e692a55eb0ef896ed2ea1f0938cb9d72c",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/LICENSE",
+      "published": "provenance/original/measured-source/LICENSE",
+      "sha256": "fb1ba6bada63bf9b1a1cee50683e9bcc58a82cd011274ef2046080e6aa4e044b",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/development-correction-contract-v1.json",
+      "published": "provenance/original/measured-source/data/development-correction-contract-v1.json",
+      "sha256": "61739fa0638ae822bf54639cf3a485c0b7b8a3a236a80221d824df7f79a090a9",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/development-correction-contract-v2.json",
+      "published": "provenance/original/measured-source/data/development-correction-contract-v2.json",
+      "sha256": "1d806d536dc77b5a085264950e64b2bde3db4ab02afa33c6adb827d8b7a07f73",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/development-execution-contract-v1.json",
+      "published": "provenance/original/measured-source/data/development-execution-contract-v1.json",
+      "sha256": "67146228d636c16f02484998741c7a1545da68b209e693620efab22b2676cd43",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/evaluation-contract-v1.json",
+      "published": "provenance/original/measured-source/data/evaluation-contract-v1.json",
+      "sha256": "d55e504c4f2f89dff93de9fbf121460c02e5175fefcf206a3a74d37de4c0ab6f",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/evaluation-manifest-contract-v1.json",
+      "published": "provenance/original/measured-source/data/evaluation-manifest-contract-v1.json",
+      "sha256": "710317a3235528f0f54c2ca9367a699c53e25505e0c87a8462e70e35e5a70da3",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/execution-binding-contract-v1.json",
+      "published": "provenance/original/measured-source/data/execution-binding-contract-v1.json",
+      "sha256": "9170e4f4b5530784d98b1bbbbf63404ffaa0203bee83827293a3970e9e2d4572",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/execution-binding-contract-v2.json",
+      "published": "provenance/original/measured-source/data/execution-binding-contract-v2.json",
+      "sha256": "887f771381927dfe1b9268a45f4e605baf3e9a7caee2b7005cdfe68b1be516e1",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/execution-binding-contract-v3.json",
+      "published": "provenance/original/measured-source/data/execution-binding-contract-v3.json",
+      "sha256": "b3847581d73cba2a01d9f25d39548bb6cd96903129b0e382359faa6df97ab7c4",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/http-replay-contract-v1.json",
+      "published": "provenance/original/measured-source/data/http-replay-contract-v1.json",
+      "sha256": "b7a16236d0c8acb0d48a29819c09c0983d5691437b29960f5ef72028d2255829",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/operational-workloads-v1.json",
+      "published": "provenance/original/measured-source/data/operational-workloads-v1.json",
+      "sha256": "d91a7ea660901584a1102d04177daffc5ed25538769c5ce561b03b507482da1d",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/rq1-baseline-contract-v2.json",
+      "published": "provenance/original/measured-source/data/rq1-baseline-contract-v2.json",
+      "sha256": "05d6d0831def7d26448c8dbdc8117800ea2448cdfc2aca2ad95489f22d2d11ba",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/rq1-baseline-contract.json",
+      "published": "provenance/original/measured-source/data/rq1-baseline-contract.json",
+      "sha256": "594a66769dee3bf23c4133020dcf9b7d57c105590e5007832ac4249def6a33d4",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/rq1-transformer-cascade-contract-v1.json",
+      "published": "provenance/original/measured-source/data/rq1-transformer-cascade-contract-v1.json",
+      "sha256": "aeaa84534c4cadf0459cf6d2f010dc802684d4801cce563ce18242f36359fb54",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/rq1-transformer-cascade-contract-v2.json",
+      "published": "provenance/original/measured-source/data/rq1-transformer-cascade-contract-v2.json",
+      "sha256": "686c0d86b33b8a6c2e09cd6e174003db0bd2f7c30b087faf5470e6a270524213",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/rq2-gmm-development-contract-v1.json",
+      "published": "provenance/original/measured-source/data/rq2-gmm-development-contract-v1.json",
+      "sha256": "22d32088b05e74432704f9671ab76ba28b4f573ead418846b23bc366315cb393",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/secondary-analysis-contract-v1.json",
+      "published": "provenance/original/measured-source/data/secondary-analysis-contract-v1.json",
+      "sha256": "a0483074c94c90a0ad1829fbbcc36d10561065d7f5acaeece44f8f75136e015e",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/secondary-development-contract-v1.json",
+      "published": "provenance/original/measured-source/data/secondary-development-contract-v1.json",
+      "sha256": "f592352593ae64b178a468d5800e780267275a62046a05b31b952f69e424f44f",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/secondary-seed-probe-contract-v1.json",
+      "published": "provenance/original/measured-source/data/secondary-seed-probe-contract-v1.json",
+      "sha256": "eb279404728e498999fc7fd0c7578291373bb80b9816f88b5d7202dfdf637380",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/seed-probe-correction-contract-v1.json",
+      "published": "provenance/original/measured-source/data/seed-probe-correction-contract-v1.json",
+      "sha256": "46a659ddc809f998a12abaae0f5c6e353c2f965844487faf87c0637b9d7697a4",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/seed-probe-execution-contract-v1.json",
+      "published": "provenance/original/measured-source/data/seed-probe-execution-contract-v1.json",
+      "sha256": "cf18fa8c35039c63f896cc62c7aaac8b0847a1abf55676ba67ee65b42340381d",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/seed-probe-execution-contract-v2.json",
+      "published": "provenance/original/measured-source/data/seed-probe-execution-contract-v2.json",
+      "sha256": "4da034b1a46baa599ae04226ee2f4d9a26c2b2d639cac73fa576ff9cb7aa8839",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/shift-execution-contract-v1.json",
+      "published": "provenance/original/measured-source/data/shift-execution-contract-v1.json",
+      "sha256": "95f57252b5d74de2c0b8dcf133e8d999dc615252247eb9b896f237547f288963",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/singleton-inference-amendment-v1.json",
+      "published": "provenance/original/measured-source/data/singleton-inference-amendment-v1.json",
+      "sha256": "2a2aeb0e97260dec9b38530f8609f088e72ee3102d24c547f75c13b0a0a0002c",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/sources.json",
+      "published": "provenance/original/measured-source/data/sources.json",
+      "sha256": "314ea940494c70cf15aa4a5db05063402eec1629ee99b4c96522cf57dfd12229",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/study-execution-policy-v1.json",
+      "published": "provenance/original/measured-source/data/study-execution-policy-v1.json",
+      "sha256": "40cbb7c5365c40d0c02e75259d535408219948fb7d62f2a177bcf6b05cdbb6e2",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/study-execution-policy-v2.json",
+      "published": "provenance/original/measured-source/data/study-execution-policy-v2.json",
+      "sha256": "afa113e3720b03e5a141e8d4e61de6076563f640a04f9952fa37132d0a657188",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/study-execution-policy-v3.json",
+      "published": "provenance/original/measured-source/data/study-execution-policy-v3.json",
+      "sha256": "8cf6b22841c11c559c4c0278fde07cf58c7a28c84523649ce3df0dc9a847260f",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/data/study-series-policy-v1.json",
+      "published": "provenance/original/measured-source/data/study-series-policy-v1.json",
+      "sha256": "948d176abadb3cc9dec250e024418f275fac974f32f83ff5b303b2bc8b11fe4f",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/docs/advisor-approval/2026-08-16-realignment-matrix.md",
+      "published": "provenance/original/measured-source/docs/advisor-approval/2026-08-16-realignment-matrix.md",
+      "sha256": "aad6b7cf8d8416bfb37ec19503dbed031c15767ea96d9b76486ca3f3fedebe1b",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/docs/advisor-approval/approval-status.md",
+      "published": "provenance/original/measured-source/docs/advisor-approval/approval-status.md",
+      "sha256": "ab71fe860fb3416cdb710e0121af158825f8e316231439806d27c50977d9e5f9",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/docs/publisher-url-amendment.md",
+      "published": "provenance/original/measured-source/docs/publisher-url-amendment.md",
+      "sha256": "28d9abf0e55007eafe7bf450708a154d97874235954582fbee7ef94ce937e44c",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/docs/research-basis.md",
+      "published": "provenance/original/measured-source/docs/research-basis.md",
+      "sha256": "fee516d152e8d3c6e3f5ba9c55a94480e80f8416a16f81954589e0cb8cf3ff48",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/docs/research-evidence-outline.md",
+      "published": "provenance/original/measured-source/docs/research-evidence-outline.md",
+      "sha256": "b1c833b1c532ba19ad89e3151ded388f4fb0abc894a30307c58f43c2d454b932",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/docs/study-execution-authorization.md",
+      "published": "provenance/original/measured-source/docs/study-execution-authorization.md",
+      "sha256": "9d5683496a5a7077689a3d0e5e4d8271cae1d36853ce3f4a08247ad4367d0b5a",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/docs/study-series-continuation-v1.md",
+      "published": "provenance/original/measured-source/docs/study-series-continuation-v1.md",
+      "sha256": "54c6c9cc7a7ca3b07f2763f03131ac873a6211d10395b67892acaec8dda9f2e4",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/pyproject.toml",
+      "published": "provenance/original/measured-source/pyproject.toml",
+      "sha256": "87d2286c51400b872e57597663b653944f933575285994389c8e51e6cdc67ba6",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/provenance/original/measured-source/uv.lock",
+      "published": "provenance/original/measured-source/uv.lock",
+      "sha256": "6b1ce90ae56dbdb87ff955bc05ca236de65b2dc6373f26c0bd7343de7a404167",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/DATA_DICTIONARY.txt",
+      "published": "DATA_DICTIONARY.txt",
+      "sha256": "d34bf5b83fbd95e8a50c1a1965995aaf5ee3b29a1ac16b3c9cb014c017089809",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/ORIGINAL_DATA_DICTIONARY.txt",
+      "published": "ORIGINAL_DATA_DICTIONARY.txt",
+      "sha256": "cce2bed5001e9ac5b1fce7f66d72c9fa583ecca8b1605d45d28d88128d945df8",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Layout_Reviewed_2026-10-02/RESEARCH_DATA_DICTIONARY.txt",
+      "published": "RESEARCH_DATA_DICTIONARY.txt",
+      "sha256": "d784de21eae294a1d4cdb0a238f02f870249222d4cfbfd2ef715125e17754e2f",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Author_Review_2026-10-04/Citations_Expanded_2026-10-04/advisor/Tallam_Praxis_Advisor_Complete_2026-10-02.pdf",
+      "published": "advisor/Tallam_Praxis_Advisor_Complete_2026-10-02.pdf",
+      "sha256": "fea3c672874c744b58a7c4ce2aa28529d48b92010806b66c72a48894fdf296bc",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Author_Review_2026-10-04/Citations_Expanded_2026-10-04/advisor/Tallam_Praxis_Advisor_Complete_2026-10-02.pptx",
+      "published": "advisor/Tallam_Praxis_Advisor_Complete_2026-10-02.pptx",
+      "sha256": "a29f7d1ab808d19a713a21302e1eb3cb6ff0435dae1cf5e7a8a8776d86438531",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Author_Review_2026-10-04/Citations_Expanded_2026-10-04/advisor/Tallam_Praxis_Advisor_Complete_2026-10-02_Speaker_Notes.txt",
+      "published": "advisor/Tallam_Praxis_Advisor_Complete_2026-10-02_Speaker_Notes.txt",
+      "sha256": "69cebb0d77afa026766f154550f979725ab3acb2a762bcb163fe521ea570edeb",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Author_Review_2026-10-04/Citations_Expanded_2026-10-04/manuscript/Tallam_Krti_Praxis_Citations_Expanded_2026-10-04.md",
+      "published": "manuscript/Tallam_Krti_Praxis_Citations_Expanded_2026-10-04.md",
+      "sha256": "6d0d08e6ad1718efcca136af3be6d9880b6529992c9f886204898d81afe7b4f7",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Author_Review_2026-10-04/Citations_Expanded_2026-10-04/manuscript/Tallam_Krti_Praxis_Citations_Expanded_2026-10-04.pdf",
+      "published": "manuscript/Tallam_Krti_Praxis_Citations_Expanded_2026-10-04.pdf",
+      "sha256": "6e1fc7db97fc3b3e07f8e445bb6586950505bf1ed8d65cfbc7b6a7d71bc4848d",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Author_Review_2026-10-04/Citations_Expanded_2026-10-04/manuscript/followup-calibration.pdf",
+      "published": "manuscript/followup-calibration.pdf",
+      "sha256": "19459367f5ee52b6444d8338c5f58f3dd6d1f33b60f8c5fe0a4294c90a9abea5",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Author_Review_2026-10-04/Citations_Expanded_2026-10-04/manuscript/followup-calibration.png",
+      "published": "manuscript/followup-calibration.png",
+      "sha256": "acbdb1c5523160bbf61224e488f803bd6bf35d1b179fd3e452ce3c6160ea547e",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Author_Review_2026-10-04/Citations_Expanded_2026-10-04/manuscript/followup-paired-recall.pdf",
+      "published": "manuscript/followup-paired-recall.pdf",
+      "sha256": "a4f0a78b828c7dc557ef72b37bf00b2438b5b6e98b1413a05a6436ad6e009d0b",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Author_Review_2026-10-04/Citations_Expanded_2026-10-04/manuscript/followup-paired-recall.png",
+      "published": "manuscript/followup-paired-recall.png",
+      "sha256": "762c5b498f03685369a13ff6d63282722ec6d8068084289a018df37ecb9b8024",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Author_Review_2026-10-04/Citations_Expanded_2026-10-04/manuscript/followup-source-partitions.pdf",
+      "published": "manuscript/followup-source-partitions.pdf",
+      "sha256": "46076b73d8bed4cea005a8fa21f7c8d944a1bada486c6b1cca69964d64e481c6",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Author_Review_2026-10-04/Citations_Expanded_2026-10-04/manuscript/followup-source-partitions.png",
+      "published": "manuscript/followup-source-partitions.png",
+      "sha256": "f3637b5decbb6aeed5d6c43a9405c30c3d90a35620c697dcfbbb1876a00732c8",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Author_Review_2026-10-04/Citations_Expanded_2026-10-04/manuscript/gwu-navigation-20261001.json",
+      "published": "manuscript/gwu-navigation-20261001.json",
+      "sha256": "a74e38b9151bb45d3d1d2f3d6a804ee9cf500f67d80b03847b8d9726a1858254",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Author_Review_2026-10-04/Citations_Expanded_2026-10-04/manuscript/gwu-pagination-map-20261001.json",
+      "published": "manuscript/gwu-pagination-map-20261001.json",
+      "sha256": "8b22fafd4d1dec960334f687b3ae6dc709fc2e0d474ab696caed96f87a8f36a8",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Author_Review_2026-10-04/Citations_Expanded_2026-10-04/manuscript/gwu-system-dataflow-20261001.pdf",
+      "published": "manuscript/gwu-system-dataflow-20261001.pdf",
+      "sha256": "c8fa74d2ab6cc97d0127fd50e71b6cb2849b286d3cd26a6d9cf00dd173c8935c",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Author_Review_2026-10-04/Citations_Expanded_2026-10-04/manuscript/gwu-system-dataflow-20261001.png",
+      "published": "manuscript/gwu-system-dataflow-20261001.png",
+      "sha256": "5a0d2e53592cdc9de1b31f1e8132f355f1af7ca60fa4a12a7aec5fbca846f51b",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Author_Review_2026-10-04/Citations_Expanded_2026-10-04/manuscript/navigation-targets.json",
+      "published": "manuscript/navigation-targets.json",
+      "sha256": "590d89702c841a1e84a1ad9ef8a8eedc3deea47f0d54847f914209d4c9daa7ce",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Author_Review_2026-10-04/Citations_Expanded_2026-10-04/manuscript/render-check.json",
+      "published": "manuscript/render-check.json",
+      "sha256": "ef0d21c95f9891516770b2d384da38501d620b5ecc1cd33759d7d1001702f107",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Author_Review_2026-10-04/Citations_Expanded_2026-10-04/audit-evidence/source-claims.json",
+      "published": "literature/source-claims.json",
+      "sha256": "ea154d0a315ea8ba802f580e7e5efe82834186c45d17fd9092f180c7ac257796",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Author_Review_2026-10-04/Citations_Expanded_2026-10-04/audit-evidence/source-retrieval.json",
+      "published": "literature/source-retrieval.json",
+      "sha256": "12157ecedf73f51bc2cbc965ded575d180fac9508b4ac35751efa8d9c955143c",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Author_Review_2026-10-04/Citations_Expanded_2026-10-04/audit-evidence/source-retrieval-additional.json",
+      "published": "literature/source-retrieval-additional.json",
+      "sha256": "9466dbbebc996c993b4001fd3b94f16120cf9111869ab844cae0e62fd6bd75cf",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Author_Review_2026-10-04/Citations_Expanded_2026-10-04/citation-audit.json",
+      "published": "document-checks/citation-audit.json",
+      "sha256": "b1c59ff75e903d3105f8e17a6c88a1f9a491f124cec9e3446c501251e44f3564",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Author_Review_2026-10-04/Citations_Expanded_2026-10-04/changes.json",
+      "published": "document-checks/changes.json",
+      "sha256": "d5f5ee21d985612eb9ab593a18cf3cd5a9a457b7335f322cc975be22a844d446",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Author_Review_2026-10-04/Citations_Expanded_2026-10-04/layout-audit/verification.json",
+      "published": "document-checks/layout-audit/verification.json",
+      "sha256": "6a3d75d00849b992823e382163c5bc3f4e954ee8e6b14f6bd580875e6db60a8e",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Author_Review_2026-10-04/Citations_Expanded_2026-10-04/visual-review/inspection.txt",
+      "published": "document-checks/visual-review/inspection.txt",
+      "sha256": "88bbbbc963ec82f0430b4eca470837a56ab254c896fd5dd0aad02fb53b6978e7",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "deliverables/Tallam_Dissertation_Author_Review_2026-10-04/Citations_Expanded_2026-10-04/visual-review/comparison.json",
+      "published": "document-checks/visual-review/comparison.json",
+      "sha256": "31adab6b644a22e1786743cd4ab77a029c6a9b567985de67172aabb67b779f4c",
+      "transformation": "Public projection: absolute contact-sheet paths replaced with basenames; source report preserved locally."
+    },
+    {
+      "source": "dissertation/consistency-review-20261004/audit.py",
+      "published": "analysis-scripts/dissertation/consistency-review-20261004/audit.py",
+      "sha256": "60c962701f297026011de4444e9ec5c062e5655f56b30b049a7f5b1cd77725bb",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "dissertation/consistency-review-20261004/layout_check.py",
+      "published": "analysis-scripts/dissertation/consistency-review-20261004/layout_check.py",
+      "sha256": "0b8c3a9a802fd740b3adc8cb8e72c8882f788f400d8acfde5cd827220735bf4d",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "dissertation/consistency-review-20261004/revise.py",
+      "published": "analysis-scripts/dissertation/consistency-review-20261004/revise.py",
+      "sha256": "50d0e848d1b5b62d0206787a38314063ef6ed4a97662c77a58a4f24f51e960a4",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "dissertation/citation-expansion-20261004/expand.py",
+      "published": "analysis-scripts/dissertation/citation-expansion-20261004/expand.py",
+      "sha256": "708b47f4d035ef10fd5cc31fd39a335bf8b87ae5242d48510d6393a799c28758",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "dissertation/citation-expansion-20261004/layout_check.py",
+      "published": "analysis-scripts/dissertation/citation-expansion-20261004/layout_check.py",
+      "sha256": "5f63367568570bf82a0363bafa9ae1e1e9898cffd9ee4c6f80ec304b02c39707",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "dissertation/citation-expansion-20261004/retrieve.py",
+      "published": "analysis-scripts/dissertation/citation-expansion-20261004/retrieve.py",
+      "sha256": "5d8f4f4a4839eb925cb4868e0c3191bf3679ed5504ced9951a81ef2686158449",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "dissertation/citation-expansion-20261004/verify.py",
+      "published": "analysis-scripts/dissertation/citation-expansion-20261004/verify.py",
+      "sha256": "e89c55d9a5f47bc11b1c81d2026dc33f38f63a5a9339cf43b53304124c323b65",
+      "transformation": "byte-identical"
+    },
+    {
+      "source": "dissertation/citation-expansion-20261004/visual.py",
+      "published": "analysis-scripts/dissertation/citation-expansion-20261004/visual.py",
+      "sha256": "434cd6e58bfa37cb81465f263ec9f7bee16ded7da19ecc366fcb041b0bd961f3",
+      "transformation": "byte-identical"
+    }
+  ],
+  "scope": "Allowlisted retained aggregate, source and document files; source locations are historical locators, not public file links or access grants."
+}

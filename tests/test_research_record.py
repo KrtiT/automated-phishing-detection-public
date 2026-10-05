@@ -830,7 +830,7 @@ def test_protocol_v19_supersedes_unrun_v1_with_the_publication_only_v2_amendment
     assert "final executable code commit" not in combined
 
 
-def test_live_records_capture_v2_validation_and_current_hypothesis_status():
+def test_historical_records_capture_v2_validation_and_then_hypothesis_status():
     records = {
         "README": README.read_text(encoding="utf-8"),
         "status": STATUS.read_text(encoding="utf-8"),
@@ -1857,7 +1857,7 @@ def test_second_group_test_display_is_recorded_without_changing_study_status():
         assert "analyst-exposed but model-unscored" in record
 
 
-def test_readme_links_research_basis_and_limits_synthetic_urls_to_unit_tests():
+def test_historical_readme_preserves_its_then_synthetic_fixture_boundary():
     readme = README.read_text(encoding="utf-8")
     readme_prose = " ".join(readme.split())
 
@@ -1866,7 +1866,7 @@ def test_readme_links_research_basis_and_limits_synthetic_urls_to_unit_tests():
     assert "never research observations" in readme_prose
 
 
-def test_public_research_records_exclude_stale_or_approval_gating_language():
+def test_historical_research_records_preserve_their_pre_synthesis_status():
     records = (PROTOCOL, STATUS, EVIDENCE_OUTLINE, RESEARCH_BASIS, README)
     combined = "\n".join(path.read_text(encoding="utf-8") for path in records).lower()
 

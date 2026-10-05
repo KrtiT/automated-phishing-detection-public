@@ -1,0 +1,687 @@
+{
+  "ablation_family": {
+    "analysis_role": "nominal_dependence_limited_secondary_not_primary",
+    "cells": [
+      {
+        "adjusted_pvalue": {
+          "reason": null,
+          "value": 0.0
+        },
+        "raw_pvalue": {
+          "reason": null,
+          "value": 0.0
+        },
+        "test_id": "internal_logistic_minus_length"
+      },
+      {
+        "adjusted_pvalue": {
+          "reason": null,
+          "value": 1.0
+        },
+        "raw_pvalue": {
+          "reason": null,
+          "value": 1.0
+        },
+        "test_id": "internal_cascade_minus_logistic"
+      },
+      {
+        "adjusted_pvalue": {
+          "reason": null,
+          "value": 6.661338147750939e-16
+        },
+        "raw_pvalue": {
+          "reason": null,
+          "value": 2.220446049250313e-16
+        },
+        "test_id": "external_gold_logistic_minus_length"
+      },
+      {
+        "adjusted_pvalue": {
+          "reason": null,
+          "value": 1.0
+        },
+        "raw_pvalue": {
+          "reason": null,
+          "value": 1.0
+        },
+        "test_id": "external_gold_cascade_minus_logistic"
+      }
+    ],
+    "complete": true,
+    "family_size": 4
+  },
+  "primary": {
+    "contrasts": {
+      "gold.cascade_minus_logistic_l1": {
+        "bootstrap_replicates": 2000,
+        "candidate_true_positives": 69,
+        "domain_count": 69,
+        "estimate": 0.0,
+        "lower": 0.0,
+        "positive_count": 69,
+        "reason": null,
+        "reference_true_positives": 69,
+        "status": "estimated",
+        "upper": 0.0
+      },
+      "gold.cascade_minus_transformer": {
+        "bootstrap_replicates": 2000,
+        "candidate_true_positives": 69,
+        "domain_count": 69,
+        "estimate": 0.0,
+        "lower": 0.0,
+        "positive_count": 69,
+        "reason": null,
+        "reference_true_positives": 69,
+        "status": "estimated",
+        "upper": 0.0
+      },
+      "gold.logistic_l1_minus_length_only": {
+        "bootstrap_replicates": 2000,
+        "candidate_true_positives": 69,
+        "domain_count": 69,
+        "estimate": 0.7681159420289855,
+        "lower": 0.6666666666666666,
+        "positive_count": 69,
+        "reason": null,
+        "reference_true_positives": 16,
+        "status": "estimated",
+        "upper": 0.8695652173913043
+      },
+      "gold.policy_minus_cascade": {
+        "bootstrap_replicates": 2000,
+        "candidate_true_positives": 69,
+        "domain_count": 69,
+        "estimate": 0.0,
+        "lower": 0.0,
+        "positive_count": 69,
+        "reason": null,
+        "reference_true_positives": 69,
+        "status": "estimated",
+        "upper": 0.0
+      },
+      "internal.cascade_minus_logistic_l1": {
+        "bootstrap_replicates": 2000,
+        "candidate_true_positives": 14137,
+        "domain_count": 9757,
+        "estimate": 0.0,
+        "lower": 0.0,
+        "positive_count": 14326,
+        "reason": null,
+        "reference_true_positives": 14137,
+        "status": "estimated",
+        "upper": 0.0
+      },
+      "internal.logistic_l1_minus_length_only": {
+        "bootstrap_replicates": 2000,
+        "candidate_true_positives": 14137,
+        "domain_count": 9757,
+        "estimate": 0.6407231606868631,
+        "lower": 0.5998970797573994,
+        "positive_count": 14326,
+        "reason": null,
+        "reference_true_positives": 4958,
+        "status": "estimated",
+        "upper": 0.6763019265346997
+      }
+    },
+    "hypotheses": {
+      "H1": {
+        "complete": true,
+        "decision": "not_supported",
+        "gates": [
+          {
+            "denominator": 20267,
+            "estimate": 0.005871613953717866,
+            "name": "internal.length_only.fpr",
+            "numerator": 119,
+            "operator": "<=",
+            "reason": null,
+            "status": "pass",
+            "threshold": 0.01,
+            "upper_95": 0.006833860639522075
+          },
+          {
+            "denominator": 20267,
+            "estimate": 0.007746583115409286,
+            "name": "internal.logistic_l1.fpr",
+            "numerator": 157,
+            "operator": "<=",
+            "reason": null,
+            "status": "pass",
+            "threshold": 0.01,
+            "upper_95": 0.008838494627537595
+          },
+          {
+            "denominator": 20267,
+            "estimate": 0.007746583115409286,
+            "name": "internal.cascade.fpr",
+            "numerator": 157,
+            "operator": "<=",
+            "reason": null,
+            "status": "pass",
+            "threshold": 0.01,
+            "upper_95": 0.008838494627537595
+          },
+          {
+            "denominator": 2497,
+            "estimate": 0.09451341609931918,
+            "name": "certified.length_only.fpr",
+            "numerator": 236,
+            "operator": "<=",
+            "reason": null,
+            "status": "fail",
+            "threshold": 0.01,
+            "upper_95": 0.10469927727887324
+          },
+          {
+            "denominator": 2497,
+            "estimate": 0.9054865839006808,
+            "name": "certified.logistic_l1.fpr",
+            "numerator": 2261,
+            "operator": "<=",
+            "reason": null,
+            "status": "fail",
+            "threshold": 0.01,
+            "upper_95": 0.9149605399042408
+          },
+          {
+            "denominator": 2497,
+            "estimate": 0.9054865839006808,
+            "name": "certified.cascade.fpr",
+            "numerator": 2261,
+            "operator": "<=",
+            "reason": null,
+            "status": "fail",
+            "threshold": 0.01,
+            "upper_95": 0.9149605399042408
+          },
+          {
+            "denominator": null,
+            "estimate": 0.5998970797573994,
+            "name": "internal.logistic_l1_minus_length_only",
+            "numerator": null,
+            "operator": ">",
+            "reason": null,
+            "status": "pass",
+            "threshold": 0.0,
+            "upper_95": null
+          },
+          {
+            "denominator": null,
+            "estimate": 0.0,
+            "name": "internal.cascade_minus_logistic_l1",
+            "numerator": null,
+            "operator": ">",
+            "reason": null,
+            "status": "fail",
+            "threshold": 0.0,
+            "upper_95": null
+          },
+          {
+            "denominator": null,
+            "estimate": 0.6666666666666666,
+            "name": "gold.logistic_l1_minus_length_only",
+            "numerator": null,
+            "operator": ">",
+            "reason": null,
+            "status": "pass",
+            "threshold": 0.0,
+            "upper_95": null
+          },
+          {
+            "denominator": null,
+            "estimate": 0.0,
+            "name": "gold.cascade_minus_logistic_l1",
+            "numerator": null,
+            "operator": ">",
+            "reason": null,
+            "status": "fail",
+            "threshold": 0.0,
+            "upper_95": null
+          }
+        ]
+      },
+      "H2": {
+        "complete": true,
+        "decision": "not_supported",
+        "gates": [
+          {
+            "denominator": 132,
+            "estimate": 0.8712121212121212,
+            "name": "external_window_alerts",
+            "numerator": 115,
+            "operator": ">=",
+            "reason": null,
+            "status": "pass",
+            "threshold": 0.8,
+            "upper_95": null
+          },
+          {
+            "denominator": 252,
+            "estimate": 0.1111111111111111,
+            "name": "audit_window_alerts",
+            "numerator": 28,
+            "operator": "<=",
+            "reason": null,
+            "status": "fail",
+            "threshold": 0.05,
+            "upper_95": null
+          },
+          {
+            "denominator": 2497,
+            "estimate": 0.9927913496195434,
+            "name": "certified.policy.fpr",
+            "numerator": 2479,
+            "operator": "<=",
+            "reason": null,
+            "status": "fail",
+            "threshold": 0.01,
+            "upper_95": 0.9953356677081271
+          },
+          {
+            "denominator": null,
+            "estimate": 0.0,
+            "name": "gold.policy_minus_cascade",
+            "numerator": null,
+            "operator": ">",
+            "reason": null,
+            "status": "fail",
+            "threshold": 0.0,
+            "upper_95": null
+          }
+        ]
+      },
+      "H3": {
+        "complete": true,
+        "decision": "not_supported",
+        "gates": [
+          {
+            "denominator": 2497,
+            "estimate": 0.9054865839006808,
+            "name": "certified.cascade.fpr",
+            "numerator": 2261,
+            "operator": "<=",
+            "reason": null,
+            "status": "fail",
+            "threshold": 0.01,
+            "upper_95": 0.9149605399042408
+          },
+          {
+            "denominator": 2497,
+            "estimate": 0.9927913496195434,
+            "name": "certified.transformer.fpr",
+            "numerator": 2479,
+            "operator": "<=",
+            "reason": null,
+            "status": "fail",
+            "threshold": 0.01,
+            "upper_95": 0.9953356677081271
+          },
+          {
+            "denominator": 1163,
+            "estimate": 1.0,
+            "name": "tranco.cascade.alert_rate",
+            "numerator": 1163,
+            "operator": "<=",
+            "reason": null,
+            "status": "fail",
+            "threshold": 0.01,
+            "upper_95": 1.0
+          },
+          {
+            "denominator": 1163,
+            "estimate": 1.0,
+            "name": "tranco.transformer.alert_rate",
+            "numerator": 1163,
+            "operator": "<=",
+            "reason": null,
+            "status": "fail",
+            "threshold": 0.01,
+            "upper_95": 1.0
+          },
+          {
+            "denominator": null,
+            "estimate": 0.0,
+            "name": "gold.cascade_minus_transformer",
+            "numerator": null,
+            "operator": ">=",
+            "reason": null,
+            "status": "pass",
+            "threshold": -0.02,
+            "upper_95": null
+          },
+          {
+            "denominator": 10000,
+            "estimate": 0.0,
+            "name": "reference_transformer_invocations",
+            "numerator": 0,
+            "operator": "<=",
+            "reason": null,
+            "status": "pass",
+            "threshold": 0.3,
+            "upper_95": null
+          },
+          {
+            "denominator": null,
+            "estimate": 364.3004100999999,
+            "name": "http_pooled_p95_ms",
+            "numerator": null,
+            "operator": "<=",
+            "reason": null,
+            "status": "fail",
+            "threshold": 200.0,
+            "upper_95": null
+          },
+          {
+            "denominator": 50000,
+            "estimate": 0.0,
+            "name": "http_request_errors",
+            "numerator": 0,
+            "operator": "<",
+            "reason": null,
+            "status": "pass",
+            "threshold": 0.001,
+            "upper_95": null
+          }
+        ]
+      }
+    },
+    "metrics": {
+      "certified.cascade": {
+        "false_negatives": 0,
+        "false_positives": 2261,
+        "fpr": {
+          "denominator": 2497,
+          "estimate": 0.9054865839006808,
+          "numerator": 2261,
+          "status": "estimated",
+          "upper_95": 0.9149605399042408
+        },
+        "recall": {
+          "denominator": 0,
+          "estimate": null,
+          "numerator": 0,
+          "status": "not_estimable",
+          "upper_95": null
+        },
+        "true_negatives": 236,
+        "true_positives": 0
+      },
+      "certified.length_only": {
+        "false_negatives": 0,
+        "false_positives": 236,
+        "fpr": {
+          "denominator": 2497,
+          "estimate": 0.09451341609931918,
+          "numerator": 236,
+          "status": "estimated",
+          "upper_95": 0.10469927727887324
+        },
+        "recall": {
+          "denominator": 0,
+          "estimate": null,
+          "numerator": 0,
+          "status": "not_estimable",
+          "upper_95": null
+        },
+        "true_negatives": 2261,
+        "true_positives": 0
+      },
+      "certified.logistic_l1": {
+        "false_negatives": 0,
+        "false_positives": 2261,
+        "fpr": {
+          "denominator": 2497,
+          "estimate": 0.9054865839006808,
+          "numerator": 2261,
+          "status": "estimated",
+          "upper_95": 0.9149605399042408
+        },
+        "recall": {
+          "denominator": 0,
+          "estimate": null,
+          "numerator": 0,
+          "status": "not_estimable",
+          "upper_95": null
+        },
+        "true_negatives": 236,
+        "true_positives": 0
+      },
+      "certified.policy": {
+        "false_negatives": 0,
+        "false_positives": 2479,
+        "fpr": {
+          "denominator": 2497,
+          "estimate": 0.9927913496195434,
+          "numerator": 2479,
+          "status": "estimated",
+          "upper_95": 0.9953356677081271
+        },
+        "recall": {
+          "denominator": 0,
+          "estimate": null,
+          "numerator": 0,
+          "status": "not_estimable",
+          "upper_95": null
+        },
+        "true_negatives": 18,
+        "true_positives": 0
+      },
+      "certified.transformer": {
+        "false_negatives": 0,
+        "false_positives": 2479,
+        "fpr": {
+          "denominator": 2497,
+          "estimate": 0.9927913496195434,
+          "numerator": 2479,
+          "status": "estimated",
+          "upper_95": 0.9953356677081271
+        },
+        "recall": {
+          "denominator": 0,
+          "estimate": null,
+          "numerator": 0,
+          "status": "not_estimable",
+          "upper_95": null
+        },
+        "true_negatives": 18,
+        "true_positives": 0
+      },
+      "gold.cascade": {
+        "false_negatives": 0,
+        "false_positives": 0,
+        "fpr": {
+          "denominator": 0,
+          "estimate": null,
+          "numerator": 0,
+          "status": "not_estimable",
+          "upper_95": null
+        },
+        "recall": {
+          "denominator": 69,
+          "estimate": 1.0,
+          "numerator": 69,
+          "status": "estimated",
+          "upper_95": 1.0
+        },
+        "true_negatives": 0,
+        "true_positives": 69
+      },
+      "gold.length_only": {
+        "false_negatives": 53,
+        "false_positives": 0,
+        "fpr": {
+          "denominator": 0,
+          "estimate": null,
+          "numerator": 0,
+          "status": "not_estimable",
+          "upper_95": null
+        },
+        "recall": {
+          "denominator": 69,
+          "estimate": 0.2318840579710145,
+          "numerator": 16,
+          "status": "estimated",
+          "upper_95": 0.33064366705009846
+        },
+        "true_negatives": 0,
+        "true_positives": 16
+      },
+      "gold.logistic_l1": {
+        "false_negatives": 0,
+        "false_positives": 0,
+        "fpr": {
+          "denominator": 0,
+          "estimate": null,
+          "numerator": 0,
+          "status": "not_estimable",
+          "upper_95": null
+        },
+        "recall": {
+          "denominator": 69,
+          "estimate": 1.0,
+          "numerator": 69,
+          "status": "estimated",
+          "upper_95": 1.0
+        },
+        "true_negatives": 0,
+        "true_positives": 69
+      },
+      "gold.policy": {
+        "false_negatives": 0,
+        "false_positives": 0,
+        "fpr": {
+          "denominator": 0,
+          "estimate": null,
+          "numerator": 0,
+          "status": "not_estimable",
+          "upper_95": null
+        },
+        "recall": {
+          "denominator": 69,
+          "estimate": 1.0,
+          "numerator": 69,
+          "status": "estimated",
+          "upper_95": 1.0
+        },
+        "true_negatives": 0,
+        "true_positives": 69
+      },
+      "gold.transformer": {
+        "false_negatives": 0,
+        "false_positives": 0,
+        "fpr": {
+          "denominator": 0,
+          "estimate": null,
+          "numerator": 0,
+          "status": "not_estimable",
+          "upper_95": null
+        },
+        "recall": {
+          "denominator": 69,
+          "estimate": 1.0,
+          "numerator": 69,
+          "status": "estimated",
+          "upper_95": 1.0
+        },
+        "true_negatives": 0,
+        "true_positives": 69
+      },
+      "internal.cascade": {
+        "false_negatives": 189,
+        "false_positives": 157,
+        "fpr": {
+          "denominator": 20267,
+          "estimate": 0.007746583115409286,
+          "numerator": 157,
+          "status": "estimated",
+          "upper_95": 0.008838494627537595
+        },
+        "recall": {
+          "denominator": 14326,
+          "estimate": 0.9868072036856066,
+          "numerator": 14137,
+          "status": "estimated",
+          "upper_95": 0.9883364056574296
+        },
+        "true_negatives": 20110,
+        "true_positives": 14137
+      },
+      "internal.length_only": {
+        "false_negatives": 9368,
+        "false_positives": 119,
+        "fpr": {
+          "denominator": 20267,
+          "estimate": 0.005871613953717866,
+          "numerator": 119,
+          "status": "estimated",
+          "upper_95": 0.006833860639522075
+        },
+        "recall": {
+          "denominator": 14326,
+          "estimate": 0.34608404299874357,
+          "numerator": 4958,
+          "status": "estimated",
+          "upper_95": 0.3526792274142987
+        },
+        "true_negatives": 20148,
+        "true_positives": 4958
+      },
+      "internal.logistic_l1": {
+        "false_negatives": 189,
+        "false_positives": 157,
+        "fpr": {
+          "denominator": 20267,
+          "estimate": 0.007746583115409286,
+          "numerator": 157,
+          "status": "estimated",
+          "upper_95": 0.008838494627537595
+        },
+        "recall": {
+          "denominator": 14326,
+          "estimate": 0.9868072036856066,
+          "numerator": 14137,
+          "status": "estimated",
+          "upper_95": 0.9883364056574296
+        },
+        "true_negatives": 20110,
+        "true_positives": 14137
+      },
+      "internal.transformer": {
+        "false_negatives": 97,
+        "false_positives": 205,
+        "fpr": {
+          "denominator": 20267,
+          "estimate": 0.01011496521438792,
+          "numerator": 205,
+          "status": "estimated",
+          "upper_95": 0.011349465356074043
+        },
+        "recall": {
+          "denominator": 14326,
+          "estimate": 0.9932290939550468,
+          "numerator": 14229,
+          "status": "estimated",
+          "upper_95": 0.9943159452743231
+        },
+        "true_negatives": 20062,
+        "true_positives": 14229
+      },
+      "tranco.cascade": {
+        "denominator": 1163,
+        "estimate": 1.0,
+        "numerator": 1163,
+        "status": "estimated",
+        "upper_95": 1.0
+      },
+      "tranco.transformer": {
+        "denominator": 1163,
+        "estimate": 1.0,
+        "numerator": 1163,
+        "status": "estimated",
+        "upper_95": 1.0
+      }
+    }
+  }
+}

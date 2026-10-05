@@ -1,0 +1,41 @@
+{
+  "status": "citation_expansion_verified",
+  "checked_at": "2026-10-05T00:21:34.256146+00:00",
+  "references": 58,
+  "new_primary_references": 7,
+  "exact_reference_citation_links": 85,
+  "authorized_span_edits": 8,
+  "added_literature_paragraphs": 2,
+  "primary_checks": 22,
+  "primary_decisions": {
+    "pass": 9,
+    "fail": 13
+  },
+  "operational_groups": 25,
+  "operational_cells": 125,
+  "unchanged_tables": 27,
+  "unchanged_figures": 4,
+  "other_numeric_checks": {
+    "D_metric_rows": 9,
+    "S_primary_pairs": 10,
+    "S_groups": 8,
+    "S_requirements": 5,
+    "S_arms": 80
+  },
+  "chapters_1_4_and_appendices_unchanged": true,
+  "front_matter_and_credentials_unchanged": true,
+  "advisor_deck_unchanged": true,
+  "protected_input_hashes": {
+    "Tallam_Krti_Praxis_Author_Review_2026-10-04.docx": "05e3c3d5ca792ee853af5c80e92426130c5e57fdc401ed44eee0d5644eac4fad",
+    "Tallam_Krti_Praxis_Consistency_Reviewed_2026-10-04.docx": "0606ca3370e903c66ce39a503663f373c8cc2bb76c3a7fd0acecdd4072620a66",
+    "Tallam_Krti_Praxis_Consistency_Reviewed_2026-10-04.pdf": "d1672064fa491411f2dad4fd6adbaf3d913c5b53a00798f7ac731cc1fbcad684",
+    "Tallam_Krti_Praxis_Consistency_Reviewed_2026-10-04.md": "49caa149e54ada1e407b79f669c5e13803e28007b096ad791dcd8a03c1b45d46"
+  },
+  "outputs": {
+    "Tallam_Krti_Praxis_Citations_Expanded_2026-10-04.docx": "ed0b7eb74c76723e3b52783d7b4784ed0e184e38641745d7ff06dedb7cbddfa1",
+    "Tallam_Krti_Praxis_Citations_Expanded_2026-10-04.pdf": "6e1fc7db97fc3b3e07f8e445bb6586950505bf1ed8d65cfbc7b6a7d71bc4848d",
+    "Tallam_Krti_Praxis_Citations_Expanded_2026-10-04.md": "6d0d08e6ad1718efcca136af3be6d9880b6529992c9f886204898d81afe7b4f7"
+  },
+  "limits": "Not AIR/Turnitin clearance, confirmation of committee roles, an institutional page-length waiver or a full-source audit of all existing references.",
+  "public_projection": "Absolute private input paths replaced by basenames; source report preserved locally. Hashes and findings unchanged."
+}

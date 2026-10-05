@@ -1,0 +1,680 @@
+[
+  {
+    "text": "Dedication",
+    "bookmark": "dedication",
+    "level": 1,
+    "kind": "front"
+  },
+  {
+    "text": "Acknowledgements",
+    "bookmark": "acknowledgements",
+    "level": 1,
+    "kind": "front"
+  },
+  {
+    "text": "Abstract of Praxis",
+    "bookmark": "abstract",
+    "level": 1,
+    "kind": "front"
+  },
+  {
+    "text": "List of Figures",
+    "bookmark": "list_figures",
+    "level": 1,
+    "kind": "front"
+  },
+  {
+    "text": "List of Tables",
+    "bookmark": "list_tables",
+    "level": 1,
+    "kind": "front"
+  },
+  {
+    "text": "List of Symbols",
+    "bookmark": "symbols",
+    "level": 1,
+    "kind": "front"
+  },
+  {
+    "text": "List of Acronyms",
+    "bookmark": "acronyms",
+    "level": 1,
+    "kind": "front"
+  },
+  {
+    "text": "Glossary of Terms",
+    "bookmark": "glossary",
+    "level": 1,
+    "kind": "front"
+  },
+  {
+    "text": "Chapter 1\u2014Introduction",
+    "bookmark": "heading_1",
+    "level": 1,
+    "kind": "body"
+  },
+  {
+    "text": "1.1 Background",
+    "bookmark": "heading_2",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "1.2 Problem Statement",
+    "bookmark": "heading_3",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "1.3 Purpose of the Study",
+    "bookmark": "heading_4",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "1.3.1 Thesis Statement",
+    "bookmark": "heading_5",
+    "level": 3,
+    "kind": "body"
+  },
+  {
+    "text": "1.3.2 Research Objectives",
+    "bookmark": "heading_6",
+    "level": 3,
+    "kind": "body"
+  },
+  {
+    "text": "1.4 Research Questions and Hypotheses",
+    "bookmark": "heading_7",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "1.4.1 RQ1 and H1",
+    "bookmark": "heading_8",
+    "level": 3,
+    "kind": "body"
+  },
+  {
+    "text": "1.4.2 RQ2 and H2",
+    "bookmark": "heading_9",
+    "level": 3,
+    "kind": "body"
+  },
+  {
+    "text": "1.4.3 RQ3 and H3",
+    "bookmark": "heading_10",
+    "level": 3,
+    "kind": "body"
+  },
+  {
+    "text": "1.5 Contribution Boundary",
+    "bookmark": "heading_11",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "1.6 Scope, Delimitations, and Limitations",
+    "bookmark": "heading_12",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "Chapter 2\u2014Review of the Literature",
+    "bookmark": "heading_13",
+    "level": 1,
+    "kind": "body"
+  },
+  {
+    "text": "2.1 Raw-URL Phishing Detection",
+    "bookmark": "heading_14",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "2.2 Structural and Character Representations",
+    "bookmark": "heading_15",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "2.3 Domain Leakage and Source Shift",
+    "bookmark": "heading_16",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "2.4 Calibration at Low False-Positive Rates",
+    "bookmark": "heading_17",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "2.5 Selective Cascades",
+    "bookmark": "heading_18",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "2.6 Distribution Monitoring and Routing",
+    "bookmark": "heading_19",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "2.7 Gap Addressed by the Study",
+    "bookmark": "heading_20",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "2.8 Evaluation-Guided Engineering Iteration",
+    "bookmark": "heading_21",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "2.9 Operational Measurement and Evidence Units",
+    "bookmark": "heading_22",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "Chapter 3\u2014Methodology",
+    "bookmark": "heading_23",
+    "level": 1,
+    "kind": "body"
+  },
+  {
+    "text": "3.1 Research Design",
+    "bookmark": "heading_24",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "3.1.1 Architecture and Information Flow",
+    "bookmark": "heading_25",
+    "level": 3,
+    "kind": "body"
+  },
+  {
+    "text": "3.2 Outcome-Label Contract",
+    "bookmark": "heading_26",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "3.3 Development Source and Preservation",
+    "bookmark": "heading_27",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "3.4 Canonicalization and Quarantine",
+    "bookmark": "heading_28",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "3.5 Registrable-Domain Allocation",
+    "bookmark": "heading_29",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "3.6 Detection Models",
+    "bookmark": "heading_30",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "3.7 Threshold and Cascade Calibration",
+    "bookmark": "heading_31",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "3.8 RQ1 Analysis",
+    "bookmark": "heading_32",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "3.9 GMM Monitoring and Future-Only Routing",
+    "bookmark": "heading_33",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "3.10 External Evaluation Freeze",
+    "bookmark": "heading_34",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "3.11 RQ2 Analysis",
+    "bookmark": "heading_35",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "3.12 RQ3 Operational Replay",
+    "bookmark": "heading_36",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "3.13 Reproducibility and Integrity Controls",
+    "bookmark": "heading_37",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "3.14 Ethical and Safety Considerations",
+    "bookmark": "heading_38",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "3.15 Bounded Follow-up Design and Evaluation",
+    "bookmark": "heading_39",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "3.15.1 Sequence and Scope",
+    "bookmark": "heading_40",
+    "level": 3,
+    "kind": "body"
+  },
+  {
+    "text": "3.15.2 Additional Benchmark and Eligibility",
+    "bookmark": "heading_41",
+    "level": 3,
+    "kind": "body"
+  },
+  {
+    "text": "3.15.3 Transport-Neutral Structural Representation",
+    "bookmark": "heading_42",
+    "level": 3,
+    "kind": "body"
+  },
+  {
+    "text": "3.15.4 Detection Estimands and Uncertainty",
+    "bookmark": "heading_43",
+    "level": 3,
+    "kind": "body"
+  },
+  {
+    "text": "3.15.5 Service Comparison and Its Boundary",
+    "bookmark": "heading_44",
+    "level": 3,
+    "kind": "body"
+  },
+  {
+    "text": "Chapter 4\u2014Results",
+    "bookmark": "heading_45",
+    "level": 1,
+    "kind": "body"
+  },
+  {
+    "text": "4.1 Completed Evaluation and Populations",
+    "bookmark": "heading_46",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "4.2 RQ1: Representation Value and Generalization",
+    "bookmark": "heading_47",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "4.3 RQ2: Monitoring and Future-Only Routing",
+    "bookmark": "heading_48",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "4.4 RQ3: Real-HTTP Cost and Inline Viability",
+    "bookmark": "heading_49",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "4.5 Secondary Analyses and Interpretation",
+    "bookmark": "heading_50",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "4.6 Failed Attempts, Amendments and Evidence Limits",
+    "bookmark": "heading_51",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "4.7 Complete Hypothesis Adjudication",
+    "bookmark": "heading_52",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "4.8 Diagnostic Investigation and Detection Comparison",
+    "bookmark": "heading_53",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "4.8.1 From Aggregate Behavior to Testable Mechanisms",
+    "bookmark": "heading_54",
+    "level": 3,
+    "kind": "body"
+  },
+  {
+    "text": "4.8.2 Population Flow and Operating-Point Comparison",
+    "bookmark": "heading_55",
+    "level": 3,
+    "kind": "body"
+  },
+  {
+    "text": "4.8.3 Representation Invariance and Decision",
+    "bookmark": "heading_56",
+    "level": 3,
+    "kind": "body"
+  },
+  {
+    "text": "4.9 Controlled Service Comparison: Completed Evaluation",
+    "bookmark": "heading_57",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "4.9.1 Execution, Recovery and Complete Accounting",
+    "bookmark": "heading_58",
+    "level": 3,
+    "kind": "body"
+  },
+  {
+    "text": "4.9.2 Paired Tail-Latency Effect",
+    "bookmark": "heading_59",
+    "level": 3,
+    "kind": "body"
+  },
+  {
+    "text": "4.9.3 Controls, Throughput, Errors and Response Semantics",
+    "bookmark": "heading_60",
+    "level": 3,
+    "kind": "body"
+  },
+  {
+    "text": "4.9.4 Requirement S and Engineering Interpretation",
+    "bookmark": "heading_61",
+    "level": 3,
+    "kind": "body"
+  },
+  {
+    "text": "Chapter 5\u2014Discussion and Conclusions",
+    "bookmark": "heading_62",
+    "level": 1,
+    "kind": "body"
+  },
+  {
+    "text": "5.1 Direct Answers to the Research Questions",
+    "bookmark": "heading_63",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "5.2 End-to-End Argument and Contribution",
+    "bookmark": "heading_64",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "5.2.1 Technical Value of the Completed Investigation",
+    "bookmark": "heading_65",
+    "level": 3,
+    "kind": "body"
+  },
+  {
+    "text": "5.2.2 Engineering Work and Reusable Research Artifacts",
+    "bookmark": "heading_66",
+    "level": 3,
+    "kind": "body"
+  },
+  {
+    "text": "5.2.3 What the Engineering Iteration Adds",
+    "bookmark": "heading_67",
+    "level": 3,
+    "kind": "body"
+  },
+  {
+    "text": "5.3 Implications for Practice",
+    "bookmark": "heading_68",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "5.4 Limitations and Threats to Interpretation",
+    "bookmark": "heading_69",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "5.5 Future Research, Separate from This Study",
+    "bookmark": "heading_70",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "5.6 Conclusion",
+    "bookmark": "heading_71",
+    "level": 2,
+    "kind": "body"
+  },
+  {
+    "text": "References",
+    "bookmark": "heading_72",
+    "level": 1,
+    "kind": "body"
+  },
+  {
+    "text": "Appendix A\u2014Evidence and Reproduction Map",
+    "bookmark": "heading_73",
+    "level": 1,
+    "kind": "body"
+  },
+  {
+    "text": "Appendix B\u2014Complete Follow-up Service Evidence",
+    "bookmark": "heading_74",
+    "level": 1,
+    "kind": "body"
+  },
+  {
+    "text": "Table 2.1. Closest prior work and the boundary of the present contribution.",
+    "bookmark": "table_1",
+    "level": 1,
+    "kind": "table"
+  },
+  {
+    "text": "Table 3.1. Reading map from technical component to experiment and evidence.",
+    "bookmark": "table_2",
+    "level": 1,
+    "kind": "table"
+  },
+  {
+    "text": "Table 4.1. Retained external source, tier and outcome composition.",
+    "bookmark": "table_3",
+    "level": 1,
+    "kind": "table"
+  },
+  {
+    "text": "Table 4.2a. Confusion counts; P and N are the declared stratum denominators.",
+    "bookmark": "table_4",
+    "level": 1,
+    "kind": "table"
+  },
+  {
+    "text": "Table 4.2b. Corresponding rates and one-sided FPR upper bounds.",
+    "bookmark": "table_5",
+    "level": 1,
+    "kind": "table"
+  },
+  {
+    "text": "Table 4.3. All six primary paired recall contrasts; 2,000 domain-clustered PCG64 replicates per contrast. Differences and intervals are percentage points.",
+    "bookmark": "table_6",
+    "level": 1,
+    "kind": "table"
+  },
+  {
+    "text": "Table 4.4. Training-only GMM model-selection record.",
+    "bookmark": "table_7",
+    "level": 1,
+    "kind": "table"
+  },
+  {
+    "text": "Table 4.5. Frozen GMM and descriptive comparator monitors. All rates use complete overlapping windows, without independent-binomial intervals.",
+    "bookmark": "table_8",
+    "level": 1,
+    "kind": "table"
+  },
+  {
+    "text": "Table 4.6. All 25 operational groups. Each row pools five complete repeats. Fixed and transformer rows contain 50,000 requests; live shift contains 43,505. Physical attempts are transformer forward attempts divided by all measured client requests, not a latency reduction.",
+    "bookmark": "table_9",
+    "level": 1,
+    "kind": "table"
+  },
+  {
+    "text": "Table 4.7. Five-run throughput and post-phase drain ranges. Full individual run values and counters are in operational-runs.csv; ranges are descriptions, not uncertainty intervals or best-run selection.",
+    "bookmark": "table_10",
+    "level": 1,
+    "kind": "table"
+  },
+  {
+    "text": "Table 4.8. Selected full-metric summaries. External AP and calibration describe the observed 69-positive/2,497-negative mixture, not production prevalence. All columns, precision, F2, MCC and balanced accuracy remain in secondary-metrics.csv.",
+    "bookmark": "table_11",
+    "level": 1,
+    "kind": "table"
+  },
+  {
+    "text": "Table 4.9. Additional positive tiers and label-free controls at frozen primary thresholds.",
+    "bookmark": "table_12",
+    "level": 1,
+    "kind": "table"
+  },
+  {
+    "text": "Table 4.10. Every accepted permutation comparator; no seed selection.",
+    "bookmark": "table_13",
+    "level": 1,
+    "kind": "table"
+  },
+  {
+    "text": "Table 4.11. Transformer seed/runtime sensitivity at each accepted secondary operating point. T denotes transformer. All five secondary cascades coincide with Logistic-L1 on these evaluated populations.",
+    "bookmark": "table_14",
+    "level": 1,
+    "kind": "table"
+  },
+  {
+    "text": "Table 4.12. Positive-only paired McNemar tables and four-slot Holm adjustment. \u201cUnderflow\u201d means the saved floating-point computation returned 0.0, not an exact mathematical p-value of zero.",
+    "bookmark": "table_15",
+    "level": 1,
+    "kind": "table"
+  },
+  {
+    "text": "Table 4.13. Accepted label-free development probe accounting.",
+    "bookmark": "table_16",
+    "level": 1,
+    "kind": "table"
+  },
+  {
+    "text": "Table 4.14. All 22 primary hypothesis checks under unchanged decision rules.",
+    "bookmark": "table_17",
+    "level": 1,
+    "kind": "table"
+  },
+  {
+    "text": "Table 4.15. Additional benchmark admission; reason incidences are overlapping.",
+    "bookmark": "table_18",
+    "level": 1,
+    "kind": "table"
+  },
+  {
+    "text": "Table 4.16. Additional benchmark detection results; P=4,651 and N=3,971.",
+    "bookmark": "table_19",
+    "level": 1,
+    "kind": "table"
+  },
+  {
+    "text": "Table 4.17. Prespecified follow-up D requirements, separate from H1.",
+    "bookmark": "table_20",
+    "level": 1,
+    "kind": "table"
+  },
+  {
+    "text": "Table 4.18. All ten structural-detector concurrency-64 pairs; success-only p95 in milliseconds.",
+    "bookmark": "table_21",
+    "level": 1,
+    "kind": "table"
+  },
+  {
+    "text": "Table 4.19. Complete pooled service groups; success p50/p95/p99 in milliseconds and attempted throughput in requests per second.",
+    "bookmark": "table_22",
+    "level": 1,
+    "kind": "table"
+  },
+  {
+    "text": "Table 4.20. Prespecified S requirements and verified decisions.",
+    "bookmark": "table_23",
+    "level": 1,
+    "kind": "table"
+  },
+  {
+    "text": "Table 5.1. Technical contributions, supporting observations and reusable value.",
+    "bookmark": "table_24",
+    "level": 1,
+    "kind": "table"
+  },
+  {
+    "text": "Table 5.2. Decisions at the hypothesis, component and follow-up levels.",
+    "bookmark": "table_25",
+    "level": 1,
+    "kind": "table"
+  },
+  {
+    "text": "Table A.1. Research questions, complete evidence products and reading order.",
+    "bookmark": "table_26",
+    "level": 1,
+    "kind": "table"
+  },
+  {
+    "text": "Table B.1. Complete 80-arm schedule; success-only p95 in milliseconds, attempted throughput in requests/s and terminal error counts.",
+    "bookmark": "table_27",
+    "level": 1,
+    "kind": "table"
+  },
+  {
+    "text": "Figure 3.1. Frozen inference, future-only routing and separate evaluation boundaries.",
+    "bookmark": "figure_1",
+    "level": 1,
+    "kind": "figure"
+  },
+  {
+    "text": "Figure 3.2. Source and partition roles in the bounded detection comparison. Arrows show permitted information flow; domain exclusion does not establish temporal or source-mechanism independence.",
+    "bookmark": "figure_2",
+    "level": 1,
+    "kind": "figure"
+  },
+  {
+    "text": "Figure 4.1. Candidate-minus-comparator recall difference at frozen thresholds; 97.5% domain-cluster interval.",
+    "bookmark": "figure_3",
+    "level": 1,
+    "kind": "figure"
+  },
+  {
+    "text": "Figure 4.2. Fixed-bin calibration and bin populations on the admitted benchmark. Small populated bins can have extreme fractions; empty bins have no reliability point. The class mixture is not deployment prevalence.",
+    "bookmark": "figure_4",
+    "level": 1,
+    "kind": "figure"
+  }
+]

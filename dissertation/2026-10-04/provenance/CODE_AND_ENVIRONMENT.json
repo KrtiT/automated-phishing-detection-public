@@ -1,0 +1,17 @@
+{
+  "original_measured_revision": "77d128377ce5b401437d7179f5cd78fb4294b72c",
+  "followup_measured_revision": "ef8ba5f0b357cf3dd60c4d663e6297d13334460c",
+  "repository": "https://github.com/KrtiT/automated-phishing-detection-public",
+  "followup_source_scope": "The 18 changed files at the local frozen revision plus environment/license metadata; not a complete repository snapshot.",
+  "source_dependencies": "Scripts retain original controlled-workspace paths, dependencies and input bindings; audit source, not a standalone rerun bundle.",
+  "authorization": "Operator approval and prospective/disclosed amendments; no advisor or institutional approval asserted. Private execution bindings remain outside this package.",
+  "excluded": [
+    "original datasets",
+    "row-level URL and prediction records",
+    "models/weights",
+    "private authorizations/capabilities",
+    "credentials",
+    "full host/process logs"
+  ],
+  "historical_records": "Earlier pending statuses in original/freeze documents are preserved history, not the current completion state."
+}

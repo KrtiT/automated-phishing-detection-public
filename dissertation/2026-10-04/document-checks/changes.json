@@ -1,0 +1,107 @@
+[
+  {
+    "kind": "replace",
+    "section": "2.3",
+    "source": "tranco",
+    "old": "Tranco records are a popularity-based control rather than verified benign evidence.",
+    "new": "Tranco records are a popularity-based control rather than verified benign evidence. Le Pochat et al. (2019) show how the composition, stability and susceptibility to manipulation of popularity rankings can affect samples used in security research. Their findings support keeping popularity-based controls separate from independently verified negative labels."
+  },
+  {
+    "kind": "replace",
+    "section": "2.4",
+    "source": "axelsson",
+    "old": "An inline alerting system can be unusable even with high aggregate accuracy if its false-positive rate is too large.",
+    "new": "An inline alerting system can be unusable even with high aggregate accuracy if its false-positive rate is too large. Axelsson's (2000) base-rate analysis of intrusion detection explains why rare events can make false alarms dominate the alert population despite high detection sensitivity. That analysis motivates examining low-FPR behavior, but does not prescribe the particular 1% ceiling adopted here."
+  },
+  {
+    "kind": "replace",
+    "section": "2.6",
+    "source": "dempster",
+    "old": "A Gaussian mixture model (GMM) represents the development feature distribution as a weighted combination of Gaussian components.",
+    "new": "A Gaussian mixture model (GMM) represents the development feature distribution as a weighted combination of Gaussian components. In the expectation–maximization formulation, component membership is unobserved; estimation alternates between conditional membership weights and parameter updates (Dempster et al., 1977)."
+  },
+  {
+    "kind": "replace",
+    "section": "2.9",
+    "source": "tail",
+    "old": "Connection management, request scheduling, validation and response processing can affect observed latency even when model parameters are unchanged.",
+    "new": "Connection management, request scheduling, validation and response processing can affect observed latency even when model parameters are unchanged. Dean and Barroso (2013) explain why latency variability matters for the responsiveness of large interactive services. Their scale differs from this local gateway, but the distinction supports examining the slow tail rather than average service time alone."
+  },
+  {
+    "kind": "replace",
+    "section": "3.6",
+    "source": "adamw",
+    "old": "One AdamW parameter group contains every trainable parameter",
+    "new": "Optimization uses AdamW's decoupled weight-decay formulation (Loshchilov & Hutter, 2019). One AdamW parameter group contains every trainable parameter"
+  },
+  {
+    "kind": "replace",
+    "section": "3.9",
+    "source": "existing_schwarz",
+    "old": "The model with minimum training Bayesian information criterion (BIC) is selected;",
+    "new": "The model with minimum training Bayesian information criterion (BIC; Schwarz, 1978) is selected;"
+  },
+  {
+    "kind": "replace",
+    "section": "3.12",
+    "source": "schroeder",
+    "old": "Closed-loop workers time requests from submission through body reading and response validation, excluding unsent local backlog; there are no retries.",
+    "new": "Closed-loop workers time requests from submission through body reading and response validation, excluding unsent local backlog; there are no retries. This is a closed workload in the sense of Schroeder et al. (2006): each worker submits another request only after its preceding request terminates."
+  },
+  {
+    "kind": "replace",
+    "section": "5.3",
+    "source": "tranco",
+    "old": "Tranco controls provide an additional alarm about generality, but popularity must not be relabeled as verified benign truth.",
+    "new": "Tranco controls provide an additional alarm about generality, but popularity must not be relabeled as verified benign truth (Le Pochat et al., 2019)."
+  },
+  {
+    "kind": "insert",
+    "section": "2.4",
+    "source": "lipton",
+    "before": "## 2.5 Selective Cascades",
+    "text": "Prevalence projections require a further distinction between changing class proportions and changing class-conditional behavior. Lipton et al. (2018) study label shift, in which P(Y) changes while P(X|Y) remains fixed, and develop a method for estimating the changed class proportions. The prevalence projections reported here hold the measured class-conditional rates fixed and vary an assumed phishing proportion; they neither estimate a deployment prevalence nor implement that paper's shift-correction method. Their value is to show how the alert burden depends on the assumed class mixture, separately from the measured source-transfer problem."
+  },
+  {
+    "kind": "insert",
+    "section": "2.9",
+    "source": "schroeder",
+    "before": "Service correctness also has multiple layers.",
+    "text": "The workload generator also determines what a throughput or latency result means. Schroeder et al. (2006) distinguish closed workloads, in which completions govern subsequent submissions, from open workloads with arrivals independent of completion. Their experiments show that these choices can produce materially different response times and scheduling behavior. The present fixed-concurrency replays therefore characterize the tested closed-loop service path. They support a controlled comparison of client designs, rather than a capacity claim for an externally imposed production arrival rate."
+  },
+  {
+    "kind": "reference",
+    "source": "axelsson",
+    "text": "Axelsson, S. (2000). The base-rate fallacy and the difficulty of intrusion detection. ACM Transactions on Information and System Security, 3(3), 186–205. https://doi.org/10.1145/357830.357849"
+  },
+  {
+    "kind": "reference",
+    "source": "tail",
+    "text": "Dean, J., & Barroso, L. A. (2013). The tail at scale. Communications of the ACM, 56(2), 74–80. https://doi.org/10.1145/2408776.2408794"
+  },
+  {
+    "kind": "reference",
+    "source": "dempster",
+    "text": "Dempster, A. P., Laird, N. M., & Rubin, D. B. (1977). Maximum likelihood from incomplete data via the EM algorithm. Journal of the Royal Statistical Society: Series B (Methodological), 39(1), 1–22. https://doi.org/10.1111/j.2517-6161.1977.tb01600.x"
+  },
+  {
+    "kind": "reference",
+    "source": "tranco",
+    "text": "Le Pochat, V., Van Goethem, T., Tajalizadehkhoob, S., Korczyński, M., & Joosen, W. (2019). Tranco: A research-oriented top sites ranking hardened against manipulation. Network and Distributed System Security Symposium. https://doi.org/10.14722/ndss.2019.23386"
+  },
+  {
+    "kind": "reference",
+    "source": "lipton",
+    "text": "Lipton, Z. C., Wang, Y.-X., & Smola, A. J. (2018). Detecting and correcting for label shift with black box predictors. Proceedings of Machine Learning Research, 80, 3122–3130. https://proceedings.mlr.press/v80/lipton18a.html"
+  },
+  {
+    "kind": "reference",
+    "source": "adamw",
+    "text": "Loshchilov, I., & Hutter, F. (2019). Decoupled weight decay regularization. International Conference on Learning Representations. https://arxiv.org/abs/1711.05101"
+  },
+  {
+    "kind": "reference",
+    "source": "schroeder",
+    "text": "Schroeder, B., Wierman, A., & Harchol-Balter, M. (2006). Open versus closed: A cautionary tale. 3rd USENIX Symposium on Networked Systems Design & Implementation, 239–252. https://www.usenix.org/legacy/events/nsdi06/tech/schroeder.html"
+  }
+]

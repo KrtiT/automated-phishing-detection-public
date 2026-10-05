@@ -1,5 +1,32 @@
 # Research Status
 
+## Completed Evidence — 4 October 2026
+
+The original research is complete: **22 primary checks, 125 operational cells
+and 25 operational groups**, with secondary analyses and the separate D/S
+follow-ups. **H1, H2 and H3 are not supported** under their unchanged conjunctive
+rules (nine passing and thirteen failing component checks). D and S remain
+separate, fully reported comparisons rather than replacements for H1–H3.
+
+Read the [current research story](../../dissertation/2026-10-04/RESEARCH_STORY.md),
+[manuscript and evidence index](../../dissertation/2026-10-04/README.md), and
+[reproduction boundaries](../../dissertation/2026-10-04/REPRODUCTION.md).
+The implementation, completed measurements and final adjudication supersede the
+earlier completion-status statements below; they do not alter frozen methods,
+retrospectively claim advisor approval or erase interrupted attempts.
+
+<details>
+<summary>Historical snapshot — preserved pre-synthesis record at ef8ba5f</summary>
+
+“Current,” “not run” and similar labels below describe the historical snapshot,
+not the completed study. This boundary includes the earlier synthetic-fixture
+restriction: the later, separately specified S experiment uses synthetic service
+inputs for timing, never for detection-accuracy inference.
+
+<!-- HISTORICAL_SNAPSHOT_BEGIN -->
+
+# Research Status
+
 ## September 28 Authorized Study Hold
 
 The [execution record](../../reports/study-only-v1-2026-09-28-execution.json)
@@ -768,3 +795,5 @@ remain undecided; no group-test or PhishVN input was read by this execution.
 Any change to a research question, hypothesis, evidence designation, method,
 or decision rule increments the protocol version and records a new hash before
 the affected analysis runs.
+
+</details>

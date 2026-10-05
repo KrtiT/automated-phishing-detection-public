@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "contract_id": "seed-probe-execution-v1",
+  "date": "2026-09-23",
+  "development_execution_ready": true,
+  "protected_evaluation_ready": false,
+  "primary_changes": false,
+  "scope": "A separate supervised development run for the already specified seed/runtime sensitivity and URL probes. Reuse accepted primary models and drift references. No protected evaluation, new drift reference, replacement primary result or extension of the RF correction authorization.",
+  "execution_binding_sha256": "887f771381927dfe1b9268a45f4e605baf3e9a7caee2b7005cdfe68b1be516e1",
+  "methods_sha256": "eb279404728e498999fc7fd0c7578291373bb80b9816f88b5d7202dfdf637380",
+  "accepted_development_sha256": "663f1117cd33f949b70c35c56810764193f69cae3a37505004d0db27641d829d",
+  "stages": [
+    "seed_42_calibration",
+    "seed_43",
+    "seed_44",
+    "seed_45",
+    "seed_46",
+    "probes"
+  ],
+  "new_fit_seeds": [43, 44, 45, 46],
+  "primary_seed_42_fits": 0,
+  "maximum_new_fits": 4,
+  "input_roles": ["train", "validation"],
+  "partition_reads": {
+    "seed_42_calibration": ["validation"],
+    "seed_43": ["train", "validation"],
+    "seed_44": ["train", "validation"],
+    "seed_45": ["train", "validation"],
+    "seed_46": ["train", "validation"],
+    "probes": ["validation"]
+  },
+  "worker_policy": "Run the fixed stages in order, each in a fresh process. Authenticate the clean reviewed revision and unchanged execution-v2 runtime before research reads and recheck before completion. Reserve the root and child before any stage input is inspected.",
+  "input_reads": "Read each required input role once per worker after both reservations. Seed 42 reads validation, suffix rules, Logistic-L1, vocabulary and accepted weights. Seeds 43-46 read training, validation, suffix rules, Logistic-L1, vocabulary and the retained common stage-one output. Probes read validation, suffix rules, all seven primary artifacts and the two retained drift snapshots. Seed 42 and probes never read training records.",
+  "accepted_artifacts": "Derive primary artifact hashes from authenticated public baseline, transformer/cascade and GMM summaries. Derive drift reference/audit hashes and expected summary from the accepted correction report's audited drift member, not caller assertions. The public summaries omit the transformer cutoff and cascade band; obtain these only from their hash-authenticated artifact bytes and retain them with the execution evidence.",
+  "common_stage1": "Save singleton stage-one validation scores once in seed_42_calibration. Later seed workers reuse those exact bytes and verify ordered IDs, labels and validation-source hash before calibration; do not rescore or reselect the historical stage-one cutoff.",
+  "fit_retention": "Before fitting, retain digests of the actual ordered training IDs and consumed labels. Write each epoch's ordered batch-512 validation probabilities and metrics, each qualifying best checkpoint and restored-best checkpoint as create-only evidence before later computation or checks. Retain actual runtime, stopping history, selected checkpoint and singleton calibration predictions for every completed seed.",
+  "probe_retention": "Write each scored row before later row scoring or monitor windows. These preliminary row snapshots are marked scored_pre_routing; routing is provisional until the completed stream snapshot. Save the completed stream, with authoritative routing and all windows, before the next stream or aggregate summary. Retain original IDs and URL mappings privately; publish aggregate summaries and hashes only.",
+  "output_policy": "Create-only outputs. Keep fitted states, epoch records and probe snapshots in the child evidence store, with exact names and hashes in the final artifact manifest; do not duplicate checkpoints into another store or overwrite prior attempts.",
+  "failure_policy": "fail_stop_no_retry_no_resume",
+  "failure_retention": "Stop at the first failed stage. Preserve partial evidence and the actual observed process exit, including signals or a launch failure, with a safe symbolic failed-check identifier. Account for every stage as completed, failed or unattempted; an unattempted tail is not a failed fit. Never publish aggregate success after a stage fails.",
+  "verification": "Independently check saved outputs without refitting or rereading sources: epoch AP and stopping/checkpoint selection, source/label/order digests, thresholds and bands, predictions, probe pairing, monitor windows, causal routing and aggregate arithmetic. Authenticate the root/child receipts and observed process exits; all six stages must complete and the binding must pass its final recheck before acceptance.",
+  "interpretation": "Report every seed and probe stream. Do not select a favorable seed or call the seed/runtime comparison a pure causal seed effect. Probe outputs have no verified outcome labels and support no accuracy, recall or adversarial-success claim. Original hypotheses, operating points and failed attempts remain unchanged."
+}

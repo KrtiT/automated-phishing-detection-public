@@ -1,0 +1,48 @@
+{
+  "verification_date_local": "2026-10-04",
+  "source_base_commit": "ef8ba5f0b357cf3dd60c4d663e6297d13334460c",
+  "scope": "Publication checkout with documentation, package tests and the disclosed HTTP test-double lifecycle correction; scientific runtime, scripts, frozen contracts and dependency lock unchanged from the source base.",
+  "focused_tests": {
+    "runner": ".venv/bin/pytest -q",
+    "files": [
+      "tests/test_dissertation_publication.py",
+      "tests/test_research_record.py",
+      "tests/test_url_features.py",
+      "tests/test_sources_spec.py",
+      "tests/test_operational_child_interruptions.py",
+      "tests/test_followup_detection_script.py",
+      "tests/test_followup_metrics.py",
+      "tests/test_followup_population.py",
+      "tests/test_followup_service.py",
+      "tests/test_transport_neutral_features.py",
+      "tests/test_transport_neutral_model.py",
+      "tests/test_worker_connection_replay.py",
+      "tests/test_http_replay.py",
+      "tests/test_http_run_codec.py",
+      "tests/test_selective_service.py"
+    ],
+    "passed": 299,
+    "failed": 0,
+    "elapsed_seconds": 36.73,
+    "exit_code": 0
+  },
+  "additional_checks": {
+    "ruff_check": "passed",
+    "ruff_format_check": "passed; 1111 files already formatted",
+    "uv_lock_check": "passed",
+    "uv_build": "passed; source distribution and wheel",
+    "phishing_research_cli_help": "passed"
+  },
+  "environment": {
+    "python": "3.10.19",
+    "numpy": "2.2.6",
+    "numpy_backend": "OpenBLAS 0.3.29",
+    "numpy_wheel_sha256": "8e41fd67c52b86603a91c1a505ebaef50b3314de0213461c7a6e99c9a3beff90"
+  },
+  "preserved_prior_results": {
+    "frozen_full_suite": {"passed": 13016, "failed": 3, "skipped": 2},
+    "uncorrected_http_mock_reproduction": {"passed": 3, "failed": 3},
+    "publication_default_accelerate_environment": {"passed": 298, "failed": 1}
+  },
+  "limitations": "Focused synthetic/software and public-package checks, not a fresh full-suite result, independent scientific replication, new measurement or institutional approval. Final publication-head CI status is separate."
+}

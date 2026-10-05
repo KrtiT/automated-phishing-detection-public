@@ -1,0 +1,8 @@
+* -text
+*.csv whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+*.pdf binary
+*.png binary
+*.docx binary
+*.pptx binary
+provenance/Historical_Evidence_Supplement_2026-10-01.md whitespace=-blank-at-eof
+provenance/original/Historical_Evidence_Supplement_2026-10-01.md whitespace=-blank-at-eof

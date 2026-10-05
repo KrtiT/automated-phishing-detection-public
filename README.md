@@ -1,5 +1,144 @@
 # Automated Phishing Detection for Frontier AI Inference
 
+**CyberSentinel — completed research, code and evidence; author review edition, 4 October 2026.**
+
+This repository contains the implemented gateway, the completed original
+evaluation, two disclosed engineering follow-ups, and the dissertation review
+package. The investigation follows **design → evaluation → diagnosis → bounded
+modification → measured comparison**. It answers the active questions from the
+August 20 and September 3 advisor decks without replacing their decision rules.
+
+## Start Here
+
+- [Read the dissertation PDF](dissertation/2026-10-04/manuscript/Tallam_Krti_Praxis_Citations_Expanded_2026-10-04.pdf)
+  · [Word review copy](dissertation/2026-10-04/manuscript/Tallam_Krti_Praxis_Public_2026-10-04.docx)
+  · [searchable Markdown](dissertation/2026-10-04/manuscript/Tallam_Krti_Praxis_Citations_Expanded_2026-10-04.md).
+- [Advisor presentation PDF](dissertation/2026-10-04/advisor/Tallam_Praxis_Advisor_Complete_2026-10-02.pdf)
+  · [PowerPoint](dissertation/2026-10-04/advisor/Tallam_Praxis_Advisor_Complete_2026-10-02.pptx)
+  · [speaker notes](dissertation/2026-10-04/advisor/Tallam_Praxis_Advisor_Complete_2026-10-02_Speaker_Notes.txt).
+- [Research argument and question-by-question evidence map](dissertation/2026-10-04/RESEARCH_STORY.md).
+- [Complete package index](dissertation/2026-10-04/README.md),
+  [aggregate dictionaries](dissertation/2026-10-04/RESEARCH_DATA_DICTIONARY.txt),
+  [reproduction boundaries](dissertation/2026-10-04/REPRODUCTION.md),
+  and [SHA-256 manifest](dissertation/2026-10-04/SHA256SUMS.txt).
+
+## What the Investigation Establishes
+
+1. **Build and evaluate the complete path.** A 25-feature structural detector,
+   selective character transformer, GMM monitor and future-only routing policy
+   are connected to an actual HTTP service. The original evidence covers
+   34,593 internal and 8,701 external rows, all **22 primary checks**, all
+   **125 operational cells / 25 groups**, and the declared secondary analyses.
+2. **Locate the constraints instead of relying on one accuracy score.**
+   Structural features increase internal recall over length alone by 64.07
+   percentage points. The frozen cascade adds no recall, external specificity
+   is poor, and the GMM detects 115/132 external windows while its independent
+   reference audit alerts on 28/252 windows. Selectivity alone does not meet
+   the designated latency and external-safety requirements.
+3. **Modify a diagnosed representation dependency.** The transport-neutral
+   follow-up achieves exact feature and score invariance across **8,622**
+   opposite-scheme pairs, versus 481 baseline decision flips. At frozen
+   thresholds it produces 251 fewer false positives and 184 fewer true
+   positives. Invariance is established; external low-FPR efficacy is not.
+4. **Measure a service change separately.** In the complete 80-arm service
+   schedule, worker-specific connections reduce the primary median paired p95
+   ratio to 0.20325 (**79.68%** reduction), with a 97.5% ratio interval of
+   [0.18790, 0.21351]. Primary worker success p95 is 72.00 ms with zero errors
+   in 100,000 attempts. These are synthetic service inputs and an unchanged
+   structural scorer, **not transformer or cascade acceleration**.
+5. **Keep the response contract visible.** Primary predictions agree for
+   **99,999/99,999** comparable pairs. Strict response equality is only
+   **799/100,000** requested pairs: admission sequence differs for 99,200
+   pairs, and one shared-client timeout is noncomparable. Four of five service
+   requirements pass; the full conjunction does not.
+
+**H1, H2 and H3 are not supported under their unchanged conjunctive rules.**
+Nine original component checks pass and thirteen fail; none remains unadjudicated.
+The later D and S comparisons do not retroactively change these decisions.
+The contribution is a measured, auditable account of how representation,
+threshold transfer, routing and service execution interact, together with
+specific verified engineering properties and an explicit boundary on efficacy.
+It is not a claim of a production-ready low-FPR detector or an unprecedented
+learning algorithm.
+
+## Exact Research Questions
+
+- **RQ1:** What incremental value do structural URL features and character-level
+  representations provide under registrable-domain-disjoint and external evaluation?
+- **RQ2:** Can GMM-based monitoring detect an external source/domain shift and
+  guide escalation without exceeding the low-FPR operating constraint?
+- **RQ3:** What detection, escalation, throughput, and latency tradeoffs determine
+  whether the fixed cascade is viable inline?
+
+The [research story](dissertation/2026-10-04/RESEARCH_STORY.md) gives direct
+answers, metrics, thresholds, chapter locations and machine-readable evidence.
+Earlier fusion/distillation proposals are historical; no completed distillation
+experiment is claimed.
+
+## Code, Provenance and Verification
+
+The original completed study used revision
+`77d128377ce5b401437d7179f5cd78fb4294b72c`; the follow-ups used
+`ef8ba5f0b357cf3dd60c4d663e6297d13334460c`. This publication retains their source
+history and makes no new scientific measurements. The publication revision adds
+documents, aggregate evidence, documentation checks and a test-double lifecycle
+correction; it does not replace the frozen measured revisions.
+
+Use Python 3.10 and the checked-in lock. On macOS arm64, select the
+[contract-pinned OpenBLAS wheel](dissertation/2026-10-04/REPRODUCTION.md#macos-arm64-test-environment)
+after syncing and before running tests; the default Accelerate build is rejected.
+
+```bash
+uv sync --locked --python 3.10.19
+uv run --locked --no-sync pytest -q tests/test_dissertation_publication.py
+uv run --locked --no-sync ruff check src tests scripts
+uv run --locked --no-sync ruff format --check src tests scripts
+uv run --locked --no-sync pytest -q
+uv run --locked --no-sync phishing-research --help
+uv build
+```
+
+Tests use invented fixtures. Scientific datasets and row-level results are not
+included. The full suite is substantial; package checks alone are not evidence
+that the whole suite passed. See the exact commit's
+[GitHub Actions](https://github.com/KrtiT/automated-phishing-detection-public/actions)
+and the [verification record](dissertation/2026-10-04/VERIFICATION.md).
+
+Interrupted attempts and adverse outcomes remain in the chronology. Original
+checkpoint recovery retained 72 verified cells and measured 53 complete cells;
+the separate interrupted 45-arm service schedule was excluded from the completed
+80-arm result. The [reproduction guide](dissertation/2026-10-04/REPRODUCTION.md)
+distinguishes public aggregate checking from restricted full reproduction.
+
+## Publication and Review Boundaries
+
+The package is an author review edition, not institutional acceptance.
+Committee titles, institutional manuscript-length requirements and current
+academic-integrity clearance remain matters for the author and university.
+Acknowledgments thank both Amir Etemadi and Mazen Mheish; repository publication
+does not confirm their formal committee roles.
+
+Raw/licensed datasets, URL-level predictions, model weights, private execution
+capabilities, correspondence and host logs are intentionally excluded. Downloaded
+third-party papers are not redistributed; citation metadata and source-check
+records are supplied. The public Word derivative removes template comments and
+local file links, with unchanged visible text, tables and figure bytes. The
+sealed review original is preserved.
+
+## Historical Record
+
+The material below is the retained pre-synthesis snapshot at `ef8ba5f`.
+Words such as “current,” “pending” and “remaining” inside it refer to that earlier
+record, not today's completion state. Frozen contracts and failed attempts have
+not been rewritten to make later results appear prospective.
+
+<details>
+<summary>Historical snapshot — development, authorization and earlier status</summary>
+
+<!-- HISTORICAL_SNAPSHOT_BEGIN -->
+
+# Automated Phishing Detection for Frontier AI Inference
+
 ## Current Work
 
 The [current execution record](docs/advisor-approval/approval-status.md) tracks
@@ -479,3 +618,5 @@ If you use this repository, please cite it using `CITATION.cff` (GitHub will sur
 ## License
 
 This project is released under the MIT License (see `LICENSE`).
+
+</details>

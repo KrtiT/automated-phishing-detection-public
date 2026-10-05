@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "contract_id": "singleton-inference-amendment-v1",
+  "date": "2026-09-21",
+  "status": "adopted_method_pending_complete_evaluation_freeze",
+  "protected_evaluation_ready": false,
+  "adoption_timing": "development_informed_before_protected_evaluation",
+  "decision": "Future no-fit paired evaluation and selective serving will use the same previously specified singleton convention. This adopts a numerically different inference method; it does not accept the failed compatibility comparison as equivalent.",
+  "rationale": "The singleton convention was nominated before the development comparison so offline scoring and selective requests use the same batch shape and numerical path. Adoption follows the observed mismatch and is therefore development-informed. No alternative runtime was searched or selected by favorable detection results.",
+  "precedence": "For future inference only, this amendment replaces the requirement that the nominated runtime pass the original exact compatibility gate. The gate itself and its not_equivalent result remain historical evidence. All hypothesis gates, fitted artifacts and historical selection procedures remain unchanged. This amendment does not complete the pre-access freeze or authorize protected input reads.",
+  "runtime_source": {
+    "path": "data/evaluation-contract-v1.json",
+    "section": "runtime_candidate"
+  },
+  "application": "Use the hash-bound runtime convention for all future length-only, Logistic-L1, transformer, fixed-cascade and policy predictions. Keep the frozen portable Logistic-L1 monitor feature and singleton GMM scoring. Do not mix historical batch transformer scores with singleton cascade results, switch backends by input, or replace singleton inference with padded batches.",
+  "calibration": {
+    "selection_record": "Training, checkpoint selection, threshold selection and band selection remain historical results under their original numerical conventions.",
+    "carry_forward": "Historically selected weights, features, character normalization, thresholds, inclusive uncertainty band, monitor parameters and strict monitor boundary are carried forward without recalibration.",
+    "recalibration": false,
+    "singleton_selection_optimality_claimed": false,
+    "limitation": "The aggregate comparison does not establish that the historical cutoff, band or checkpoint remains the optimizing or tie-break selection under singleton scoring. Future results describe the explicitly amended inference method at carried-forward operating points, not a reproduction of the full original calibration procedure under a new runtime."
+  },
+  "compatibility_result": "not_equivalent",
+  "observed_development_difference": {
+    "validation_rows": 32695,
+    "transformer_decision_mismatches": 1,
+    "reference_transformer_true_positives": 12374,
+    "singleton_transformer_true_positives": 12373,
+    "transformer_false_positives_each": 178,
+    "max_absolute_transformer_probability_difference": 7.152557373046875e-7,
+    "other_detector_decision_mismatches": 0,
+    "band_mask_mismatches": 0,
+    "gmm_calibration_alert_mismatches": 0,
+    "gmm_audit_alert_mismatches": 0,
+    "retained_gmm_audit_alerts": 28,
+    "retained_gmm_audit_windows": 252
+  },
+  "interpretation": "No universal equivalence, isolated numerical-kernel cause or negligible future impact is inferred. Original development summaries remain unchanged; their calibration counts are not relabeled as singleton outcomes. The unchanged GMM audit still prevents support for H2 under the original conjunctive rule.",
+  "fitted_artifacts_changed": false,
+  "hypothesis_gates_changed": false,
+  "additional_compatibility_executions": 0,
+  "prohibited": [
+    "compatibility retry or alternate-runtime search",
+    "threshold, band or GMM-boundary retuning",
+    "additional fitting or checkpoint selection",
+    "tolerance-based relabeling",
+    "rewriting original development results"
+  ],
+  "remaining_before_protected_access": [
+    "complete external adapter and retained-stream identity/provenance checks",
+    "freeze manifest sampling, order and warm-up conventions",
+    "freeze and verify HTTP service/client protocol, versions and hardware",
+    "resolve prespecified secondary-analysis procedures",
+    "independently review and hash-bind the complete execution code, environment, contracts and artifacts"
+  ],
+  "preserved_sha256": {
+    "data/evaluation-contract-v1.json": "d55e504c4f2f89dff93de9fbf121460c02e5175fefcf206a3a74d37de4c0ab6f",
+    "docs/advisor-approval/2026-08-16-realignment-matrix.md": "aad6b7cf8d8416bfb37ec19503dbed031c15767ea96d9b76486ca3f3fedebe1b",
+    "reports/inference-compatibility-v1.json": "6f27b23a88e40455a186ce21cddebec0f9ab827919c663b345a6a14ca14bb670",
+    "reports/inference-compatibility-v1-preflight-correction.json": "66272dceee640f6b1a7f42f90a5776db4f30673df09660003a4b4250cd286eb5",
+    "reports/rq1-baseline-v2-summary.json": "bf5b3a6f0fc705d26852da4dd0053c6111ffc3e500d7a2e95dfba5ad859b279c",
+    "reports/rq1-transformer-cascade-v2-summary.json": "41499aa388babe60442de7231b4087f67a53f96f340568a7cc58a3268606a2fd",
+    "reports/rq2-gmm-development-v1-summary.json": "6f695138a302e854e1e5af590152e289486affe8ccdf75510ca9a5dcaad3b523"
+  }
+}

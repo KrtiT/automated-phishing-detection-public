@@ -1,0 +1,25 @@
+{
+  "status": "verified_and_exported",
+  "scope": "Saved probabilities and decisions only; confusion counts, AP/AUC, Brier/ECE and bin totals, low-FPR cutoff counts, prevalence arithmetic, monitor strict boundaries and coverage. Historical accepted records retained with their original verification limitations.",
+  "populations": [
+    "internal",
+    "certified",
+    "chongluadao_openphish_bronze",
+    "gold",
+    "gold_plus_certified",
+    "ncsc_silver",
+    "tranco"
+  ],
+  "population_detector_rows": 153,
+  "labeled_metric_rows": 43,
+  "label_free_control_rows": 22,
+  "calibration_bins": 430,
+  "projection_rows": 129,
+  "monitor_windows": 396,
+  "psi_feature_scores": 3432,
+  "seed_population_rows": 35,
+  "inputs_sha256": {
+    "internal": "933bc9e41c1b172f03ffd584124179ff7771e839cfe5b77e2780ee1a715176f4",
+    "external": "a0cd5368330d790d76b13db3893ff6d8a643c72a4e17cea0f0ea87da9dde1c33"
+  }
+}

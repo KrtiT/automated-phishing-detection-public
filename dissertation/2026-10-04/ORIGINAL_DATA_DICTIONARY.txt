@@ -1,0 +1,160 @@
+AGGREGATE DATA DICTIONARY — October 1, 2026
+
+GENERAL CONVENTIONS
+
+CSV files are UTF-8 with a header. JSON is authoritative for nested structures,
+explicit nulls/reasons and full-precision values. CSV blank fields mean absent,
+inapplicable or undefined, not zero; consult the paired reason/status or JSON.
+Boolean CSV values use True/False. List-valued CSV fields contain JSON arrays.
+
+Rates and recall differences in data files are fractions, not percentages.
+Multiply rates by 100 for percent and differences by 100 for percentage points.
+Latency and drain times are milliseconds; throughput is requests per second.
+Prevalence basis points: 10 = 0.1%, 100 = 1%, 500 = 5%.
+Counts are URL/request/window counts, unless specifically named domains.
+No prediction/URL-level research rows are supplied in these aggregate files.
+
+POPULATIONS AND MODELS
+
+internal: PhiUSIIL group test, 34,593 rows / 29,566 registrable domains;
+14,326 reference positives and 20,267 reference negatives.
+gold: external NCSC gold, 69 positives / 69 domains.
+certified: external trusted registry, 2,497 negatives / 234 domains.
+gold_plus_certified: descriptive mixed-label population, 2,566 rows / 303
+domains; its composition is not a deployment-prevalence estimate.
+ncsc_silver: 417 secondary reference positives / 412 domains.
+chongluadao_openphish_bronze: 4,555 secondary reference positives / 2,294 domains.
+tranco: 1,163 label-free popularity controls / 1,163 domains; report alerts,
+not labeled false positives, AP, ROC AUC or calibration.
+External total: 8,701 retained rows / 4,150 domains. Domain counts across
+strata must not be assumed additive unless the grouping supports that claim.
+
+length_only, logistic_l1, transformer and cascade identify the four primary
+fixed detectors. External policy is future-only GMM-triggered escalation.
+Additional columns retain the formatting comparator, Random Forest, all five
+permutation models and seeds 42–46; names preserve the source schema. Seed
+suffixes are identities, not a ranking or a recommendation to select a winner.
+
+PRIMARY RESULTS
+
+primary-results.json: primary.metrics holds population-specific confusion
+counts and rates; primary.contrasts holds all six clustered recall contrasts;
+primary.hypotheses holds H1/H2/H3 completion, decision and component gates.
+ablation_family is the fixed four-slot Holm family for nominal secondary
+positive-only McNemar tests. It does not decide any primary hypothesis.
+
+primary-gates.csv (22 rows): hypothesis and name identify the component.
+estimate is the unrounded gate operand, including a lower interval endpoint
+for contrast gates. operator and threshold specify the original decision rule.
+numerator/denominator and upper_95 accompany rate gates when applicable.
+upper_95 is an exact one-sided 95% Clopper–Pearson bound, not the operand of
+an observed-FPR gate. status is pass/fail; reason explains non-estimability
+when applicable. H3 latency uses ms; other rate/difference gates use fractions.
+
+paired-contrasts.csv (6 rows): estimate/lower/upper are URL-weighted paired
+recall differences and domain-clustered 95% bootstrap interval endpoints.
+candidate_true_positives/reference_true_positives/positive_count identify
+the paired counts. domain_count is positive-stratum distinct domains.
+bootstrap_replicates = 2,000, PCG64 seed 20260816, fresh RNG per contrast,
+linear quantiles. Routing is not rerun in bootstrap replicates.
+
+Nominal McNemar tables in complete-secondary-results.json retain aligned
+positive-only paired decisions, discordances and exact two-sided p-values.
+Holm uses all four fixed slots. Floating-point p = 0 denotes numeric
+underflow, not mathematical impossibility. Domain/window/routing dependence
+limits these nominal tests; they do not replace clustered primary intervals.
+
+OPERATIONAL RESULTS
+
+operational-runs.csv (125 rows): cell_ordinal/run_index/workload/concurrency/
+prevalence_basis_points identify the frozen execution cell and manifest.
+manifest_sha256 identifies its fixed request construction. Cells 1–72 are
+retained; 73–125 are the continuation. No accepted adverse cell was replaced.
+request_count/request_errors/request_error_rate count all measured client
+terminal outcomes. p50_ms/p95_ms/p99_ms include failed measured requests.
+admitted_requests/completed_requests/failed_requests are service observations.
+transformer_forward_attempts and successful_transformer_scores are physical
+service counters, not logical replay predictions.
+client_attempts_per_second and successful_responses_per_second use each run's
+measured client-phase elapsed interval. measured_elapsed_ms is that interval;
+drain and timeout-drain durations are separate, not hidden in throughput.
+primary_evidence preserves a source designation when present; blanks are not
+permissions to substitute a different primary cell.
+
+operational-groups.csv (25 rows): five repeats pooled by workload, manifest
+and concurrency. run_indices/run_request_counts identify constituent runs.
+Quantiles pool individual terminal latencies; they are not means of run
+quantiles. physical_invocation_fraction = attempts / measured request_count.
+Low transformer-only fractions can reflect failures/admission, not savings.
+Cell 1 supplies the H3 invocation gate. Cells 21–25 supply H3 p95/error gates.
+Live shift uses its actual 8,701 requests per repeat, not 10,000. Warmup,
+model loading and control time are excluded. This is a closed-loop benchmark,
+not a production capacity guarantee or an open-loop arrival experiment.
+
+SECONDARY RESULTS
+
+complete-secondary-results.json: original accepted internal/external secondary
+structures, monitor windows, and three historical accepted aggregates with
+their SHA-256s. Historical data carry their original audit limitations.
+
+secondary-metrics.csv (153 rows): population/detector plus row/domain counts,
+analysis_role, confusion counts, recall/FPR or control-alert counts, and
+value/reason pairs for precision, F2, MCC, balanced accuracy, stepwise average
+precision, ROC AUC, Brier score and ten-bin expected calibration error.
+There are 43 mixed-class metric sets; single-class and label-free populations
+do not receive invented two-class ranking/calibration metrics.
+
+calibration-bins.csv (430 rows): ten bins per mixed-class metric set.
+index identifies the fixed bin; count/positive_count/probability_sum/
+squared_error_sum are sufficient aggregate totals. mean_probability and
+positive_fraction describe nonempty bins. rows/domains describe the whole
+population, not the bin.
+
+low-fpr-score-curves.csv (43 rows): descriptive saved-score maximum recall
+subject to observed FPR <= 1%, retaining score ties without interpolation.
+threshold is the descriptive cutoff; true_positives/positive_count and
+false_positives/negative_count give achieved rates. This is not a new
+deployment threshold, retuning of a primary result or a passing primary gate.
+
+prevalence-projections.csv (129 rows): assumed prevalence of 0.001, 0.01 or
+0.05, reference_requests = 10,000, source_recall/source_fpr and the resulting
+expected alerts/misses/false_alerts. These are arithmetic projections under
+class-conditional rate transport, not actual traffic or measured HTTP counts.
+
+source-contingency.csv (5 rows): role/source_group/source_class/confidence_tier
+and reference-label counts, with row/domain totals. Tranco remains unlabeled.
+This table does not identify unavailable PhiUSIIL per-record sources.
+
+seed-logical-invocations.csv (35 rows): logical_band_count/rows and fraction
+for each seed/population. These are saved-policy selections, not physical
+HTTP measurements. Seed 42's historical runtime differs from later seeds.
+
+external-monitor-windows.csv (396 rows): 132 windows per monitor, shared
+original retained stream. start_position/end_position are inclusive 1-based
+positions. score and threshold retain strict alert > threshold decisions;
+reason records an undefined score when applicable. Windows contain 256 rows
+at stride 64. End-of-stream partial windows do not enter the window fraction.
+
+external-psi-features.csv (3,432 rows): 132 windows x 26 fixed features;
+feature_index is zero-based. score is each feature's PSI component; threshold
+is the saved aggregate monitor threshold, not a generic per-feature cutoff.
+
+probe-decisions-and-scores.csv (20 rows): four development-audit streams x
+five detector/policy columns. 00/01/10/11 are paired original-to-probe
+decision transitions. positive_decisions is the probe-side alert count.
+count, changed_score_count and signed/absolute deltas compare aligned scores.
+probe-monitors-and-scores.csv (12 rows): four streams x three monitors, with
+corresponding window-alert transitions, window counts, thresholds and deltas.
+These probes are label-free; changes are not adversarial success or error.
+
+VERIFICATION
+
+verification.json: read-only final evidence verification scope, revision,
+7,340 file-hash comparisons, 238,159 assertions, 250 observed zero owned
+operational exits, 72+53 retention accounting and 1,945 condition samples.
+Its file_sha256 keys point into the original workspace, not this ZIP.
+secondary-verification.json: saved-score checks and export coverage counts.
+These verify saved evidence/implementation accounting, not external replication.
+package-verification.json: final file coverage, test/log identities and visual
+QA summary. SHA256SUMS.txt covers every packaged file except itself; the
+separate ZIP SHA256 file covers the archive.

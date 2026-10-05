@@ -1,0 +1,29 @@
+{
+  "checked_at": "2026-10-05T00:43:27.625363+00:00",
+  "status": "passed",
+  "scanned": {
+    "text_files": 200,
+    "office_parts": 179,
+    "pdf_pages": 179
+  },
+  "pattern_findings": [],
+  "aggregate_checks": {
+    "original_aliases_identical": true,
+    "secondary-metrics.csv": 153,
+    "calibration-bins.csv": 430,
+    "prevalence-projections.csv": 129,
+    "external-monitor-windows.csv": 396,
+    "external-psi-features.csv": 3432,
+    "seed-logical-invocations.csv": 35,
+    "probe-decisions-and-scores.csv": 20,
+    "probe-monitors-and-scores.csv": 12,
+    "S_primary_median_ratio": 0.20324898732971414,
+    "S_measured_attempts_and_errors": [
+      800000,
+      1
+    ],
+    "measured_implementation_contracts_and_environment_unchanged": true,
+    "original_checkout_frozen_checkout_and_author_word_preserved": true
+  },
+  "limitations": "Bounded public-artifact pattern, metadata, links, hash and arithmetic audit; not proof against every possible secret, independent row-level reproduction or a fresh layout render."
+}

@@ -1,0 +1,112 @@
+SLIDE 1
+- The completed research combines the original evaluation and separately specified engineering iteration. Lead with the achieved representation and service properties, then state their scope and remaining joint-criterion failures. Original H1–H3, detection D and strict service S remain unsupported; there are nine passing original components and four passing S requirements. The package is research-complete, not a university submission certification.
+
+SLIDE 2
+- These are the active questions, not the superseded June/August 6 distillation or feature-fusion proposal. No 300M-to-30M distillation, 92% retention, +5-point AUC or 40% latency reduction is claimed. The manuscript gives direct answers using these exact questions.
+- Evidence: final-evidence-20261001/primary-results.json
+- All three hypotheses are complete and not supported. No failed gate, interruption or adverse result is suppressed. Operator authorization is not advisor approval.
+
+SLIDE 3
+- External source/tier details: silver 417, bronze 4,555, Tranco 1,163, gold 69 and certified 2,497; 4,150 distinct domains overall. The published test has 8,941 records, 240 excluded. Source/tier filters follow routing. Exact publisher url_norm was adopted after preparation/label-count exposure and before amended predictions; checkpoint recovery followed earlier predictions and partial runs. These timings are not advisor approval or complete pre-access prespecification.
+- Evidence: final-evidence-20261001/verification.json; final-evidence-20261001/source-contingency.csv
+- All three hypotheses are complete and not supported. No failed gate, interruption or adverse result is suppressed. Operator authorization is not advisor approval.
+
+SLIDE 4
+- All model thresholds remain validation-selected and unchanged. Counts and CP upper bounds are in the manuscript. Certified negatives cluster in 234 domains, so the exact binomial calculation does not remove dependence. Do not confuse gold-positive recall with precision or deployment utility.
+- Evidence: final-evidence-20261001/secondary-metrics.csv; final-evidence-20261001/primary-gates.csv
+- All three hypotheses are complete and not supported. No failed gate, interruption or adverse result is suppressed. Operator authorization is not advisor approval.
+
+SLIDE 5
+- The band is unchanged and selects zero evaluation rows. The cascade therefore equals L1 on the evaluated streams; this does not show character representations are universally unnecessary. Strict-improvement lower bounds must exceed zero. Structural gains cannot cancel external specificity failures.
+- Evidence: final-evidence-20261001/paired-contrasts.csv; final-evidence-20261001/primary-results.json
+- All three hypotheses are complete and not supported. No failed gate, interruption or adverse result is suppressed. Operator authorization is not advisor approval.
+
+SLIDE 6
+- All 132 complete 256-row windows at stride 64 are the specified external departure population. Boundary -67.45792380813624 was not retuned. An alert affects the next 256 requests only; overlaps union and terminal activations truncate. These observed policy effects are not randomized causal remediation. MMD and PSI do not rescue H2.
+- Evidence: final-evidence-20261001/external-monitor-windows.csv; final-evidence-20261001/primary-results.json
+- All three hypotheses are complete and not supported. No failed gate, interruption or adverse result is suppressed. Operator authorization is not advisor approval.
+
+SLIDE 7
+- Invocation uses only designated cell 1. Latency/errors use cells 21–25 and all 50,000 terminal latencies, including failures. Bounds use unrounded inputs; p95 is 364.3004100999999ms. Tranco is label-free alert rate. Noninferiority lower bound 0 ≥ -0.02 on 69 gold domains is a narrow passed component, not system viability.
+- Evidence: final-evidence-20261001/operational-runs.csv; final-evidence-20261001/primary-gates.csv
+- All three hypotheses are complete and not supported. No failed gate, interruption or adverse result is suppressed. Operator authorization is not advisor approval.
+
+SLIDE 8
+- Fixed 1% c8 attempted throughput 1243.93–1272.10 requests/s versus 398.91–502.69 at c64. All three fixed c128 prevalence groups have errors: 120, 36, 59 respectively for 1%, 0.1%, 5%. The live shift uses a different stream, 8,701 requests/run and c1; it cannot substitute for the designated H3 benchmark. Across all five live runs there are 41,265 physical attempts/43,505 requests and exact offline/live trace agreement. Two sessions and fixed workload order confound session effects with some descriptive comparisons.
+- Evidence: final-evidence-20261001/operational-groups.csv; final-evidence-20261001/operational-runs.csv
+- All three hypotheses are complete and not supported. No failed gate, interruption or adverse result is suppressed. Operator authorization is not advisor approval.
+
+SLIDE 9
+- The frozen secondary schema provides full mixed-class metrics only internally and for gold+certified. Gold/certified count strata, positive-tier recall and Tranco label-free alerts remain separate. AP and ECE depend on this observed mixture, not deployment prevalence. Permutation consumed-label digests were not retained; varying ranking metrics cannot certify leakage or its absence. Original+3 separate probe streams each have 16,370 rows and 252 overlapping windows, with all score/decision/alert transitions exported.
+- Evidence: final-evidence-20261001/secondary-verification.json; final-evidence-20261001/complete-secondary-results.json
+- All three hypotheses are complete and not supported. No failed gate, interruption or adverse result is suppressed. Operator authorization is not advisor approval.
+
+SLIDE 10
+- This diagram organizes the work as engineering iteration. Original H1/H2/H3 remain not supported under unchanged conjunctive gates. Nine original component checks pass. The D requirement is separate, and its exact-invariance diagnostic is not retroactively promoted to a new confirmatory hypothesis. Methods record the actual chronology once.
+- Evidence: followup-20261001/verified-detection-v1/verification.json; comparison-specification-v1.md; execution-manifest-v1.json. Original findings: final-evidence-20261001/.
+- The bounded extension was specified October 1, 2026 after the initial results and before retrieval, fitting and scoring of its additional benchmark. It is development-informed engineering iteration, not an original confirmatory hypothesis. Operator authorization is not advisor or institutional approval. Original H1–H3 decisions are unchanged. S is now complete under the disclosed October 2 environmental-recovery amendment; original hypotheses and all thresholds remain unchanged.
+
+SLIDE 11
+- Original descriptive is_https PSI motivates investigation but does not prove the cause of external false positives. Transport-neutral inputs preserve raw URLs, canonicalization and overlap rules. Shared versus worker-owned clients change client topology only. Instrumented development timings are excluded from final S evidence. Technical grounding includes Arp et al. (2022), Pendlebury et al. (2019), Guo et al. (2017) and Geifman and El-Yaniv (2019); these references do not establish novelty for the intervention.
+- Evidence: followup-20261001/verified-detection-v1/verification.json; comparison-specification-v1.md; execution-manifest-v1.json. Original findings: final-evidence-20261001/.
+- The bounded extension was specified October 1, 2026 after the initial results and before retrieval, fitting and scoring of its additional benchmark. It is development-informed engineering iteration, not an original confirmatory hypothesis. Operator authorization is not advisor or institutional approval. Original H1–H3 decisions are unchanged. S is now complete under the disclosed October 2 environmental-recovery amendment; original hypotheses and all thresholds remain unchanged.
+
+SLIDE 12
+- Mendeley DOI 10.17632/c2gw7fy2j4.3, CC BY 4.0. Publisher metadata says May 2020 while the associated preprint says March; use '2020 benchmark.' Quarantine reason incidences overlap and must not be summed as distinct excluded rows. Largest cluster: 351 records. Candidate fit: 166,248 training rows, convergence at 4,971/5,000 iterations. Validation: 32,695 rows; one-sided CP FPR upper bound 0.9968%. Candidate threshold 0.6815549262616749; comparator 0.2670846328466124. Both thresholds froze before additional-benchmark predictions.
+- Evidence: followup-20261001/verified-detection-v1/verification.json; comparison-specification-v1.md; execution-manifest-v1.json. Original findings: final-evidence-20261001/.
+- The bounded extension was specified October 1, 2026 after the initial results and before retrieval, fitting and scoring of its additional benchmark. It is development-informed engineering iteration, not an original confirmatory hypothesis. Operator authorization is not advisor or institutional approval. Original H1–H3 decisions are unchanged. S is now complete under the disclosed October 2 environmental-recovery amendment; original hypotheses and all thresholds remain unchanged.
+
+SLIDE 13
+- Comparator counts: TP 4,619; FN 32; FP 3,940; TN 31. Candidate: TP 4,435; FN 216; FP 3,689; TN 282. Candidate FPR 97.5% interval [91.8651%, 93.9100%]. D requires at least five points of recall gain, a lower 97.5% interval bound above zero and observed candidate FPR at most 1%; all three fail. The candidate satisfies the representation check separately. Ten thousand paired registrable-domain resamples; seed 20261001; zero undefined replicates. Ranking and Brier changes are descriptive, not additional significance claims. Separate arithmetic recomputation verifies every summary; it is not external independent replication.
+- Evidence: followup-20261001/verified-detection-v1/verification.json; comparison-specification-v1.md; execution-manifest-v1.json. Original findings: final-evidence-20261001/.
+- The bounded extension was specified October 1, 2026 after the initial results and before retrieval, fitting and scoring of its additional benchmark. It is development-informed engineering iteration, not an original confirmatory hypothesis. Operator authorization is not advisor or institutional approval. Original H1–H3 decisions are unchanged. S is now complete under the disclosed October 2 environmental-recovery amendment; original hypotheses and all thresholds remain unchanged.
+
+SLIDE 14
+- This is a positive, exact implementation-conformance result under a specified transformation. Removing scheme from every affected feature, not merely its binary indicator, gives the property. Maximum comparator absolute score difference: 0.99664935. All raw observations remain intact. This result must not be described as successful detector repair, prospective temporal validation or a newly passing original hypothesis.
+- Evidence: followup-20261001/verified-detection-v1/verification.json; comparison-specification-v1.md; execution-manifest-v1.json. Original findings: final-evidence-20261001/.
+- The bounded extension was specified October 1, 2026 after the initial results and before retrieval, fitting and scoring of its additional benchmark. It is development-informed engineering iteration, not an original confirmatory hypothesis. Operator authorization is not advisor or institutional approval. Original H1–H3 decisions are unchanged. S is now complete under the disclosed October 2 environmental-recovery amendment; original hypotheses and all thresholds remain unchanged.
+
+SLIDE 15
+- Complete 80-arm schedule; 800,000 measured and 80,000 warmup requests. One total measured error: structural c64 pair 2 shared timeout, 2,019.144208 ms. Zero warmup errors. Among 99,999 comparable primary pairs, 99,200 differ only in admission sequence. Exact response agreement excludes only request IDs. Prediction agreement additionally excludes sequence and is separately descriptive. All ten primary p95 ratios are lower than one. The 97.5% interval uses 10,000 resamples and seed 20261002. A measured service benefit does not cure external detection specificity or change original H3.
+
+SLIDE 16
+- Source: verified-service-v2/primary-pairs.csv. Each arm has 10,000 measured attempts after 1,000 warmups. Alternating client order, fresh service per arm. Bootstrap unit is the pair, not individual requests. Worker p95 ranges from 67.27 to 74.72 ms. Ratio estimates are conditional on this machine and synthetic workload.
+
+SLIDE 17
+- Source: verified-service-v2/group-metrics.csv. Attempted throughput divides total attempts by summed measured phase duration, excluding warmup and drains. Failure-only latency is undefined in seven groups because they have zero errors. The sole shared structural timeout is 2,019.144208 ms. Full success/failure/all-request quantiles and physical counters are exported. Control results do not isolate individual pool, scheduler or queueing mechanisms.
+
+SLIDE 18
+- The narrative is design → evaluation → diagnosis → modification → measured comparison. Original H1/H2/H3 remain unsupported; nine component checks pass. D remains unsupported, with exact invariance achieved. S passes four performance/reliability components but not strict response agreement. These findings support concrete, qualified engineering decisions rather than a claim that every joint requirement was met.
+
+SLIDE 19
+- The original October 1 package, author manuscript, frozen source and interrupted evidence are preserved. On October 2 the operator explicitly authorized one full recovery schedule after transient AC loss. The first 45 arms never enter the primary S result. The new run retained 37 preflight samples over 184.66 seconds and 414 schedule samples, with zero recorded guard violations. No advisor or institutional approval is claimed. Deliverables retain the original credential wording and updated abstract/navigation.
+
+SLIDE 20
+- Complete gate list. Count denominators and CP bounds are in primary-gates.csv; point differences, bootstrap intervals and domain counts are in paired-contrasts.csv. Conjunctive support requires every component. Unsupported is not synonymous with all components failing.
+- Evidence: final-evidence-20261001/primary-gates.csv; final-evidence-20261001/paired-contrasts.csv
+- All three hypotheses are complete and not supported. No failed gate, interruption or adverse result is suppressed. Operator authorization is not advisor approval.
+
+SLIDE 21
+- Complete gate list. Count denominators and CP bounds are in primary-gates.csv; point differences, bootstrap intervals and domain counts are in paired-contrasts.csv. Conjunctive support requires every component. Unsupported is not synonymous with all components failing.
+- Evidence: final-evidence-20261001/primary-gates.csv; final-evidence-20261001/paired-contrasts.csv
+- All three hypotheses are complete and not supported. No failed gate, interruption or adverse result is suppressed. Operator authorization is not advisor approval.
+
+SLIDE 22
+- Complete gate list. Count denominators and CP bounds are in primary-gates.csv; point differences, bootstrap intervals and domain counts are in paired-contrasts.csv. Conjunctive support requires every component. Unsupported is not synonymous with all components failing.
+- Evidence: final-evidence-20261001/primary-gates.csv; final-evidence-20261001/paired-contrasts.csv
+- All three hypotheses are complete and not supported. No failed gate, interruption or adverse result is suppressed. Operator authorization is not advisor approval.
+
+SLIDE 23
+- These are pooled five-run values, not the best run or averages of quantiles. All ordinal membership, physical counters, elapsed/drain time, attempted throughput and successful throughput are in the run CSV. Group71–75 spans sessions. No post hoc adjustment separates workload from session effects.
+- Evidence: final-evidence-20261001/operational-groups.csv; final-evidence-20261001/operational-runs.csv
+- All three hypotheses are complete and not supported. No failed gate, interruption or adverse result is suppressed. Operator authorization is not advisor approval.
+
+SLIDE 24
+- These are pooled five-run values, not the best run or averages of quantiles. All ordinal membership, physical counters, elapsed/drain time, attempted throughput and successful throughput are in the run CSV. Group71–75 spans sessions. No post hoc adjustment separates workload from session effects.
+- Evidence: final-evidence-20261001/operational-groups.csv; final-evidence-20261001/operational-runs.csv
+- All three hypotheses are complete and not supported. No failed gate, interruption or adverse result is suppressed. Operator authorization is not advisor approval.
+
+SLIDE 25
+- These are pooled five-run values, not the best run or averages of quantiles. All ordinal membership, physical counters, elapsed/drain time, attempted throughput and successful throughput are in the run CSV. Group71–75 spans sessions. No post hoc adjustment separates workload from session effects.
+- Evidence: final-evidence-20261001/operational-groups.csv; final-evidence-20261001/operational-runs.csv
+- All three hypotheses are complete and not supported. No failed gate, interruption or adverse result is suppressed. Operator authorization is not advisor approval.

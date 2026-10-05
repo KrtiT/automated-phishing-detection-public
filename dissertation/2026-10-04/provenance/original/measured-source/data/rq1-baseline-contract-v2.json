@@ -1,0 +1,327 @@
+{
+  "contract_id": "rq1-baselines-v2",
+  "schema_version": 2,
+  "protocol_version": "1.7",
+  "input": {
+    "field": "raw_url",
+    "validation": "canonical-url-v1 preparation rules",
+    "missing_or_invalid_action": "error",
+    "error_message": "raw_url is missing or invalid under canonical-url-v1",
+    "imputation": false
+  },
+  "output": {
+    "container": "ordered_vector",
+    "dtype": "float64",
+    "feature_count": 25
+  },
+  "predictor_policy": {
+    "basis": "raw_url only",
+    "forbidden": [
+      "label",
+      "native_label",
+      "is_phishing",
+      "split",
+      "record_id",
+      "canonical_url",
+      "canonical_url_sha256",
+      "registrable_domain",
+      "source",
+      "source_class",
+      "confidence_tier",
+      "published_split",
+      "published_record_id",
+      "publisher",
+      "publisher_label"
+    ]
+  },
+  "features": [
+    {
+      "position": 1,
+      "name": "raw_url_codepoint_length",
+      "definition": "Number of Unicode code points in the untouched raw URL string.",
+      "dtype": "float64",
+      "denominator": "none"
+    },
+    {
+      "position": 2,
+      "name": "raw_url_utf8_byte_length",
+      "definition": "Number of bytes in the UTF-8 encoding of the untouched raw URL string.",
+      "dtype": "float64",
+      "denominator": "none"
+    },
+    {
+      "position": 3,
+      "name": "hostname_ascii_length",
+      "definition": "Number of ASCII characters in the hostname after the existing IDNA normalization.",
+      "dtype": "float64",
+      "denominator": "none"
+    },
+    {
+      "position": 4,
+      "name": "path_codepoint_length",
+      "definition": "Number of Unicode code points in the path returned by urlsplit.",
+      "dtype": "float64",
+      "denominator": "none"
+    },
+    {
+      "position": 5,
+      "name": "query_codepoint_length",
+      "definition": "Number of Unicode code points in the query returned by urlsplit, excluding the query delimiter.",
+      "dtype": "float64",
+      "denominator": "none"
+    },
+    {
+      "position": 6,
+      "name": "fragment_codepoint_length",
+      "definition": "Number of Unicode code points in the fragment returned by urlsplit, excluding the fragment delimiter.",
+      "dtype": "float64",
+      "denominator": "none"
+    },
+    {
+      "position": 7,
+      "name": "hostname_label_count",
+      "definition": "Number of dot-delimited labels in the IDNA-normalized ASCII hostname.",
+      "dtype": "float64",
+      "denominator": "none"
+    },
+    {
+      "position": 8,
+      "name": "hostname_ascii_digit_count",
+      "definition": "Number of ASCII digits in the IDNA-normalized ASCII hostname.",
+      "dtype": "float64",
+      "denominator": "none"
+    },
+    {
+      "position": 9,
+      "name": "hostname_hyphen_count",
+      "definition": "Number of hyphen characters in the IDNA-normalized ASCII hostname.",
+      "dtype": "float64",
+      "denominator": "none"
+    },
+    {
+      "position": 10,
+      "name": "hostname_punycode_label_count",
+      "definition": "Number of IDNA-normalized hostname labels beginning with xn--.",
+      "dtype": "float64",
+      "denominator": "none"
+    },
+    {
+      "position": 11,
+      "name": "path_segment_count",
+      "definition": "Number of nonempty slash-delimited segments in the urlsplit path.",
+      "dtype": "float64",
+      "denominator": "none"
+    },
+    {
+      "position": 12,
+      "name": "query_parameter_count",
+      "definition": "Zero when the urlsplit query is empty; otherwise the number of ampersand-delimited query fields, including empty fields.",
+      "dtype": "float64",
+      "denominator": "none"
+    },
+    {
+      "position": 13,
+      "name": "raw_url_ascii_letter_count",
+      "definition": "Number of ASCII A-Z or a-z code points in the untouched raw URL string.",
+      "dtype": "float64",
+      "denominator": "none"
+    },
+    {
+      "position": 14,
+      "name": "raw_url_ascii_digit_count",
+      "definition": "Number of ASCII 0-9 code points in the untouched raw URL string.",
+      "dtype": "float64",
+      "denominator": "none"
+    },
+    {
+      "position": 15,
+      "name": "raw_url_other_codepoint_count",
+      "definition": "Number of code points outside ASCII A-Z, a-z, and 0-9 in the untouched raw URL string.",
+      "dtype": "float64",
+      "denominator": "none"
+    },
+    {
+      "position": 16,
+      "name": "raw_url_ascii_digit_ratio",
+      "definition": "ASCII digit count divided by raw URL code-point length.",
+      "dtype": "float64",
+      "denominator": "raw_url_codepoint_length"
+    },
+    {
+      "position": 17,
+      "name": "raw_url_other_codepoint_ratio",
+      "definition": "Other-code-point count divided by raw URL code-point length.",
+      "dtype": "float64",
+      "denominator": "raw_url_codepoint_length"
+    },
+    {
+      "position": 18,
+      "name": "raw_url_unique_codepoint_count",
+      "definition": "Number of distinct Unicode code points in the untouched raw URL string.",
+      "dtype": "float64",
+      "denominator": "none"
+    },
+    {
+      "position": 19,
+      "name": "raw_url_utf8_byte_entropy_bits",
+      "definition": "Shannon entropy in bits using base-2 logarithms over the UTF-8 byte-frequency distribution of the untouched raw URL string.",
+      "dtype": "float64",
+      "denominator": "raw_url_utf8_byte_length"
+    },
+    {
+      "position": 20,
+      "name": "percent_escape_count",
+      "definition": "Number of valid percent triplets matching percent followed by two hexadecimal digits in the untouched raw URL string.",
+      "dtype": "float64",
+      "denominator": "none"
+    },
+    {
+      "position": 21,
+      "name": "is_https",
+      "definition": "One when the urlsplit scheme equals https after ASCII lowercase conversion; otherwise zero.",
+      "dtype": "float64",
+      "denominator": "none"
+    },
+    {
+      "position": 22,
+      "name": "has_userinfo",
+      "definition": "One when the raw urlsplit authority contains an at-sign; otherwise zero.",
+      "dtype": "float64",
+      "denominator": "none"
+    },
+    {
+      "position": 23,
+      "name": "has_explicit_port",
+      "definition": "One when the raw authority after any user information contains an explicit decimal port delimiter and value; otherwise zero.",
+      "dtype": "float64",
+      "denominator": "none"
+    },
+    {
+      "position": 24,
+      "name": "has_query_delimiter",
+      "definition": "One when the untouched raw URL contains a query delimiter before any fragment delimiter; otherwise zero.",
+      "dtype": "float64",
+      "denominator": "none"
+    },
+    {
+      "position": 25,
+      "name": "has_fragment_delimiter",
+      "definition": "One when the untouched raw URL contains a fragment delimiter; otherwise zero.",
+      "dtype": "float64",
+      "denominator": "none"
+    }
+  ],
+  "models": {
+    "common_pipeline": {
+      "scaler": {
+        "class": "StandardScaler",
+        "fit_partition": "train",
+        "with_mean": true,
+        "with_std": true
+      },
+      "classifier": {
+        "class": "LogisticRegression",
+        "penalty": "l1",
+        "solver": "saga",
+        "C": 1.0,
+        "class_weight": "balanced",
+        "fit_intercept": true,
+        "max_iter": 5000,
+        "tol": 0.0001,
+        "random_state": 42
+      },
+      "convergence_warning_action": "error"
+    },
+    "length-only": {
+      "features": [
+        "raw_url_codepoint_length"
+      ]
+    },
+    "Logistic-L1": {
+      "features": [
+        "raw_url_codepoint_length",
+        "raw_url_utf8_byte_length",
+        "hostname_ascii_length",
+        "path_codepoint_length",
+        "query_codepoint_length",
+        "fragment_codepoint_length",
+        "hostname_label_count",
+        "hostname_ascii_digit_count",
+        "hostname_hyphen_count",
+        "hostname_punycode_label_count",
+        "path_segment_count",
+        "query_parameter_count",
+        "raw_url_ascii_letter_count",
+        "raw_url_ascii_digit_count",
+        "raw_url_other_codepoint_count",
+        "raw_url_ascii_digit_ratio",
+        "raw_url_other_codepoint_ratio",
+        "raw_url_unique_codepoint_count",
+        "raw_url_utf8_byte_entropy_bits",
+        "percent_escape_count",
+        "is_https",
+        "has_userinfo",
+        "has_explicit_port",
+        "has_query_delimiter",
+        "has_fragment_delimiter"
+      ]
+    },
+    "search": "none"
+  },
+  "partition_use": {
+    "fit_scaler_and_classifier": "train only",
+    "select_threshold": "validation only"
+  },
+  "score": {
+    "value": "P(is_phishing=1)",
+    "alert_rule": "score >= threshold"
+  },
+  "threshold_selection": {
+    "candidate_thresholds": "unique validation scores plus the finite no-alert threshold nextafter(maximum validation score, +infinity)",
+    "objective": "maximize validation recall",
+    "constraint": "exact one-sided 95% Clopper-Pearson false-positive-rate upper confidence bound <= 0.01",
+    "tie_breaks": [
+      "smaller false-positive-rate upper confidence bound",
+      "higher threshold"
+    ],
+    "no_feasible_candidate": "target_not_met"
+  },
+  "scoring_integrity": {
+    "policy_id": "rq1-scoring-integrity-v1",
+    "stages": [
+      "decision_function",
+      "predict_proba"
+    ],
+    "default_warning_action": "error",
+    "allowed_warning": {
+      "environment": {
+        "sys_platform": "darwin",
+        "platform_machine": "arm64",
+        "numpy_blas_name": "accelerate"
+      },
+      "category": "RuntimeWarning",
+      "module": "sklearn.utils.extmath",
+      "messages": [
+        "divide by zero encountered in matmul",
+        "overflow encountered in matmul",
+        "invalid value encountered in matmul"
+      ],
+      "action": "capture-and-verify"
+    },
+    "reference": {
+      "dtype": "float64",
+      "decision": "np.einsum('ij,j->i', scaled, coef[0], optimize=False)+intercept",
+      "probability": "[1-expit(decision), expit(decision)]",
+      "finite_required": true,
+      "rtol": 1e-12,
+      "atol": 1e-12
+    },
+    "authoritative_threshold_input": "sklearn predict_proba class-1 column",
+    "emitted_aggregate_fields": [
+      "platform_identity",
+      "warning_records",
+      "max_absolute_decision_difference",
+      "max_absolute_probability_difference"
+    ]
+  }
+}

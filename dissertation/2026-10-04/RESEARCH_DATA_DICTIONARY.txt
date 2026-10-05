@@ -1,0 +1,123 @@
+AGGREGATE DATA DICTIONARY — October 2, 2026
+
+GENERAL
+
+Three separate namespaces: aggregate-data/original/, detection-D/, service-S/.
+Never concatenate them as one test population or one operational schedule.
+Original and D data concern labeled URL records; S uses synthetic service inputs
+and supplies no detection-accuracy estimate. All CSVs have UTF-8 headers.
+JSON preserves nested structure, full precision, nulls and reasons.
+Rates are fractions unless the field name explicitly says otherwise; multiply
+by 100 for percentages. Rate differences times 100 are percentage points.
+Latencies/durations are milliseconds; throughput is requests per second.
+Blank fields mean absent/inapplicable/undefined, NEVER a measured zero.
+Boolean CSVs use True/False. Hash fields use SHA-256.
+
+ORIGINAL STUDY
+
+See ORIGINAL_DATA_DICTIONARY.txt for every original field, population, model and
+denominator. It is preserved from the October 1 package. The unchanged program
+has 125 operational rows, 25 groups and 22 primary checks; 1,243,505 requests and
+1,901 errors. Internal evaluation contains 34,593 rows and external strata 8,701.
+Those source strata are not a deployment prevalence distribution. Complete
+secondary outputs retain all originally reported metrics and limitations.
+
+DETECTION D
+
+Admitted benchmark: 8,622 records; 4,651 publisher positives, 3,971 publisher
+negatives; 6,273 registrable domains. Largest domain: 351 rows. Excluding observed
+domains does not prove temporal or source-mechanism independence. Opposite-scheme
+companions are prescribed metamorphic pairs, not extra independent label samples.
+
+detection-metrics.csv (2 rows): model baseline/candidate, class totals,
+tp/fp/tn/fn, frozen threshold, recall, fpr, precision, roc_auc, average_precision,
+brier. Baseline is the unchanged 25-feature structural model; candidate is the
+transport-neutral 24-feature model. Confusion counts use their separate frozen
+validation-selected thresholds; no benchmark retuning.
+
+calibration-bins.csv (20 rows): model, bin, count, mean_probability,
+positive_fraction. Ten fixed bins per model. Empty bins have undefined means
+and observed fractions; they are not reliability points at zero.
+
+scheme-invariance.csv (2 rows): model; exact_feature_matches when supplied;
+exact_score_matches; decision_flips; max_absolute_score_difference; denominator.
+All 8,622 candidate features/scores match, with zero decision flips. Baseline
+has 481 flips. A flip is sensitivity, not automatically a classification error.
+
+domain-size-distribution.csv (26 rows): rows_per_domain and domain_count.
+Sum domain_count = 6,273; sum rows_per_domain * domain_count = 8,622.
+
+verification.json: source/export hashes; full model metrics and confusion
+counts; paired_uncertainty; scheme checks and D decision. Domain bootstrap:
+10,000 resamples, PCG64 seed 20261001, row-weighted estimates after sampling
+registrable domains. Two-sided 97.5% percentile intervals. Recall difference
+is candidate minus baseline: -0.0395613846484627. D requires a >=0.05 gain,
+positive lower interval bound and observed candidate FPR <=0.01. Exact scheme
+invariance is separately reported conformance, not another efficacy test.
+
+SERVICE S — COMPLETE V2 ONLY
+
+Two workloads (no_model, structural_detector), two concurrencies (1, 64), ten
+pairs and two clients (shared, worker) = 80 arms. Every arm has 1,000 warmups and
+10,000 measured attempts. Fresh service per arm; alternating order within pairs.
+The primary estimand uses structural_detector, concurrency 64, all ten pairs.
+Synthetic strings are never fetched. No transformer is used in these arms.
+
+arm-metrics.csv (80 rows, schedule order): workload/concurrency/pair/client
+identify the arm; manifest_sha256 identifies ordered synthetic requests.
+request_count includes errors. request_errors/error_rate describe terminal
+client outcomes. p50_ms/p95_ms/p99_ms retain the original success-only summary.
+all_latency_*, success_latency_* and failure_latency_* explicitly give counts
+and p50/p95/p99 by outcome. Failure quantiles are blank for zero errors.
+measured_elapsed_ms excludes warmup and drain; measured_drain_ms is separate.
+client_attempts_per_second = all attempts / measured duration.
+successful_responses_per_second = client successes / measured duration.
+admitted_requests/completed_requests/failed_requests are server counter deltas;
+successful_transformer_scores and transformer_forward_attempts are physical
+inference counters (all zero here). error_types_* gives the six terminal client
+categories. The only measured error is a shared structural c64 pair-2 timeout,
+2019.144208 ms; it was not admitted. Server failed_requests is zero throughout.
+
+group-metrics.csv (8 rows): one workload/concurrency/client combination per row,
+ten arms, 100,000 measured attempts. Latency quantiles pool individual observations;
+they are not averages of run percentiles. Throughput divides summed attempts or
+successes by summed measured durations, not by an average rate. Physical counters
+sum across arms. all_count/success_count/failure_count specify denominators.
+
+pair-metrics.csv (40 rows): workload/concurrency/pair; shared_p95_ms and
+worker_p95_ms; ratio = worker/shared success-only p95. requested = 10,000 pairs.
+both_successful is the paired comparability denominator. exact_except_request_id
+requires equality of response fields INCLUDING admission sequence, excluding
+only request IDs. prediction_agreement additionally excludes sequence and is a
+separate descriptive result; it does not substitute for the S agreement rule.
+noncomparable_errors counts requested pairs missing a successful response.
+Across all 40 pairs, 399,999/399,999 comparable predictions agree; 400,000 paired
+comparisons were requested. Do not claim observed agreement on the missing pair.
+
+primary-pairs.csv (10 rows): structural c64 subset of pair-metrics. There are
+100,000 requested pairs, 99,999 comparable pairs and 99,999 prediction agreements;
+strict equality is 799/100,000. Another 99,200 differ only by admission sequence.
+One shared timeout is noncomparable. Primary worker errors: 0/100,000.
+
+requirements.csv (5 rows): frozen requirement key and passed Boolean. Median
+ratio <=0.8; 97.5% upper ratio bound <1; pooled worker success p95 <=200 ms;
+worker error rate <0.001; exact responses apart from IDs for all requested pairs.
+Four pass. S is the conjunction, so it is not supported.
+
+verification.json: independent saved-evidence arithmetic, all source/aggregate
+hashes, complete accounting, ten primary ratios, median, paired bootstrap,
+agreement counts, sampled condition summary and exclusion of interrupted v1.
+Median ratio: 0.20324898732971414; interval [0.18790304827391455,
+0.21350823820542653]. Bootstrap: ten run pairs, 10,000 resamples, PCG64 seed
+20261002. It does not resample 100,000 requests as independent runs.
+D/S 97.5% intervals allocate Bonferroni coverage across two comparisons.
+
+RECOVERY AND LIMITATIONS
+
+The original S attempt stopped after 45 complete arms and part of the 46th
+on observed AC loss. Its 450,000 completed measured requests are disclosed
+separately, NEVER pooled into v2. The complete new schedule follows a dated
+operator-approved amendment and sampled stable AC. Zero recorded v2 guard
+violations does not prove absence of all unobserved disturbances. Service results
+are conditional on this host and synthetic workload, not production capacity.
+Hash-only inventories are provenance, not included raw data or access grants.

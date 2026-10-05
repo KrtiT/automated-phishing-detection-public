@@ -1,0 +1,27 @@
+{
+  "source_file": "Tallam_Krti_Praxis_Citations_Expanded_2026-10-04.docx",
+  "source_sha256": "ed0b7eb74c76723e3b52783d7b4784ed0e184e38641745d7ff06dedb7cbddfa1",
+  "published_file": "Tallam_Krti_Praxis_Public_2026-10-04.docx",
+  "published_sha256": "8d5c9df75578cd4a4dfcbc1e92a80162bd53600faef279d7e5706fdb784c584d",
+  "removed_template_comments": 6,
+  "removed_comment_parts": [
+    "word/commentsExtensible.xml",
+    "word/commentsIds.xml",
+    "word/commentsExtended.xml",
+    "word/comments.xml"
+  ],
+  "removed_local_file_relationships": 2,
+  "changed_zip_parts": [
+    "[Content_Types].xml",
+    "word/_rels/document.xml.rels",
+    "word/comments.xml",
+    "word/commentsExtended.xml",
+    "word/commentsExtensible.xml",
+    "word/commentsIds.xml"
+  ],
+  "visible_text_unchanged": true,
+  "tables_unchanged": true,
+  "figure_bytes_unchanged": true,
+  "pdf": "Unchanged checked PDF from the citation edition; no scientific or visible-text revisions.",
+  "source_review_document_modified": false
+}

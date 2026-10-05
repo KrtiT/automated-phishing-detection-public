@@ -1,0 +1,7 @@
+contrast,bootstrap_replicates,candidate_true_positives,domain_count,estimate,lower,positive_count,reason,reference_true_positives,status,upper
+gold.cascade_minus_logistic_l1,2000,69,69,0.0,0.0,69,,69,estimated,0.0
+gold.cascade_minus_transformer,2000,69,69,0.0,0.0,69,,69,estimated,0.0
+gold.logistic_l1_minus_length_only,2000,69,69,0.7681159420289855,0.6666666666666666,69,,16,estimated,0.8695652173913043
+gold.policy_minus_cascade,2000,69,69,0.0,0.0,69,,69,estimated,0.0
+internal.cascade_minus_logistic_l1,2000,14137,9757,0.0,0.0,14326,,14137,estimated,0.0
+internal.logistic_l1_minus_length_only,2000,14137,9757,0.6407231606868631,0.5998970797573994,14326,,4958,estimated,0.6763019265346997

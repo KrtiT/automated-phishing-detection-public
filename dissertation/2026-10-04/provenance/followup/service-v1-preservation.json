@@ -1,0 +1,892 @@
+{
+  "status": "interrupted_attempt_preserved_not_eligible_for_primary_S",
+  "checked_at": "2026-10-02T07:43:24.933186+00:00",
+  "scope": "Frozen decoder/provenance validation and complete hash inventory; not an independent arithmetic reimplementation. No fitting, predictions or new measurements.",
+  "completed_arms": [
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 1,
+        "pair": 1,
+        "client": "shared"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 1,
+        "pair": 1,
+        "client": "worker"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 1,
+        "pair": 2,
+        "client": "worker"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 1,
+        "pair": 2,
+        "client": "shared"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 1,
+        "pair": 3,
+        "client": "shared"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 1,
+        "pair": 3,
+        "client": "worker"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 1,
+        "pair": 4,
+        "client": "worker"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 1,
+        "pair": 4,
+        "client": "shared"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 1,
+        "pair": 5,
+        "client": "shared"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 1,
+        "pair": 5,
+        "client": "worker"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 1,
+        "pair": 6,
+        "client": "worker"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 1,
+        "pair": 6,
+        "client": "shared"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 1,
+        "pair": 7,
+        "client": "shared"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 1,
+        "pair": 7,
+        "client": "worker"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 1,
+        "pair": 8,
+        "client": "worker"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 1,
+        "pair": 8,
+        "client": "shared"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 1,
+        "pair": 9,
+        "client": "shared"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 1,
+        "pair": 9,
+        "client": "worker"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 1,
+        "pair": 10,
+        "client": "worker"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 1,
+        "pair": 10,
+        "client": "shared"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 64,
+        "pair": 1,
+        "client": "shared"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 64,
+        "pair": 1,
+        "client": "worker"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 64,
+        "pair": 2,
+        "client": "worker"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 64,
+        "pair": 2,
+        "client": "shared"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 64,
+        "pair": 3,
+        "client": "shared"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 64,
+        "pair": 3,
+        "client": "worker"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 64,
+        "pair": 4,
+        "client": "worker"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 64,
+        "pair": 4,
+        "client": "shared"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 64,
+        "pair": 5,
+        "client": "shared"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 64,
+        "pair": 5,
+        "client": "worker"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 64,
+        "pair": 6,
+        "client": "worker"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 64,
+        "pair": 6,
+        "client": "shared"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 64,
+        "pair": 7,
+        "client": "shared"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 64,
+        "pair": 7,
+        "client": "worker"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 64,
+        "pair": 8,
+        "client": "worker"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 64,
+        "pair": 8,
+        "client": "shared"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 64,
+        "pair": 9,
+        "client": "shared"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 64,
+        "pair": 9,
+        "client": "worker"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 64,
+        "pair": 10,
+        "client": "worker"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "no_model",
+        "concurrency": 64,
+        "pair": 10,
+        "client": "shared"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "structural_detector",
+        "concurrency": 1,
+        "pair": 1,
+        "client": "shared"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "structural_detector",
+        "concurrency": 1,
+        "pair": 1,
+        "client": "worker"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "structural_detector",
+        "concurrency": 1,
+        "pair": 2,
+        "client": "worker"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "structural_detector",
+        "concurrency": 1,
+        "pair": 2,
+        "client": "shared"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    },
+    {
+      "arm": {
+        "workload": "structural_detector",
+        "concurrency": 1,
+        "pair": 3,
+        "client": "shared"
+      },
+      "measured_requests": 10000,
+      "warmups": 1000,
+      "errors": 0
+    }
+  ],
+  "completed_measured_requests": 450000,
+  "completed_request_errors": 0,
+  "failure": {
+    "at": "2026-10-02T07:38:54.894711+00:00",
+    "message": "ac_power_absent",
+    "type": "ConditionsError"
+  },
+  "conditions_sample_count": 226,
+  "condition_violations": [
+    {
+      "observed_at": "2026-10-02T07:38:54.337672+00:00",
+      "violation": "ac_power_absent"
+    }
+  ],
+  "source_sha256": {
+    "conditions.jsonl": "b4750b02642efb41a3be4e1d4260bdc24aa9308a98414bc43f02d34bd373d33a",
+    "failure.json": "9900827e5c7b23d5afbe941b5dfa42239d40e5de233f4756336405a183f5dc81",
+    "intent.json": "55567a3241f39124f878ef9fe579bd25bcd644e198c1bee27770d4c1a5af8f4d",
+    "no_model-c1-pair01-shared/completion.json": "e425a514781537c1e00aabb1e95280ff7a023616ba7bdffe0909a015ac207349",
+    "no_model-c1-pair01-shared/exit.json": "0652bc414648a9e4a9e02e53fc8b7cbfef740a4663d7e84ff1cf996d32731906",
+    "no_model-c1-pair01-shared/intent.json": "f304e1441b1b76595ae50f538efc00f794a70e5fcd1c453f591dce5a111fa24f",
+    "no_model-c1-pair01-shared/launch.json": "5ab8b358d4a16cb4e768ff50643bae446a1b891c82a1bc260071e89fbb6aa308",
+    "no_model-c1-pair01-shared/measured.json": "a80d63a4e859f38b0ed42060e4c89c43b03e47b6bbcf48237c8d2d4bac5f7c91",
+    "no_model-c1-pair01-shared/run.json": "af2c521f7ed278e76a056c011a323a326781463b7fcefac617c992b0c21afc37",
+    "no_model-c1-pair01-shared/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c1-pair01-shared/warmup.json": "0d0a727245b5b2a7b95be55ab72181385f2416a6ddec04b32081df428d78b44b",
+    "no_model-c1-pair01-worker/completion.json": "56a2f17cfeb8fcb18f1a4ff67ec60e5124d53a010e7dc11b7331d03113914567",
+    "no_model-c1-pair01-worker/exit.json": "882c2f655e840e4f2fdda577c4b3257f21af4b40e7035820fbf0394084d8b35f",
+    "no_model-c1-pair01-worker/intent.json": "1950301a35ce141915daf4e465b9c82fead46ac225ea321e1009ee675e42a1d6",
+    "no_model-c1-pair01-worker/launch.json": "fa6f32dade3db2bd783d4acf4edddae22cbce120c2b1724ba9ab093fbf19ec75",
+    "no_model-c1-pair01-worker/measured.json": "c7bfbda091f737d5ed2e224c116c3d6139fd66247c075cbf9b0eb223a1622d56",
+    "no_model-c1-pair01-worker/run.json": "f22b892a926c7258ee101bb80f4e91fe1b8b6532c6185459101f07fe348a388c",
+    "no_model-c1-pair01-worker/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c1-pair01-worker/warmup.json": "f6088300884b94394318428e71291f5b05be524fe2a47412697e989a0e94bcad",
+    "no_model-c1-pair02-shared/completion.json": "27d2914e370fa423444cbf2cd8715d26333cf4d81d98900b702c650196b22a57",
+    "no_model-c1-pair02-shared/exit.json": "081cee132d3f0455437ad1669a67a0c64a3e6c032ad563ac95c59f95759ba12f",
+    "no_model-c1-pair02-shared/intent.json": "d19017846fc4282e2dcf2c200590f3a68ccbab8041c85dfcc8f17ff6082b160a",
+    "no_model-c1-pair02-shared/launch.json": "5dda6ae1262e9ee7d7ba42e3832b031e48967477ff53fae947ae7e5b985209a0",
+    "no_model-c1-pair02-shared/measured.json": "ff96a9291c7b89ffb33374dc35ad30e41b1660104fafaa16ad0601122e138212",
+    "no_model-c1-pair02-shared/run.json": "1aa14ad9c7eade6d32aafde76c00777db4c3dfdde6675ebb69deafb8a0b927b4",
+    "no_model-c1-pair02-shared/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c1-pair02-shared/warmup.json": "d7a0117c451a71cc6c61e303f7bbc391bd3b6b29e10708bdeb7cb3ff934f2e89",
+    "no_model-c1-pair02-worker/completion.json": "2ba0bed2c79e35372bbff1f412cd0da214d1ab97581439815b8c83514a69ce34",
+    "no_model-c1-pair02-worker/exit.json": "823a5f2eefc7a83ef33ebfe7b27aba71d1dc492aff3e057499b6fa7b286228b8",
+    "no_model-c1-pair02-worker/intent.json": "812acca35a1c457348d7058d09c9e0a11043d54aa0895a4299d72a2800895774",
+    "no_model-c1-pair02-worker/launch.json": "3193173573ce81b9d5a9f123f588211730d0373c4358ce3cd2c07532415523d6",
+    "no_model-c1-pair02-worker/measured.json": "b8f507a21cb808033f51ab66436acbd0f5f2db922a5b5d92cbeb4a9a227ee324",
+    "no_model-c1-pair02-worker/run.json": "d189543169b0d3f0cb4527053c88f3f55285847fcd99d608928b74f0b46971ac",
+    "no_model-c1-pair02-worker/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c1-pair02-worker/warmup.json": "49d88f5ca1cb78b1e54da750d31742609ba52d6a557e0bd7c1b82730f612cb6f",
+    "no_model-c1-pair03-shared/completion.json": "3c9be96e066fe253ffa4b9776ba26382a83a343e22bd5b1d53ba5cede8242f40",
+    "no_model-c1-pair03-shared/exit.json": "a034491528e6ce0ef8e36ed0fdd355a13e7852c74da8b76b241fe3bbf0aa6e4e",
+    "no_model-c1-pair03-shared/intent.json": "ebfd038bc7428d401f3fbf8bc55a559510dfcaf13f4b05012cfb1b363801144b",
+    "no_model-c1-pair03-shared/launch.json": "ae2744ceef6a3e7cf6f36b99652ec482e2c4b37c2f16ca7849f00f784792d540",
+    "no_model-c1-pair03-shared/measured.json": "bd05df7e7453542933c836b651a245d0736a782de1624d3279ec9080a18ff278",
+    "no_model-c1-pair03-shared/run.json": "b96a62388b93963d58278474ff5e692fee804e7db2f4a8c12644262bbfbf52df",
+    "no_model-c1-pair03-shared/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c1-pair03-shared/warmup.json": "70795b07d33a36cc0bcaabacfed1bfe931fb4bb0f8bed26e57a4c2ea5997d4bb",
+    "no_model-c1-pair03-worker/completion.json": "7edf2b87f8eaa6a13a05c035100c4ce716164249d80b88035778b0c5c13d8d24",
+    "no_model-c1-pair03-worker/exit.json": "f4c83470e29c1fa4c3eebc6ef72bd0ffbe7df4cb88167c7055e44b403476d039",
+    "no_model-c1-pair03-worker/intent.json": "d2b922fb42df8daad90cda5dd14e93cf4acd8069df9d0d7f0656fb4e8b2baff0",
+    "no_model-c1-pair03-worker/launch.json": "496fd03793881ca43fae2d137fa169a62458ea97c573c9982ecddd5d0fe49817",
+    "no_model-c1-pair03-worker/measured.json": "47eb57938ab846c82c25627cfc33f0bf300f35d9f67f653659f87d7b3504b129",
+    "no_model-c1-pair03-worker/run.json": "8d478532dd947638d17d732eb6951abed777185a68300cf0b1103b8e517fa68f",
+    "no_model-c1-pair03-worker/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c1-pair03-worker/warmup.json": "b48db2e74054980b7d917bddab32cc7b52d4c6390475366ecb361688ea101e39",
+    "no_model-c1-pair04-shared/completion.json": "0bfb4d17be358104fda79f4a42ba5776e8b1bad863dd1252c355c759f03c4e0f",
+    "no_model-c1-pair04-shared/exit.json": "f6f1cff1be512df7b3f6cfce0197a71d44b1f69aecab521b84da84bad07aca0c",
+    "no_model-c1-pair04-shared/intent.json": "fc6530a3c401ec78e7422100c136526424c3663761196ce07d3ccd3473efc037",
+    "no_model-c1-pair04-shared/launch.json": "7a8a23ce16afe8a803d373fd53e3d86dfc500debee837ee9a9ae2beb966b0b40",
+    "no_model-c1-pair04-shared/measured.json": "cbef0a7f7ea8543642f11e386b27dea18a217bde0ee2f8bf6199b1d1633113ed",
+    "no_model-c1-pair04-shared/run.json": "d4ad6b19b3519fa1e1bb482b6a7f8f64aac9acc968a705815db9f51b5582d44f",
+    "no_model-c1-pair04-shared/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c1-pair04-shared/warmup.json": "8b70307f549abaf9b7e074bac79c69ea542b9bfc4a6b147a9a8edfa9e121ae8f",
+    "no_model-c1-pair04-worker/completion.json": "c5f277abb8c0040915a724d30853e649394fc18dcd24638f43a13444f2fb6a7e",
+    "no_model-c1-pair04-worker/exit.json": "9eb554d3868f6ba1ec1e84f01f5caac38a61ecda7c5b439f41f85e6fef7f2e73",
+    "no_model-c1-pair04-worker/intent.json": "035ad459d97d4ef51852b80a4b4398f425c3e3b148bea5f4a4ff5c04363044f1",
+    "no_model-c1-pair04-worker/launch.json": "e686843842d565dfa33972b94a4f1cd1ead8d82a581cd067c1e012a96a456b90",
+    "no_model-c1-pair04-worker/measured.json": "97054f6ec417b7747db02c3c91526f40cd90a50eda70981f4e541cc96cf09ca1",
+    "no_model-c1-pair04-worker/run.json": "e13a8d2bf07b70542d15b56409da78e453d98580c047a552b4abbd2232b5456a",
+    "no_model-c1-pair04-worker/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c1-pair04-worker/warmup.json": "79b74e555d1913fcea3fa920b58f03b575d85ea56619fbe425203f3c7aefa567",
+    "no_model-c1-pair05-shared/completion.json": "a7d9d07ab253663b98f225177b6e7e88fe1d864dc01cd8d3f8f0962757a1e90c",
+    "no_model-c1-pair05-shared/exit.json": "9094a06d03422ffb0ab3e8bbc14c5d7a10d7b34f634a2b525d52b852aa51c952",
+    "no_model-c1-pair05-shared/intent.json": "9b4df00e8b697e45e76c30138fa09f34c3b2e5ec7a6ffbf1a2abd5f7ccfbac66",
+    "no_model-c1-pair05-shared/launch.json": "8c920ee0c7152ee939b4b6c57c74f766449c83d1d8a08b5c2161f22953203029",
+    "no_model-c1-pair05-shared/measured.json": "f456b1698422682b572b3f374e44696631bba62f72fd76e8a3717850bf178b6c",
+    "no_model-c1-pair05-shared/run.json": "bae538bafded53235fa490448c05d35b8f5351108bb1365204d43e6c8f523d46",
+    "no_model-c1-pair05-shared/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c1-pair05-shared/warmup.json": "14e5afc5982fd8668045fcf75c2c8c8ef1b41046c8a2273e88d6045a73e78343",
+    "no_model-c1-pair05-worker/completion.json": "3798d5b624680c9430856bd1111de6a7889bebd083a22cc45264382f0a3a4b68",
+    "no_model-c1-pair05-worker/exit.json": "5beda79412c1ac9ec831191ec7a018d145ff5a50278ce1705699bac623c55d73",
+    "no_model-c1-pair05-worker/intent.json": "e24077d8ce5fafa18e1a8f84bbc4c17bbd32ff458c5b907475092bc954df2bf5",
+    "no_model-c1-pair05-worker/launch.json": "b11d7a15ba295ef58aafb015d6092ffa6d0fcbb06a7e60fc826a8fa52e0cffcb",
+    "no_model-c1-pair05-worker/measured.json": "ba31c8c5b32c4afcc1e221fc5288e8c857b369cf97dc68cc159d8b3e60a531b3",
+    "no_model-c1-pair05-worker/run.json": "b30178874da4cd5fefc0ab38cb521ad0d32a6e4c8b1415b5d5894bccb204aa81",
+    "no_model-c1-pair05-worker/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c1-pair05-worker/warmup.json": "48dfd451dd019a975dfa0cbbc917df9b0c853eee75af1b7e808739abdce6b1be",
+    "no_model-c1-pair06-shared/completion.json": "5156c322944c7911a4e2313f3d0ab1f07138114cb0bb5dee732e7e800eda68b6",
+    "no_model-c1-pair06-shared/exit.json": "d32fab57363c377d0089530b4d1cc9f572f7c79d92fabcf4baa38be227632852",
+    "no_model-c1-pair06-shared/intent.json": "756f5234db90cdf2429680a63e12011768a59be19d9e8890e90c3365a23558a4",
+    "no_model-c1-pair06-shared/launch.json": "5d70a5e79f0af8bebdd3aa75eb8a07d3ee8e6cfafd68ca099d663ca1d74a608e",
+    "no_model-c1-pair06-shared/measured.json": "304cf584d9a7a79437e2fd87975b0f2b8b10f3d5e35a040277eb8612fb34c9aa",
+    "no_model-c1-pair06-shared/run.json": "9959b0b8818cc15733ceecd1012750a8746d9e2532a43a20f8946aad716e1ea5",
+    "no_model-c1-pair06-shared/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c1-pair06-shared/warmup.json": "0e483f3961abb90c21d284b3924ba425f465a7f8d026d48ad82e91dad31ffa74",
+    "no_model-c1-pair06-worker/completion.json": "38b3fca55ac79ce30e2a8574b2d3d7733eff30eafc224b1761ec9b8e4b557228",
+    "no_model-c1-pair06-worker/exit.json": "d6b1ab14de9cf26c89f0518e4c3605beaedbc78cbaafbf37cabb5e77fc9670e3",
+    "no_model-c1-pair06-worker/intent.json": "ddb280d4c1259902aa05fae132b515c584738f3c95ac61a9ee003160fce2e2d8",
+    "no_model-c1-pair06-worker/launch.json": "3a976153cffb0e73dc3de98b183d98443b6cf405fab1b2852dfffc48183b8c0d",
+    "no_model-c1-pair06-worker/measured.json": "1a959fd1ca793489a946c555e9db60f04988f3761b00d51068c3a2dece0731a1",
+    "no_model-c1-pair06-worker/run.json": "801e41a15d9217b18f5fa583d8f01db7f5afb321e5fa4342a6636711d5b0d21d",
+    "no_model-c1-pair06-worker/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c1-pair06-worker/warmup.json": "dc70bf1824c6009ef2498a061cc320ba703b0e69348b5f271e086ed4e2543ef4",
+    "no_model-c1-pair07-shared/completion.json": "b8414959073c00ed7bc131f7bb8add982b5ccf47de9120b92485601861cc9b9b",
+    "no_model-c1-pair07-shared/exit.json": "18fb38827c102b3b61a4941935886718eb70ee0a3fee90e7b64b3bbc76bfb64e",
+    "no_model-c1-pair07-shared/intent.json": "50d0d7a0fa51f39f437b2e3f5bc25b86d715de76c32b9d8cc7004e6842ebce5c",
+    "no_model-c1-pair07-shared/launch.json": "4271c255cd01ab9a513b5029022f83092ff21b2d2ceffd67f8633df24aa92052",
+    "no_model-c1-pair07-shared/measured.json": "e621830e296519563710a97755b6d3a49799915807a412720bf258875fd36897",
+    "no_model-c1-pair07-shared/run.json": "34eab444d146de1634fb642990197e57e04a5bea64ad0eea23d6210e68cfff10",
+    "no_model-c1-pair07-shared/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c1-pair07-shared/warmup.json": "2d14b8569258f9aae68c273b58226443bfcfe84e98532b9d5ea0612065d2a4fc",
+    "no_model-c1-pair07-worker/completion.json": "2f921c430a428e5b7ce688fc159ecb43d925c5ea8456cd647c7394d76cd9d8f0",
+    "no_model-c1-pair07-worker/exit.json": "4964a1e7c54b42633fad8b5ba129b00745d347811aa3fa2dcb994ce45f521cb6",
+    "no_model-c1-pair07-worker/intent.json": "6feff2b26896deffa05d7f3518fb2a1075db3ff1fc7c71c47c50a534751a9c03",
+    "no_model-c1-pair07-worker/launch.json": "101a96e0f4d970664f4b8e01491236f7667962fc200fafb786f79d207182a28c",
+    "no_model-c1-pair07-worker/measured.json": "9a1973f348a16df9e8f0733bfa209fe335de78df5ea8977a20b2bf4bd5be0cb4",
+    "no_model-c1-pair07-worker/run.json": "d063474012bc348386694237e319b98176bd7fb2d428ae8bbafe41119913d79f",
+    "no_model-c1-pair07-worker/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c1-pair07-worker/warmup.json": "788fd3392e51ef70e744977ff160191a30512f9b8e6f5f10a715098105c8a1d4",
+    "no_model-c1-pair08-shared/completion.json": "a3f9067ba84cab906dfb5cb9acc2d356f95e29e4119ed5b179d4e6d74c2089c8",
+    "no_model-c1-pair08-shared/exit.json": "79765e15c3b0f4d41f2555ca78def7558af2b5f3f8294277fbae49432460db97",
+    "no_model-c1-pair08-shared/intent.json": "f1dd4c7fcba2805e7dfe18669b1ff5c3385853cebfb899507db36857c05c8e5f",
+    "no_model-c1-pair08-shared/launch.json": "7f171171d0d06f721ce24164f48af3ecd96c17fe4cf03d463954e7b5ff829fbf",
+    "no_model-c1-pair08-shared/measured.json": "5c6a27d9173d22fa4b4971162c259ece952e8cbdbb64d2a302730027edeec0dd",
+    "no_model-c1-pair08-shared/run.json": "e8ab8bb6356ff02b2565a56ce85c6efdb4cbeac20e6353a4ea2aa33739babac2",
+    "no_model-c1-pair08-shared/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c1-pair08-shared/warmup.json": "d4082e092d712ac8f1a20ce6f110ac2920ee63d0a4eeaa2becf3f54f28f6345b",
+    "no_model-c1-pair08-worker/completion.json": "1340e32959abe0859c3c333a789d469fccd895c4138497fdd25a5d53e98b94be",
+    "no_model-c1-pair08-worker/exit.json": "7d877f92621954785f7de6e05ce53d1cac2c21f4326a63b51a3f067d28f54af3",
+    "no_model-c1-pair08-worker/intent.json": "e02c3341ea88dc437803d6847da741e7ba232afc69d36cdf1aba4a31ce9b4a90",
+    "no_model-c1-pair08-worker/launch.json": "bc7ebe9b8fdc230ab0866986c2853a081fe854e9ca90886bf9d410001cad5400",
+    "no_model-c1-pair08-worker/measured.json": "464c674866a70904777634a1f42937c5f166bbe6736a626ef0a9e50ba5987d99",
+    "no_model-c1-pair08-worker/run.json": "6ca264d15407a5ef30f3b3fa8d88a9c470f86a53f9d5c5a6b17562f211e90960",
+    "no_model-c1-pair08-worker/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c1-pair08-worker/warmup.json": "27af88415f26165cecfbe4fa0f51c0ed96fb19e4ba40d5079103e6fb66aff40a",
+    "no_model-c1-pair09-shared/completion.json": "12fe26d2c6c23f33847ad7ce28a54110928505b15c0b1745fe3b1e4850020df6",
+    "no_model-c1-pair09-shared/exit.json": "bd269924953facf176682287a37be296634ce064309e6351f2ab7d6106a750fa",
+    "no_model-c1-pair09-shared/intent.json": "6203fd3b72afa6f047c18dd03c6f500df49f9623900f68eef8986bcee356bc47",
+    "no_model-c1-pair09-shared/launch.json": "9ebaab56d1351c5a08b01a65fb1df817ba9cfb006f718ff7be8209171c372a73",
+    "no_model-c1-pair09-shared/measured.json": "43a44714b3a2233be05976ad137b73c66a2185d07cc8429ba2db4357299bf9a4",
+    "no_model-c1-pair09-shared/run.json": "080b9027062bb14826787c7ba9ac1c2056ae646b30bc752150105d43855a15e7",
+    "no_model-c1-pair09-shared/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c1-pair09-shared/warmup.json": "a1f65e0fc70de446203909cf035c675259266be7b67f02e22b9b900d9c77b8ca",
+    "no_model-c1-pair09-worker/completion.json": "6ff45aad87a6330f86c37d908b4476ac75955e7fcef56507af26c03aedd3a2c4",
+    "no_model-c1-pair09-worker/exit.json": "0282c8267e30e22c16428f14cf11417cf96be7061b48d2819520cf1227b0b235",
+    "no_model-c1-pair09-worker/intent.json": "9a56518d8a6ab90e8ecaee2a842f58ca16fcb68c38451fec22df13678932d0b1",
+    "no_model-c1-pair09-worker/launch.json": "78de77026783fdc36d58dd1a76a87144efa37e6c7db774ee1795cb91e7a11fa8",
+    "no_model-c1-pair09-worker/measured.json": "75db1526c7bf74b516e583b3c8e43661002c9acb8b24c782d31b80d88bca39bb",
+    "no_model-c1-pair09-worker/run.json": "6844c26753349ad01ed4d1f53876e4a79b5e74d858ed8a992b48607ad5eda61b",
+    "no_model-c1-pair09-worker/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c1-pair09-worker/warmup.json": "e8ea585ab6d02090fec6afe04557eb051ee61f018cb1eae83bb8c9bb2c098fdd",
+    "no_model-c1-pair10-shared/completion.json": "2574eb7b4986891c6e716b33404f685e7369ee699647321f94f4b2ba4156792e",
+    "no_model-c1-pair10-shared/exit.json": "55dd0bed103d2cc37e02c0770084c78ad7f06250fb9d02a3ee584b25e57a4b19",
+    "no_model-c1-pair10-shared/intent.json": "bcf131aaa8d8cb850a38a486af3dc30a4094c26e91b4ad38a95090543d27ff69",
+    "no_model-c1-pair10-shared/launch.json": "59c7199acceeacb993744502485c070015eddd910c989cd70ea156db42c472c9",
+    "no_model-c1-pair10-shared/measured.json": "469174479edfc2fecff01b90e5e7e68c65a3078c29f8de45b1d4384b56cea610",
+    "no_model-c1-pair10-shared/run.json": "b2e7926063a50a0f177bb0bec91dff699a1fe9896631873aceb33a71623d2799",
+    "no_model-c1-pair10-shared/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c1-pair10-shared/warmup.json": "6e79b5c4e5c1a878cdfefe706a703b58a8c8f4248d0a174f4fb10eae9528be8f",
+    "no_model-c1-pair10-worker/completion.json": "967533c6792881063a790d78b72ba29c4a87ef3eaebd7b4c2f1e4409f09e533d",
+    "no_model-c1-pair10-worker/exit.json": "41410dd7ec12a90270d938c1998ea18f2308e8be92af3902e9b07db2435c2f63",
+    "no_model-c1-pair10-worker/intent.json": "632298d71c889c1a79de071ff411f18db712255b0206c40de9792e2586a0c302",
+    "no_model-c1-pair10-worker/launch.json": "e9e833ccbcc4ab7d5a435f69b341f52567faae97f67df3f77dfa8b9f18740f4f",
+    "no_model-c1-pair10-worker/measured.json": "4504af7fbbe59ba88f014794c84991dd61888a8b2c11ab6b45ca2b8ae6d19315",
+    "no_model-c1-pair10-worker/run.json": "aa4e29b9875c14775575528d7c220c256c87783bf7cfb71142bd10011d225adc",
+    "no_model-c1-pair10-worker/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c1-pair10-worker/warmup.json": "8767d6b2284afb3490d4d758049e042e056543dd9521cedceb829174b4817a25",
+    "no_model-c64-pair01-shared/completion.json": "318c4f3763e85f5310f8774ba0fb5a71ed7177b3c0a7723b7589094fadbf677d",
+    "no_model-c64-pair01-shared/exit.json": "cb6cd14afb998bdbf628b94f4ed6905258d1d4a8d348f3d3d56b9b84c6508536",
+    "no_model-c64-pair01-shared/intent.json": "a9c01c223bc9d329008beadd4b22903a1eea4319090c6877452b9fc7b619583c",
+    "no_model-c64-pair01-shared/launch.json": "f02b6f22ecb8a1689c01467185a8a364ba1d09d94be4f2176a4e18378d2bf75c",
+    "no_model-c64-pair01-shared/measured.json": "e5149de6e67307de5bd3acc75dae35168e991f7c4569b0c3de354824f98f8252",
+    "no_model-c64-pair01-shared/run.json": "d9d6c9256da8fb4046ade2ccca472eabfbddd446d40026f9d1a3bad742127812",
+    "no_model-c64-pair01-shared/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c64-pair01-shared/warmup.json": "ecfcfdf41fb6ea06beb4083c44020269ca63f85488091e47621153e951875987",
+    "no_model-c64-pair01-worker/completion.json": "76ce9062f857535e0697d2639218dae9489fbaedc6c3ab87cd551a52b258dc42",
+    "no_model-c64-pair01-worker/exit.json": "1d87185555a278b6f6b3230c26fcf339a9ab345579a6b69ca5f7b70d09c3913b",
+    "no_model-c64-pair01-worker/intent.json": "74f7479412299050659c6dc9ccb575a9f7035468690b02611dc12acb1f4adcfd",
+    "no_model-c64-pair01-worker/launch.json": "40b5440ee4f6975250f56d788fccedaa4a9a03fcc4bb6f85544bae40cc101ed7",
+    "no_model-c64-pair01-worker/measured.json": "cb7f76c10bea839e5fec567925eae0dee7f06ef8af39260cdead9cfafc50a21e",
+    "no_model-c64-pair01-worker/run.json": "896c1ba236db2e4d59356b14b1a1eef8e94acc0ce839acc78b3b5f3153dff93d",
+    "no_model-c64-pair01-worker/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c64-pair01-worker/warmup.json": "2df304bec7008ab8675ea068643a03221d7876aed94069c3133eee7808320487",
+    "no_model-c64-pair02-shared/completion.json": "fa53a2f361f67b4eb16c4e50ddd180a42aab00d6e2b4f8d1a27ad58b57abd94b",
+    "no_model-c64-pair02-shared/exit.json": "b7495863de356a5b6a5ba3193b04cb6067c362be7c2c0358063b7a74d97fba81",
+    "no_model-c64-pair02-shared/intent.json": "8017cfab88ece05bb87db9ff963d1b46a96baa8eda83d59f5e95aca67cf366d6",
+    "no_model-c64-pair02-shared/launch.json": "8512d09aa21cab025f1fe5969c86c9edcf47242477d2a7451320c8cee054f188",
+    "no_model-c64-pair02-shared/measured.json": "c5bd52c5d574bf34a85c968e10f605b3d3be73554325ddea3333847fbc48d754",
+    "no_model-c64-pair02-shared/run.json": "78eb19bf5c2be900a0ec6c8c945f61871d63dcb1a50e26294c8356dbddd24ea3",
+    "no_model-c64-pair02-shared/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c64-pair02-shared/warmup.json": "ccd7a40d73eaab1733f5d56168daf61f4921acf30819b2559128f45f33e0a7e4",
+    "no_model-c64-pair02-worker/completion.json": "96982d6a1607ff3f4d7db1f30cff37ebec2a5bb213de14e81b7a367e1b2cefb8",
+    "no_model-c64-pair02-worker/exit.json": "45dba7b13bb3f5509a4662badd2fd55297831ec60301d732c810c2beabbe223f",
+    "no_model-c64-pair02-worker/intent.json": "7b5b3c3bdf44edde929e33ea561caa9526801830ead782dff6c5dc62ceefac5c",
+    "no_model-c64-pair02-worker/launch.json": "d25b499a807b3960ebb19472d6206dd84c397569d288328e58be50be306301e8",
+    "no_model-c64-pair02-worker/measured.json": "1aacdec519becc22fd5868ea57a7548951089b40e7fe8aa0a73b1686910ddfe8",
+    "no_model-c64-pair02-worker/run.json": "7c5ef80c33ff3c4efef680ae383648200752b767d45c89e278a2f37ec7e7e028",
+    "no_model-c64-pair02-worker/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c64-pair02-worker/warmup.json": "f5f7a7c26cd62c99d091824930523f987efa401d90dbaf9c21ad4d12d72e9bff",
+    "no_model-c64-pair03-shared/completion.json": "00e9c30856d2dfe3c48a3036fee15c42d95da8d5acaf56ad3c04726b7a1a4f46",
+    "no_model-c64-pair03-shared/exit.json": "80c6e71f40e4c69b255e1cd20210c630b964ae75f881c47c0e4c3bded35f4b8f",
+    "no_model-c64-pair03-shared/intent.json": "6c822eb9068ee06ba066975d84c7698db10b7344858c570b2bd456c1c772cfd9",
+    "no_model-c64-pair03-shared/launch.json": "5139949620afc72a350f29eb90a36b8fb65f6edec880253c96870f2be6f3d017",
+    "no_model-c64-pair03-shared/measured.json": "ea59283b9867cb1c4a2300e3a4cb77d4efe0a01282ca33f752445f9f5e70a165",
+    "no_model-c64-pair03-shared/run.json": "91101e79c2fa9c7cc109be7a031b7f82b7dc46f030a54d0c3ea67d57b03923ae",
+    "no_model-c64-pair03-shared/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c64-pair03-shared/warmup.json": "645a90724ea5d7df529ac112f12b2f8c1e97b6cfae6a5275e770e223a59a1fda",
+    "no_model-c64-pair03-worker/completion.json": "988385fc7b6df6c94f33ee459aad84c6fdf7e040386d170c3569fbaea36a8e4a",
+    "no_model-c64-pair03-worker/exit.json": "bfeab04c6f79f974f0fa4d2f8cdce5450a10be1c6437d3261a0309cf98b651c0",
+    "no_model-c64-pair03-worker/intent.json": "7c2e6588e559eb7273d0517e971d4461d149e2a6c4f2536c79b1f4e2bc8c2aca",
+    "no_model-c64-pair03-worker/launch.json": "ac6d9d6e42db4104b94b9799e65dd05eb4897bbea1c06b2fc726d6c6d6fccad6",
+    "no_model-c64-pair03-worker/measured.json": "4c25eedaf1dd27dd23940d06aa0a1e3c656bebbfce11220da473661331bede0b",
+    "no_model-c64-pair03-worker/run.json": "c2658638604673f4134cf1860fcb5578d4edc9d8b5c7e8ea288daaee10984812",
+    "no_model-c64-pair03-worker/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c64-pair03-worker/warmup.json": "27397292b8dac8cffe447335e8291059140f5a1617438b5241e3f4d5c0fa6617",
+    "no_model-c64-pair04-shared/completion.json": "0ea83eddad88ecbb28d602dccea559a188134440c5da12814e92488a3cff43ff",
+    "no_model-c64-pair04-shared/exit.json": "fc497083eb53a296051942226e7376b55eef1bc73ef9679071e5fc641776ced9",
+    "no_model-c64-pair04-shared/intent.json": "623de351d31f9a4603e6c2bdf2ecf24321f1425796bed0ac910b134f54386b95",
+    "no_model-c64-pair04-shared/launch.json": "6684bb3e341f5fec86b84a4c3a9eb1bdbca0add9b4ba8345cacac6286cc0ebc0",
+    "no_model-c64-pair04-shared/measured.json": "aecb2bb40c41a8fcd885eb228ce1c4a744cafc71ca2172efaa8847186188c2c3",
+    "no_model-c64-pair04-shared/run.json": "cfa166b26a49da6d7c63bcc60a7befc84f94b5ad088011a7d97b6c3d3834dd08",
+    "no_model-c64-pair04-shared/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c64-pair04-shared/warmup.json": "939bbdc251e49638e029d6fe3975c122261e95be2fd5614985a3ead4f63912c9",
+    "no_model-c64-pair04-worker/completion.json": "bd80bd2a144484bde2d43c4c852716dc76f135795279d998a08786f703d68379",
+    "no_model-c64-pair04-worker/exit.json": "c5ce16d1f32d91e6e0c38debf5da3223d026739f27257d359ab69056b382774e",
+    "no_model-c64-pair04-worker/intent.json": "a375fc0861d8e598be598b8429ed3737c2ab88ced5b1b9320364e959b27b29d9",
+    "no_model-c64-pair04-worker/launch.json": "a3be68ebb614a5c1e4e3ae397b0d456c7bcb23d4a4472628d5f730bd8e25ca00",
+    "no_model-c64-pair04-worker/measured.json": "6752264b5ec4c7c14dac61d226fb025e6eca095515bc34db7035e8206d036e60",
+    "no_model-c64-pair04-worker/run.json": "843de915e8356a87b1565b65ea08611da5ef8d677df4adc92b581fb5da7017f2",
+    "no_model-c64-pair04-worker/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c64-pair04-worker/warmup.json": "eafb184548ec776b9f0defd527b86ccd5c7332b3475607d7d09785889d8a7f9d",
+    "no_model-c64-pair05-shared/completion.json": "36b7665881f933d54045442c45a3ce1e3cecc4344c018f0bfd87bd9bb6293abc",
+    "no_model-c64-pair05-shared/exit.json": "425749827b5b60c025dbd11448ce80e1212c86a5261f86dcd57db77f751935c6",
+    "no_model-c64-pair05-shared/intent.json": "7757dc5d033a32710579a4f766be99dec96879a073a24568d7163c38a0e1714f",
+    "no_model-c64-pair05-shared/launch.json": "120af5d3ff93b599299d6cf12c6df2873e91d7027a33cca3392e537f8f59c98b",
+    "no_model-c64-pair05-shared/measured.json": "1ac0252e3f24500ff9a896f9aae93dde76939b1379a28a5700cad9e50a9610b0",
+    "no_model-c64-pair05-shared/run.json": "d6a83afa3822c0e4549c6c6549cfb33d700d725e415f57075e027906d5473830",
+    "no_model-c64-pair05-shared/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c64-pair05-shared/warmup.json": "9bbb7e155029b0898b95d5d278adcaeedb6caa7b2f6de560a061a83159348be6",
+    "no_model-c64-pair05-worker/completion.json": "326648d5bf86dc1e3ffe2b760571f13b7e87d23f548a1954e39eec998226c182",
+    "no_model-c64-pair05-worker/exit.json": "c39f99f98d211047b6d979fe1b6b45d595fa2123a44ff52089ecc7fe241268c6",
+    "no_model-c64-pair05-worker/intent.json": "fc095ac25a2c9cbb9e2dcb040a1816fac81d9c12eacf87aef0c26b8d64ba1ba6",
+    "no_model-c64-pair05-worker/launch.json": "099beee5a5f3c532b742756e468309cc59708fd18ff1c053923a0ce5d0802084",
+    "no_model-c64-pair05-worker/measured.json": "3c3e4b446420f47852529df1abf95810b9eb145f95b7c404c87f31a974679f2e",
+    "no_model-c64-pair05-worker/run.json": "b729ecbf4bdcb9823ff73b84ba668ddbbdec4134fe0b34672597af4444b140ef",
+    "no_model-c64-pair05-worker/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c64-pair05-worker/warmup.json": "a59f1a5c9d6386bf54e494f71a6ba6f40c9167c2c8017e62cff9fe9318624c67",
+    "no_model-c64-pair06-shared/completion.json": "0c1b564d38500580e6591d51abc43235c8a01b8013b0c5147caeea18927901f8",
+    "no_model-c64-pair06-shared/exit.json": "43b5a462487cd6e8a43d9d3a28f2a8a534ee68a789e9cec9b67a53382c121884",
+    "no_model-c64-pair06-shared/intent.json": "b74ed6fc5a5ecc9c44de2fec9d94452a8e42ae30f45a757bcc1dfaafb564a27e",
+    "no_model-c64-pair06-shared/launch.json": "2476d757c541c79b8838f8792da06aebc3fe718c9a05e5a97beadff5ae04e6b5",
+    "no_model-c64-pair06-shared/measured.json": "fbd1af4b6c6072eaffc25f0a556bf040c0319a9ecff9d5c76572642b2fb2c06d",
+    "no_model-c64-pair06-shared/run.json": "ba993244346376d56c3c71a0748b6c70e279853d6edb9138748a1f5484c8cbd4",
+    "no_model-c64-pair06-shared/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c64-pair06-shared/warmup.json": "ed9b26a82f4553573d9b25390841915d4bda3b02d39576abfdd481f2702b205c",
+    "no_model-c64-pair06-worker/completion.json": "789236da8e2a71716048aa74bc7ccf37e116769f08b312a392a2e7bec778978c",
+    "no_model-c64-pair06-worker/exit.json": "40a7eb8970467a616e08cc491742012b429e29d934c76f583a2ab510da008c11",
+    "no_model-c64-pair06-worker/intent.json": "7c5d64f056c9c3db8ec5b186d9800efb7f7e7c8f20b5cf82b1400f2eb67b8b4c",
+    "no_model-c64-pair06-worker/launch.json": "724153711f882270368491c2838d2416190c71d6c4d4577b474f1aabc83a02d5",
+    "no_model-c64-pair06-worker/measured.json": "4edc58432a5ad59d7022c7e7f77bf033e2f27f3f1119122d7d06f13a1f2f1127",
+    "no_model-c64-pair06-worker/run.json": "b640024604bc5fec358e7d7af7da546d4ad396da32a893e744bbbe256c5e869a",
+    "no_model-c64-pair06-worker/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c64-pair06-worker/warmup.json": "c83c0ac7103a8b480ad6a33f47515dfd851e9c80163952b3d5a3d420b8b4fef3",
+    "no_model-c64-pair07-shared/completion.json": "8d4033e3eda8d66500797cbc05952c0dbeea963854046cd31fe11f8e3638a942",
+    "no_model-c64-pair07-shared/exit.json": "e4377edcfa8555ec92d8bdf703bf52408f34f0374580063ec3ef892e9e132b5a",
+    "no_model-c64-pair07-shared/intent.json": "56012a996903ef3595e4b0032a19c19e4ef5ac6c934a1446d246ab3275f0ddfc",
+    "no_model-c64-pair07-shared/launch.json": "d068ad9773fa450a2031192a34385d1d9d21fd1a2fcd8681c2743618fb984a1c",
+    "no_model-c64-pair07-shared/measured.json": "09f533dc22bb11e10dc0cc73f7e1ffb399ea9e863c274d8fa900d631f6ea2095",
+    "no_model-c64-pair07-shared/run.json": "d8ab58dc86b0dfb06fe983b8c5b1541d318127d07a24f78e6d772cef0c932daf",
+    "no_model-c64-pair07-shared/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c64-pair07-shared/warmup.json": "c396bcf8c6a3dc9d35426f6ff4a63f20a52f8108e4fc5e4480f0179f6efd01e3",
+    "no_model-c64-pair07-worker/completion.json": "53b538e3d6932be5d8276627ef89c1b5fa4492e27a983ab50dff314a9d6b2c38",
+    "no_model-c64-pair07-worker/exit.json": "6a39772466be840711ce9a21a3d979aef3f0b3f4f71ccc623c2c884ca57c8f0a",
+    "no_model-c64-pair07-worker/intent.json": "5137ac787b40460b054c65eadc48f68f826855e9d797f566be6f5d01d368fdff",
+    "no_model-c64-pair07-worker/launch.json": "097b1db46735a07046e46abbc62c1ec7de2bb04f18b541b7cf2d15f7b20834de",
+    "no_model-c64-pair07-worker/measured.json": "f84038bb2cb10efd00b15d0977a8d311c1b049fe992926d03f808643469e7bdf",
+    "no_model-c64-pair07-worker/run.json": "9ddcbcf2c19ee08295b49e4f74f5d20db4271775c4868b424b5e94581fc6b969",
+    "no_model-c64-pair07-worker/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c64-pair07-worker/warmup.json": "cfa57193d2ecff6afccbeb22125c545140248ebbf166a3bbdc9d361b5b5c45e0",
+    "no_model-c64-pair08-shared/completion.json": "2aba8daed97cead7db942c0c03f383530a77ebaa0541cd26e57acb584afe699b",
+    "no_model-c64-pair08-shared/exit.json": "9d98ab1a66116581a51cc221b21594626ff003d07bc2a9b7879a766eb9774d49",
+    "no_model-c64-pair08-shared/intent.json": "b73559b8ce3647eeca0cbef132a2c65cbf02f18147c6d1b3af1c447eb9e3f5f1",
+    "no_model-c64-pair08-shared/launch.json": "e0e8d9cc429a08256c778e84b6646d1171dacf539c456183fa806b0ce512f67c",
+    "no_model-c64-pair08-shared/measured.json": "a11f8f9c24c2255864b5223e1966378eee7156cd90c5fc802ff23f085c98b301",
+    "no_model-c64-pair08-shared/run.json": "3b12979b965137c55ef76e3dd0a6a4b71023d0e9ebe265072f0e32e0d59d44f8",
+    "no_model-c64-pair08-shared/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c64-pair08-shared/warmup.json": "f7415a1f1044fecbf891c09719b847490e732fa3fada3d57e0f3a7c71ed148ee",
+    "no_model-c64-pair08-worker/completion.json": "7d81b8cf13b60cb5e5aa0889901280f42971933ac30152835bf71838c6a8a424",
+    "no_model-c64-pair08-worker/exit.json": "31fa929ab3a2fbe1ca708a0d5f1d13367b47fc55bd8bff8809e9ab593094f442",
+    "no_model-c64-pair08-worker/intent.json": "c6a0347f3c5ee57422df16f84b129324a244e1968aba9a99af9ce4ee726bb8ba",
+    "no_model-c64-pair08-worker/launch.json": "6198d4ee2ba1e8b2bab3fbc347f4067c04451562c99a2fcf7e9230f781b5f892",
+    "no_model-c64-pair08-worker/measured.json": "1af61c33ab5e586154b3de1c01b2685f7fec443ead87b958961f54ece7a1dae9",
+    "no_model-c64-pair08-worker/run.json": "b32f683006139cd9e29e03465c403e4240ca35f5a606a3319c236418576b8119",
+    "no_model-c64-pair08-worker/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c64-pair08-worker/warmup.json": "8fef4ff7f0a6acb3bf5f8f6a5f2a03522d9d23edbc306d323bd94aa0c66d9d63",
+    "no_model-c64-pair09-shared/completion.json": "98c4899aec589d0d7bf90da0f31ed98429cc244782845c83713d99ec9ad76d59",
+    "no_model-c64-pair09-shared/exit.json": "90ac195f91bc13322217f200a6abc08f1c3a8271d4da2803f24b67551c8b5cea",
+    "no_model-c64-pair09-shared/intent.json": "fae356f3983f91ea587602dc1f19e77fd09ef0a4736822a69450b8eb03fc2157",
+    "no_model-c64-pair09-shared/launch.json": "9d4d1c7abf4dc51fa77f53aad79fe621e5d4fe1a91753ea986c864491d222bdf",
+    "no_model-c64-pair09-shared/measured.json": "a6fb2b8cff198dcb6e769467d1069da6b644d239855b43972855339f01e02fd4",
+    "no_model-c64-pair09-shared/run.json": "5c5ca9043dabd0f6ce19c012977e3fc050d952eac969e7970ae41737554c5dae",
+    "no_model-c64-pair09-shared/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c64-pair09-shared/warmup.json": "e80cc665506fa2391051f22ba4e02612e3564b43335e945d13a9c3553ddcc085",
+    "no_model-c64-pair09-worker/completion.json": "5e60b2ccc396761bff5e14e93d0a655e682a3943a4816e0affdb2d777fb89937",
+    "no_model-c64-pair09-worker/exit.json": "9d8517eff939b5b92924c79481712eafad7683d4706729a8f5773539bb192a06",
+    "no_model-c64-pair09-worker/intent.json": "d96a41705f93829ac39d7aca07f67d06299216b0defe2c7edfb07ca81182ab0d",
+    "no_model-c64-pair09-worker/launch.json": "7b5975a667183be702837619f36a3e04289a9c62007d520ae6406c9597341acd",
+    "no_model-c64-pair09-worker/measured.json": "d77710043f43b26b566132b87fd856477e81b0ba70c4044df8998132f3d63412",
+    "no_model-c64-pair09-worker/run.json": "b187b4f2f49686859bc0f810ba2a5857303a0c7324aa0d38f4d470cbd0e30948",
+    "no_model-c64-pair09-worker/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c64-pair09-worker/warmup.json": "596a8f39817c4688c1becf02d75318ede925a76c5bd012cd5d1efc0a40002f8c",
+    "no_model-c64-pair10-shared/completion.json": "bcb8e234afcd3dd3d6cefb76a701554cf64330317baa08422a24cd7c3c7d7e7a",
+    "no_model-c64-pair10-shared/exit.json": "5a30acbfd8068f42225400f9c41900a278d1e92cf41fc84b678ee9c4a67de3e8",
+    "no_model-c64-pair10-shared/intent.json": "67b7a13629a82b20cfb10b6d8caa7f28eb6104e812e9232d0a293f1f8a0beda5",
+    "no_model-c64-pair10-shared/launch.json": "a01b13177545bf28b22531e09bcfca017e63fdf28cc76787419adb3654280ad7",
+    "no_model-c64-pair10-shared/measured.json": "47d5edc67d7455a26af771ca3e229864a602ceea92ba8fa0a2ccbbe989d14857",
+    "no_model-c64-pair10-shared/run.json": "674264eb212fa050e85b131bbf726a30e5dd3807b77f2f85a906b8b08bfa977a",
+    "no_model-c64-pair10-shared/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c64-pair10-shared/warmup.json": "046318a1d1a31e1d55e0fd67e7ce74fb2ff4c5b6dc437106cac8cf950318b917",
+    "no_model-c64-pair10-worker/completion.json": "dc2aa45078c0a7f579f995ab052583ccb8e39c225c40ebdba963a295a6200d9b",
+    "no_model-c64-pair10-worker/exit.json": "b8143270113c8c7bc5055991b14706e512d1b5cd91de69413530df69b3c5ecad",
+    "no_model-c64-pair10-worker/intent.json": "bf1d0d49840e5a8208f4dd84f31a4694f1c0c43ac2ffec17eb1814a6456197b2",
+    "no_model-c64-pair10-worker/launch.json": "e34df39186309357db100221fb062ccb874511e865698a0a7f20e860885f5a05",
+    "no_model-c64-pair10-worker/measured.json": "92b4d433dfce0dc6f61a3311e73fbd157811f692cfc471b6fa6184afed581d64",
+    "no_model-c64-pair10-worker/run.json": "a9a50e35ecfca97c7a35bf5d1e568e178f9f9863b886d494ceac6246cf0e7251",
+    "no_model-c64-pair10-worker/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "no_model-c64-pair10-worker/warmup.json": "baed23ee83c04df9488ef265152780ed111871883a8f5f0be0cc4760fbfaff9b",
+    "sleep-inhibitor-exit.json": "f36c6a59f10123babc13ce281eed22db2b8fcff8dcf7918c2864c38e34f66ea8",
+    "structural_detector-c1-pair01-shared/completion.json": "333bb8f05b36e82067076896771401d93d1dd43095d259b2dd31869baafc1ffd",
+    "structural_detector-c1-pair01-shared/exit.json": "be548359a98865a94f1e9c604800caf4ea624d64f3fd8efb236712f3f977d75d",
+    "structural_detector-c1-pair01-shared/intent.json": "aac075f916661434852a643835fbe0cf1f269835860f80f185c750ff5d399965",
+    "structural_detector-c1-pair01-shared/launch.json": "c8321938521c0639f5329dcc0534d09da6473eb9c7b2f931d0c4c88eba602a65",
+    "structural_detector-c1-pair01-shared/measured.json": "0584671ea10dd78f3889572ea890142f4c14e9922f9855d66b0b2802e3917c69",
+    "structural_detector-c1-pair01-shared/run.json": "0f23ed4f4a6f0ad930b3f8aa8d8fcbb32a342dbdc4860e526f6283bf325f9f83",
+    "structural_detector-c1-pair01-shared/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "structural_detector-c1-pair01-shared/warmup.json": "ca489cf437ca60a7da7b08a52916c940aeb777acae4b03b7cec6da16a3e04ef7",
+    "structural_detector-c1-pair01-worker/completion.json": "c55384c260b3ccd2fa3992d7c700053c3be5e6d9e9e164a826be584fa072882f",
+    "structural_detector-c1-pair01-worker/exit.json": "e6f920ac14f205e55b458a6980e4daba26e816e6ba43c8227f3bce178ed1724f",
+    "structural_detector-c1-pair01-worker/intent.json": "c9248fa27569601b2861a23fd0cebb74c11f3de95c1da27580c7b2e76c1af27a",
+    "structural_detector-c1-pair01-worker/launch.json": "236456a59cb8baebb0856d9e22c396de81ed97bd88eda89bd39875d341b92694",
+    "structural_detector-c1-pair01-worker/measured.json": "f47098cd989af4f89f8095fdd1e41691d76dcd33d98218086e64b537e99e4a9c",
+    "structural_detector-c1-pair01-worker/run.json": "67501edc812c847cc9b50e6ffaea3c45a01354db9dbae48ba2b4b8257c8af886",
+    "structural_detector-c1-pair01-worker/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "structural_detector-c1-pair01-worker/warmup.json": "7622e6b8847d9638a3bc84e20a6ea99b6f2e506373c70c01e7d652cdf1386d08",
+    "structural_detector-c1-pair02-shared/completion.json": "5ad8cfbaa5b6e2a636ff9f70af72d9ebf69b86ca24e87ec53016a595bf387869",
+    "structural_detector-c1-pair02-shared/exit.json": "345568a4d48fe3aafe16e4ca69129e335277cc503204b6f44ffd6986bef6f067",
+    "structural_detector-c1-pair02-shared/intent.json": "a8d3ae19b4c090f8e0ac022f5a844b2451d45170a5462f897b2dc063b824cce1",
+    "structural_detector-c1-pair02-shared/launch.json": "27d94d52d06ff18faaa213f10c491f9602171a89fcba2510a744b88a6f52001c",
+    "structural_detector-c1-pair02-shared/measured.json": "c5fa71ea96b83d345fc2acf4f7a18110d8ed56c91691bc9088a5207edbca2ff7",
+    "structural_detector-c1-pair02-shared/run.json": "6a435d3ac61c087e52967d83638852aec68132425ead334f26175a65492b4544",
+    "structural_detector-c1-pair02-shared/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "structural_detector-c1-pair02-shared/warmup.json": "49f9a25872dc950bf85e50f74e6f64b24bd516fbc4ef59125dcdaeba3a9e0108",
+    "structural_detector-c1-pair02-worker/completion.json": "de46af5909cf5c6ec19bbabe9ca6124292db5eed278821ee766ca99d39b4d299",
+    "structural_detector-c1-pair02-worker/exit.json": "e18564f6b7271a5068b26e1e29236c740ce4271567c8b87879451f6cdb148263",
+    "structural_detector-c1-pair02-worker/intent.json": "927a3b1e1a621bc5ee44fd773d1728f82d0826fa39c63576e13baa88ebc6c8cf",
+    "structural_detector-c1-pair02-worker/launch.json": "cb781e4f7feabdedde34e1189c83f6d625cf3c81bd9ae04612cd614b1aeb49b1",
+    "structural_detector-c1-pair02-worker/measured.json": "4e04be7072784a2e9dd09c6bada96b235baa9ae8fdf4edc607c6e5bbf2f617f5",
+    "structural_detector-c1-pair02-worker/run.json": "ae06a396a03f18c97f6e20ae6fc9cdc92ea0eecdadd7a6535981ef185ce4d916",
+    "structural_detector-c1-pair02-worker/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "structural_detector-c1-pair02-worker/warmup.json": "c37073c0613c60be73d2150df0f175064d62359649f239c346603d2897b9c072",
+    "structural_detector-c1-pair03-shared/completion.json": "f62c33c2d6c86451f3f7b9346a7c3187452e525a4ef7539551525e13233fea9e",
+    "structural_detector-c1-pair03-shared/exit.json": "920c0b0aaaa2fdea2d483d5f6217d08712fc6a72d5fb483e2ff7b578b088c37e",
+    "structural_detector-c1-pair03-shared/intent.json": "816f146b40696a5e89781e56fe768defffb65cbcc39fd66b9cb9998a58ee17f8",
+    "structural_detector-c1-pair03-shared/launch.json": "24586a4be783dbd681c044423bcf0a8f0b09cdd8fc28e3d3fd37143c4339cf17",
+    "structural_detector-c1-pair03-shared/measured.json": "e1a604f3a34299d124f856a4004974429a2c0734b40817e1ba4ccded56349ddb",
+    "structural_detector-c1-pair03-shared/run.json": "1370214a7d32b1bcaa995db9548249963b5eeac3c5f91b6b9c9a9ebdcb1c0662",
+    "structural_detector-c1-pair03-shared/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "structural_detector-c1-pair03-shared/warmup.json": "ba27d991d18c08ea4122ccc815e02fb9541b63c99fcc9d9ef7e5c96bcd6b2bd5",
+    "structural_detector-c1-pair03-worker/exit.json": "e9909c0bff83a1c4061d7201dfa847e1e7e8df1125c70373fd41534a04361715",
+    "structural_detector-c1-pair03-worker/failure.json": "ca7621b9d103024e762d475465fee21b89c444a1f3bc0381f04d3ad214ede715",
+    "structural_detector-c1-pair03-worker/intent.json": "dae9870ea10a620b18d9e5fcbb78c548430ea9b60225eea656893f7665534de1",
+    "structural_detector-c1-pair03-worker/interrupted.json": "6838c7cc66526776c7c41e3f769cce856282952554d1da5d2ea1a7dab078a8d3",
+    "structural_detector-c1-pair03-worker/launch.json": "ff93a17f9fe785eed17597e25567fe099b03d67038f38743d67d3118da1c04b1",
+    "structural_detector-c1-pair03-worker/server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "structural_detector-c1-pair03-worker/warmup.json": "7db9699b9608fe9e4692a4257808488d94deededb78a2e8b6b093fcabdf0b363",
+    "synthetic-manifest.json": "78367153247b6329b4641c50bd47a42c3a5aad192d9090521cc4d9be2a63d618"
+  },
+  "primary_structural_c64_arms_completed": 0,
+  "pooling_into_recovery_permitted": false
+}

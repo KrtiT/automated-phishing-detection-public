@@ -1,0 +1,22 @@
+CURRENT DELIVERY PATHS — 2 OCTOBER 2026
+
+Read RESEARCH_DATA_DICTIONARY.txt for the unchanged original/D/S field definitions,
+units, denominators and interpretation, and ORIGINAL_DATA_DICTIONARY.txt for the
+complete original-study schema. Its three namespace names resolve here as:
+aggregate-data/original/, aggregate-data/detection-D/, aggregate-data/service-S/.
+
+Each aggregate-data/<basename> alias is exactly aggregate-data/original/<basename>.
+These aliases support Appendix A; they are not another sample or another result.
+In particular, aggregate-data/calibration-bins.csv and verification.json concern
+the ORIGINAL study. Use detection-D/ for the later benchmark and service-S/ for
+the separate service schedule. Never pool the three namespaces.
+
+provenance/advisor-deck-scope-crosswalk-20261001.md and
+provenance/Historical_Evidence_Supplement_2026-10-01.md are byte-identical aliases
+of their provenance/original/ counterparts. Other contracts and environment
+identities retain their original/followup/followup-source subdirectories.
+
+The new manuscript and layout-audit/ are current. prior-edition/ is immutable
+history, including the scholarly manuscript, editorial-audit/ and earlier editions.
+followup-20261001/ is a selected reader-facing evidence subset; see its README.
+No alias grants access to the controlled private research inputs.

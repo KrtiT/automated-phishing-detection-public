@@ -1,0 +1,68 @@
+{
+  "scope": "Primary-source checks for seven new references; not a re-verification of every existing cited work.",
+  "sources": [
+    {
+      "id": "axelsson",
+      "evidence": ["sources/axelsson-crossref-second.json"],
+      "read_scope": "Publisher-deposited abstract and bibliographic metadata, not the complete article.",
+      "locator": "abstract; volume 3, issue 3, pages 186–205",
+      "supported_claim": "Base rates and false alarms constrain the posterior probability that an intrusion alarm identifies an intrusion.",
+      "manuscript_use": "Section 2.4: motivation for examining false-positive behavior for rare events; does not attribute the study's 1% ceiling to the paper."
+    },
+    {
+      "id": "dempster",
+      "evidence": ["sources/dempster-crossref.json", "sources/dempster-author.pdf", "sources/dempster-author.txt"],
+      "read_scope": "Introduction and Section 4.3, Finite Mixtures, in the complete article copy hosted by MIT.",
+      "locator": "Section 4.3, printed pages 15–16",
+      "supported_claim": "Finite-mixture EM uses unobserved component indicators, conditional membership probabilities and weighted parameter updates.",
+      "manuscript_use": "Section 2.6: statistical foundation for mixture estimation; no claim that convergence validates drift detection.",
+      "metadata_note": "The modern publisher-deposited article record is pages 1–22. The archived scan is pages 1–38 including the discussion and authors' reply. The reference uses the article range, not the combined discussion range."
+    },
+    {
+      "id": "adamw",
+      "evidence": ["sources/adamw-arxiv.html", "sources/adamw-paper.pdf", "sources/adamw-paper.txt"],
+      "read_scope": "Author manuscript title, abstract, introduction and Section 2; accepted-paper version 3 dated 4 January 2019.",
+      "locator": "Pages 1–2, 'Published as a conference paper at ICLR 2019'",
+      "supported_claim": "AdamW decouples weight decay from the gradient-based optimization update.",
+      "manuscript_use": "Section 3.6: attribution for the optimizer already specified and used; no training settings changed."
+    },
+    {
+      "id": "tranco",
+      "evidence": ["sources/tranco-publisher.html", "sources/tranco-paper.pdf", "sources/tranco-paper.txt"],
+      "read_scope": "NDSS publisher identity, complete-paper abstract and introduction.",
+      "locator": "Printed page 1; DOI in first-page footer",
+      "supported_claim": "Popularity-ranking composition, stability, representativeness and susceptibility to manipulation matter to security measurements; popularity is not a verified benign label.",
+      "manuscript_use": "Sections 2.3 and 5.3: rationale for treating Tranco as label-free control evidence rather than certified negatives.",
+      "identity_note": "First author is Victor Le Pochat. Publisher and paper author lists are used rather than inferred initials."
+    },
+    {
+      "id": "lipton",
+      "evidence": ["sources/lipton-publisher.html", "sources/lipton-paper.pdf", "sources/lipton-paper.txt"],
+      "read_scope": "PMLR citation metadata and complete-paper abstract/introduction.",
+      "locator": "Printed page 3122; label-shift factorization and contrast with covariate shift",
+      "supported_claim": "Label shift changes P(Y) while preserving P(X|Y); the authors propose black-box shift estimation and correction.",
+      "manuscript_use": "Section 2.4: distinguishes fixed-rate prevalence projections from estimated deployment prevalence or implemented shift correction. Holding class-conditional rates fixed is narrower than asserting that every aspect of P(X|Y) has been verified unchanged."
+    },
+    {
+      "id": "tail",
+      "evidence": ["sources/tail-crossref.json", "sources/tail-author.html", "sources/tail-author.txt"],
+      "read_scope": "Publisher-deposited metadata and extended author-institution abstract, not the complete article.",
+      "locator": "Google Research abstract beginning 'Systems that respond to user actions very quickly'; CACM 56(2), 74–80",
+      "supported_claim": "Latency variability and the slow tail matter to the responsiveness of large interactive services.",
+      "manuscript_use": "Section 2.9: motivates explicit tail-latency measurement, without claiming a scale match, diagnosing this study's exact mechanism or borrowing its numerical latency target."
+    },
+    {
+      "id": "schroeder",
+      "evidence": ["sources/schroeder-publisher.html", "sources/schroeder-paper.pdf", "sources/schroeder-paper.txt"],
+      "read_scope": "USENIX publisher metadata and complete-paper abstract/introduction.",
+      "locator": "Printed pages 239–240, open/closed workload definitions and Figure 1",
+      "supported_claim": "Closed workloads make arrivals depend on completion; open workloads generate arrivals independently. This distinction affects latency and scheduling behavior.",
+      "manuscript_use": "Sections 2.9 and 3.12: interpret the existing fixed-concurrency harness and avoid converting closed-loop throughput into an externally imposed arrival-rate capacity claim."
+    }
+  ],
+  "not_added": [
+    {"source": "Brier (1950)", "reason": "Metadata located, but existing Gneiting–Raftery coverage already supports the scoring-rule discussion; an extra foundational entry was not needed for this bounded pass."}
+  ],
+  "existing_reference_reused": "Schwarz (1978) is now also cited at the point where BIC selection is specified in Section 3.9.",
+  "retrieval_limits": "Blocked publisher/OpenReview requests, a missing author PDF and one rate-limited request are preserved in retrieval logs. Alternate authorized public copies or publisher abstracts support the stated bounded claims."
+}

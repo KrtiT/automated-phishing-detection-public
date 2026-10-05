@@ -1,0 +1,102 @@
+[
+  {
+    "file": "axelsson-crossref.json",
+    "url": "https://api.crossref.org/works/10.1145/357830.357849",
+    "status": "not_retrieved",
+    "error": "HTTP Error 429: Too Many Requests"
+  },
+  {
+    "file": "axelsson-author.pdf",
+    "url": "https://www.cse.chalmers.se/~sax/tisec.pdf",
+    "status": "not_retrieved",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "file": "dempster-crossref.json",
+    "url": "https://api.crossref.org/works/10.1111/j.2517-6161.1977.tb01600.x",
+    "resolved_url": "https://api.crossref.org/works/10.1111/j.2517-6161.1977.tb01600.x",
+    "status": "retrieved",
+    "bytes": 17426,
+    "sha256": "2c09b660d3bfaa3a346569508be3475ee5e0ad9a2d95db401787e4674fb0d838"
+  },
+  {
+    "file": "dempster-publisher.html",
+    "url": "https://academic.oup.com/jrsssb/article/39/1/1/7027539",
+    "status": "not_retrieved",
+    "error": "HTTP Error 403: Forbidden"
+  },
+  {
+    "file": "adamw-openreview.json",
+    "url": "https://api.openreview.net/notes?id=Bkg6RiCqY7",
+    "status": "not_retrieved",
+    "error": "HTTP Error 403: Forbidden"
+  },
+  {
+    "file": "adamw-paper.pdf",
+    "url": "https://openreview.net/pdf?id=Bkg6RiCqY7",
+    "status": "not_retrieved",
+    "error": "HTTP Error 403: Forbidden"
+  },
+  {
+    "file": "tranco-publisher.html",
+    "url": "https://www.ndss-symposium.org/ndss-paper/tranco-a-research-oriented-top-sites-ranking-hardened-against-manipulation/",
+    "resolved_url": "https://www.ndss-symposium.org/ndss-paper/tranco-a-research-oriented-top-sites-ranking-hardened-against-manipulation/",
+    "status": "retrieved",
+    "bytes": 69934,
+    "sha256": "59c363c35307972fce527d4b79a1eb307376c917e4c480929d7159fc9076f763"
+  },
+  {
+    "file": "tail-publisher.html",
+    "url": "https://cacm.acm.org/research/the-tail-at-scale/",
+    "status": "not_retrieved",
+    "error": "HTTP Error 403: Forbidden"
+  },
+  {
+    "file": "tail-crossref.json",
+    "url": "https://api.crossref.org/works/10.1145/2408776.2408794",
+    "resolved_url": "https://api.crossref.org/works/10.1145/2408776.2408794",
+    "status": "retrieved",
+    "bytes": 5910,
+    "sha256": "e1d0315f5c86762c8689057bb530a3d1a8c6f8d58ccfac4e5e087c3b6feef4fe"
+  },
+  {
+    "file": "schroeder-publisher.html",
+    "url": "https://www.usenix.org/legacy/events/nsdi06/tech/schroeder.html",
+    "resolved_url": "https://www.usenix.org/legacy/events/nsdi06/tech/schroeder.html",
+    "status": "retrieved",
+    "bytes": 8008,
+    "sha256": "bf427fa20b25c45436be083f2d525498f20cde9fe9bf461f5e8c77a3c0060381"
+  },
+  {
+    "file": "schroeder-paper.pdf",
+    "url": "https://www.usenix.org/legacy/events/nsdi06/tech/full_papers/schroeder/schroeder.pdf",
+    "resolved_url": "https://www.usenix.org/legacy/events/nsdi06/tech/full_papers/schroeder/schroeder.pdf",
+    "status": "retrieved",
+    "bytes": 353404,
+    "sha256": "8ca72bd7209637b68c7fce12cf1656f22f950d412cf1a3f47bdfaa5683f2a54f"
+  },
+  {
+    "file": "lipton-publisher.html",
+    "url": "https://proceedings.mlr.press/v80/lipton18a.html",
+    "resolved_url": "https://proceedings.mlr.press/v80/lipton18a.html",
+    "status": "retrieved",
+    "bytes": 14924,
+    "sha256": "a3110064aa5891db4ab2b87c36db0bf6bdb2a869a2420e9ce9339aff42d31f9b"
+  },
+  {
+    "file": "lipton-paper.pdf",
+    "url": "https://proceedings.mlr.press/v80/lipton18a/lipton18a.pdf",
+    "resolved_url": "https://proceedings.mlr.press/v80/lipton18a/lipton18a.pdf",
+    "status": "retrieved",
+    "bytes": 1026797,
+    "sha256": "f0b042df501321fc422fc14d733f857723df6e7e9d8635ef84c90d26d5480cee"
+  },
+  {
+    "file": "brier-crossref.json",
+    "url": "https://api.crossref.org/works/10.1175%2F1520-0493%281950%29078%3C0001%3AVOFEIT%3E2.0.CO%3B2",
+    "resolved_url": "https://api.crossref.org/works/10.1175%2F1520-0493%281950%29078%3C0001%3AVOFEIT%3E2.0.CO%3B2",
+    "status": "retrieved",
+    "bytes": 1728,
+    "sha256": "bfe6dc732bf178bb3c1aeafa06ce80e39e095a2fad574663262b60893b179e17"
+  }
+]

@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "contract_id": "evaluation-manifest-v1",
+  "status": "specified_synthetic_integration",
+  "protected_evaluation_ready": false,
+  "scope": "Prepared-record replay sampling and full-stream saved-score integration. No source reader, protected-data pass, model execution or new hypothesis result is supplied by this supplement.",
+  "matrix_sha256": "aad6b7cf8d8416bfb37ec19503dbed031c15767ea96d9b76486ca3f3fedebe1b",
+  "evaluation_contract_sha256": "d55e504c4f2f89dff93de9fbf121460c02e5175fefcf206a3a74d37de4c0ab6f",
+  "replay_manifest": {
+    "algorithm_id": "replay-manifest-v1",
+    "numpy_version": "2.2.6",
+    "seed": 20260816,
+    "input": "Materialized prepared group_test records from the sole frozen PhiUSIIL source. Authenticate preparation and pinned-PSL provenance upstream. Validate every supplied candidate before capacity checks or RNG construction; malformed rows never silently disappear.",
+    "fields": ["record_id", "raw_url", "canonical_url_sha256", "registrable_domain", "is_phishing", "split"],
+    "record_identity": "phiusiil-row-v1:{64-lowercase-hex source CSV SHA-256}:{16-lowercase-hex one-based source ordinal}; common source hash, unique IDs, nonzero ordinal",
+    "validation": "Exact integer label 0 or 1 (not bool or float); split exactly group_test. Unique canonical hashes must equal SHA-256 of canonical-url-v1(raw_url) UTF-8. Prepared registrable domain must be canonical ASCII with at least two labels, no IP literal, and equal or dot-suffix-match the URL hostname. These checks do not substitute for pinned-PSL provenance. Raw request spelling is preserved.",
+    "prevalence_basis_points": [10, 100, 500],
+    "class_counts": [{"basis_points": 10, "negative": 9990, "positive": 10}, {"basis_points": 100, "negative": 9900, "positive": 100}, {"basis_points": 500, "negative": 9500, "positive": 500}],
+    "candidate_order": "Sort all validated candidates lexicographically by stable record_id; preserve that order when forming separate label-0 and label-1 pools.",
+    "rng": "Fresh numpy.random.Generator(numpy.random.PCG64(numpy.random.SeedSequence([20260816, 1, prevalence_basis_points, purpose]))) for each purpose; purpose 0=negative selection, 1=positive selection, 2=final order.",
+    "draws": "For each class, exactly one permutation(np.arange(pool_count, dtype=np.int64)), retaining the required prefix without replacement. Concatenate selected negatives then positives. Apply exactly one separate purpose-2 permutation(np.arange(10000, dtype=np.int64)) to that concatenation.",
+    "repeats": "No draws depend on concurrency, run number, global RNG state or candidate arrival order. All five repeats and six concurrencies reuse the same measured order. Different prevalence manifests may overlap; independent RNG streams do not make the realized populations statistically independent.",
+    "warmup": "The first 1000 ordered manifest rows are replayed once before the full 10000 measured rows in every run. Warmup uses separate occurrence IDs and does not remove those rows from measurement.",
+    "capacity_failure": "InsufficientStratum reports requested prevalence, label, required and available counts before any RNG call. No replacement, truncation, reroll or source substitution. A primary shortfall prevents primary replay; a sensitivity shortfall is reported for that sensitivity and does not authorize a changed primary manifest.",
+    "hash": "SHA-256 of UTF-8 json.dumps(payload, ensure_ascii=False, allow_nan=False, sort_keys=True, separators=(',', ':')). payload is exactly {schema_version:1, algorithm_id:'replay-manifest-v1', prevalence_basis_points:<integer>, records:[all six fields in measured order]}. No newline or hash field is part of the payload. The digest binds original raw URLs and labels; row payloads remain private."
+  },
+  "external_stream_join": {
+    "input": "The complete retained external stream in published file order, following only the separately frozen validity/conflict quarantine. Exactly aligned unique IDs connect prepared outcome metadata, paired stage-one/transformer probabilities, monitor NLLs and saved length-only decisions. No role-based prefiltering.",
+    "metadata": "OutcomeMetadata(record_id, registrable_domain, is_phishing, role). This adapter-neutral shape is not a claim about uninspected source column names. Source mapping and complete-stream authentication remain upstream.",
+    "roles": {"gold": "exact integer 1", "certified": "exact integer 0", "tranco": "null; never fabricate a benign label", "secondary": "exact integer 0 or 1, or null; any label must be publisher/source-derived, never researcher- or model-generated; not a primary outcome stratum"},
+    "validation": "Validate all materialized sequences, IDs, ordering, scores, prepared domain syntax, binary length predictions and role-label agreement before routing. Reject mismatches rather than joining away rows.",
+    "routing": "Call the unchanged label-blind replay once over every retained row. Complete 256-row windows at stride 64 use float64 mean NLL and strict greater-than boundary. An alert affects only the next 256 requests; overlapping overrides are unioned and terminal activation truncates at stream end. Labels and source roles never enter routing.",
+    "outcomes": "After full replay, gold and certified SavedPopulation objects retain length_only, logistic_l1, transformer, cascade and policy predictions. Tranco SavedControls retains only the fixed cascade and transformer, without binary labels. Secondary and Tranco records still affect windows and later routing. Empty primary strata remain explicit, not passed gates.",
+    "window_denominator": "All complete windows over the full retained stream, including controls and secondary rows. No label, source or outcome filtering before window construction.",
+    "limitations": "The join checks alignment, not source authenticity, completeness, PSL provenance or private artifact identity. Its masks describe cached-score routing, not measured transformer work. It preserves the original H2 failed audit and existing gate definitions."
+  },
+  "remaining_bindings": [
+    "One reviewed noninteractive internal raw-partition processing path that authenticates preparation, produces saved paired predictions and these manifests, and records realized private hashes before HTTP replay",
+    "External schema verification, frozen source mapping/quarantine and realized split/window manifests before any external prediction",
+    "Full official execution/environment/artifact bindings and remaining secondary analyses; this supplement alone does not complete the pre-access freeze"
+  ]
+}

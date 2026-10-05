@@ -1,0 +1,6 @@
+requirement,passed
+median_ratio_at_most_point_eight,True
+ratio_interval_upper_below_one,True
+pooled_worker_success_p95_at_most_200ms,True
+errors_below_one_per_thousand,True
+exact_paired_response_agreement,False

@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "contract_id": "development-execution-v1",
+  "date": "2026-09-22",
+  "development_execution_ready": true,
+  "protected_evaluation_ready": false,
+  "execution_binding_sha256": "887f771381927dfe1b9268a45f4e605baf3e9a7caee2b7005cdfe68b1be516e1",
+  "methods_sha256": "f592352593ae64b178a468d5800e780267275a62046a05b31b952f69e424f44f",
+  "input_roles": ["train", "validation"],
+  "steps": ["drift", "formatting", "permutation_42", "permutation_43", "permutation_44", "permutation_45", "permutation_46", "random_forest"],
+  "failure_policy": "fail_stop_no_retry_no_resume",
+  "input_reads": "once_per_input_after_root_reservation",
+  "training_boundary": "freeze_drift_reference_before_reading_validation",
+  "child_reservation": "before_member_computation",
+  "child_publication": "immediate_immutable_outputs_before_next_member",
+  "partial_run": "retain_completed_children_and_failed_or_incomplete_child_unattempted_tail_is_not_failure",
+  "aggregate_acceptance": "observed_zero_worker_exit_all_eight_members_verified_and_binding_rechecked",
+  "verification": "saved_outputs_only_no_source_reread_refit_or_url_rescoring",
+  "primary_changes": false,
+  "additional_transformer_fits": 0,
+  "perturbation_runs": 0,
+  "research_scope": "This separate profile resolves execution binding for the fixed development-only tabular and drift procedures in secondary-development-v1. Its readiness flag is not a claim that a run occurred or that the full study is ready. A caller must pin the reviewed clean implementation revision and these exact profile bytes. The unchanged v2 runtime and accepted model/source identities remain mandatory. This does not authorize group-test or external inputs, additional transformer fits, perturbations, a primary model change, or protected evaluation."
+}

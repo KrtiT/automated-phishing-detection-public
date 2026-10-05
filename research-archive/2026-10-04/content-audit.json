@@ -1,0 +1,88 @@
+{
+  "files": 73234,
+  "families": [
+    {
+      "archive": "development-data-and-models.tar.gz",
+      "files": 94,
+      "statuses": {
+        "exact": 79,
+        "administrative_projection": 4,
+        "hash_only": 11
+      }
+    },
+    {
+      "archive": "secondary-development.tar.gz",
+      "files": 65763,
+      "statuses": {
+        "exact": 65735,
+        "administrative_projection": 28
+      }
+    },
+    {
+      "archive": "original-hold-and-interrupted-attempts.tar.gz",
+      "files": 1207,
+      "statuses": {
+        "exact": 1126,
+        "administrative_projection": 81
+      }
+    },
+    {
+      "archive": "original-attempt-4.tar.gz",
+      "files": 2953,
+      "statuses": {
+        "administrative_projection": 92,
+        "exact": 2861
+      }
+    },
+    {
+      "archive": "original-continuation.tar.gz",
+      "files": 2110,
+      "statuses": {
+        "exact": 2031,
+        "administrative_projection": 76,
+        "hash_only": 3
+      }
+    },
+    {
+      "archive": "followup-detection.tar.gz",
+      "files": 15,
+      "statuses": {
+        "exact": 12,
+        "administrative_projection": 3
+      }
+    },
+    {
+      "archive": "followup-service-interrupted.tar.gz",
+      "files": 373,
+      "statuses": {
+        "administrative_projection": 2,
+        "exact": 325,
+        "hash_only": 46
+      }
+    },
+    {
+      "archive": "followup-service-complete.tar.gz",
+      "files": 650,
+      "statuses": {
+        "exact": 566,
+        "administrative_projection": 4,
+        "hash_only": 80
+      }
+    },
+    {
+      "archive": "freeze-and-recovery-metadata.tar.gz",
+      "files": 69,
+      "statuses": {
+        "exact": 19,
+        "administrative_projection": 50
+      }
+    }
+  ],
+  "builder_sha256": "7dd61b5d05d3a73cfb90aedaccf61439ee5e9aa874c5cf77acc870a5513573d9",
+  "status": "passed_bounded_review",
+  "scope": "Original source hashes rechecked; public payloads compared with final projector; common credential, private path and unrelated-workspace markers scanned. This is a bounded content audit, not a guarantee against every possible secret or a license opinion.",
+  "scan_flagged_source_paths": 236,
+  "reviewed_distinct_match_contexts": 158,
+  "disposition": "All remaining scan matches are licensed corpus URL/domain/title strings, including lower-case URL /users/ segments and a case-insensitive access-key-pattern false positive in a dataset title. These scientific strings are retained unchanged. Two administrative metadata fields identified during prepublication review were projected and the complete archive was rebuilt and reverified. No confirmed secret or unrelated local-workspace content remains in the reviewed matches.",
+  "catalog_sha256": "5a4bc2fda475a4be0ac473e6d0b585db1f5f72d9a33797e561c9d3022a178530"
+}

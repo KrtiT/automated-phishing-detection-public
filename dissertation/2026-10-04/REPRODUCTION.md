@@ -29,25 +29,33 @@ wheel. Another environment sync may replace it. This is a disposable test
 environment setup, not a modification of the frozen research environment or
 authorization to execute research. Linux CI follows its locked Linux wheels.
 
-## Requires Controlled Retained Inputs
+## Public Retained Inputs and Recomputation
 
-Full source-to-result reproduction requires the exact licensed data versions,
-retained row-level predictions, fitted states, manifests and the authorized
-execution environment. They are intentionally absent from the public repository.
-The public source manifest records origins and versions; it is not permission
-to access or redistribute data. No original sources were reopened for publication.
+The [versioned research archive](../../research-archive/2026-10-04/README.md)
+now provides the licensed publisher inputs, prepared partitions, fitted artifacts,
+retained predictions and request records. Follow its download, checksum,
+materialization and recomputation commands. Dataset licenses and changes are
+documented separately; no publisher source was reopened for this publication.
 
-The historical verifier reports document checks already performed against those
-retained inputs. A reader can audit their algorithms and aggregate arithmetic,
-but cannot independently recompute a domain bootstrap or pooled request-level
-quantile from aggregate CSVs alone. Hash-only inventories do not close that gap.
+`scripts/recompute_research.py` uses hash-authenticated saved observations to
+recalculate domain bootstraps, confusion metrics, gate decisions, pooled request
+quantiles and the D/S paired comparisons. This closes the prior aggregate-only
+recomputation gap. Hash-only inventory entries alone cannot do so; excluded
+private execution files are not required for the stated arithmetic.
+
+Independent model retraining or new latency measurement is a different task.
+It requires the frozen code/environment, appropriate data rights and a declared
+execution design. Public metadata projections are not original private manifests,
+and no download grants reusable execution authority or institutional approval.
 
 ## Analysis and Document Source
 
 `analysis-scripts/` preserves source used to export, synthesize, format and check
 the research package. These files retain controlled-workspace relative paths,
 edition bindings and additional dependencies (for example document/PDF tools).
-They are audit source, not a one-command reconstruction from public inputs.
+They are historical audit source, not a one-command reconstruction of every
+document and experiment. The new public recomputation adapter deliberately
+rebinds only the saved-observation checks to the materialized archive.
 `provenance/original/measured-source/` and `provenance/followup-source/` are
 selected frozen source snapshots; Git history contains the full repository.
 

@@ -139,6 +139,10 @@ def test_package_excludes_private_inputs_and_copyrighted_paper_copies():
 def test_current_markdown_local_file_links_resolve():
     paths = [
         ROOT / "README.md",
+        ROOT / "REVIEWER_GUIDE.md",
+        ROOT / "research-archive/2026-10-04/README.md",
+        ROOT / "research-archive/2026-10-04/PROVENANCE.md",
+        ROOT / "research-archive/2026-10-04/LICENSES.md",
         *(
             PACKAGE / name
             for name in (
@@ -157,3 +161,70 @@ def test_current_markdown_local_file_links_resolve():
                 continue
             local = target.split("#", 1)[0].split(' "', 1)[0]
             assert (path.parent / local).exists(), (path, target)
+
+
+def test_research_release_catalog_matches_plan_and_checksums():
+    archive = ROOT / "research-archive/2026-10-04"
+    catalog = json.loads((archive / "catalog.json").read_text())["families"]
+    plan = json.loads((archive / "build-plan.json").read_text())
+    hashes = dict(
+        line.split("  ", 1)[::-1]
+        for line in (archive / "SHA256SUMS.txt").read_text().splitlines()
+    )
+    assert set(catalog) == {name + ".tar.gz" for name in plan} == set(hashes)
+    assert len(catalog) == 9
+    statuses = Counter()
+    for name, family in catalog.items():
+        assert family["roots"] == plan[name.removesuffix(".tar.gz")]
+        assert hashes[name] == family["sha256"]
+        assert sum(family["statuses"].values()) == family["files"]
+        statuses.update(family["statuses"])
+    assert sum(family["files"] for family in catalog.values()) == 73234
+    assert statuses == {
+        "exact": 72754,
+        "administrative_projection": 340,
+        "hash_only": 140,
+    }
+    verified = {
+        row["archive"]: row
+        for row in map(
+            json.loads,
+            (archive / "archive-verification.jsonl").read_text().splitlines(),
+        )
+    }
+    assert verified.keys() == catalog.keys()
+    for name, family in catalog.items():
+        assert verified[name]["files"] == family["files"]
+        assert verified[name]["blobs"] == family["blobs"]
+        assert verified[name]["withheld"] == family["statuses"].get("hash_only", 0)
+    audit = json.loads((archive / "content-audit.json").read_text())
+    assert audit["files"] == sum(statuses.values())
+    assert (
+        audit["catalog_sha256"]
+        == sha256((archive / "catalog.json").read_bytes()).hexdigest()
+    )
+    assert (
+        audit["builder_sha256"]
+        == sha256((ROOT / "scripts/research_archive.py").read_bytes()).hexdigest()
+    )
+    recomputation = json.loads((archive / "recomputation.json").read_text())
+    assert recomputation["status"] == "verified"
+    assert recomputation["authentication"]["catalog_sha256"] == audit["catalog_sha256"]
+    assert recomputation["authentication"]["inventory_sha256"] == {
+        name + ".jsonl": family["inventory_sha256"] for name, family in catalog.items()
+    }
+    for path in (ROOT / "README.md", archive / "README.md"):
+        for count in (*statuses.values(), sum(statuses.values())):
+            assert f"{count:,}" in path.read_text()
+
+
+def test_current_docs_link_the_retained_record_release():
+    for path in (
+        ROOT / "README.md",
+        PACKAGE / "README.md",
+        PACKAGE / "REPRODUCTION.md",
+    ):
+        current = path.read_text().split("<!-- HISTORICAL_SNAPSHOT_BEGIN -->")[0]
+        assert "research-archive/2026-10-04/README.md" in current
+        assert "Scientific datasets and row-level results are not" not in current
+        assert "They are intentionally absent" not in current

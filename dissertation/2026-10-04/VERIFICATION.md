@@ -16,9 +16,30 @@
   and [complete results](aggregate-data/complete-secondary-results.json) preserve
   the original declared secondary analyses and their qualifications.
 
-These are historical retained verification reports, not new access to private
-inputs during GitHub publication. Their hash references do not make every named
-private input publicly available.
+Those reports preserve the original verification events. The later
+[retained-record release](../../research-archive/2026-10-04/README.md) now makes
+their scientific inputs publicly inspectable within its explicit inventory.
+Private execution capability frames and full host/process logs remain excluded
+or projected; their original hashes do not make the excluded bytes public.
+
+## Public Saved-Observation Recomputation
+
+The [new recomputation receipt](../../research-archive/2026-10-04/recomputation.json)
+records a successful read-only reduction from materialized archive files:
+125 cells, 25 groups, 1,243,505 original requests and 1,901 errors; 22 original
+checks (nine pass, thirteen fail); 153 secondary population/model metric rows,
+430 calibration bins and 396 monitor-window boundary checks; the 8,622-row D
+comparison; and all 80 S arms/40 pairs/800,000 attempts with one error.
+It authenticates the 220 files read by that arithmetic separately from the
+archive verifier's complete file/blob accounting.
+
+The original H1–H3 decisions and later D/S conjunctions are unchanged.
+This recomputation uses saved observations and retained verifier algorithms;
+it is not new prediction, training, timing, private execution-authorization
+validation or an independent empirical replication. Historical controls whose
+consumed-label provenance was incomplete remain qualified, not repaired by
+publication. The release's archive checks and declared projection/exclusion
+rules are documented in its own guide.
 
 ## Document Checks
 
@@ -86,3 +107,31 @@ The exact publication commit's full CI result is available in
 Do not infer a passing full suite from a passing package-only check or a commit
 existing on GitHub. This record claims no institutional clearance, manuscript
 length exception, committee-role confirmation or detector score.
+
+## Retained-Record Publication Checks
+
+The final archive publication check passed 342 focused tests across 17
+files, including archive safety, inventory authentication, saved-observation
+input checks and dissertation consistency. Ruff check and formatting, the lock
+check, CLI help and package build also passed. The new
+[receipt](../../research-archive/2026-10-04/publication-checks.json) records this
+event separately from the earlier 299-test publication check.
+
+An independent code review identified four acceptance gaps in the first archive
+tooling: unanchored inventory identities, unchecked prediction-file reopens,
+incomplete secondary-coverage acceptance and materialization path collisions.
+Regression tests reproduced these defects before the fixes. The final tooling
+binds the exact inventory set to the committed catalog, reduces authenticated
+prediction bytes, checks secondary/monitor coverage and rejects release-wide
+path collisions before writing. The complete archive materialization and
+scientific recomputation were then repeated successfully. These were verifier
+safeguard defects, not evidence that the retained measurements were incorrect.
+
+All nine archives were verified and materialized into a new destination before
+recomputation. All 73,234 original source identities were rechecked. The
+[content audit](../../research-archive/2026-10-04/content-audit.json) records the
+bounded scan and its reviewed corpus-string false positives; it does not claim
+that pattern matching can detect every possible secret. Published secondary,
+monitor, D and S scientific objects were also compared with their authenticated
+retained counterparts and matched. The original open Word file and the frozen
+runtime, contracts and dependency lock remain unchanged.

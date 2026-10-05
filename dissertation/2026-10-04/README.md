@@ -22,7 +22,8 @@ argument together. It is not a claim of university acceptance or advisor approva
    [operational groups](aggregate-data/operational-groups.csv),
    [detection follow-up](aggregate-data/detection-D/verification.json), and
    [service follow-up](aggregate-data/service-S/verification.json).
-5. [Verification](VERIFICATION.md) and [reproduction guide](REPRODUCTION.md).
+5. [Retained data, models and freezes](../../research-archive/2026-10-04/README.md),
+   [verification](VERIFICATION.md) and [reproduction guide](REPRODUCTION.md).
 
 ## Inventory
 
@@ -52,10 +53,13 @@ describe that sealed local package, not additional files in this public edition.
 
 ## Publication Scope
 
-This folder contains selected, shareable retained evidence, not a dump of the
-research workspace. It excludes raw datasets, row-level predictions, weights,
-private execution capabilities, correspondence and full host/process logs.
-Full-text third-party literature is not redistributed. The
+This folder contains the manuscript, aggregate evidence and its provenance.
+The separate [research release](../../research-archive/2026-10-04/README.md)
+supplies retained licensed raw datasets, prepared splits, fitted artifacts,
+row-level predictions, request records and freeze metadata. The separation keeps
+large data out of ordinary Git history without hiding it from reviewers.
+Private execution capabilities, correspondence and full host/process logs remain
+excluded or explicitly hash-only; full-text third-party literature is not redistributed. The
 [literature record](literature/README.md) distinguishes metadata/abstract checks
 from full-text checks and states their limits.
 
@@ -76,4 +80,5 @@ Assisted editorial preparation must be handled according to the program's rules.
 From this directory, run `shasum -a 256 -c SHA256SUMS.txt`. The
 [source inventory](provenance/public-source-inventory.json) identifies
 byte-identical copies from sealed local packages. Hashes establish file identity;
-they do not by themselves independently reproduce the private observations.
+the archive's separate recomputation checks arithmetic against retained observations.
+Neither is an independent repeat of model fitting or measurement.

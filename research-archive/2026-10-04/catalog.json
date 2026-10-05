@@ -1,0 +1,225 @@
+{
+  "schema_version": 1,
+  "families": {
+    "development-data-and-models.tar.gz": {
+      "files": 94,
+      "blobs": 44,
+      "statuses": {
+        "exact": 79,
+        "administrative_projection": 4,
+        "hash_only": 11
+      },
+      "sha256": "edc25ed26817c05b116ced1c67e039700fd463c4f2929acdc5a91f0705031f58",
+      "size": 60403302,
+      "roots": [
+        "gwu_working/automated-phishing-detection-public/data/raw",
+        "gwu_working/automated-phishing-detection-public/data/processed",
+        "gwu_working/study-only-v1-reviewed-inputs",
+        "gwu_working/rq1-saga-convergence-v1-output.json",
+        "gwu_working/rq1-saga-convergence-v2-output.json",
+        "gwu_working/run-records"
+      ],
+      "inventory_sha256": "9cab4c789ec3c8a4a0bb47ee3020834a3ba5e9dee0bec075581a0b5b35ece79d"
+    },
+    "secondary-development.tar.gz": {
+      "files": 65763,
+      "blobs": 65725,
+      "statuses": {
+        "exact": 65735,
+        "administrative_projection": 28
+      },
+      "sha256": "a72aba7ef24e4581a8383597a9814866f4be8767b67de26ea541f23bb636a5e0",
+      "size": 129155617,
+      "roots": [
+        "gwu_working/secondary-development-v1-2026-09-22-attempt-1",
+        "gwu_working/secondary-development-correction-v1-2026-09-22-attempt-1",
+        "gwu_working/secondary-development-correction-v2-2026-09-23-attempt-1",
+        "gwu_working/secondary-seed-probe-v1-2026-09-23-attempt-1",
+        "gwu_working/secondary-seed-probe-v2-2026-09-23-attempt-1",
+        "gwu_working/secondary-seed-probe-correction-v1-2026-09-24-attempt-1"
+      ],
+      "inventory_sha256": "5125486d77ff663d0a1a5271f3922e4320a8e58a25cb18a993c6aba46172c2c1"
+    },
+    "original-hold-and-interrupted-attempts.tar.gz": {
+      "files": 1207,
+      "blobs": 631,
+      "statuses": {
+        "exact": 1126,
+        "administrative_projection": 81
+      },
+      "sha256": "81a750653a9316d5e413142e58d947d44a3150740e21c7d8f4afa76eb8db64b0",
+      "size": 79092414,
+      "roots": [
+        "gwu_working/study-only-v1-2026-09-28-attempt-1",
+        "gwu_working/study-urlnorm-v1-2026-09-29-attempt-1",
+        "gwu_working/study-urlnorm-v1-2026-09-29-attempt-2",
+        "gwu_working/study-urlnorm-v1-2026-09-29-attempt-3"
+      ],
+      "inventory_sha256": "cd9fd73994dd89937f116d0a5d65a98615864111b92dea33a84485db65f67908"
+    },
+    "original-attempt-4.tar.gz": {
+      "files": 2953,
+      "blobs": 1608,
+      "statuses": {
+        "administrative_projection": 92,
+        "exact": 2861
+      },
+      "sha256": "b951db9a0434446caf7ad7cefef205e1c5b5d8f45c883de1a7e259e13cd38c31",
+      "size": 111767775,
+      "roots": [
+        "gwu_working/study-urlnorm-v1-2026-09-30-attempt-4"
+      ],
+      "inventory_sha256": "32c21597675d061752d63391127d2cbcdf3f647ca932be593cc3fcce59a7876e"
+    },
+    "original-continuation.tar.gz": {
+      "files": 2110,
+      "blobs": 1151,
+      "statuses": {
+        "exact": 2031,
+        "administrative_projection": 76,
+        "hash_only": 3
+      },
+      "sha256": "45fe1a9ce15005b13718f700410c7c1bf193e2a8d2967b0111a17f45dec67dea",
+      "size": 44958795,
+      "roots": [
+        "gwu_working/study-series-v1-20261001-segment-2",
+        "study-series-history-package-2026-10-01T035808.737927_0000",
+        "study-series-archive-inventory-20260930"
+      ],
+      "inventory_sha256": "aefee65cd375f4ddfc0216812586ff24f23367cb758ede8e5e81714113c72458"
+    },
+    "followup-detection.tar.gz": {
+      "files": 15,
+      "blobs": 15,
+      "statuses": {
+        "exact": 12,
+        "administrative_projection": 3
+      },
+      "sha256": "a9e3da8442428429e25ce7fdcbe87f48ebd19de120b02435499fd5f6d461348f",
+      "size": 2450841,
+      "roots": [
+        "dissertation/followup-20261001/population-admission-v1",
+        "dissertation/followup-20261001/population-admission-v1-attempt-2",
+        "dissertation/followup-20261001/detection-fit-v1",
+        "dissertation/followup-20261001/detection-evaluate-v1",
+        "dissertation/followup-20261001/execution-manifest-v1.json"
+      ],
+      "inventory_sha256": "4e58ea7895937458190d066e4ef99099101a451e8a4caebfd0f3fba4daa76d5b"
+    },
+    "followup-service-interrupted.tar.gz": {
+      "files": 373,
+      "blobs": 327,
+      "statuses": {
+        "administrative_projection": 2,
+        "exact": 325,
+        "hash_only": 46
+      },
+      "sha256": "08df21dc84ef937cb92c049f00f4eb96277db49266b5a3c08e0ada48eeaec7a5",
+      "size": 17913848,
+      "roots": [
+        "dissertation/followup-20261001/service-comparison-v1",
+        "dissertation/followup-20261001/service-v1-preservation.json"
+      ],
+      "inventory_sha256": "28517ccbce9c6b8cdb48271f29f7619ed790bc86826d442c4e1fe23c071d0a76"
+    },
+    "followup-service-complete.tar.gz": {
+      "files": 650,
+      "blobs": 570,
+      "statuses": {
+        "exact": 566,
+        "administrative_projection": 4,
+        "hash_only": 80
+      },
+      "sha256": "60ce29ba0cae50bbd6d6a059ee360dd9ff9c9918d1b4b8ebb6164c576e218962",
+      "size": 32975858,
+      "roots": [
+        "dissertation/followup-20261001/service-comparison-v2",
+        "dissertation/followup-20261001/service-recovery-authorization-v2.json",
+        "dissertation/followup-20261001/service-recovery-preflight-v2"
+      ],
+      "inventory_sha256": "f5d8087b3a95c01a1390c8b8413c9720ebe108839840377c74f798b63d73f1bf"
+    },
+    "freeze-and-recovery-metadata.tar.gz": {
+      "files": 69,
+      "blobs": 69,
+      "statuses": {
+        "exact": 19,
+        "administrative_projection": 50
+      },
+      "sha256": "2237cf9c01a6a1f189b990f55706aa8fdc05a60645dc0ccc1d1b7d5f2a7ee682",
+      "size": 798585,
+      "roots": [
+        "study-checkpoint-amendment-directive-20260930.json",
+        "study-execution-profile-a10bacb-operator.json",
+        "study-execution-profile-c8f71cd-pending.json",
+        "study-hold-url-diagnostic-a10bacb.json",
+        "study-hold-verification-a10bacb.json",
+        "study-input-staging-a10bacb.json",
+        "study-input-staging-a10bacb.jsonl",
+        "study-operator-directive-20260928.json",
+        "study-operator-envelope-a10bacb.json",
+        "study-operator-seal-a10bacb.json",
+        "study-series-archival-inventory-directive-20260930.json",
+        "study-series-archive-inventory-verification-20260930.json",
+        "study-series-custody-ancestry-20260930.json",
+        "study-series-custody-review-20261001.json",
+        "study-series-envelope-20261001-segment-2.json",
+        "study-series-final-verification-20261001.json",
+        "study-series-profile-20261001-segment-2.json",
+        "study-series-retained-verification-20260930-interrupted-review.json",
+        "study-series-retained-verification-20260930-review.json",
+        "study-session-a10bacb-conditions.jsonl",
+        "study-session-a10bacb-launch.json",
+        "study-session-a10bacb-post.json",
+        "study-session-a10bacb-pre.json",
+        "study-session-a10bacb-sleep-cleanup.json",
+        "study-session-urlnorm-19727ec-attempt-2-conditions.jsonl",
+        "study-session-urlnorm-19727ec-attempt-2-launch.json",
+        "study-session-urlnorm-19727ec-attempt-2-post.json",
+        "study-session-urlnorm-19727ec-attempt-2-pre.json",
+        "study-session-urlnorm-19727ec-attempt-2-sleep-cleanup.json",
+        "study-session-urlnorm-19727ec-attempt-3-conditions.jsonl",
+        "study-session-urlnorm-19727ec-attempt-3-launch.json",
+        "study-session-urlnorm-19727ec-attempt-3-post.json",
+        "study-session-urlnorm-19727ec-attempt-3-pre.json",
+        "study-session-urlnorm-19727ec-attempt-3-sleep-cleanup.json",
+        "study-session-urlnorm-19727ec-attempt-4-conditions.jsonl",
+        "study-session-urlnorm-19727ec-attempt-4-launch.json",
+        "study-session-urlnorm-19727ec-attempt-4-post.json",
+        "study-session-urlnorm-19727ec-attempt-4-pre.json",
+        "study-session-urlnorm-19727ec-attempt-4-sleep-cleanup.json",
+        "study-session-urlnorm-19727ec-conditions.jsonl",
+        "study-session-urlnorm-19727ec-launch.json",
+        "study-session-urlnorm-19727ec-post.json",
+        "study-session-urlnorm-19727ec-pre.json",
+        "study-session-urlnorm-19727ec-sleep-cleanup.json",
+        "study-url-amendment-directive-20260928.json",
+        "study-urlnorm-attempt-2-retained-aggregate-audit.json",
+        "study-urlnorm-attempt-3-interruption-audit.json",
+        "study-urlnorm-attempt-4-interruption-audit.json",
+        "study-urlnorm-envelope-19727ec-attempt-2-utc.json",
+        "study-urlnorm-envelope-19727ec-attempt-2.json",
+        "study-urlnorm-envelope-19727ec-attempt-3.json",
+        "study-urlnorm-envelope-19727ec-attempt-4.json",
+        "study-urlnorm-envelope-19727ec.json",
+        "study-urlnorm-profile-19727ec-attempt-2.json",
+        "study-urlnorm-profile-19727ec-attempt-3.json",
+        "study-urlnorm-profile-19727ec-attempt-4.json",
+        "study-urlnorm-profile-19727ec.json",
+        "study-urlnorm-recovery-review-19727ec-attempt-2.json",
+        "study-urlnorm-recovery-review-19727ec-attempt-3.json",
+        "study-urlnorm-recovery-review-19727ec-attempt-4.json",
+        "study-urlnorm-restart-request-20260929-attempt-3.json",
+        "study-urlnorm-restart-request-20260929.json",
+        "study-urlnorm-restart-request-20260930-attempt-4.json",
+        "study-urlnorm-seal-19727ec.json",
+        "study-urlnorm-seal-audit-19727ec-attempt-2.json",
+        "study-urlnorm-seal-audit-19727ec-attempt-3.json",
+        "study-urlnorm-seal-audit-19727ec-attempt-4.json",
+        "study-urlnorm-seal-audit-19727ec.json",
+        "study-urlnorm-session-reservation-19727ec.json"
+      ],
+      "inventory_sha256": "6cd3944cbac3c4208cc45fbec449ecfb06463dd5a9766dbae94c50053ba244cc"
+    }
+  }
+}

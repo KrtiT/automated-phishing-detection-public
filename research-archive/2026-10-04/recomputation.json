@@ -1,0 +1,107 @@
+{
+  "scope": "Read-only arithmetic from public retained records; no model execution, new timing, execution authorization revalidation or institutional approval.",
+  "original_operational": {
+    "cells": 125,
+    "groups": 25,
+    "requests": 1243505,
+    "errors": 1901
+  },
+  "original_science": {
+    "primary_checks": 22,
+    "decisions": {
+      "pass": 9,
+      "fail": 13
+    },
+    "hypotheses": {
+      "H1": "not_supported",
+      "H2": "not_supported",
+      "H3": "not_supported"
+    },
+    "secondary_population_detector_rows": 153,
+    "calibration_bins": 430,
+    "monitor_windows": 396
+  },
+  "D": {
+    "records": 8622,
+    "D_requirement_met": false,
+    "scheme_invariance": {
+      "baseline": {
+        "exact_score_matches": 2909,
+        "decision_flips": 481,
+        "max_absolute_score_difference": 0.9966493509180465,
+        "denominator": 8622
+      },
+      "candidate": {
+        "exact_score_matches": 8622,
+        "decision_flips": 0,
+        "max_absolute_score_difference": 0.0,
+        "denominator": 8622,
+        "exact_feature_matches": 8622
+      }
+    }
+  },
+  "S": {
+    "arms": 80,
+    "pairs": 40,
+    "requests": 800000,
+    "errors": 1,
+    "primary_prediction_agreement": 99999,
+    "primary": {
+      "ratios": [
+        0.21158219244723056,
+        0.18092667695435147,
+        0.19487941959347763,
+        0.20302424024477755,
+        0.18003382492356765,
+        0.21829097269307146,
+        0.20524152547436791,
+        0.2034737344146507,
+        0.21543428396362246,
+        0.20154829004898345
+      ],
+      "median_ratio": 0.20324898732971414,
+      "ratio_interval_97_5": [
+        0.18790304827391455,
+        0.21350823820542653
+      ],
+      "undefined_pairs": [],
+      "bootstrap_replicates": 10000,
+      "bootstrap_seed": 20261002,
+      "worker_success_latency": {
+        "count": 100000,
+        "p50_ms": 37.357958499999995,
+        "p95_ms": 71.99900274999993,
+        "p99_ms": 85.3749665
+      },
+      "worker_errors": 0,
+      "worker_error_rate": 0.0,
+      "request_denominator": 100000,
+      "exact_paired_agreement": 799,
+      "requirements": {
+        "median_ratio_at_most_point_eight": true,
+        "ratio_interval_upper_below_one": true,
+        "pooled_worker_success_p95_at_most_200ms": true,
+        "errors_below_one_per_thousand": true,
+        "exact_paired_response_agreement": false
+      },
+      "S_requirement_met": false
+    },
+    "interrupted_schedule_pooled": false
+  },
+  "authenticated_input_files": 220,
+  "authentication": {
+    "catalog_sha256": "5a4bc2fda475a4be0ac473e6d0b585db1f5f72d9a33797e561c9d3022a178530",
+    "inventory_sha256": {
+      "development-data-and-models.tar.gz.jsonl": "9cab4c789ec3c8a4a0bb47ee3020834a3ba5e9dee0bec075581a0b5b35ece79d",
+      "secondary-development.tar.gz.jsonl": "5125486d77ff663d0a1a5271f3922e4320a8e58a25cb18a993c6aba46172c2c1",
+      "original-hold-and-interrupted-attempts.tar.gz.jsonl": "cd9fd73994dd89937f116d0a5d65a98615864111b92dea33a84485db65f67908",
+      "original-attempt-4.tar.gz.jsonl": "32c21597675d061752d63391127d2cbcdf3f647ca932be593cc3fcce59a7876e",
+      "original-continuation.tar.gz.jsonl": "aefee65cd375f4ddfc0216812586ff24f23367cb758ede8e5e81714113c72458",
+      "followup-detection.tar.gz.jsonl": "4e58ea7895937458190d066e4ef99099101a451e8a4caebfd0f3fba4daa76d5b",
+      "followup-service-interrupted.tar.gz.jsonl": "28517ccbce9c6b8cdb48271f29f7619ed790bc86826d442c4e1fe23c071d0a76",
+      "followup-service-complete.tar.gz.jsonl": "f5d8087b3a95c01a1390c8b8413c9720ebe108839840377c74f798b63d73f1bf",
+      "freeze-and-recovery-metadata.tar.gz.jsonl": "6cd3944cbac3c4208cc45fbec449ecfb06463dd5a9766dbae94c50053ba244cc"
+    }
+  },
+  "status": "verified"
+}

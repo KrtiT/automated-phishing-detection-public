@@ -1,0 +1,54 @@
+{
+  "scope": "Retained-record publication checks; invented software fixtures, artifact identities and read-only saved-observation arithmetic. Not new research measurements, independent empirical replication or institutional approval.",
+  "source_base_commit": "bbd7aa4e5a80de1328c5185d55e963623ecc6ef7",
+  "focused_tests": {
+    "files": [
+      "tests/test_dissertation_publication.py",
+      "tests/test_research_record.py",
+      "tests/test_url_features.py",
+      "tests/test_sources_spec.py",
+      "tests/test_operational_child_interruptions.py",
+      "tests/test_followup_detection_script.py",
+      "tests/test_followup_metrics.py",
+      "tests/test_followup_population.py",
+      "tests/test_followup_service.py",
+      "tests/test_transport_neutral_features.py",
+      "tests/test_transport_neutral_model.py",
+      "tests/test_worker_connection_replay.py",
+      "tests/test_http_replay.py",
+      "tests/test_http_run_codec.py",
+      "tests/test_selective_service.py",
+      "tests/test_research_archive.py",
+      "tests/test_recompute_research.py"
+    ],
+    "passed": 342,
+    "failed": 0,
+    "elapsed_seconds": 37.16,
+    "exit_code": 0
+  },
+  "final_package_archive_checks": {
+    "passed": 50,
+    "failed": 0,
+    "elapsed_seconds": 0.21,
+    "exit_code": 0
+  },
+  "additional_checks": {
+    "ruff_check": "passed",
+    "ruff_format_check": "passed; 1115 files already formatted",
+    "uv_lock_check": "passed",
+    "uv_build": "passed; source distribution and wheel",
+    "phishing_research_cli_help": "passed",
+    "git_diff_check": "passed"
+  },
+  "source_preservation": {
+    "frozen_runtime_data_pyproject_lock_diff": "empty against ef8ba5f0b357cf3dd60c4d663e6297d13334460c",
+    "author_review_docx_sha256": "05e3c3d5ca792ee853af5c80e92426130c5e57fdc401ed44eee0d5644eac4fad"
+  },
+  "published_object_comparison": {
+    "original_primary": "matches authenticated retained study evidence",
+    "secondary_and_monitors": "match authenticated retained objects",
+    "D_scientific_fields": "match authenticated retained completion",
+    "S_primary": "matches authenticated retained completion"
+  },
+  "ci": "Check the exact release commit in GitHub Actions; this local receipt is not a full-suite CI result."
+}

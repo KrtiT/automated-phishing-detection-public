@@ -1,0 +1,9 @@
+{"archive": "development-data-and-models.tar.gz", "files": 94, "blobs": 44, "withheld": 11}
+{"archive": "followup-detection.tar.gz", "files": 15, "blobs": 15, "withheld": 0}
+{"archive": "followup-service-complete.tar.gz", "files": 650, "blobs": 570, "withheld": 80}
+{"archive": "followup-service-interrupted.tar.gz", "files": 373, "blobs": 327, "withheld": 46}
+{"archive": "freeze-and-recovery-metadata.tar.gz", "files": 69, "blobs": 69, "withheld": 0}
+{"archive": "original-attempt-4.tar.gz", "files": 2953, "blobs": 1608, "withheld": 0}
+{"archive": "original-continuation.tar.gz", "files": 2110, "blobs": 1151, "withheld": 3}
+{"archive": "original-hold-and-interrupted-attempts.tar.gz", "files": 1207, "blobs": 631, "withheld": 0}
+{"archive": "secondary-development.tar.gz", "files": 65763, "blobs": 65725, "withheld": 0}

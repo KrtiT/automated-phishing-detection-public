@@ -10,6 +10,11 @@ August 20 and September 3 advisor decks without replacing their decision rules.
 
 ## Start Here
 
+- [Reviewer guide](REVIEWER_GUIDE.md): the argument, numerical requirements,
+  code/data provenance and a short route through the evidence.
+- [Retained research data and freezes](research-archive/2026-10-04/README.md):
+  licensed raw inputs, prepared splits, fitted artifacts, row-level predictions,
+  request measurements and interrupted attempts, with download/recomputation commands.
 - [Read the dissertation PDF](dissertation/2026-10-04/manuscript/Tallam_Krti_Praxis_Citations_Expanded_2026-10-04.pdf)
   · [Word review copy](dissertation/2026-10-04/manuscript/Tallam_Krti_Praxis_Public_2026-10-04.docx)
   · [searchable Markdown](dissertation/2026-10-04/manuscript/Tallam_Krti_Praxis_Citations_Expanded_2026-10-04.md).
@@ -98,8 +103,9 @@ uv run --locked --no-sync phishing-research --help
 uv build
 ```
 
-Tests use invented fixtures. Scientific datasets and row-level results are not
-included. The full suite is substantial; package checks alone are not evidence
+Tests use invented fixtures. The separately downloadable research release includes
+retained scientific datasets and row-level observations; they are not loaded by
+the ordinary test suite. The full suite is substantial; package checks alone are not evidence
 that the whole suite passed. See the exact commit's
 [GitHub Actions](https://github.com/KrtiT/automated-phishing-detection-public/actions)
 and the [verification record](dissertation/2026-10-04/VERIFICATION.md).
@@ -108,7 +114,7 @@ Interrupted attempts and adverse outcomes remain in the chronology. Original
 checkpoint recovery retained 72 verified cells and measured 53 complete cells;
 the separate interrupted 45-arm service schedule was excluded from the completed
 80-arm result. The [reproduction guide](dissertation/2026-10-04/REPRODUCTION.md)
-distinguishes public aggregate checking from restricted full reproduction.
+distinguishes public saved-observation recomputation from new training or timing.
 
 ## Publication and Review Boundaries
 
@@ -118,10 +124,14 @@ academic-integrity clearance remain matters for the author and university.
 Acknowledgments thank both Amir Etemadi and Mazen Mheish; repository publication
 does not confirm their formal committee roles.
 
-Raw/licensed datasets, URL-level predictions, model weights, private execution
-capabilities, correspondence and host logs are intentionally excluded. Downloaded
-third-party papers are not redistributed; citation metadata and source-check
-records are supplied. The public Word derivative removes template comments and
+The versioned research release accounts for **73,234 retained files**: 72,754
+byte-identical files, 340 explicitly projected metadata containers and 140
+hash-only private execution files. It includes data, splits, model weights,
+predictions, request records and freezes—not just the manuscript. See the
+[archive inventory and exclusions](research-archive/2026-10-04/README.md#representation-and-exclusions).
+Third-party datasets retain their [original licenses](research-archive/2026-10-04/LICENSES.md).
+Private execution capabilities, correspondence, unrelated work and downloaded
+copyrighted papers are not redistributed. The public Word derivative removes template comments and
 local file links, with unchanged visible text, tables and figure bytes. The
 sealed review original is preserved.
 

@@ -43,8 +43,45 @@ rules are documented in its own guide.
 
 ## Document Checks
 
-The checked citation edition contains 150 PDF pages, 27 tables, four figures,
-58 references and 113 navigation targets. Its
+The current repository-linked edition contains 150 PDF pages, 27 tables, four
+figures, 59 references and 113 navigation targets. The
+[integration report](document-checks/integration/verification.json) binds its
+Word, PDF, Markdown and presentation files to the exact editorial ledger.
+All 59 bibliography entries have corresponding body citations (86 links); the
+previously reviewed date/identifier tokens are unchanged. This checks citation
+linkage, not full-text support for every literature claim.
+
+The [new layout check](document-checks/integration/layout-verification.json)
+verifies all 302 rendered table data rows and 1,954 paragraph/cell fragments,
+embedded fonts, margins, continuous numbering and all navigation caches. All
+scientific table XML and figure bytes match the preceding edition. Table A.1
+alone has an authorized section-reference correction. The
+[evidence map](EVIDENCE_MAP.md) covers every table, figure and all **25** slides;
+the earlier package index incorrectly said 23. Embedded notes and exported
+speaker notes now match actual slide order and refer to public evidence.
+Visible slides and the presentation PDF are byte-preserved.
+
+The [visual inspection](document-checks/integration/visual-inspection.json)
+covers all 14 changed PDF pages and all four figure pages. No clipped text,
+table/text overlap or figure/legend collision was observed in those renderings.
+The other 136 pages are pixel-identical to the preceding checked PDF. This is
+a bounded PDF review, not a guarantee about every Word installation or printer.
+
+The [integration publication check](document-checks/integration/publication-checks.json)
+passed 347 focused tests across 18 files. It checks public artifact locators,
+all 25 slide mappings, Appendix A paths, citation presence, notes order, package
+hashes and scientific result preservation alongside existing software fixtures.
+The [content audit](document-checks/integration/content-audit.json) checks the
+public text, Office parts and PDF metadata/links for selected private-path and
+credential patterns. The scientific runtime, contracts, dependency lock,
+aggregate results and research-archive catalogs are unchanged from the research
+record. These checks do not replace the full CI suite or certify every external
+literature claim. Additional model-review attempts were unavailable; no
+independent review verdict is claimed for this editorial pass.
+
+### Earlier document-verification events
+
+The preceding citation edition contained 58 references. Its
 [layout report](document-checks/layout-audit/verification.json) verifies all 302
 table data rows and 1,953 rendered paragraph/cell fragments. Targeted visual
 inspection is documented [separately](document-checks/visual-review/inspection.txt);
@@ -104,6 +141,8 @@ check without editing retained evidence or weakening checks on new prose/code.
 
 The exact publication commit's full CI result is available in
 [GitHub Actions](https://github.com/KrtiT/automated-phishing-detection-public/actions).
+CI means automated dependency, style, software-test and package-build checks;
+it is neither another research experiment nor a review of the manuscript.
 Do not infer a passing full suite from a passing package-only check or a commit
 existing on GitHub. This record claims no institutional clearance, manuscript
 length exception, committee-role confirmation or detector score.

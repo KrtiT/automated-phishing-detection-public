@@ -1,0 +1,724 @@
+{
+  "references": [
+    {
+      "reference": "Ahamed, T., Kakon, S. C., Farid, F. A., Uddin, J., & Abdul Karim, H. B. (2026). An integrated evaluation protocol for adversarial robustness, generalization, and explanation stability in URL-based phishing detection. Frontiers in Computer Science, 8, Article 1834407. https://doi.org/10.3389/fcomp.2026.1834407",
+      "citation_count": 4,
+      "citations": [
+        {
+          "line": 71,
+          "text": "Ahamed et al., 2026"
+        },
+        {
+          "line": 105,
+          "text": "Ahamed et al. (2026"
+        },
+        {
+          "line": 171,
+          "text": "Ahamed et al. (2026"
+        },
+        {
+          "line": 926,
+          "text": "Ahamed et al. (2026"
+        }
+      ]
+    },
+    {
+      "reference": "Alajaji, A. (2026). Classical-first selective cascades for resource-constrained phishing email detection. Electronics, 15(14), 3051. https://doi.org/10.3390/electronics15143051",
+      "citation_count": 3,
+      "citations": [
+        {
+          "line": 145,
+          "text": "Alajaji (2026"
+        },
+        {
+          "line": 175,
+          "text": "Alajaji (2026"
+        },
+        {
+          "line": 926,
+          "text": "Alajaji (2026"
+        }
+      ]
+    },
+    {
+      "reference": "Arp, D., Quiring, E., Pendlebury, F., Warnecke, A., Pierazzi, F., Wressnegger, C., Cavallaro, L., & Rieck, K. (2022). Dos and don'ts of machine learning in computer security. 31st USENIX Security Symposium, 3971–3988. https://www.usenix.org/conference/usenixsecurity22/presentation/arp",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 183,
+          "text": "Arp et al. (2022"
+        }
+      ]
+    },
+    {
+      "reference": "Axelsson, S. (2000). The base-rate fallacy and the difficulty of intrusion detection. ACM Transactions on Information and System Security, 3(3), 186–205. https://doi.org/10.1145/357830.357849",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 131,
+          "text": "Axelsson's (2000"
+        }
+      ]
+    },
+    {
+      "reference": "Basit, A., Zafar, M., Liu, X., Javed, A. R., Jalil, Z., & Kifayat, K. (2021). A comprehensive survey of AI-enabled phishing attacks detection techniques. Telecommunication Systems, 76(1), 139–154. https://doi.org/10.1007/s11235-020-00733-2",
+      "citation_count": 2,
+      "citations": [
+        {
+          "line": 91,
+          "text": "Basit et al., 2021"
+        },
+        {
+          "line": 95,
+          "text": "Basit et al. (2021"
+        }
+      ]
+    },
+    {
+      "reference": "Ben-David, S., Blitzer, J., Crammer, K., Kulesza, A., Pereira, F., & Vaughan, J. W. (2010). A theory of learning from different domains. Machine Learning, 79(1–2), 151–175. https://doi.org/10.1007/s10994-009-5152-4",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 125,
+          "text": "Ben-David et al. (2010"
+        }
+      ]
+    },
+    {
+      "reference": "Berners-Lee, T., Fielding, R., & Masinter, L. (2005). Uniform Resource Identifier (URI): Generic syntax (RFC 3986). RFC Editor. https://doi.org/10.17487/RFC3986",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 285,
+          "text": "Berners-Lee et al., 2005"
+        }
+      ]
+    },
+    {
+      "reference": "Breiman, L. (2001). Random forests. Machine Learning, 45(1), 5–32. https://doi.org/10.1023/A:1010933404324",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 107,
+          "text": "Breiman (2001"
+        }
+      ]
+    },
+    {
+      "reference": "Chandola, V., Banerjee, A., & Kumar, V. (2009). Anomaly detection: A survey. ACM Computing Surveys, 41(3), 1–58. https://doi.org/10.1145/1541880.1541882",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 159,
+          "text": "Chandola et al. (2009"
+        }
+      ]
+    },
+    {
+      "reference": "Chen, T. Y., Kuo, F.-C., Liu, H., Poon, P.-L., Towey, D., Tse, T. H., & Zhou, Z. Q. (2018). Metamorphic testing: A review of challenges and opportunities. ACM Computing Surveys, 51(1), 1–27. https://doi.org/10.1145/3143561",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 191,
+          "text": "Chen et al. (2018"
+        }
+      ]
+    },
+    {
+      "reference": "Chicco, D., & Jurman, G. (2020). The advantages of the Matthews correlation coefficient (MCC) over F1 score and accuracy in binary classification evaluation. BMC Genomics, 21(1), Article 6. https://doi.org/10.1186/s12864-019-6413-7",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 137,
+          "text": "Chicco and Jurman (2020"
+        }
+      ]
+    },
+    {
+      "reference": "Clopper, C. J., & Pearson, E. S. (1934). The use of confidence or fiducial limits illustrated in the case of the binomial. Biometrika, 26(4), 404–413. https://doi.org/10.1093/biomet/26.4.404",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 131,
+          "text": "Clopper & Pearson, 1934"
+        }
+      ]
+    },
+    {
+      "reference": "Dean, J., & Barroso, L. A. (2013). The tail at scale. Communications of the ACM, 56(2), 74–80. https://doi.org/10.1145/2408776.2408794",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 195,
+          "text": "Dean and Barroso (2013"
+        }
+      ]
+    },
+    {
+      "reference": "Dempster, A. P., Laird, N. M., & Rubin, D. B. (1977). Maximum likelihood from incomplete data via the EM algorithm. Journal of the Royal Statistical Society: Series B (Methodological), 39(1), 1–22. https://doi.org/10.1111/j.2517-6161.1977.tb01600.x",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 153,
+          "text": "Dempster et al., 1977"
+        }
+      ]
+    },
+    {
+      "reference": "Efron, B. (1979). Bootstrap methods: Another look at the jackknife. The Annals of Statistics, 7(1), 1–26. https://doi.org/10.1214/aos/1176344552",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 313,
+          "text": "Efron (1979"
+        }
+      ]
+    },
+    {
+      "reference": "Gama, J., Žliobaitė, I., Bifet, A., Pechenizkiy, M., & Bouchachia, A. (2014). A survey on concept drift adaptation. ACM Computing Surveys, 46(4), 1–37. https://doi.org/10.1145/2523813",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 157,
+          "text": "Gama et al. (2014"
+        }
+      ]
+    },
+    {
+      "reference": "Geifman, Y., & El-Yaniv, R. (2019). SelectiveNet: A deep neural network with an integrated reject option. Proceedings of Machine Learning Research, 97, 2151–2159. https://proceedings.mlr.press/v97/geifman19a.html",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 187,
+          "text": "Geifman & El-Yaniv, 2019"
+        }
+      ]
+    },
+    {
+      "reference": "Gneiting, T., & Raftery, A. E. (2007). Strictly proper scoring rules, prediction, and estimation. Journal of the American Statistical Association, 102(477), 359–378. https://doi.org/10.1198/016214506000001437",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 139,
+          "text": "Gneiting and Raftery (2007"
+        }
+      ]
+    },
+    {
+      "reference": "Gretton, A., Borgwardt, K. M., Rasch, M. J., Schölkopf, B., & Smola, A. (2012). A kernel two-sample test. Journal of Machine Learning Research, 13, 723–773. https://jmlr.org/papers/v13/gretton12a.html",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 161,
+          "text": "Gretton et al. (2012"
+        }
+      ]
+    },
+    {
+      "reference": "Guo, C., Pleiss, G., Sun, Y., & Weinberger, K. Q. (2017). On calibration of modern neural networks. Proceedings of Machine Learning Research, 70, 1321–1330. https://proceedings.mlr.press/v70/guo17a.html",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 187,
+          "text": "Guo et al. (2017"
+        }
+      ]
+    },
+    {
+      "reference": "Hannousse, A., & Yahiouche, S. (2020). Towards benchmark datasets for machine learning based website phishing detection: An experimental study [Preprint]. arXiv. https://arxiv.org/abs/2010.12847",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 411,
+          "text": "Hannousse & Yahiouche, 2020, 2021a"
+        }
+      ]
+    },
+    {
+      "reference": "Hannousse, A., & Yahiouche, S. (2021a). Towards benchmark datasets for machine learning based website phishing detection: An experimental study. Engineering Applications of Artificial Intelligence, 104, Article 104347. https://doi.org/10.1016/j.engappai.2021.104347",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 411,
+          "text": "Hannousse & Yahiouche, 2020, 2021a"
+        }
+      ]
+    },
+    {
+      "reference": "Hannousse, A., & Yahiouche, S. (2021b). Web page phishing detection (Version 3) [Data set]. Mendeley Data. https://doi.org/10.17632/c2gw7fy2j4.3",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 411,
+          "text": "Hannousse & Yahiouche, 2021b"
+        }
+      ]
+    },
+    {
+      "reference": "Holm, S. (1979). A simple sequentially rejective multiple test procedure. Scandinavian Journal of Statistics, 6(2), 65–70. https://www.jstor.org/stable/4615733",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 377,
+          "text": "Holm's (1979"
+        }
+      ]
+    },
+    {
+      "reference": "Hussain, M., Abbas, J., Hussain, J., Gu, Y., & Wu, H. (2027). ExpertFusion: Calibrated multi-expert decision fusion for phishing URL detection under distribution shift and target-prior uncertainty. Expert Systems with Applications, 333, Article 134089. https://doi.org/10.1016/j.eswa.2026.134089",
+      "citation_count": 4,
+      "citations": [
+        {
+          "line": 71,
+          "text": "Hussain et al., 2027"
+        },
+        {
+          "line": 145,
+          "text": "Hussain et al. (2027"
+        },
+        {
+          "line": 176,
+          "text": "Hussain et al. (2027"
+        },
+        {
+          "line": 926,
+          "text": "Hussain et al. (2027"
+        }
+      ]
+    },
+    {
+      "reference": "Jain, A. K., & Gupta, B. B. (2018). Towards detection of phishing websites on client-side using machine learning based approach. Telecommunication Systems, 68(4), 687–700. https://doi.org/10.1007/s11235-017-0414-0",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 99,
+          "text": "Jain and Gupta (2018"
+        }
+      ]
+    },
+    {
+      "reference": "Kalibera, T., & Jones, R. (2013). Rigorous benchmarking in reasonable time. Proceedings of the 2013 International Symposium on Memory Management, 63–74. https://doi.org/10.1145/2464157.2464160",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 195,
+          "text": "Kalibera and Jones (2013"
+        }
+      ]
+    },
+    {
+      "reference": "Khonji, M., Iraqi, Y., & Jones, A. (2013). Phishing detection: A literature survey. IEEE Communications Surveys & Tutorials, 15(4), 2091–2121. https://doi.org/10.1109/SURV.2013.032213.00009",
+      "citation_count": 2,
+      "citations": [
+        {
+          "line": 91,
+          "text": "Khonji et al., 2013"
+        },
+        {
+          "line": 95,
+          "text": "Khonji et al. (2013"
+        }
+      ]
+    },
+    {
+      "reference": "Le, H., Pham, Q., Sahoo, D., & Hoi, S. C. H. (2018). URLNet: Learning a URL representation with deep learning for malicious URL detection [Preprint]. arXiv. https://arxiv.org/abs/1802.03162",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 109,
+          "text": "Le et al. (2018"
+        }
+      ]
+    },
+    {
+      "reference": "Le Pochat, V., Van Goethem, T., Tajalizadehkhoob, S., Korczyński, M., & Joosen, W. (2019). Tranco: A research-oriented top sites ranking hardened against manipulation. Network and Distributed System Security Symposium. https://doi.org/10.14722/ndss.2019.23386",
+      "citation_count": 2,
+      "citations": [
+        {
+          "line": 119,
+          "text": "Le Pochat et al. (2019"
+        },
+        {
+          "line": 984,
+          "text": "Le Pochat et al., 2019"
+        }
+      ]
+    },
+    {
+      "reference": "Li, L., Lin, Y., Chen, D., Ren, S., Li, P., Zhou, J., & Sun, X. (2021). CascadeBERT: Accelerating inference of pre-trained language models via calibrated complete models cascade. Findings of the Association for Computational Linguistics: EMNLP 2021, 475–486. https://doi.org/10.18653/v1/2021.findings-emnlp.43",
+      "citation_count": 4,
+      "citations": [
+        {
+          "line": 71,
+          "text": "Li et al., 2021"
+        },
+        {
+          "line": 145,
+          "text": "Li et al., 2021"
+        },
+        {
+          "line": 174,
+          "text": "Li et al. (2021"
+        },
+        {
+          "line": 926,
+          "text": "Li et al., 2021"
+        }
+      ]
+    },
+    {
+      "reference": "Lipton, Z. C., Wang, Y.-X., & Smola, A. J. (2018). Detecting and correcting for label shift with black box predictors. Proceedings of Machine Learning Research, 80, 3122–3130. https://proceedings.mlr.press/v80/lipton18a.html",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 141,
+          "text": "Lipton et al. (2018"
+        }
+      ]
+    },
+    {
+      "reference": "Loshchilov, I., & Hutter, F. (2019). Decoupled weight decay regularization. International Conference on Learning Representations. https://arxiv.org/abs/1711.05101",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 289,
+          "text": "Loshchilov & Hutter, 2019"
+        }
+      ]
+    },
+    {
+      "reference": "Lu, J., Liu, A., Dong, F., Gu, F., Gama, J., & Zhang, G. (2019). Learning under concept drift: A review. IEEE Transactions on Knowledge and Data Engineering, 31, 2346–2363. https://doi.org/10.1109/TKDE.2018.2876857",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 157,
+          "text": "Lu et al. (2019"
+        }
+      ]
+    },
+    {
+      "reference": "Ma, J., Saul, L. K., Savage, S., & Voelker, G. M. (2009). Beyond blacklists: Learning to detect malicious web sites from suspicious URLs. Proceedings of the 15th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, 1245–1254. https://doi.org/10.1145/1557019.1557153",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 97,
+          "text": "Ma et al. (2009"
+        }
+      ]
+    },
+    {
+      "reference": "Marchal, S., Armano, G., Grondahl, T., Saari, K., Singh, N., & Asokan, N. (2017). Off-the-Hook: An efficient and usable client-side phishing prevention application. IEEE Transactions on Computers, 66(10), 1717–1733. https://doi.org/10.1109/TC.2017.2703808",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 99,
+          "text": "Marchal et al. (2017"
+        }
+      ]
+    },
+    {
+      "reference": "McNemar, Q. (1947). Note on the sampling error of the difference between correlated proportions or percentages. Psychometrika, 12(2), 153–157. https://doi.org/10.1007/BF02295996",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 377,
+          "text": "McNemar's (1947"
+        }
+      ]
+    },
+    {
+      "reference": "Ovadia, Y., Fertig, E., Ren, J., Nado, Z., Sculley, D., Nowozin, S., Dillon, J. V., Lakshminarayanan, B., & Snoek, J. (2019). Can you trust your model's uncertainty? Evaluating predictive uncertainty under dataset shift [Preprint]. arXiv. https://arxiv.org/abs/1906.02530",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 149,
+          "text": "Ovadia et al. (2019"
+        }
+      ]
+    },
+    {
+      "reference": "Pan, S. J., & Yang, Q. (2010). A survey on transfer learning. IEEE Transactions on Knowledge and Data Engineering, 22(10), 1345–1359. https://doi.org/10.1109/TKDE.2009.191",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 125,
+          "text": "Pan and Yang (2010"
+        }
+      ]
+    },
+    {
+      "reference": "Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O., Blondel, M., Prettenhofer, P., Weiss, R., Dubourg, V., Vanderplas, J., Passos, A., Cournapeau, D., Brucher, M., Perrot, M., & Duchesnay, E. (2011). Scikit-learn: Machine learning in Python. Journal of Machine Learning Research, 12, 2825–2830. https://jmlr.org/papers/v12/pedregosa11a.html",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 111,
+          "text": "Pedregosa et al. (2011"
+        }
+      ]
+    },
+    {
+      "reference": "Pendlebury, F., Pierazzi, F., Jordaney, R., Kinder, J., & Cavallaro, L. (2019). TESSERACT: Eliminating experimental bias in malware classification across space and time. 28th USENIX Security Symposium, 729–746. https://www.usenix.org/conference/usenixsecurity19/presentation/pendlebury",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 185,
+          "text": "Pendlebury et al., 2019"
+        }
+      ]
+    },
+    {
+      "reference": "Prasad, A., & Chandra, S. (2024a). PhiUSIIL: A diverse security profile empowered phishing URL detection framework based on similarity index and incremental learning. Computers & Security, 136, Article 103545. https://doi.org/10.1016/j.cose.2023.103545",
+      "citation_count": 2,
+      "citations": [
+        {
+          "line": 93,
+          "text": "Prasad & Chandra, 2024a, 2024b"
+        },
+        {
+          "line": 251,
+          "text": "Prasad & Chandra, 2024a"
+        }
+      ]
+    },
+    {
+      "reference": "Prasad, A., & Chandra, S. (2024b). PhiUSIIL Phishing URL (Website) [Data set]. UCI Machine Learning Repository. https://archive.ics.uci.edu/dataset/967/phiusiil+phishing+url+website+dataset",
+      "citation_count": 2,
+      "citations": [
+        {
+          "line": 93,
+          "text": "Prasad & Chandra, 2024a, 2024b"
+        },
+        {
+          "line": 249,
+          "text": "Prasad & Chandra, 2024b"
+        }
+      ]
+    },
+    {
+      "reference": "Rao, R. S., & Pais, A. R. (2019). Detection of phishing websites using an efficient feature-based machine learning framework. Neural Computing and Applications, 31(8), 3851–3873. https://doi.org/10.1007/s00521-017-3305-0",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 99,
+          "text": "Rao and Pais (2019"
+        }
+      ]
+    },
+    {
+      "reference": "Rashid, F., Doyle, B., Han, S. C., & Seneviratne, S. (2024). Phishing URL detection generalisation using unsupervised domain adaptation. Computer Networks, 245, Article 110398. https://doi.org/10.1016/j.comnet.2024.110398",
+      "citation_count": 4,
+      "citations": [
+        {
+          "line": 71,
+          "text": "Rashid et al., 2024"
+        },
+        {
+          "line": 117,
+          "text": "Rashid et al. (2024"
+        },
+        {
+          "line": 172,
+          "text": "Rashid et al. (2024"
+        },
+        {
+          "line": 926,
+          "text": "Rashid et al., 2024"
+        }
+      ]
+    },
+    {
+      "reference": "Roberts, D. R., Bahn, V., Ciuti, S., Boyce, M. S., Elith, J., Guillera-Arroita, G., Hauenstein, S., Lahoz-Monfort, J. J., Schröder, B., Thuiller, W., Warton, D. I., Wintle, B. A., Hartig, F., & Dormann, C. F. (2017). Cross-validation strategies for data with temporal, spatial, hierarchical, or phylogenetic structure. Ecography, 40(8), 913–929. https://doi.org/10.1111/ecog.02881",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 123,
+          "text": "Roberts et al. (2017"
+        }
+      ]
+    },
+    {
+      "reference": "Sahingoz, O. K., Buber, E., Demir, O., & Diri, B. (2019). Machine learning based phishing detection from URLs. Expert Systems with Applications, 117, 345–357. https://doi.org/10.1016/j.eswa.2018.09.029",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 97,
+          "text": "Sahingoz et al. (2019"
+        }
+      ]
+    },
+    {
+      "reference": "Saito, T., & Rehmsmeier, M. (2015). The precision-recall plot is more informative than the ROC plot when evaluating binary classifiers on imbalanced datasets. PLOS ONE, 10(3), e0118432. https://doi.org/10.1371/journal.pone.0118432",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 135,
+          "text": "Saito and Rehmsmeier (2015"
+        }
+      ]
+    },
+    {
+      "reference": "Schroeder, B., Wierman, A., & Harchol-Balter, M. (2006). Open versus closed: A cautionary tale. 3rd USENIX Symposium on Networked Systems Design & Implementation, 239–252. https://www.usenix.org/legacy/events/nsdi06/tech/schroeder.html",
+      "citation_count": 2,
+      "citations": [
+        {
+          "line": 197,
+          "text": "Schroeder et al. (2006"
+        },
+        {
+          "line": 361,
+          "text": "Schroeder et al. (2006"
+        }
+      ]
+    },
+    {
+      "reference": "Schwarz, G. (1978). Estimating the dimension of a model. The Annals of Statistics, 6(2), 461–464. https://doi.org/10.1214/aos/1176344136",
+      "citation_count": 2,
+      "citations": [
+        {
+          "line": 153,
+          "text": "Schwarz, 1978"
+        },
+        {
+          "line": 325,
+          "text": "Schwarz, 1978"
+        }
+      ]
+    },
+    {
+      "reference": "Sugiyama, M., Krauledat, M., & Müller, K.-R. (2007). Covariate shift adaptation by importance weighted cross validation. Journal of Machine Learning Research, 8, 985–1005. https://jmlr.org/papers/v8/sugiyama07a.html",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 127,
+          "text": "Sugiyama et al. (2007"
+        }
+      ]
+    },
+    {
+      "reference": "Tallam, K. (2026). Automated phishing detection for frontier AI inference: Retained research record (research-record-2026-10-04) [Computer software and data set]. GitHub. https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/research-record-2026-10-04",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 373,
+          "text": "Tallam (2026"
+        }
+      ]
+    },
+    {
+      "reference": "Tibshirani, R. (1996). Regression shrinkage and selection via the lasso. Journal of the Royal Statistical Society: Series B (Methodological), 58(1), 267–288. https://doi.org/10.1111/j.2517-6161.1996.tb02080.x",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 103,
+          "text": "Tibshirani, 1996"
+        }
+      ]
+    },
+    {
+      "reference": "Tsai, Y.-D., Liow, C., Sheng Siang, Y., & Lin, S.-D. (2024). Toward more generalized malicious URL detection models. Proceedings of the AAAI Conference on Artificial Intelligence, 38(19), 21628–21636. https://doi.org/10.1609/aaai.v38i19.30161",
+      "citation_count": 4,
+      "citations": [
+        {
+          "line": 71,
+          "text": "Tsai et al., 2024"
+        },
+        {
+          "line": 117,
+          "text": "Tsai et al. (2024"
+        },
+        {
+          "line": 173,
+          "text": "Tsai et al. (2024"
+        },
+        {
+          "line": 926,
+          "text": "Tsai et al., 2024"
+        }
+      ]
+    },
+    {
+      "reference": "Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, L., & Polosukhin, I. (2017). Attention is all you need [Preprint]. arXiv. https://arxiv.org/abs/1706.03762",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 109,
+          "text": "Vaswani et al. (2017"
+        }
+      ]
+    },
+    {
+      "reference": "Vu, T. N. (2026a). PhishVN: A time-stamped Vietnamese URL phishing dataset with impersonation-scenario labels and confidence tiers. Data in Brief, 68, Article 113195. https://doi.org/10.1016/j.dib.2026.113195",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 119,
+          "text": "Vu (2026a"
+        }
+      ]
+    },
+    {
+      "reference": "Vu, T. N. (2026b). PhishVN: A time-stamped Vietnamese URL phishing dataset with impersonation-scenario labels and confidence tiers (Version 4) [Data set]. Mendeley Data. https://doi.org/10.17632/b97hxbxtpd.4",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 341,
+          "text": "Vu, 2026b"
+        }
+      ]
+    },
+    {
+      "reference": "Yang, L., Guo, W., Hao, Q., Ciptadi, A., Ahmadzadeh, A., Xing, X., & Wang, G. (2021). CADE: Detecting and explaining concept drift samples for security applications. 30th USENIX Security Symposium, 2327–2344. https://www.usenix.org/conference/usenixsecurity21/presentation/yang-limin",
+      "citation_count": 4,
+      "citations": [
+        {
+          "line": 71,
+          "text": "Yang et al., 2021"
+        },
+        {
+          "line": 155,
+          "text": "Yang et al., 2021"
+        },
+        {
+          "line": 177,
+          "text": "Yang et al. (2021"
+        },
+        {
+          "line": 926,
+          "text": "Yang et al., 2021"
+        }
+      ]
+    },
+    {
+      "reference": "Zhang, X., Zhao, J., & LeCun, Y. (2015). Character-level convolutional networks for text classification [Preprint]. arXiv. https://arxiv.org/abs/1509.01626",
+      "citation_count": 1,
+      "citations": [
+        {
+          "line": 109,
+          "text": "Zhang et al. (2015"
+        }
+      ]
+    }
+  ],
+  "residual_year_tokens": [
+    "2020",
+    "2023",
+    "2022",
+    "2023",
+    "2026",
+    "2026",
+    "1937",
+    "2026",
+    "2026",
+    "2026",
+    "2026",
+    "2026",
+    "2020",
+    "2020",
+    "2020",
+    "2026",
+    "2042",
+    "2026"
+  ],
+  "residual_review": "Unchanged date/identifier/decimal tokens from the prior citation audit; no new unmatched body-year token.",
+  "scope": "All bibliography entries linked to body citations; unchanged existing source-claim audit limits. Not full-text verification of every external source."
+}

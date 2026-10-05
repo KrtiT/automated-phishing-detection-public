@@ -1,0 +1,48 @@
+{
+  "base_commit": "91995dd3fa6f0661d185999bab90a6fabb25d962",
+  "data_release": "https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/research-record-2026-10-04",
+  "source_files": {
+    "Tallam_Krti_Praxis_Citations_Expanded_2026-10-04.md": "6d0d08e6ad1718efcca136af3be6d9880b6529992c9f886204898d81afe7b4f7",
+    "Tallam_Krti_Praxis_Public_2026-10-04.docx": "8d5c9df75578cd4a4dfcbc1e92a80162bd53600faef279d7e5706fdb784c584d",
+    "Tallam_Praxis_Advisor_Complete_2026-10-02.pptx": "a29f7d1ab808d19a713a21302e1eb3cb6ff0435dae1cf5e7a8a8776d86438531",
+    "Tallam_Krti_Praxis_Citations_Expanded_2026-10-04.pdf": "6e1fc7db97fc3b3e07f8e445bb6586950505bf1ed8d65cfbc7b6a7d71bc4848d",
+    "Tallam_Praxis_Advisor_Complete_2026-10-02.pdf": "fea3c672874c744b58a7c4ce2aa28529d48b92010806b66c72a48894fdf296bc"
+  },
+  "edits": [
+    {
+      "old": "The linked public evidence records collectively identify",
+      "new": "The versioned public research record is cited as Tallam (2026); Appendix A connects it to the manuscript and the retained observations. The linked public evidence records collectively identify"
+    },
+    {
+      "old": "private model-artifact hashes",
+      "new": "fitted model-artifact hashes"
+    },
+    {
+      "old": "Raw public records remain outside Git history and are handled under their documented licenses. Published repository evidence contains aggregate counts, hashes, protocols, and code rather than redistributed processed row-level outputs.",
+      "new": "Licensed raw records, prepared partitions, fitted artifacts, row-level predictions and request records are distributed in the versioned research release, outside ordinary Git history. Its inventories distinguish exact files, disclosed administrative projections and hash-only private execution files. Dataset URLs remain inert strings; publication does not authorize visiting phishing infrastructure."
+    },
+    {
+      "old": "This appendix is a reader's guide to the accompanying aggregate supplement. File names identify the package's aggregate-data directory unless a different directory is stated. The package exposes computed results and verification scope without redistributing row-level URLs, predictions, model weights or private execution capabilities. Aggregate files support inspection and reanalysis of the reported summaries; repeating model fitting or HTTP measurement also requires the original controlled sources and environment.",
+      "new": "The accompanying repository connects the manuscript to aggregate results, analysis code and the licensed retained-record release cited as Tallam (2026). Use release tag research-record-2026-10-04 for the exact data and measured-code record. Paths in Table A.1 are relative to dissertation/2026-10-04; unqualified data filenames refer to its aggregate-data directory. The current EVIDENCE_MAP.md maps all 27 tables and four figures to their sources and the 25-slide presentation to the same evidence. Literature citations support external claims; repository locators identify this study's artifacts, not independent corroboration."
+    },
+    {
+      "old": "The measured academic code revision is 77d128377ce5b401437d7179f5cd78fb4294b72c in the automated-phishing-detection-public repository. The package's provenance directory includes the frozen contracts and environment identities; its analysis-scripts directory includes the actual verifier, secondary exporter and synthesis sources. These scripts retain their controlled-workspace dependencies and are not represented as a standalone substitute for the research inputs. The README and data dictionary identify units, population restrictions and undefined fields. SHA256SUMS.txt verifies package byte identity; it is not independent replication or proof that every scientific assumption holds.",
+      "new": "The original measured code revision is 77d128377ce5b401437d7179f5cd78fb4294b72c; the bounded follow-up revision is ef8ba5f0b357cf3dd60c4d663e6297d13334460c. The repository's research-archive/2026-10-04 guide supplies download, checksum, materialization and saved-observation recomputation commands. Its catalog inventories licensed raw data, prepared splits, fitted artifacts, predictions, requests, freezes and interrupted attempts. Private execution capabilities and full host/process logs remain excluded or explicitly projected. Checksums establish identity, and recomputation checks arithmetic; neither constitutes new model fitting, timing or independent empirical replication."
+    },
+    {
+      "old": "The bounded follow-up has a distinct source identity, ef8ba5f0b357cf3dd60c4d663e6297d13334460c. Its prospective comparison specification, execution manifest, model-freeze record, population admission and saved-prediction recomputation are retained under followup-20261001. The aggregate detection supplement includes two model rows, twenty calibration-bin rows, two invariance rows and a domain-size distribution. The separate verifier uses a second arithmetic implementation for counts, rank-based AUC, average precision, Brier score and domain-weighted bootstrap summaries; this is not external replication. Candidate fitting used Python 3.10.19, NumPy 2.2.6, SciPy 1.15.3 and scikit-learn 1.7.2. The source freeze recorded 215 focused passing tests and an in-progress broader regression suite; no independent reviewer approval is claimed.",
+      "new": "Public method records are in provenance/followup, with detection results in aggregate-data/detection-D and complete service results in aggregate-data/service-S. Materialized follow-up inputs, manifests, model freezes and population admissions are under dissertation/followup-20261001 in the archive. The detection supplement retains two model rows, twenty calibration bins, two invariance rows and domain sizes. Its separate arithmetic implementation checks counts, rank-based AUC, average precision, Brier score and domain-bootstrap summaries. Candidate fitting used Python 3.10.19, NumPy 2.2.6, SciPy 1.15.3 and scikit-learn 1.7.2. Historical analysis-scripts retain controlled-workspace dependencies; the public recomputation adapter and data dictionaries specify the supported use."
+    },
+    {
+      "old": "The subsequently completed broad regression run records 13,016 passed, three failed and two skipped tests. All three failures occur before the intended SIGINT injection because a local test double omits the async aclose method required by the HTTP client lifecycle. A separately retained fixture-corrected copy adds only that method; all six original interruption assertions pass, including the three shift cases that already passed. The frozen measurement source and original test remain unchanged. The original failure log is preserved and is not relabeled as a green full-suite run. The supplemental verification record also retains an initial configuration-selection error before test collection. These are software-verification outcomes, not new detection or service measurements.",
+      "new": "Software checks have a separate chronology. The follow-up freeze recorded 215 focused passing tests while a broader run was in progress. That run finished with 13,016 passed, three failed and two skipped: a mock client lacked the async aclose method, preventing the intended SIGINT injection. A separately retained fixture-only correction passed all six original interruption cases, including three previously passing shift cases. The frozen source, original failure log and initial configuration-selection error before collection remain preserved. Current GitHub Actions results identify their tested commits; they do not relabel historical failures or establish manuscript acceptance. No advisor or institutional approval is inferred from these checks."
+    },
+    {
+      "old": "Sections 1.3–1.4",
+      "new": "Sections 1.4–1.5"
+    }
+  ],
+  "added_reference": "Tallam, K. (2026). Automated phishing detection for frontier AI inference: Retained research record (research-record-2026-10-04) [Computer software and data set]. GitHub. https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/research-record-2026-10-04",
+  "reference_before": "Tibshirani, R.",
+  "scope": "Editorial repository integration; no scientific measurement or decision changed."
+}

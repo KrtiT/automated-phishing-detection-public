@@ -1,0 +1,532 @@
+{
+  "status": "all_table_rows_prose_chart_data_and_navigation_verified",
+  "checked_at": "2026-10-05T02:16:31.203201+00:00",
+  "pdf_sha256": "2729e5469b3d60f3657cd83f7b08b8cc96477ccc91c42dc8395fc775af90c497",
+  "docx_sha256": "1ce68062fca6710380146d099257c5266c6b0e31cef8de55efad39e6cf008696",
+  "pages": 150,
+  "front_pages": 17,
+  "main_body_pages": 117,
+  "table_count": 27,
+  "body_table_rows": 302,
+  "all_rendered_rows_match_source_in_order": true,
+  "rendered_paragraphs_and_cells": 1954,
+  "navigation_targets": 113,
+  "figure_count": 4,
+  "plotted_data": {
+    "calibration_bins": 20,
+    "records_per_model": 8622,
+    "paired_effect_and_interval": "exactly_preserved"
+  },
+  "figures_3_1_and_3_2": "byte_identical; visually review at manuscript scale",
+  "frozen_revision": "ef8ba5f0b357cf3dd60c4d663e6297d13334460c",
+  "frozen_checkout_clean": true,
+  "visual_review": "Required separately; inventory generated, not automatically approved.",
+  "tables": [
+    {
+      "number": 1,
+      "caption": "Table 2.1. Closest prior work and the boundary of the present contribution.",
+      "rows": 7,
+      "pdf_pages": [
+        41
+      ]
+    },
+    {
+      "number": 2,
+      "caption": "Table 3.1. Reading map from technical component to experiment and evidence.",
+      "rows": 5,
+      "pdf_pages": [
+        49
+      ]
+    },
+    {
+      "number": 3,
+      "caption": "Table 4.1. Retained external source, tier and outcome composition.",
+      "rows": 5,
+      "pdf_pages": [
+        89
+      ]
+    },
+    {
+      "number": 4,
+      "caption": "Table 4.2a. Confusion counts; P and N are the declared stratum denominators.",
+      "rows": 9,
+      "pdf_pages": [
+        90
+      ]
+    },
+    {
+      "number": 5,
+      "caption": "Table 4.2b. Corresponding rates and one-sided FPR upper bounds.",
+      "rows": 9,
+      "pdf_pages": [
+        90
+      ]
+    },
+    {
+      "number": 6,
+      "caption": "Table 4.3. All six primary paired recall contrasts; 2,000 domain-clustered PCG64 replicates per contrast. Differences and intervals are percentage points.",
+      "rows": 6,
+      "pdf_pages": [
+        91
+      ]
+    },
+    {
+      "number": 7,
+      "caption": "Table 4.4. Training-only GMM model-selection record.",
+      "rows": 6,
+      "pdf_pages": [
+        92
+      ]
+    },
+    {
+      "number": 8,
+      "caption": "Table 4.5. Frozen GMM and descriptive comparator monitors. All rates use complete overlapping windows, without independent-binomial intervals.",
+      "rows": 3,
+      "pdf_pages": [
+        93
+      ]
+    },
+    {
+      "number": 9,
+      "caption": "Table 4.6. All 25 operational groups. Each row pools five complete repeats. Fixed and transformer rows contain 50,000 requests; live shift contains 43,505. Physical attempts are transformer forward attempts divided by all measured client requests, not a latency reduction.",
+      "rows": 25,
+      "pdf_pages": [
+        95
+      ]
+    },
+    {
+      "number": 10,
+      "caption": "Table 4.7. Five-run throughput and post-phase drain ranges. Full individual run values and counters are in operational-runs.csv; ranges are descriptions, not uncertainty intervals or best-run selection.",
+      "rows": 25,
+      "pdf_pages": [
+        96
+      ]
+    },
+    {
+      "number": 11,
+      "caption": "Table 4.8. Selected full-metric summaries. External AP and calibration describe the observed 69-positive/2,497-negative mixture, not production prevalence. All columns, precision, F2, MCC and balanced accuracy remain in secondary-metrics.csv.",
+      "rows": 13,
+      "pdf_pages": [
+        98,
+        99
+      ]
+    },
+    {
+      "number": 12,
+      "caption": "Table 4.9. Additional positive tiers and label-free controls at frozen primary thresholds.",
+      "rows": 5,
+      "pdf_pages": [
+        100
+      ]
+    },
+    {
+      "number": 13,
+      "caption": "Table 4.10. Every accepted permutation comparator; no seed selection.",
+      "rows": 5,
+      "pdf_pages": [
+        100
+      ]
+    },
+    {
+      "number": 14,
+      "caption": "Table 4.11. Transformer seed/runtime sensitivity at each accepted secondary operating point. T denotes transformer. All five secondary cascades coincide with Logistic-L1 on these evaluated populations.",
+      "rows": 5,
+      "pdf_pages": [
+        101
+      ]
+    },
+    {
+      "number": 15,
+      "caption": "Table 4.12. Positive-only paired McNemar tables and four-slot Holm adjustment. \u201cUnderflow\u201d means the saved floating-point computation returned 0.0, not an exact mathematical p-value of zero.",
+      "rows": 4,
+      "pdf_pages": [
+        102
+      ]
+    },
+    {
+      "number": 16,
+      "caption": "Table 4.13. Accepted label-free development probe accounting.",
+      "rows": 4,
+      "pdf_pages": [
+        102
+      ]
+    },
+    {
+      "number": 17,
+      "caption": "Table 4.14. All 22 primary hypothesis checks under unchanged decision rules.",
+      "rows": 22,
+      "pdf_pages": [
+        106
+      ]
+    },
+    {
+      "number": 18,
+      "caption": "Table 4.15. Additional benchmark admission; reason incidences are overlapping.",
+      "rows": 9,
+      "pdf_pages": [
+        108
+      ]
+    },
+    {
+      "number": 19,
+      "caption": "Table 4.16. Additional benchmark detection results; P=4,651 and N=3,971.",
+      "rows": 9,
+      "pdf_pages": [
+        109
+      ]
+    },
+    {
+      "number": 20,
+      "caption": "Table 4.17. Prespecified follow-up D requirements, separate from H1.",
+      "rows": 5,
+      "pdf_pages": [
+        112
+      ]
+    },
+    {
+      "number": 21,
+      "caption": "Table 4.18. All ten structural-detector concurrency-64 pairs; success-only p95 in milliseconds.",
+      "rows": 10,
+      "pdf_pages": [
+        114
+      ]
+    },
+    {
+      "number": 22,
+      "caption": "Table 4.19. Complete pooled service groups; success p50/p95/p99 in milliseconds and attempted throughput in requests per second.",
+      "rows": 8,
+      "pdf_pages": [
+        115
+      ]
+    },
+    {
+      "number": 23,
+      "caption": "Table 4.20. Prespecified S requirements and verified decisions.",
+      "rows": 5,
+      "pdf_pages": [
+        117
+      ]
+    },
+    {
+      "number": 24,
+      "caption": "Table 5.1. Technical contributions, supporting observations and reusable value.",
+      "rows": 5,
+      "pdf_pages": [
+        123
+      ]
+    },
+    {
+      "number": 25,
+      "caption": "Table 5.2. Decisions at the hypothesis, component and follow-up levels.",
+      "rows": 5,
+      "pdf_pages": [
+        127
+      ]
+    },
+    {
+      "number": 26,
+      "caption": "Table A.1. Research questions, complete evidence products and reading order.",
+      "rows": 8,
+      "pdf_pages": [
+        144
+      ]
+    },
+    {
+      "number": 27,
+      "caption": "Table B.1. Complete 80-arm schedule; success-only p95 in milliseconds, attempted throughput in requests/s and terminal error counts.",
+      "rows": 80,
+      "pdf_pages": [
+        147,
+        148,
+        149,
+        150
+      ]
+    }
+  ],
+  "page_inventory": [
+    {
+      "pdf_page": 41,
+      "table_numbers": [
+        1
+      ],
+      "images": 0,
+      "render": "visual/page-041.png",
+      "render_sha256": "40196e133c05f27ba623d13c5b0d494c48aee7dbb6be96c3ffa9a9a02ea64e01"
+    },
+    {
+      "pdf_page": 48,
+      "table_numbers": [],
+      "images": 1,
+      "render": "visual/page-048.png",
+      "render_sha256": "6670997fa9cf718f9327eb89872242e917ec0a72a610cebf6c432a5018fb603f"
+    },
+    {
+      "pdf_page": 49,
+      "table_numbers": [
+        2
+      ],
+      "images": 0,
+      "render": "visual/page-049.png",
+      "render_sha256": "f3bd22aaa249667ae9f83897f6806523e27ef8f163edf788121c3502530a8e07"
+    },
+    {
+      "pdf_page": 81,
+      "table_numbers": [],
+      "images": 1,
+      "render": "visual/page-081.png",
+      "render_sha256": "b881500316fc5ba22f5429199326133fc405a4174fa76d501891e4f0610ec46a"
+    },
+    {
+      "pdf_page": 89,
+      "table_numbers": [
+        3
+      ],
+      "images": 0,
+      "render": "visual/page-089.png",
+      "render_sha256": "75bacd80aa3be0fa934d695b7f084371833f34bb992cfe54b7ba7ac96c5466a5"
+    },
+    {
+      "pdf_page": 90,
+      "table_numbers": [
+        4,
+        5
+      ],
+      "images": 0,
+      "render": "visual/page-090.png",
+      "render_sha256": "32db7710a3c7b2ff7947fb8e147bdf9ee9523df74a455005ee7d248046d35aea"
+    },
+    {
+      "pdf_page": 91,
+      "table_numbers": [
+        6
+      ],
+      "images": 0,
+      "render": "visual/page-091.png",
+      "render_sha256": "2c5dc6f0cb75309bbb9f4b7328fde393c5bffa9c7a7a2110509f1a7ceab577f5"
+    },
+    {
+      "pdf_page": 92,
+      "table_numbers": [
+        7
+      ],
+      "images": 0,
+      "render": "visual/page-092.png",
+      "render_sha256": "eff7df5cc7ae6784db1e34f8a7d1fc172d07ee5deb00c7ad7952acbdfa692c0a"
+    },
+    {
+      "pdf_page": 93,
+      "table_numbers": [
+        8
+      ],
+      "images": 0,
+      "render": "visual/page-093.png",
+      "render_sha256": "3ac4047bf804dd3cdcecff3515f0088c63506a0cef9c46b7bfeadefd8bc470d1"
+    },
+    {
+      "pdf_page": 95,
+      "table_numbers": [
+        9
+      ],
+      "images": 0,
+      "render": "visual/page-095.png",
+      "render_sha256": "516dbef52b2d34a4a31d1edb8a151a0a2e8e1cf70294c0d4bedade20b9f88c1a"
+    },
+    {
+      "pdf_page": 96,
+      "table_numbers": [
+        10
+      ],
+      "images": 0,
+      "render": "visual/page-096.png",
+      "render_sha256": "6aab4932362e7195fab585199dfe5c0e2dc7e1bb0b8693cba2852d7d11c578f6"
+    },
+    {
+      "pdf_page": 98,
+      "table_numbers": [
+        11
+      ],
+      "images": 0,
+      "render": "visual/page-098.png",
+      "render_sha256": "405c7521ef4050d6964736889391a54994cc6ca6883cbd0c496d2530d667bcfb"
+    },
+    {
+      "pdf_page": 99,
+      "table_numbers": [
+        11
+      ],
+      "images": 0,
+      "render": "visual/page-099.png",
+      "render_sha256": "c24478e0bdf34f54bef24de809ec57200140f132ff16101a732a6c8edf126adc"
+    },
+    {
+      "pdf_page": 100,
+      "table_numbers": [
+        12,
+        13
+      ],
+      "images": 0,
+      "render": "visual/page-100.png",
+      "render_sha256": "b834cea0f66ade40c52a7add9e1bdb4517af767acb133ad6508480eab620adf1"
+    },
+    {
+      "pdf_page": 101,
+      "table_numbers": [
+        14
+      ],
+      "images": 0,
+      "render": "visual/page-101.png",
+      "render_sha256": "df46310e5133b1769061ad002c37bbc59c9001ddd2ba7cd76caa1211ec892779"
+    },
+    {
+      "pdf_page": 102,
+      "table_numbers": [
+        15,
+        16
+      ],
+      "images": 0,
+      "render": "visual/page-102.png",
+      "render_sha256": "de4dd6226996ab5430bbf5a870faec948e2698cb82df565fb75843d3d6dad9da"
+    },
+    {
+      "pdf_page": 106,
+      "table_numbers": [
+        17
+      ],
+      "images": 0,
+      "render": "visual/page-106.png",
+      "render_sha256": "7bd22a8224f7ca7a3560646f6281f1aa507059124f6063e493c3874e4a527bad"
+    },
+    {
+      "pdf_page": 108,
+      "table_numbers": [
+        18
+      ],
+      "images": 0,
+      "render": "visual/page-108.png",
+      "render_sha256": "ecb9740e286b3d80e57a5a6ce3750ddf5ad6f35483446cba5790287da7a1b2e9"
+    },
+    {
+      "pdf_page": 109,
+      "table_numbers": [
+        19
+      ],
+      "images": 0,
+      "render": "visual/page-109.png",
+      "render_sha256": "978f3465f2b03a8d5dfd5686ed1c34e657ef5ecd365c0ad613d034af13654339"
+    },
+    {
+      "pdf_page": 110,
+      "table_numbers": [],
+      "images": 1,
+      "render": "visual/page-110.png",
+      "render_sha256": "4719bfa6d1da644abc06ba907591e8416de7b6faec2554804d1a9bd4122aa8c4"
+    },
+    {
+      "pdf_page": 111,
+      "table_numbers": [],
+      "images": 1,
+      "render": "visual/page-111.png",
+      "render_sha256": "8ecf66a65ce5ccb68ab7fbaec1f11960c82b2090cfb62e7126dd7107ef0221be"
+    },
+    {
+      "pdf_page": 112,
+      "table_numbers": [
+        20
+      ],
+      "images": 0,
+      "render": "visual/page-112.png",
+      "render_sha256": "8de8e9c86bf63f27147cec56c167f70d639f7958d4943eabe3c637f1d5139e06"
+    },
+    {
+      "pdf_page": 114,
+      "table_numbers": [
+        21
+      ],
+      "images": 0,
+      "render": "visual/page-114.png",
+      "render_sha256": "6c3d949894d1ef4210b6caf7760590339dbe9beff8139ca51047bf39c7be76a2"
+    },
+    {
+      "pdf_page": 115,
+      "table_numbers": [
+        22
+      ],
+      "images": 0,
+      "render": "visual/page-115.png",
+      "render_sha256": "f0eff0d5da7d7713467d573f9e0d1c3e471d497c4ac5f89466889bf801d1145f"
+    },
+    {
+      "pdf_page": 117,
+      "table_numbers": [
+        23
+      ],
+      "images": 0,
+      "render": "visual/page-117.png",
+      "render_sha256": "1845877f67e77e46a0b961a7b844909e8be699ca8bf76ef19792cefda66e282f"
+    },
+    {
+      "pdf_page": 123,
+      "table_numbers": [
+        24
+      ],
+      "images": 0,
+      "render": "visual/page-123.png",
+      "render_sha256": "03cbba07f7e8301b0b44106e98b1953486c359745702433e0c0649dfe6478ea0"
+    },
+    {
+      "pdf_page": 127,
+      "table_numbers": [
+        25
+      ],
+      "images": 0,
+      "render": "visual/page-127.png",
+      "render_sha256": "c112b26138d61f6b9f51082e43d98d1c7aefc482a4ace70f41d8c6fc808b0e6d"
+    },
+    {
+      "pdf_page": 144,
+      "table_numbers": [
+        26
+      ],
+      "images": 0,
+      "render": "visual/page-144.png",
+      "render_sha256": "662ef950bcd1ecdb05c4b049314705a5aac9cd3fc1f41c0c8dd902585f0f09fc"
+    },
+    {
+      "pdf_page": 147,
+      "table_numbers": [
+        27
+      ],
+      "images": 0,
+      "render": "visual/page-147.png",
+      "render_sha256": "e61e7f982f9fcb3ac16b69171b8f76665f66c6328f3ca5cd9f8d593cb72d6fa7"
+    },
+    {
+      "pdf_page": 148,
+      "table_numbers": [
+        27
+      ],
+      "images": 0,
+      "render": "visual/page-148.png",
+      "render_sha256": "4080eae8e20e9d4c3f4bfe14c9daad2e22a39d1d6b5482b6eb7ca7017afb2a56"
+    },
+    {
+      "pdf_page": 149,
+      "table_numbers": [
+        27
+      ],
+      "images": 0,
+      "render": "visual/page-149.png",
+      "render_sha256": "e14f80d8f260de1b04307238e3309224747e0de146f9d7e30eca90db2477d73c"
+    },
+    {
+      "pdf_page": 150,
+      "table_numbers": [
+        27
+      ],
+      "images": 0,
+      "render": "visual/page-150.png",
+      "render_sha256": "c463e6798ae6fd2c99a07538d75f182227a082167f65ae2a54ad7bbcfa7a3be2"
+    }
+  ],
+  "length_guidance": "The 70\u201390 main-body and 95\u2013110 total advisory norms remain exceeded; not waived."
+}

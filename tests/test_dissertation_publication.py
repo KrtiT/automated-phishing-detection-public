@@ -122,6 +122,13 @@ def test_public_word_file_has_no_comments_or_local_file_links():
     assert record["visible_text_unchanged"] is True
     assert record["tables_unchanged"] is True
     assert record["figure_bytes_unchanged"] is True
+    integration = json.loads(
+        (PACKAGE / "document-checks/integration/verification.json").read_text()
+    )
+    for name, digest in integration["outputs"].items():
+        assert sha256((PACKAGE / name).read_bytes()).hexdigest() == digest, name
+    assert integration["all_scientific_table_xml_preserved"] is True
+    assert integration["all_figure_bytes_preserved"] is True
 
 
 def test_package_excludes_private_inputs_and_copyrighted_paper_copies():
@@ -150,6 +157,7 @@ def test_current_markdown_local_file_links_resolve():
                 "RESEARCH_STORY.md",
                 "REPRODUCTION.md",
                 "VERIFICATION.md",
+                "EVIDENCE_MAP.md",
                 "literature/README.md",
             )
         ),

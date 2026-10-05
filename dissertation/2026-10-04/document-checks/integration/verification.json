@@ -1,0 +1,28 @@
+{
+  "status": "verified",
+  "base_commit": "91995dd3fa6f0661d185999bab90a6fabb25d962",
+  "data_release": "https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/research-record-2026-10-04",
+  "citation_audit": {
+    "references": 59,
+    "body_citation_reference_links": 86,
+    "uncited_entries": 0,
+    "new_unmatched_body_year_tokens": 0
+  },
+  "original_author_file_preserved": true,
+  "front_matter_preserved": true,
+  "all_scientific_table_xml_preserved": true,
+  "all_figure_bytes_preserved": true,
+  "only_table_edit": "A.1: Sections 1.3–1.4 corrected to Sections 1.4–1.5",
+  "deck_slides": 25,
+  "deck_visible_content_and_pdf_preserved": true,
+  "deck_note_parts_updated": 25,
+  "outputs": {
+    "manuscript/Tallam_Krti_Praxis_Integrated_2026-10-04.md": "22b6c6056513abe681a875938cce29fc7dc1747ca04e86be80aca519c46ea6a3",
+    "manuscript/Tallam_Krti_Praxis_Integrated_2026-10-04.pdf": "2729e5469b3d60f3657cd83f7b08b8cc96477ccc91c42dc8395fc775af90c497",
+    "manuscript/Tallam_Krti_Praxis_Integrated_2026-10-04.docx": "1ce68062fca6710380146d099257c5266c6b0e31cef8de55efad39e6cf008696",
+    "advisor/Tallam_Praxis_Advisor_Integrated_2026-10-04_Speaker_Notes.txt": "5c7eb70714e6f0af60842cce21da2bb933f609a11bf80d6512823f94b0273864",
+    "advisor/Tallam_Praxis_Advisor_Integrated_2026-10-04.pdf": "fea3c672874c744b58a7c4ce2aa28529d48b92010806b66c72a48894fdf296bc",
+    "advisor/Tallam_Praxis_Advisor_Integrated_2026-10-04.pptx": "32fcf49a1d40d1ed4a430363fc5ae70135a5813c1398f6a90a792780e9b3adf5"
+  },
+  "limits": "Does not establish advisor approval, Turnitin clearance, a length waiver, full-source verification of every literature claim or a passing full CI suite."
+}

@@ -1,0 +1,12 @@
+{
+  "status": "inspected",
+  "pdf_sha256": "2729e5469b3d60f3657cd83f7b08b8cc96477ccc91c42dc8395fc775af90c497",
+  "comparison_pdf_sha256": "6e1fc7db97fc3b3e07f8e445bb6586950505bf1ed8d65cfbc7b6a7d71bc4848d",
+  "pages": 150,
+  "pixel_identical_pages": 136,
+  "changed_pdf_pages_reviewed": [72, 73, 74, 75, 76, 77, 78, 79, 80, 142, 143, 144, 145, 146],
+  "figure_pdf_pages_reviewed": [48, 81, 110, 111],
+  "method": "Visual inspection of five rendered contact sheets covering all fourteen changed pages and all four figure pages; page numbers are PDF positions, not printed folios.",
+  "findings": "No clipped text, overlapping table/text, or figure/legend collision observed in the inspected renderings. The added reference has a hanging indent and readable URL wrapping. Table A.1 fits its page. Page 146 retains the appendix-ending whitespace before Appendix B.",
+  "limits": "A bounded rendered-PDF inspection, not a guarantee about every Word version or printer. Unchanged pages inherit the prior documented layout review; no new visual review of all 150 pages is claimed."
+}

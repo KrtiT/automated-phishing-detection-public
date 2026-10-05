@@ -1,0 +1,523 @@
+{
+  "data_release": "https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/research-record-2026-10-04",
+  "base_commit": "91995dd3fa6f0661d185999bab90a6fabb25d962",
+  "tables": [
+    {
+      "id": "2.1",
+      "title": "Closest literature and contribution boundaries",
+      "sources": [
+        "manuscript/Tallam_Krti_Praxis_Integrated_2026-10-04.md",
+        "literature/README.md",
+        "literature/source-claims.json"
+      ],
+      "interpretation": "Literature synthesis; author–date citations in each row and the manuscript bibliography remain authoritative."
+    },
+    {
+      "id": "3.1",
+      "title": "Component-to-experiment map",
+      "sources": [
+        "provenance/CODE_AND_ENVIRONMENT.json",
+        "provenance/original/measured-source/data/rq1-transformer-cascade-contract-v2.json",
+        "provenance/original/measured-source/data/rq2-gmm-development-contract-v1.json"
+      ],
+      "interpretation": "Design map, not an empirical result."
+    },
+    {
+      "id": "4.1",
+      "title": "External composition",
+      "sources": [
+        "aggregate-data/source-contingency.csv"
+      ],
+      "interpretation": "Source/tier strata and reference-label roles."
+    },
+    {
+      "id": "4.2a",
+      "title": "Primary confusion counts",
+      "sources": [
+        "aggregate-data/primary-results.json",
+        "aggregate-data/primary-gates.csv"
+      ],
+      "interpretation": "Internal and external strata use distinct denominators."
+    },
+    {
+      "id": "4.2b",
+      "title": "Primary rates and bounds",
+      "sources": [
+        "aggregate-data/primary-results.json",
+        "aggregate-data/primary-gates.csv"
+      ],
+      "interpretation": "Observed FPR and one-sided exact bound are distinct."
+    },
+    {
+      "id": "4.3",
+      "title": "Six paired recall contrasts",
+      "sources": [
+        "aggregate-data/paired-contrasts.csv"
+      ],
+      "interpretation": "Domain-clustered intervals; contrasts are percentage points."
+    },
+    {
+      "id": "4.4",
+      "title": "GMM training selection",
+      "sources": [
+        "aggregate-data/complete-secondary-results.json",
+        "provenance/original/measured-source/data/rq2-gmm-development-contract-v1.json"
+      ],
+      "interpretation": "historical.rq2-gmm-development-v1-summary.json.data.candidates contains the six retained training fits."
+    },
+    {
+      "id": "4.5",
+      "title": "Monitor audit and external alerts",
+      "sources": [
+        "aggregate-data/complete-secondary-results.json",
+        "aggregate-data/external-monitor-windows.csv"
+      ],
+      "interpretation": "Overlapping window rates, not URL-level false-positive rates."
+    },
+    {
+      "id": "4.6",
+      "title": "Twenty-five operational groups",
+      "sources": [
+        "aggregate-data/operational-groups.csv",
+        "aggregate-data/operational-runs.csv"
+      ],
+      "interpretation": "Five-repeat pooled quantiles."
+    },
+    {
+      "id": "4.7",
+      "title": "Throughput and drain ranges",
+      "sources": [
+        "aggregate-data/operational-runs.csv"
+      ],
+      "interpretation": "Ranges across repeats, not uncertainty intervals."
+    },
+    {
+      "id": "4.8",
+      "title": "Ranking and calibration",
+      "sources": [
+        "aggregate-data/secondary-metrics.csv",
+        "aggregate-data/calibration-bins.csv"
+      ],
+      "interpretation": "Selected rows; complete metrics remain in CSV."
+    },
+    {
+      "id": "4.9",
+      "title": "Additional tiers and controls",
+      "sources": [
+        "aggregate-data/secondary-metrics.csv"
+      ],
+      "interpretation": "Tranco alerts are label-free."
+    },
+    {
+      "id": "4.10",
+      "title": "All permutation comparators",
+      "sources": [
+        "aggregate-data/secondary-metrics.csv",
+        "aggregate-data/complete-secondary-results.json"
+      ],
+      "interpretation": "Consumed-label provenance limitation remains; no seed selection."
+    },
+    {
+      "id": "4.11",
+      "title": "Transformer seed sensitivity",
+      "sources": [
+        "aggregate-data/secondary-metrics.csv",
+        "aggregate-data/seed-logical-invocations.csv"
+      ],
+      "interpretation": "Accepted secondary operating points, not primary replacements."
+    },
+    {
+      "id": "4.12",
+      "title": "McNemar and Holm contrasts",
+      "sources": [
+        "aggregate-data/primary-results.json"
+      ],
+      "interpretation": "Positive-only contrasts; numerical underflow is not exact zero."
+    },
+    {
+      "id": "4.13",
+      "title": "Development probes",
+      "sources": [
+        "aggregate-data/complete-secondary-results.json",
+        "aggregate-data/probe-decisions-and-scores.csv",
+        "aggregate-data/probe-monitors-and-scores.csv"
+      ],
+      "interpretation": "Label-free development accounting."
+    },
+    {
+      "id": "4.14",
+      "title": "All twenty-two primary gates",
+      "sources": [
+        "aggregate-data/primary-gates.csv"
+      ],
+      "interpretation": "Nine pass, thirteen fail; unrounded operands govern."
+    },
+    {
+      "id": "4.15",
+      "title": "D population admission",
+      "sources": [
+        "aggregate-data/detection-D/verification.json",
+        "aggregate-data/detection-D/domain-size-distribution.csv"
+      ],
+      "interpretation": "Exclusion-reason incidences overlap."
+    },
+    {
+      "id": "4.16",
+      "title": "D frozen-threshold comparison",
+      "sources": [
+        "aggregate-data/detection-D/detection-metrics.csv",
+        "aggregate-data/detection-D/verification.json"
+      ],
+      "interpretation": "8,622 eligible records; recall/specificity tradeoff."
+    },
+    {
+      "id": "4.17",
+      "title": "D requirements",
+      "sources": [
+        "aggregate-data/detection-D/verification.json",
+        "aggregate-data/detection-D/scheme-invariance.csv"
+      ],
+      "interpretation": "Exact invariance does not change the unsupported D conjunction."
+    },
+    {
+      "id": "4.18",
+      "title": "Ten primary S pairs",
+      "sources": [
+        "aggregate-data/service-S/primary-pairs.csv"
+      ],
+      "interpretation": "Success-only p95; paired ratio, not pooled-quantile ratio."
+    },
+    {
+      "id": "4.19",
+      "title": "Eight S groups",
+      "sources": [
+        "aggregate-data/service-S/group-metrics.csv"
+      ],
+      "interpretation": "Synthetic service workload; unchanged structural scorer."
+    },
+    {
+      "id": "4.20",
+      "title": "Five S requirements",
+      "sources": [
+        "aggregate-data/service-S/requirements.csv",
+        "aggregate-data/service-S/verification.json"
+      ],
+      "interpretation": "Four pass; strict response agreement fails."
+    },
+    {
+      "id": "5.1",
+      "title": "Technical contributions",
+      "sources": [
+        "aggregate-data/primary-gates.csv",
+        "aggregate-data/detection-D/verification.json",
+        "aggregate-data/service-S/verification.json"
+      ],
+      "interpretation": "Interpretive synthesis of the cited measurements."
+    },
+    {
+      "id": "5.2",
+      "title": "Decisions at each claim level",
+      "sources": [
+        "aggregate-data/primary-gates.csv",
+        "aggregate-data/detection-D/verification.json",
+        "aggregate-data/service-S/requirements.csv"
+      ],
+      "interpretation": "Original H1–H3 remain distinct from D and S."
+    },
+    {
+      "id": "A.1",
+      "title": "Evidence reading map",
+      "sources": [
+        "provenance/advisor-deck-scope-crosswalk-20261001.md",
+        "aggregate-data/primary-gates.csv"
+      ],
+      "interpretation": "Navigation index, not additional data."
+    },
+    {
+      "id": "B.1",
+      "title": "Full eighty-arm S schedule",
+      "sources": [
+        "aggregate-data/service-S/arm-metrics.csv"
+      ],
+      "interpretation": "The interrupted 45-arm schedule is never pooled."
+    }
+  ],
+  "figures": [
+    {
+      "id": "3.1",
+      "title": "Implemented dataflow",
+      "sources": [
+        "manuscript/gwu-system-dataflow-20261001.pdf",
+        "analysis-scripts/dissertation/draw_system_dataflow_20261001.py"
+      ],
+      "interpretation": "Schematic of frozen stages and accounting boundaries, not measured performance."
+    },
+    {
+      "id": "3.2",
+      "title": "Source and partition roles",
+      "sources": [
+        "manuscript/followup-source-partitions.pdf",
+        "provenance/followup/comparison-specification-v1.md",
+        "aggregate-data/detection-D/verification.json"
+      ],
+      "interpretation": "Permitted information flow; overlap screening is not temporal validation."
+    },
+    {
+      "id": "4.1",
+      "title": "Paired D recall difference",
+      "sources": [
+        "manuscript/followup-paired-recall.pdf",
+        "aggregate-data/detection-D/verification.json"
+      ],
+      "interpretation": "paired_uncertainty.recall_difference; effect and 97.5% interval in percentage points."
+    },
+    {
+      "id": "4.2",
+      "title": "D calibration and bin populations",
+      "sources": [
+        "manuscript/followup-calibration.pdf",
+        "aggregate-data/detection-D/calibration-bins.csv"
+      ],
+      "interpretation": "Fixed bins and all counts; empty bins have no reliability point."
+    }
+  ],
+  "slides": [
+    {
+      "number": 1,
+      "title": "Automated Phishing Detection",
+      "slide_part": "ppt/slides/slide1.xml",
+      "note_part": "ppt/notesSlides/notesSlide1.xml",
+      "sources": [
+        "RESEARCH_STORY.md"
+      ]
+    },
+    {
+      "number": 2,
+      "title": "The questions promised in August and September",
+      "slide_part": "ppt/slides/slide2.xml",
+      "note_part": "ppt/notesSlides/notesSlide2.xml",
+      "sources": [
+        "provenance/advisor-deck-scope-crosswalk-20261001.md",
+        "aggregate-data/primary-gates.csv"
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Evidence coverage and population boundaries",
+      "slide_part": "ppt/slides/slide3.xml",
+      "note_part": "ppt/notesSlides/notesSlide3.xml",
+      "sources": [
+        "aggregate-data/source-contingency.csv",
+        "aggregate-data/verification.json"
+      ]
+    },
+    {
+      "number": 4,
+      "title": "RQ1: internal recall does not ensure external specificity",
+      "slide_part": "ppt/slides/slide4.xml",
+      "note_part": "ppt/notesSlides/notesSlide4.xml",
+      "sources": [
+        "aggregate-data/primary-results.json"
+      ]
+    },
+    {
+      "number": 5,
+      "title": "RQ1: structural gain; no incremental fixed-cascade gain",
+      "slide_part": "ppt/slides/slide5.xml",
+      "note_part": "ppt/notesSlides/notesSlide5.xml",
+      "sources": [
+        "aggregate-data/paired-contrasts.csv"
+      ]
+    },
+    {
+      "number": 6,
+      "title": "RQ2: detecting departure did not make routing useful",
+      "slide_part": "ppt/slides/slide6.xml",
+      "note_part": "ppt/notesSlides/notesSlide6.xml",
+      "sources": [
+        "aggregate-data/primary-gates.csv",
+        "aggregate-data/external-monitor-windows.csv"
+      ]
+    },
+    {
+      "number": 7,
+      "title": "RQ3: low transformer use did not guarantee low latency",
+      "slide_part": "ppt/slides/slide7.xml",
+      "note_part": "ppt/notesSlides/notesSlide7.xml",
+      "sources": [
+        "aggregate-data/primary-gates.csv",
+        "aggregate-data/operational-runs.csv"
+      ]
+    },
+    {
+      "number": 8,
+      "title": "The complete service matrix includes adverse load results",
+      "slide_part": "ppt/slides/slide8.xml",
+      "note_part": "ppt/notesSlides/notesSlide8.xml",
+      "sources": [
+        "aggregate-data/operational-groups.csv"
+      ]
+    },
+    {
+      "number": 9,
+      "title": "Secondary evidence qualifies—not repairs—the primary result",
+      "slide_part": "ppt/slides/slide9.xml",
+      "note_part": "ppt/notesSlides/notesSlide9.xml",
+      "sources": [
+        "aggregate-data/secondary-verification.json",
+        "aggregate-data/complete-secondary-results.json"
+      ]
+    },
+    {
+      "number": 10,
+      "title": "One engineering process, with distinct evidence stages",
+      "slide_part": "ppt/slides/slide10.xml",
+      "note_part": "ppt/notesSlides/notesSlide18.xml",
+      "sources": [
+        "provenance/followup/comparison-specification-v1.md"
+      ]
+    },
+    {
+      "number": 11,
+      "title": "Diagnosis selects two bounded interventions",
+      "slide_part": "ppt/slides/slide11.xml",
+      "note_part": "ppt/notesSlides/notesSlide19.xml",
+      "sources": [
+        "provenance/followup/diagnosis-and-design.md"
+      ]
+    },
+    {
+      "number": 12,
+      "title": "Detection comparison: freeze first, evaluate every admitted row",
+      "slide_part": "ppt/slides/slide12.xml",
+      "note_part": "ppt/notesSlides/notesSlide20.xml",
+      "sources": [
+        "aggregate-data/detection-D/verification.json"
+      ]
+    },
+    {
+      "number": 13,
+      "title": "D: full operating-point tradeoff at the frozen thresholds",
+      "slide_part": "ppt/slides/slide13.xml",
+      "note_part": "ppt/notesSlides/notesSlide21.xml",
+      "sources": [
+        "aggregate-data/detection-D/detection-metrics.csv",
+        "aggregate-data/detection-D/verification.json"
+      ]
+    },
+    {
+      "number": 14,
+      "title": "Achieved property: exact scheme invariance",
+      "slide_part": "ppt/slides/slide14.xml",
+      "note_part": "ppt/notesSlides/notesSlide22.xml",
+      "sources": [
+        "aggregate-data/detection-D/scheme-invariance.csv"
+      ]
+    },
+    {
+      "number": 15,
+      "title": "Measured service improvement; strict contract distinguished",
+      "slide_part": "ppt/slides/slide15.xml",
+      "note_part": "ppt/notesSlides/notesSlide23.xml",
+      "sources": [
+        "aggregate-data/service-S/verification.json",
+        "aggregate-data/service-S/requirements.csv"
+      ]
+    },
+    {
+      "number": 16,
+      "title": "All ten primary pairs: unchanged structural scorer, c64",
+      "slide_part": "ppt/slides/slide24.xml",
+      "note_part": "ppt/notesSlides/notesSlide24.xml",
+      "sources": [
+        "aggregate-data/service-S/primary-pairs.csv"
+      ]
+    },
+    {
+      "number": 17,
+      "title": "Controls locate the measured benefit in the client path",
+      "slide_part": "ppt/slides/slide25.xml",
+      "note_part": "ppt/notesSlides/notesSlide25.xml",
+      "sources": [
+        "aggregate-data/service-S/group-metrics.csv"
+      ]
+    },
+    {
+      "number": 18,
+      "title": "Technical contribution: measured changes, explicit contracts",
+      "slide_part": "ppt/slides/slide16.xml",
+      "note_part": "ppt/notesSlides/notesSlide10.xml",
+      "sources": [
+        "RESEARCH_STORY.md"
+      ]
+    },
+    {
+      "number": 19,
+      "title": "Completed research and dissertation evidence",
+      "slide_part": "ppt/slides/slide17.xml",
+      "note_part": "ppt/notesSlides/notesSlide11.xml",
+      "sources": [
+        "VERIFICATION.md",
+        "provenance/followup/service-recovery-amendment-v2.md"
+      ]
+    },
+    {
+      "number": 20,
+      "title": "Appendix: every H1 gate",
+      "slide_part": "ppt/slides/slide18.xml",
+      "note_part": "ppt/notesSlides/notesSlide12.xml",
+      "sources": [
+        "aggregate-data/primary-gates.csv",
+        "aggregate-data/paired-contrasts.csv"
+      ]
+    },
+    {
+      "number": 21,
+      "title": "Appendix: every H2 gate",
+      "slide_part": "ppt/slides/slide19.xml",
+      "note_part": "ppt/notesSlides/notesSlide13.xml",
+      "sources": [
+        "aggregate-data/primary-gates.csv"
+      ]
+    },
+    {
+      "number": 22,
+      "title": "Appendix: every H3 gate",
+      "slide_part": "ppt/slides/slide20.xml",
+      "note_part": "ppt/notesSlides/notesSlide14.xml",
+      "sources": [
+        "aggregate-data/primary-gates.csv"
+      ]
+    },
+    {
+      "number": 23,
+      "title": "Appendix: full operational matrix (1/3)",
+      "slide_part": "ppt/slides/slide21.xml",
+      "note_part": "ppt/notesSlides/notesSlide15.xml",
+      "sources": [
+        "aggregate-data/operational-groups.csv",
+        "aggregate-data/operational-runs.csv"
+      ]
+    },
+    {
+      "number": 24,
+      "title": "Appendix: full operational matrix (2/3)",
+      "slide_part": "ppt/slides/slide22.xml",
+      "note_part": "ppt/notesSlides/notesSlide16.xml",
+      "sources": [
+        "aggregate-data/operational-groups.csv",
+        "aggregate-data/operational-runs.csv"
+      ]
+    },
+    {
+      "number": 25,
+      "title": "Appendix: full operational matrix (3/3)",
+      "slide_part": "ppt/slides/slide23.xml",
+      "note_part": "ppt/notesSlides/notesSlide17.xml",
+      "sources": [
+        "aggregate-data/operational-groups.csv",
+        "aggregate-data/operational-runs.csv"
+      ]
+    }
+  ]
+}

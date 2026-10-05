@@ -34,7 +34,7 @@ It distinguishes completed experiments from successful operating requirements.
 | Which data and models were actually used? | [Archive locators](research-archive/2026-10-04/README.md#locating-the-evidence), [licenses](research-archive/2026-10-04/LICENSES.md) | Source versions, hashes, corrected partitions and accepted fitted artifacts |
 | Can the reported numbers be recalculated? | `scripts/recompute_research.py`, [archive guide](research-archive/2026-10-04/README.md) | Confusion counts, intervals, gates, request quantiles, paired service comparisons and declared secondary metric arithmetic |
 | Were interrupted or adverse results removed? | Archive history families and [chronology](dissertation/2026-10-04/RESEARCH_STORY.md#chronology-and-contribution-boundary) | Original hold, interrupted attempts, 72 retained plus 53 completed cells; separate 45-arm interruption and complete 80-arm schedule |
-| Are tables, figures and references usable? | [Document checks](dissertation/2026-10-04/VERIFICATION.md#document-checks) | 27 tables, 302 data rows, four figures, 113 navigation targets and 58 reference entries |
+| Are tables, figures and references usable? | [Evidence map](dissertation/2026-10-04/EVIDENCE_MAP.md), [document checks](dissertation/2026-10-04/VERIFICATION.md#document-checks) | 27 tables, 302 data rows, four figures, 113 navigation targets, 59 reference entries and 25 slides |
 | Who contributed, and what assistance was used? | [Authorship and assistance](research-archive/2026-10-04/PROVENANCE.md#authorship-and-assistance) | Preserved Git history and explicit assistance disclosure; no invented contributor roles |
 
 ## Numerical requirements

@@ -15,13 +15,14 @@ August 20 and September 3 advisor decks without replacing their decision rules.
 - [Retained research data and freezes](research-archive/2026-10-04/README.md):
   licensed raw inputs, prepared splits, fitted artifacts, row-level predictions,
   request measurements and interrupted attempts, with download/recomputation commands.
-- [Read the dissertation PDF](dissertation/2026-10-04/manuscript/Tallam_Krti_Praxis_Citations_Expanded_2026-10-04.pdf)
-  · [Word review copy](dissertation/2026-10-04/manuscript/Tallam_Krti_Praxis_Public_2026-10-04.docx)
-  · [searchable Markdown](dissertation/2026-10-04/manuscript/Tallam_Krti_Praxis_Citations_Expanded_2026-10-04.md).
-- [Advisor presentation PDF](dissertation/2026-10-04/advisor/Tallam_Praxis_Advisor_Complete_2026-10-02.pdf)
-  · [PowerPoint](dissertation/2026-10-04/advisor/Tallam_Praxis_Advisor_Complete_2026-10-02.pptx)
-  · [speaker notes](dissertation/2026-10-04/advisor/Tallam_Praxis_Advisor_Complete_2026-10-02_Speaker_Notes.txt).
+- [Read the dissertation PDF](dissertation/2026-10-04/manuscript/Tallam_Krti_Praxis_Integrated_2026-10-04.pdf)
+  · [Word review copy](dissertation/2026-10-04/manuscript/Tallam_Krti_Praxis_Integrated_2026-10-04.docx)
+  · [searchable Markdown](dissertation/2026-10-04/manuscript/Tallam_Krti_Praxis_Integrated_2026-10-04.md).
+- [Advisor presentation PDF](dissertation/2026-10-04/advisor/Tallam_Praxis_Advisor_Integrated_2026-10-04.pdf)
+  · [PowerPoint](dissertation/2026-10-04/advisor/Tallam_Praxis_Advisor_Integrated_2026-10-04.pptx)
+  · [speaker notes](dissertation/2026-10-04/advisor/Tallam_Praxis_Advisor_Integrated_2026-10-04_Speaker_Notes.txt).
 - [Research argument and question-by-question evidence map](dissertation/2026-10-04/RESEARCH_STORY.md).
+- [Every table, figure and slide → source evidence](dissertation/2026-10-04/EVIDENCE_MAP.md).
 - [Complete package index](dissertation/2026-10-04/README.md),
   [aggregate dictionaries](dissertation/2026-10-04/RESEARCH_DATA_DICTIONARY.txt),
   [reproduction boundaries](dissertation/2026-10-04/REPRODUCTION.md),

@@ -1,7 +1,10 @@
 # Citation source-check record
 
-The manuscript contains 58 references. The October 4 pass added seven primary
-references and checked 85 exact citation/reference links. The
+The repository-linked manuscript contains 59 references: the preceding 58
+scholarly/dataset entries plus the versioned research record, Tallam (2026).
+The integration pass checks 86 body citation/reference links, with no uncited
+bibliography entry. The earlier October 4 expansion added seven primary
+references and checked 85 links. The
 [claim ledger](source-claims.json) records the claim supported by each new
 reference and the part of the source actually inspected.
 

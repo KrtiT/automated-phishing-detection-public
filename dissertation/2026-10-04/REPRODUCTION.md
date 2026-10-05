@@ -50,6 +50,18 @@ and no download grants reusable execution authority or institutional approval.
 
 ## Analysis and Document Source
 
+The current [evidence map](EVIDENCE_MAP.md) connects every displayed table,
+figure and slide to its public sources. The repository-linked manuscript adds
+the release citation and current publication scope; it does not change the
+scientific results. Its [editorial ledger](document-checks/integration/editorial-ledger.json)
+identifies all text changes from the sealed research-record commit.
+`analysis-scripts/dissertation/integrate_repository_20261004.py` reconstructs
+that bounded Word/Markdown/notes derivative from the local Git object at
+`91995dd3fa6f0661d185999bab90a6fabb25d962`, using `python-docx` and `lxml`.
+It takes the repository and an unused output directory as arguments; PDF export
+and rendered-layout checks are separate. These document-tool dependencies do
+not modify the frozen scientific runtime.
+
 `analysis-scripts/` preserves source used to export, synthesize, format and check
 the research package. These files retain controlled-workspace relative paths,
 edition bindings and additional dependencies (for example document/PDF tools).

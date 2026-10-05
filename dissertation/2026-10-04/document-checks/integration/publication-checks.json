@@ -1,0 +1,38 @@
+{
+  "scope": "Repository-linked editorial edition: artifact consistency, package safety and invented software fixtures. No new scientific measurements or institutional approval.",
+  "source_base_commit": "91995dd3fa6f0661d185999bab90a6fabb25d962",
+  "focused_tests": {
+    "files": [
+      "tests/test_dissertation_publication.py",
+      "tests/test_dissertation_integration.py",
+      "tests/test_research_record.py",
+      "tests/test_url_features.py",
+      "tests/test_sources_spec.py",
+      "tests/test_operational_child_interruptions.py",
+      "tests/test_followup_detection_script.py",
+      "tests/test_followup_metrics.py",
+      "tests/test_followup_population.py",
+      "tests/test_followup_service.py",
+      "tests/test_transport_neutral_features.py",
+      "tests/test_transport_neutral_model.py",
+      "tests/test_worker_connection_replay.py",
+      "tests/test_http_replay.py",
+      "tests/test_http_run_codec.py",
+      "tests/test_selective_service.py",
+      "tests/test_research_archive.py",
+      "tests/test_recompute_research.py"
+    ],
+    "passed": 347,
+    "failed": 0,
+    "elapsed_seconds": 37.64,
+    "exit_code": 0
+  },
+  "style": {
+    "ruff_check": "passed for src, tests, scripts and the new editorial integration script",
+    "ruff_format_check": "passed; 1117 files already formatted",
+    "git_diff_check": "passed"
+  },
+  "document_checks": "verification.json, layout-verification.json, citation-audit.json and visual-inspection.json record the distinct text, citation, rendered-layout and visual checks.",
+  "review_limits": "Root-agent artifact inspection and automated checks completed. An additional Codex reviewer could not run because its configured model required a newer CLI; an additional Claude reviewer could not run because its account had insufficient credits. Neither supplied a review verdict.",
+  "ci": "The local focused run is not the full GitHub CI suite. Consult the exact published commit in GitHub Actions for its current status."
+}

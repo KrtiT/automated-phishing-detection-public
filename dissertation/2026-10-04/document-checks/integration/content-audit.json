@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "source_base_commit": "91995dd3fa6f0661d185999bab90a6fabb25d962",
+  "scanned": {
+    "text_files": 209,
+    "office_parts": 179,
+    "pdf_pages": 179
+  },
+  "pattern_findings": [],
+  "protected_paths_unchanged": [
+    "src",
+    "scripts",
+    "data",
+    "uv.lock",
+    "pyproject.toml",
+    "research-archive",
+    "dissertation/2026-10-04/aggregate-data"
+  ],
+  "original_author_word_preserved": true,
+  "scope": "Current public package except this receipt; selected credential/private-path patterns, Office XML, PDF metadata/text/links and protected source paths. No dataset destination or protected input was accessed.",
+  "limitations": "A bounded pattern scan is not proof against every possible secret. Software and document checks are not institutional approval or new research measurements."
+}

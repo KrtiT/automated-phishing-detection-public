@@ -153,7 +153,14 @@ def _drift(binding, paths):
     return result.private_outputs, result.public_summary, train, validation
 
 
-def _tabular(member, train, validation):
+def _tabular(member, train, validation, *, fit_input_receipt=None, checkpoint=None):
+    audited = fit_input_receipt is not None or checkpoint is not None
+    if audited and (
+        member not in {f"permutation_{seed}" for seed in range(42, 47)}
+        or not callable(fit_input_receipt)
+        or not callable(checkpoint)
+    ):
+        raise DevelopmentExecutionError("invalid_permutation_audit_callbacks")
     arguments = (
         tuple(row["raw_url"] for row in train),
         tuple(row["is_phishing"] for row in train),
@@ -170,7 +177,18 @@ def _tabular(member, train, validation):
     else:
         kind = "permutation"
         seed = int(member.removeprefix("permutation_"))
-        fitted = secondary_tabular.fit_label_permutation(*arguments, seed=seed)
+        options = (
+            {
+                "training_record_ids": tuple(row["record_id"] for row in train),
+                "fit_input_receipt": fit_input_receipt,
+                "checkpoint": checkpoint,
+            }
+            if audited
+            else {}
+        )
+        fitted = secondary_tabular.fit_label_permutation(
+            *arguments, seed=seed, **options
+        )
     if len(fitted.validation_scores) != len(validation):
         raise DevelopmentExecutionError("prediction_count_mismatch")
     with secondary_tabular._numerical_runtime():

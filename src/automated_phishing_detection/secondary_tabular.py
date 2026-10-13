@@ -26,6 +26,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 
 from . import baselines, fixed_cascade, gmm_monitor, secondary_probes
+from .permutation_fit_receipt import FitReceiptError, PermutationFitAudit
 from .url_features import FEATURE_NAMES, extract_url_features
 
 _VERSIONS = {
@@ -77,6 +78,8 @@ _CHECK_IDS = frozenset(
     {
         "input_validation",
         "fit",
+        "fit_input_validation",
+        "fit_input_receipt",
         "checkpoint_write",
         "fitted_classes",
         "fitted_state",
@@ -727,12 +730,24 @@ def _score_state(artifact, matrix):
     return _logistic_scores(classifier, scaled)
 
 
-def _fit_logistic(train, labels, validation, *, checkpoint=None):
+def _audited_logistic_fit(classifier, scaled, labels, fit_audit):
+    try:
+        return fit_audit.fit(classifier, scaled, labels)
+    except FitReceiptError as exc:
+        raise SecondaryTabularError(str(exc), check_id=exc.check_id) from exc
+
+
+def _fit_logistic(train, labels, validation, *, checkpoint=None, fit_audit=None):
     with _check_phase("fit"):
         scaler = _scaler()
         scaled = np.ascontiguousarray(scaler.fit_transform(train), dtype=np.float64)
         _require(np.all(np.isfinite(scaled)), "training scaler is nonfinite")
-        classifier = _logistic().fit(scaled, labels)
+        classifier = _logistic()
+        classifier = (
+            classifier.fit(scaled, labels)
+            if fit_audit is None
+            else _audited_logistic_fit(classifier, scaled, labels, fit_audit)
+        )
     state = {
         "scaler": {
             "mean": scaler.mean_.tolist(),
@@ -835,6 +850,8 @@ def _fit(
     *,
     checkpoint=None,
     rf_v2=False,
+    training_record_ids=None,
+    fit_input_receipt=None,
 ):
     try:
         with _numerical_runtime():
@@ -847,6 +864,20 @@ def _fit(
                 validation = _features(validation_urls, kind)
                 train_labels = _labels(train_labels, len(train))
                 validation_labels = _labels(validation_labels, len(validation))
+                fit_audit = None
+                _require(
+                    (training_record_ids is None) == (fit_input_receipt is None),
+                    "training IDs and fit-input receipt writer are required together",
+                )
+                if fit_input_receipt is not None:
+                    _require(kind == "permutation", "fit audit is permutation-only")
+                    fit_audit = PermutationFitAudit.bind(
+                        training_record_ids,
+                        train_labels,
+                        seed,
+                        train,
+                        fit_input_receipt,
+                    )
                 if kind == "permutation":
                     train_labels = np.random.Generator(
                         np.random.PCG64(seed)
@@ -874,6 +905,7 @@ def _fit(
                 train_labels,
                 validation,
                 **({"checkpoint": retain} if checkpoint is not None else {}),
+                **({"fit_audit": fit_audit} if fit_audit is not None else {}),
             )
             with _check_phase("fitted_state"):
                 content = _json_bytes(
@@ -937,8 +969,10 @@ def fit_label_permutation(
     *,
     seed: int,
     checkpoint: Callable[[bytes], None] | None = None,
+    training_record_ids: Sequence[str] | None = None,
+    fit_input_receipt: Callable[[bytes], None] | None = None,
 ) -> SecondaryFitResult:
-    """Fit one independently permuted negative control; solver seed stays 42."""
+    """Fit one permuted control; optional private receipts apply only to this fit."""
     with _check_phase("input_validation"):
         _require(
             type(seed) is int and seed in range(42, 47),
@@ -952,6 +986,8 @@ def fit_label_permutation(
         validation_labels,
         seed,
         checkpoint=checkpoint,
+        training_record_ids=training_record_ids,
+        fit_input_receipt=fit_input_receipt,
     )
 
 

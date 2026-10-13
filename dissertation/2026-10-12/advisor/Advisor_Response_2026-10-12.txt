@@ -1,0 +1,59 @@
+RESPONSE TO THE 12 OCTOBER REVIEW
+
+Professor Etemadi, thank you for the clear review. I have organized the revision around the engineering questions behind each comment: why the observed behavior occurs, what change was tested, what the comparison establishes and how it changes the design decision. The manuscript retains the original requirements and results while distinguishing corrected analyses from separately specified follow-up experiments.
+
+1. External false positives: separate input effects from useful discrimination
+
+Sections 3.4, 4.8.1 and 4.10.1; Table 4.21
+
+I checked the label mappings, publisher-normalized inputs, structural feature replay, frozen thresholds, score rankings and paired errors. The original certified-negative cohort contains 2,261 errors shared by the structural and transformer decisions among 2,497 negatives. Any selector restricted to those unchanged binary decisions therefore has an observed FPR floor of 90.5487% on that cohort. Better routing alone cannot reach the 1% requirement there.
+
+The new F comparison changes only the scheme prefix while holding weights, scaler and threshold fixed. Forcing HTTPS reduces certified false positives from 2,261 to 50 but reduces gold detections from 69 to 22. Its FPR remains 2.0024% and recall falls to 31.8841%. Thus the experiment identifies a real input-spelling sensitivity and rejects prefix replacement as a sufficient repair. It does not attribute all transfer error to the scheme or to one correlated feature. The earlier D comparison separately establishes exact scheme invariance across 8,622 pairs, with the detection cost of its refitted representation retained.
+
+2. Second-stage use: test repair before paying for more calls
+
+Sections 3.7, 3.16, 4.8.1 and 4.10.2–4.10.3; Tables 4.22–4.23
+
+The original objective minimizes calls among validation-feasible uncertainty bands. A zero-width band satisfies that objective, selects three validation ties and no internal or external evaluation ties. The absence of evaluation calls is therefore explained by the selection rule, rather than presented as evidence that the transformer is unnecessary everywhere.
+
+A bounded development replay selected a symmetric width of 0.20 and a directional comparator, with matched-call hash controls. The frozen rules were then evaluated once on R's 1,392 positive and 1,262 negative domains. Every system detects all positives. Both selected gates add 18 false positives and repair none; the symmetric rule calls the expert on 21 of 2,654 records. Actual computation on C's separate fixed workload costs 1.646 times structural-only for the symmetric rule. Its p95 is 0.223 ms but p99 is 6.769 ms. The decision is to reject this wider gate for the tested source frame: it adds measured work without a selected repair benefit.
+
+3. Paired recall: correct uncertainty and expand the evaluation unit
+
+Sections 3.8, 3.16.1–3.16.2 and 4.10.2; Tables 4.3, 4.14 and 4.22
+
+The corrected analysis replaces the zero-width bootstrap interpretation for 69 concordant gold-positive pairs. Simultaneous Clopper–Pearson bounds on both discordance probabilities, projected onto their difference, give a conservative two-sided 95% envelope of ±6.1533 percentage points under independent labeled-pair assumptions. This does not establish the unchanged -2-point margin. One original H3 component consequently changes; the current ledger has eight passing checks out of 22, not nine.
+
+R uses one mechanically selected URL per previously unscored registrable domain from the retained source frame, excluded against the discovered prior exposure roster. Its 1,392 positive pairs yield a nondegenerate 95% envelope of ±0.3143 points. The original and symmetric cascades each support their separately specified recall-only noninferiority statement against the transformer. Newcombe method 10 is retained as an approximate sensitivity check. Domain separation does not prove campaign independence: the 56 source-date groups and their descriptive zero-difference bootstrap are disclosed. This is domain-balanced retrospective evidence, not future-traffic validation or a replacement for original H3.
+
+4. Engineering contribution: identify which intervention can change the decision
+
+Sections 2.2–2.9, 5.1–5.3 and 5.6; Tables 2.1 and 5.1–5.2
+
+The revised contribution is an empirical decision account for constrained URL detection: relate same-example expert repair to a fixed false-positive requirement, distinguish invariant representation from low-FPR discrimination, and measure detector computation separately from the HTTP path. The shared-error floor tells a designer when routing among unchanged decisions is insufficient. F and D show why a stable input representation still needs labeled operating-point evaluation. R and C show how rare expert use can add cost without repairing the selected errors; S locates a separate client-path improvement.
+
+The closest-work comparison recognizes that structural/character modeling, normalization, shift evaluation and calibrated expert combinations already exist. Ahamed et al. includes a separate PhishTank/Majestic two-source check. ExpertFusion's inspected author repository describes fixed URL encoders and calibrated expert routers using unlabeled target statistics; its full paper has not been independently audited here. The manuscript claims neither invention of these components nor a first discovery of dataset shift. Its distinction is the tested connection among conditional repair, risk constraints and measured execution costs in this implemented gateway.
+
+5. Service performance: match each claim to the measured work
+
+Sections 3.15.5, 3.16.3, 4.9 and 4.10.3; Tables 4.18–4.20, 4.23 and B.1
+
+The S comparison remains explicitly synthetic, structural-only, closed-loop HTTP work. Worker-owned clients reduce median paired p95 by 79.68%; the worker/shared ratio is 0.203249 with a 97.5% interval of [0.18790, 0.21351]. Primary worker requests have pooled successful p95 of 71.999 ms and zero errors in 100,000 attempts. All 99,999 comparable predictions agree, while admission-order differences and one shared-client timeout prevent the stricter complete-response requirement from passing. All 80 final arms and the earlier interruption remain separately accounted for.
+
+C adds a distinct measurement of actual detector work, including the character transformer, on retained real URL strings. All 30 arms complete, with 30,000 measured requests and 3,000 excluded warmups. Always-transformer takes 30.781 times the structural summed-scoring time; symmetric routing takes 1.646 times. These descriptive concurrency-one, single-host results use five cyclic rotations, not a fully position-balanced design or a run-level confidence interval. They are not an HTTP benchmark and are not combined with S into a transformer-service speedup claim.
+
+6. Shuffled-label controls: verify the actual fitting input
+
+Sections 3.16.3 and 4.10.4; Table 4.24
+
+Five separately specified diagnostic fits, seeds 42–46, now bind the ordered shuffled training labels to the actual estimator.fit boundary, fitted state, serialization and scoring audit. All five converge below 5,000 iterations. The complete outcomes are retained: validation AUC ranges from 0.3940 to 0.6965 and AP from 0.4027 to 0.7683. No seed is discarded or rerun to obtain a more convenient null result.
+
+The central score distributions lie close to 0.5, but ranking depends on order rather than distance from 0.5. That observation explains why compressed probabilities cannot establish chance-like ranking; it is not a unique causal explanation for each seed. True validation labels also select the descriptive operating points. The new audit resolves which labels reached these five fits, without retroactively authenticating historical fits, claiming absence of leakage or treating five permutations as a formal .05 significance test.
+
+7. Scope and presentation: put the research argument first
+
+Title, abstract, Chapters 1–5 and Appendices A–C
+
+The title is now Cross-Dataset Reliability and Computational Trade-offs in Cascaded URL Phishing Detection. The abstract and direct RQ answers concern the URL service actually evaluated, not frontier-model behavior. Main-text exposition follows design, evaluation, diagnosis, bounded modification and measured comparison. Detailed execution histories and identities are retained in appendices and the companion Extended Methods and Chronology rather than repeated throughout the argument.
+
+The manuscript preserves every original numerical requirement, all 22 current component decisions, 25 operational groups, 31 tables and four figures. H1–H3 remain unsupported under their joint requirements; the positive structural, invariance, recall-only and client-path findings are stated with the populations and conditions that make them defensible. The response, deck and aggregate evidence use the same distinctions. The submitted draft and historical research record remain unchanged.

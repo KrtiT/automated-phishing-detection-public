@@ -1,0 +1,13 @@
+stratum,spelling,alerts,decision_flips,false_positive,fpr,recall,rows,true_positive
+certified,http,2497,236,2497,1.0,,2497,0
+certified,https,50,2211,50,0.020024028834601523,,2497,0
+certified,original,2261,0,2261,0.9054865839006808,,2497,0
+gold,http,69,0,0,,1.0,69,69
+gold,https,22,47,0,,0.3188405797101449,69,22
+gold,original,69,0,0,,1.0,69,69
+secondary,http,4972,0,0,,1.0,4972,4972
+secondary,https,687,4285,0,,0.13817377312952533,4972,687
+secondary,original,4972,0,0,,1.0,4972,4972
+tranco,http,1163,0,0,,,1163,0
+tranco,https,63,1100,0,,,1163,0
+tranco,original,1163,0,0,,,1163,0

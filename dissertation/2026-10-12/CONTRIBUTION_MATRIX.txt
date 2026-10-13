@@ -1,0 +1,150 @@
+CONTRIBUTION AND CLOSEST-WORK REVIEW — 12 OCTOBER 2026
+
+This is the completed claim-to-evidence comparison for the bounded revision,
+not a declaration of doctoral sufficiency. Its claims follow the retained
+measurements. The useful question is what a system designer learns, not how
+many artifacts exist.
+
+Closest primary work inspected
+
+Ahamed et al. (2026), Frontiers in Computer Science, DOI 10.3389/fcomp.2026.1834407.
+Methods 3.3–3.5 and results 4.6–4.7 were inspected. Their host-disjoint split still
+shares 1,387 eTLD+1 domains between training and test (Table 2). The separate
+PhishTank/Majestic evaluation reports LR/XGB/BERT FPRs of .25/.54/.30 (Table 12).
+They study URL normalization, adversarial mutation, transfer, explanation stability
+and mitigations; LR curriculum/adversarial training improves observed mutation
+families while input randomization has mixed or adverse effects. Our comparison
+must not present cross-source collapse, normalization or combined URL model
+evaluation as first discoveries. Our candidate distinction is a same-example
+analysis of conditional expert repair tied to an explicitly constrained cascade
+and the measured boundary between detector work and HTTP execution cost.
+https://www.frontiersin.org/journals/computer-science/articles/10.3389/fcomp.2026.1834407/full
+
+Ji et al. (USENIX Security 2025), Evaluating the Effectiveness and Robustness of
+Visual Similarity-based Phishing Detection Models. Sections 4–5 inspect seven
+visual systems with harmonized brand references, phishing clusters and controlled
+logo/screenshot manipulations. The benign set contains 2,500 monthly snapshots
+from 100 Tranco domains; sample count is not domain independence. The paper also
+discusses detection/computation trade-offs from reference-list expansion. This is
+an adjacent-modality example of useful failure diagnosis, not a direct URL-only
+cascade baseline. Our work does not claim to be first to connect detection quality
+and computation or to identify collection-sensitive phishing models.
+https://www.usenix.org/system/files/usenixsecurity25-ji.pdf
+
+Afonso et al. (ACIT 2025), Rethinking Phishing Detection: How Dataset Quality
+Affects Model Generalization, DOI 10.1109/ACIT65614.2025.11185656. Publisher abstract
+and author publication listing are available; full methods remain unverified.
+Treat this as a relevant dataset-quality comparator. Do not assert missing
+capabilities or a methodological advantage until the full methods are inspected.
+The accessible ACIT proceedings candidate is only 26 pages of front matter and
+contents, not this paper's methods. Its availability does not close this gap.
+https://ieeexplore.ieee.org/abstract/document/11185656
+
+ExpertFusion, DOI 10.1016/j.eswa.2026.134089. The publisher abstract describes
+calibrated expert fusion under shift and target-prior uncertainty, making it
+directly relevant to any expert-combination contribution. Crossref lists January
+2027 print publication and DOI creation on 26 August 2026; creation is not an
+online publication date. Full methods and public-availability chronology remain
+unverified. Do not treat the print year as proof it was unavailable, or claim a
+first calibration/fusion/routing result while this comparison remains incomplete.
+https://www.sciencedirect.com/science/article/pii/S0957417426029957
+
+The author repository README was also inspected. It describes fixed URL encoders,
+lexical-statistical features, prior-specific expert classifiers, calibrated
+mixture-of-experts routers and adaptation using unlabeled target statistics.
+It states that target labels are used only for evaluation. These are documented
+design claims, not an independently reproduced implementation or full-paper audit.
+The inspected repository commit is af739b49a3759e507faeb2f2d6a531ecc6a4dd8e;
+its July 2, 2026 commit timestamp is not proof of first public availability.
+https://github.com/aI-area/ExpertFusion
+Our gated character invocation and conditional-error/cost question should be
+compared against that architecture directly, without claiming that calibrated
+expert routing or evaluation under shift is new.
+
+Candidate A — When selective computation can change detection
+
+Prior knowledge: ensemble and selective execution can trade accuracy for cost.
+Specific question: does an expensive expert repair the cheap model's errors in
+the regions that an inexpensive gate can actually identify under an FPR budget?
+Measured evidence: the retained certified negatives show zero repairs and 218
+introduced errors; 2,261 errors are shared. No selector of these unchanged binary
+decisions can reach less than 90.5487% FPR on that cohort. Internally, repairs and
+introduced errors coexist and occupy different score regions.
+Completed development evidence: a twelve-band replay selected a symmetric .20
+band with 34 net added internal detections and 40 fewer false positives at
+1,146/34,593 logical calls. Its matched-budget hash control added five detections
+and nine false positives. The selected directional band added 35 detections and
+42 false positives. Both selected rules added eleven certified external errors
+with no repair. A separate implementation verified all 119 aggregates and both
+selections. These outcomes establish development behavior, not new-model timing
+or independent confirmation. Completed R evaluation: 1,392 positive and 1,262
+negative domains, one selected URL per domain, with unchanged models and
+thresholds. Both selected gates introduce 18 false positives with no selected
+repairs; all systems detect all positives. Two separate recall-only
+noninferiority statements are supported, conditional on independent labeled
+pairs. C measures the selected symmetric gate at 1.646 times structural
+summed-scoring time with 17 expert calls per 1,000 requests. That is actual
+computation, not an HTTP service comparison.
+Design implication: examine error complementarity before optimizing an uncertainty
+band; high aggregate expert recall or higher call volume does not imply useful
+conditional improvement. The algebraic overlap bound is elementary; the research
+value is its tested engineering application, not a claim of a new theorem.
+Boundary: results concern these representations, operating points and populations.
+
+Candidate B — Separate invariance, ranking and operating-point transfer
+
+Prior knowledge: URL formatting and source composition can impair generalization.
+Specific question: which representation change repairs a measured input
+sensitivity, and what detection signal is lost at the same time?
+Measured evidence: 43,294 exact saved-feature replays; external structural AUC
+.8512 but at most 20/69 positives recovered at empirical FPR <=1%; comparison D
+has exact scheme invariance but loses 184 detections while removing 251 false
+positives. The two properties cannot be used interchangeably.
+Completed F experiment: fixed weights, scaler and threshold; only the scheme
+prefix changes. Forcing HTTPS removes 2,211 certified false positives but loses
+47 of 69 gold detections. FPR remains 2.0024% and recall falls to 31.8841%.
+This isolates input spelling from D's combined representation, refit and
+calibration change. Neither result supports a scheme-only remedy.
+Design implication: test low-FPR tail separation after making representation
+stable; an invariant feature map is not a deployment-quality certificate.
+Boundary: D used a different population and combined refitting/calibration; it
+cannot alone isolate a single causal mechanism or support future-traffic claims.
+
+Candidate C — Attribute service improvement to the work actually optimized
+
+Prior knowledge: connection ownership and contention influence HTTP latency.
+Specific question: how much end-to-end improvement survives when detector work,
+request ordering and routing are held fixed, and where is the cost located?
+Measured evidence: S's paired structural-workload result improves client-observed
+tail latency while preserving comparable predictions; strict response equivalence
+is not met. The selected workload does not establish transformer acceleration.
+Selected scope: restrict S's claim to the measured synthetic structural,
+closed-loop client/server workload, as the advisor explicitly permits. Do not
+repeat the 80-arm comparison or claim transformer-service acceleration. Actual
+cost of the revised router is a separate bounded comparison, not a replacement
+for S. Independent run pairs, not individual requests, supply replication for
+speedup uncertainty. The final manuscript/deck sweep must enforce this scope.
+Design implication: report input sensitivity, model calls and client/server costs
+separately so an HTTP improvement is not mistaken for better detection or faster
+transformer computation. Connection reuse by itself is not the novelty claim.
+
+Narrative direction
+
+The dissertation asks when additional representation and computation deliver
+useful detection at a constrained false-positive rate. It first measures the
+structural model's benefit over length alone, then asks whether the transformer
+repairs the remaining errors, and finally measures what serving the chosen
+detector costs. The external findings expose a separation between representation
+stability, score discrimination and low-FPR operation. The revised experiments
+test that separation explicitly. The contribution should be stated through
+measured design decisions a reader can reuse, not a claim that every component
+or integration technique is new.
+
+Review status
+
+The retained-data verifier reconstructed P's consumed-label linkage, F's paired
+counts, R's selected memberships/repairs/ranking and C's arms/counters/quantiles.
+It did not independently reconstruct every secondary F feature delta or R date
+and FPR-bound summary. No external model opinion is claimed as scientific review.
+Closest-work reading has the source-specific limits stated above; the manuscript
+does not claim priority over methods whose full papers have not been inspected.

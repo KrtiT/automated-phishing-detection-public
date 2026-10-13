@@ -1,0 +1,29 @@
+{
+  "role": "exposed_internal_planning_only_not_new_cohort_outcomes",
+  "input_sha256": "827323a5525992332247011e1cb55a661e2b90d4ee350d65eaee0d136dc52c39",
+  "candidates": {
+    "symmetric": {
+      "positive_rows": 14326,
+      "domains": 9757,
+      "both_detect": 14126,
+      "candidate_only": 45,
+      "reference_only": 103,
+      "neither_detect": 52,
+      "recall_difference": -0.004048582995951417,
+      "discordance": 0.010330866955186374,
+      "conditional_iid_power_at_1392": 0.9824554805129502
+    },
+    "below": {
+      "positive_rows": 14326,
+      "domains": 9757,
+      "both_detect": 14126,
+      "candidate_only": 46,
+      "reference_only": 103,
+      "neither_detect": 51,
+      "recall_difference": -0.0039787798408488055,
+      "discordance": 0.010400670110288985,
+      "conditional_iid_power_at_1392": 0.9827701601311498
+    }
+  },
+  "limitations": "Selection used these internal labels; empirical discordance is planning information, not transport evidence. Rows are domain-clustered, and the power calculation assumes IID new pairs."
+}

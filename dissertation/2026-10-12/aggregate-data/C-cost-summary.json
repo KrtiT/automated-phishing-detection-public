@@ -1,0 +1,80 @@
+{
+  "directional": {
+    "calls_per_1000": 15,
+    "median_elapsed_ratio": 1.5885861791228468,
+    "median_run_quantiles_ms": {
+      "p50": 0.189584,
+      "p95": 0.21742115,
+      "p99": 6.801885829999998
+    },
+    "ratio_range": [
+      1.537503347042357,
+      1.6272723818635975
+    ]
+  },
+  "original": {
+    "calls_per_1000": 0,
+    "median_elapsed_ratio": 1.0094751470857712,
+    "median_run_quantiles_ms": {
+      "p50": 0.188833,
+      "p95": 0.20369934999999997,
+      "p99": 0.2450409199999999
+    },
+    "ratio_range": [
+      0.9584094795125102,
+      1.0471996594286141
+    ]
+  },
+  "structural": {
+    "calls_per_1000": 0,
+    "median_elapsed_ratio": 1.0,
+    "median_run_quantiles_ms": {
+      "p50": 0.186917,
+      "p95": 0.198084,
+      "p99": 0.22564249999999997
+    },
+    "ratio_range": [
+      1.0,
+      1.0
+    ]
+  },
+  "symmetric": {
+    "calls_per_1000": 17,
+    "median_elapsed_ratio": 1.6458973978991562,
+    "median_run_quantiles_ms": {
+      "p50": 0.189459,
+      "p95": 0.22306905,
+      "p99": 6.76887934
+    },
+    "ratio_range": [
+      1.5847060091252791,
+      1.7430259239012713
+    ]
+  },
+  "symmetric_control": {
+    "calls_per_1000": 17,
+    "median_elapsed_ratio": 1.7095875457436984,
+    "median_run_quantiles_ms": {
+      "p50": 0.1888335,
+      "p95": 0.2330934,
+      "p99": 7.0147160699999995
+    },
+    "ratio_range": [
+      1.525310162930664,
+      1.7545542808275592
+    ]
+  },
+  "transformer": {
+    "calls_per_1000": 1000,
+    "median_elapsed_ratio": 30.781208193557585,
+    "median_run_quantiles_ms": {
+      "p50": 5.558625,
+      "p95": 6.657018449999999,
+      "p99": 16.48354851
+    },
+    "ratio_range": [
+      29.48780996441021,
+      31.9270055591071
+    ]
+  }
+}

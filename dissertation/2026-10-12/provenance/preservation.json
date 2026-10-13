@@ -1,0 +1,15 @@
+{
+  "historical_edition_modified": false,
+  "history_rewritten": false,
+  "public_derivative_receipt": "document-checks/privacy-derivatives.json",
+  "revised_source_documents": {
+    "Extended_Methods_and_Chronology_2026-10-12.docx": "f213d3ec1ac233c564673e5ee6d612520a44e1f216c9c496000b75a88c1e5e8a",
+    "Tallam_Krti_Praxis_Revision_2026-10-12.docx": "8e4aed08aa7735409acb82bc1c35c49dc35b03d19fb5880071a17900293b02f4",
+    "working-before-completed-integration.docx": "71ee0a4717e764de6bbebfb0535428a7e729eb7dea0dd7e75df276facc424bbd",
+    "working-before-final-length-pass.docx": "f929b8a5968de0702f28eac539ac24e830f92d6a8a92b8b2762ab919d6bb0df5",
+    "working-before-length-revision.docx": "b46a127594890af4c4b1511903f637b795bc931177f4303b46657554bef3de59",
+    "working-before-literature-tightening.docx": "07ac0750deaa1ec8e8a8ddaa3d2d1d8a7a9b1fc1c3ceaca915c584b0c0656c80"
+  },
+  "submitted_original_sha256": "b0dad1835252ba6a1a95d29e5eb2695f9437a868b4ee7cb4f62a991c3114f7b5",
+  "submitted_original_unchanged": true
+}

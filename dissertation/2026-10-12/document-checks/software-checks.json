@@ -1,0 +1,38 @@
+{
+  "scope": "October 12 publication checks; no new research execution",
+  "baseline_commit": "f77027b3963f4e7ee6b831b9f09ff04c71491001",
+  "targeted_checks": {
+    "publication_tests_passed": 18,
+    "frozen_snapshot_tests_passed": 98,
+    "producer_code_tests_passed": 147,
+    "manuscript_tests_passed": 25,
+    "public_derivative_tests_passed": 1,
+    "ruff_check": "passed",
+    "ruff_format_check": "passed",
+    "dependency_lock": "passed",
+    "cli_help": "passed",
+    "source_and_wheel_build": "passed"
+  },
+  "full_local_suite": {
+    "status": "interrupted_after_observed_failures",
+    "passed_before_interruption": 640,
+    "failed_before_interruption": 16,
+    "elapsed_seconds": 150.87,
+    "failure_count_is_exhaustive": false,
+    "observed_failing_test_file": "tests/test_development_execution.py",
+    "exception": "ExecutionPreflightError: public file SHA-256 differs from the contract",
+    "cause": "Historical test fixture copies privacy-projected reports while unchanged frozen contracts require original bytes.",
+    "reports": [
+      "reports/inference-compatibility-v1-preflight-correction.json",
+      "reports/inference-compatibility-v1.json"
+    ],
+    "baseline_reproduction": {
+      "test": "tests/test_development_execution.py::test_separate_binding_authenticates_development_only",
+      "source": "isolated export of unchanged baseline commit",
+      "result": "same SHA-256 failure"
+    },
+    "production_gates_or_frozen_hashes_changed": false,
+    "failing_tests_skipped": false
+  },
+  "ci": "Consult GitHub Actions for the exact publication commit; full CI success is not asserted."
+}

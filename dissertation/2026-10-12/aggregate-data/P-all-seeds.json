@@ -1,0 +1,312 @@
+[
+  {
+    "coefficient_l2": 0.05842736174547957,
+    "iteration_limit": 5000,
+    "iterations": [
+      2001
+    ],
+    "permuted_label_changes": 81656,
+    "result": {
+      "analysis_role": "descriptive_secondary_not_primary",
+      "class_counts": {
+        "0": 20209,
+        "1": 12486
+      },
+      "model_kind": "permutation",
+      "row_count": 32695,
+      "score_metrics": {
+        "average_precision": 0.4870988200440637,
+        "roc_auc": 0.4717998513325275
+      },
+      "scoring_audit": {
+        "batch_size": 1,
+        "max_absolute_decision_difference": 2.220446049250313e-16,
+        "max_absolute_probability_difference": 2.220446049250313e-16,
+        "platform_identity": {
+          "numpy_blas_name": "scipy-openblas",
+          "platform_machine": "arm64",
+          "sys_platform": "darwin"
+        },
+        "portable_exact_parity": true,
+        "threshold_role": "secondary_descriptive_operating_point",
+        "warning_records": []
+      },
+      "seed": 42,
+      "source_identity_verified": true,
+      "validation_threshold": {
+        "candidate_count": 12880,
+        "counts": {
+          "false_negative": 10863,
+          "false_positive": 178,
+          "negative": 20209,
+          "positive": 12486,
+          "true_negative": 20031,
+          "true_positive": 1623
+        },
+        "fpr_upper_95": 0.00996796597890856,
+        "observed_fpr": 0.008807956850908011,
+        "recall": 0.1299855838539164,
+        "status": "selected",
+        "threshold": 0.5042071644591366
+      }
+    },
+    "score_quantiles": {
+      "0": 2.2508314864508534e-06,
+      "0.01": 0.4930597368716132,
+      "0.25": 0.4985606578564262,
+      "0.5": 0.4996484439752259,
+      "0.75": 0.500949860622423,
+      "0.99": 0.5178688868500658,
+      "1": 0.7126130556262332
+    },
+    "seed": 42
+  },
+  {
+    "coefficient_l2": 0.06089056644702457,
+    "iteration_limit": 5000,
+    "iterations": [
+      698
+    ],
+    "permuted_label_changes": 81512,
+    "result": {
+      "analysis_role": "descriptive_secondary_not_primary",
+      "class_counts": {
+        "0": 20209,
+        "1": 12486
+      },
+      "model_kind": "permutation",
+      "row_count": 32695,
+      "score_metrics": {
+        "average_precision": 0.6717988219418739,
+        "roc_auc": 0.6418615936790667
+      },
+      "scoring_audit": {
+        "batch_size": 1,
+        "max_absolute_decision_difference": 4.440892098500626e-16,
+        "max_absolute_probability_difference": 2.220446049250313e-16,
+        "platform_identity": {
+          "numpy_blas_name": "scipy-openblas",
+          "platform_machine": "arm64",
+          "sys_platform": "darwin"
+        },
+        "portable_exact_parity": true,
+        "threshold_role": "secondary_descriptive_operating_point",
+        "warning_records": []
+      },
+      "seed": 43,
+      "source_identity_verified": true,
+      "validation_threshold": {
+        "candidate_count": 12880,
+        "counts": {
+          "false_negative": 8026,
+          "false_positive": 175,
+          "negative": 20209,
+          "positive": 12486,
+          "true_negative": 20034,
+          "true_positive": 4460
+        },
+        "fpr_upper_95": 0.009810484431152821,
+        "observed_fpr": 0.008659508139937652,
+        "recall": 0.35720006407176036,
+        "status": "selected",
+        "threshold": 0.5031540848581733
+      }
+    },
+    "score_quantiles": {
+      "0": 0.3121607269849351,
+      "0.01": 0.4895953967697015,
+      "0.25": 0.4976997545672034,
+      "0.5": 0.49991133037142876,
+      "0.75": 0.5018127357452663,
+      "0.99": 0.5108310279252938,
+      "1": 0.8930332471767051
+    },
+    "seed": 43
+  },
+  {
+    "coefficient_l2": 0.04044012458314774,
+    "iteration_limit": 5000,
+    "iterations": [
+      1010
+    ],
+    "permuted_label_changes": 81690,
+    "result": {
+      "analysis_role": "descriptive_secondary_not_primary",
+      "class_counts": {
+        "0": 20209,
+        "1": 12486
+      },
+      "model_kind": "permutation",
+      "row_count": 32695,
+      "score_metrics": {
+        "average_precision": 0.5205932202303077,
+        "roc_auc": 0.5486743202760688
+      },
+      "scoring_audit": {
+        "batch_size": 1,
+        "max_absolute_decision_difference": 1.1102230246251565e-16,
+        "max_absolute_probability_difference": 2.220446049250313e-16,
+        "platform_identity": {
+          "numpy_blas_name": "scipy-openblas",
+          "platform_machine": "arm64",
+          "sys_platform": "darwin"
+        },
+        "portable_exact_parity": true,
+        "threshold_role": "secondary_descriptive_operating_point",
+        "warning_records": []
+      },
+      "seed": 44,
+      "source_identity_verified": true,
+      "validation_threshold": {
+        "candidate_count": 12880,
+        "counts": {
+          "false_negative": 11236,
+          "false_positive": 176,
+          "negative": 20209,
+          "positive": 12486,
+          "true_negative": 20033,
+          "true_positive": 1250
+        },
+        "fpr_upper_95": 0.009862987029358838,
+        "observed_fpr": 0.008708991043594438,
+        "recall": 0.10011212558065033,
+        "status": "selected",
+        "threshold": 0.5058518481954868
+      }
+    },
+    "score_quantiles": {
+      "0": 0.31978176925159857,
+      "0.01": 0.4864423663723629,
+      "0.25": 0.49856283230028564,
+      "0.5": 0.4997455739620686,
+      "0.75": 0.5015820460346538,
+      "0.99": 0.5119424046280079,
+      "1": 0.9405087096147698
+    },
+    "seed": 44
+  },
+  {
+    "coefficient_l2": 0.08514373784391652,
+    "iteration_limit": 5000,
+    "iterations": [
+      700
+    ],
+    "permuted_label_changes": 81754,
+    "result": {
+      "analysis_role": "descriptive_secondary_not_primary",
+      "class_counts": {
+        "0": 20209,
+        "1": 12486
+      },
+      "model_kind": "permutation",
+      "row_count": 32695,
+      "score_metrics": {
+        "average_precision": 0.40269829431318366,
+        "roc_auc": 0.39400472534384734
+      },
+      "scoring_audit": {
+        "batch_size": 1,
+        "max_absolute_decision_difference": 4.440892098500626e-16,
+        "max_absolute_probability_difference": 2.220446049250313e-16,
+        "platform_identity": {
+          "numpy_blas_name": "scipy-openblas",
+          "platform_machine": "arm64",
+          "sys_platform": "darwin"
+        },
+        "portable_exact_parity": true,
+        "threshold_role": "secondary_descriptive_operating_point",
+        "warning_records": []
+      },
+      "seed": 45,
+      "source_identity_verified": true,
+      "validation_threshold": {
+        "candidate_count": 12880,
+        "counts": {
+          "false_negative": 11756,
+          "false_positive": 178,
+          "negative": 20209,
+          "positive": 12486,
+          "true_negative": 20031,
+          "true_positive": 730
+        },
+        "fpr_upper_95": 0.00996796597890856,
+        "observed_fpr": 0.008807956850908011,
+        "recall": 0.05846548133909979,
+        "status": "selected",
+        "threshold": 0.5087053417015189
+      }
+    },
+    "score_quantiles": {
+      "0": 0.10721236266683529,
+      "0.01": 0.48094864381046953,
+      "0.25": 0.4979695985623791,
+      "0.5": 0.5001171060764624,
+      "0.75": 0.5023487614586957,
+      "0.99": 0.5136164591423725,
+      "1": 0.7495261980856132
+    },
+    "seed": 45
+  },
+  {
+    "coefficient_l2": 0.02988063733198199,
+    "iteration_limit": 5000,
+    "iterations": [
+      341
+    ],
+    "permuted_label_changes": 81336,
+    "result": {
+      "analysis_role": "descriptive_secondary_not_primary",
+      "class_counts": {
+        "0": 20209,
+        "1": 12486
+      },
+      "model_kind": "permutation",
+      "row_count": 32695,
+      "score_metrics": {
+        "average_precision": 0.7683120689451126,
+        "roc_auc": 0.696523061938035
+      },
+      "scoring_audit": {
+        "batch_size": 1,
+        "max_absolute_decision_difference": 4.440892098500626e-16,
+        "max_absolute_probability_difference": 2.220446049250313e-16,
+        "platform_identity": {
+          "numpy_blas_name": "scipy-openblas",
+          "platform_machine": "arm64",
+          "sys_platform": "darwin"
+        },
+        "portable_exact_parity": true,
+        "threshold_role": "secondary_descriptive_operating_point",
+        "warning_records": []
+      },
+      "seed": 46,
+      "source_identity_verified": true,
+      "validation_threshold": {
+        "candidate_count": 12881,
+        "counts": {
+          "false_negative": 5604,
+          "false_positive": 177,
+          "negative": 20209,
+          "positive": 12486,
+          "true_negative": 20032,
+          "true_positive": 6882
+        },
+        "fpr_upper_95": 0.009915480854183582,
+        "observed_fpr": 0.008758473947251225,
+        "recall": 0.5511773185968285,
+        "status": "selected",
+        "threshold": 0.5014918824187501
+      }
+    },
+    "score_quantiles": {
+      "0": 0.08339987797226776,
+      "0.01": 0.48713508686879253,
+      "0.25": 0.4981382073037061,
+      "0.5": 0.49951744458029096,
+      "0.75": 0.5008965177081233,
+      "0.99": 0.5145370354086969,
+      "1": 0.7794129577729502
+    },
+    "seed": 46
+  }
+]

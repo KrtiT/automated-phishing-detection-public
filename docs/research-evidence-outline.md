@@ -1,19 +1,24 @@
 # Research Evidence Outline
 
-## Completed Evidence — 4 October 2026
+## Completed Evidence — 12 October 2026
 
 The original research is complete: **22 primary checks, 125 operational cells
 and 25 operational groups**, with secondary analyses and the separate D/S
 follow-ups. **H1, H2 and H3 are not supported** under their unchanged conjunctive
-rules (nine passing and thirteen failing component checks). D and S remain
+rules (eight passing checks after corrected paired inference). D and S remain
 separate, fully reported comparisons rather than replacements for H1–H3.
 
-Read the [current research story](../dissertation/2026-10-04/RESEARCH_STORY.md),
-[manuscript and evidence index](../dissertation/2026-10-04/README.md), and
-[reproduction boundaries](../dissertation/2026-10-04/REPRODUCTION.md).
+Read the [current research story](../dissertation/2026-10-12/RESEARCH_STORY.md),
+[manuscript and evidence index](../dissertation/2026-10-12/README.md), and
+[reproduction boundaries](../dissertation/2026-10-12/REPRODUCTION.md).
 The implementation, completed measurements and final adjudication supersede the
 earlier completion-status statements below; they do not alter frozen methods,
 retrospectively claim advisor approval or erase interrupted attempts.
+
+The current revision adds completed P/F/R/C diagnostics, a corrected 22-check
+ledger and two separately specified recall-only findings on R. These do not
+replace original H1–H3 or their thresholds. The October 4 edition remains a
+historical record; its nine-pass count is superseded by the current correction.
 
 <details>
 <summary>Historical snapshot — preserved pre-synthesis record at ef8ba5f</summary>

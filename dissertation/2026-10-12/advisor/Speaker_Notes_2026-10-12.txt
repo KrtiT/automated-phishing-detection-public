@@ -1,0 +1,253 @@
+SLIDE 1 — A constrained detector, evaluated end to end
+
+The research question is when added representation and computation improve useful detection.
+
+URL-only structural model → selective character transformer
+
+Monitoring, operating-point risk and real HTTP execution
+
+Revision: 12 October 2026 · Krti Tallam
+
+Speaker notes: This is a URL-service study, not an evaluation of frontier-model reasoning. Begin with the engineering decision, not the artifact count.
+
+Evidence: Manuscript title; §§1.3–1.5
+
+
+
+SLIDE 2 — Three questions, unchanged numerical commitments
+
+Representation, monitoring and inline operation must be judged together.
+
+RQ1: incremental recall with internal and external FPR ≤1%
+
+RQ2: shift sensitivity ≥80%, reference alerts ≤5%, useful future routing
+
+RQ3: recall loss ≤2 points, calls ≤30%, p95 ≤200 ms, errors <0.1%
+
+Speaker notes: RQ1 requires both structural-over-length and cascade-over-structural gains. RQ2 additionally requires external policy FPR ≤1% and a positive paired false-negative reduction. RQ3 retains certified-negative and Tranco safeguards for both systems. Numerical requirements are study-defined, not universal literature cutoffs.
+
+Evidence: §§1.4.1–1.4.3; corrected-primary-gates.csv
+
+
+
+SLIDE 3 — Why each comparison exists
+
+Each intervention answers a different mechanism question.
+
+Original: 22 checks and 25 operational groups
+
+D / F: refitted invariant representation / frozen-model scheme spelling
+
+R / C / P / S: routing / actual computation / fit audit / HTTP client design
+
+Speaker notes: D and S follow the original study. P/F/R/C follow the October 12 review under a separate frozen specification. These are not pooled into a new version of H1–H3. Chronology and adverse results remain retained.
+
+Evidence: §§3.15–3.16; Appendices A–C
+
+
+
+SLIDE 4 — Structural information adds recall; specificity does not transfer
+
+RQ1 separates representation value from the chosen operating point.
+
+Structural-over-length gain: +64.07 points internal; +76.81 external
+
+Internal structural FPR: 0.7747%; external certified FPR: 90.5487%
+
+Original gate selects no evaluation calls, so cascade recall gain is zero
+
+Speaker notes: Internal interval [59.99,67.63] points is domain-clustered. Corrected external envelope [57.27,87.19] is conditional on independent labeled pairs. The transformer alone has 99.2791% external certified FPR. H1 remains unsupported because all conditions are required.
+
+Evidence: §§3.8, 4.2; Tables 4.2–4.3
+
+
+
+SLIDE 5 — Diagnose the shared errors before redesigning the gate
+
+A selector cannot fix errors shared by both unchanged decisions.
+
+Original certified negatives: 2,261 shared false positives / 2,497
+
+Transformer repairs 0 and introduces 218 negative errors
+
+Observed unchanged-decision selector floor: 90.5487% FPR
+
+Speaker notes: This elementary overlap bound applies to the two fixed binary decisions and this cohort, not all possible recalibrations, representations or future populations. It directs effort toward discriminative information rather than more routing alone.
+
+Evidence: §4.8.1; saved-score-routing-replay-v2.json
+
+
+
+SLIDE 6 — Changing the scheme moves both classes
+
+F isolates spelling sensitivity with model, scaler and threshold fixed.
+
+Retained spelling: TP 69/69; FP 2,261/2,497
+
+Forced HTTPS: TP 22/69; FP 50/2,497
+
+2,211 fewer false positives, but 47 fewer positive detections
+
+Speaker notes: F changes the prefix and preserves every character after the colon. HTTPS FPR remains 2.0024%, recall becomes 31.8841%. This is not a live-site transport experiment or an isolated causal effect of is_https. D separately achieves exact invariance on 8,622 pairs but loses 184 detections while removing 251 false positives after refit/recalibration.
+
+Evidence: §4.10.1; Table 4.21; F-formatting.csv
+
+
+
+SLIDE 7 — A wider gate must select repairs, not simply more cases
+
+Development benefit did not transfer to R's retained domain-balanced frame.
+
+R: 1,392 positive + 1,262 negative domains; one URL per domain
+
+Symmetric gate: 21 calls / 2,654; 0 selected repairs; 18 new false positives
+
+All systems detect 1,392 positives; structural FP 1,028, symmetric FP 1,046
+
+Speaker notes: The width .20 rule was selected using bounded development replay before R scoring. The directional rule also creates 18 negative harms. Matched-count controls create two and one false positives. Across all records the transformer repairs one negative error but introduces 194; the selected bands miss that isolated repair. R is retrospective and does not establish campaign independence.
+
+Evidence: §§3.16.1–3.16.2, 4.10.2; Table 4.22; R-routing.csv
+
+
+
+SLIDE 8 — More precise recall evidence, without changing the original verdict
+
+Agreement must be accompanied by a nondegenerate uncertainty interval.
+
+Original 69 positive pairs: corrected 95% envelope ±6.1533 points
+
+R's 1,392 pairs: 95% envelope ±0.3143 points
+
+Two new recall-only noninferiority statements pass the −2-point margin
+
+Speaker notes: Use the exact marginal-discordance envelope; Newcombe method 10 is a sensitivity check. The new statements concern original and symmetric cascades versus transformer on R, under independent labeled-pair assumptions. They do not establish specificity, joint deployment adequacy or original H3. Source-date grouping does not prove campaign independence.
+
+Evidence: §§3.8, 4.10.2; Table 4.3; R-paired-contrasts.csv
+
+
+
+SLIDE 9 — Rare expert calls appear in p99, not necessarily p95
+
+C measures actual model work, separate from the HTTP service.
+
+Symmetric: 17 expert calls / 1,000 requests; 1.646× structural time
+
+Median run p95: 0.223 ms; p99: 6.769 ms
+
+Always-transformer: 30.781× structural summed-scoring time
+
+Speaker notes: Thirty arms are six paths by five repeats; 30,000 measured requests plus 3,000 excluded warmups. Zero recorded failures. The five cyclic rotations are not fully position-balanced. Ratios are medians of paired summed scoring times and quantiles are medians of run quantiles, not pooled HTTP latencies. No run-level confidence interval is claimed.
+
+Evidence: §4.10.3; Table 4.23; C-cost-summary.csv and C-all-arms.csv
+
+
+
+SLIDE 10 — A monitor signal is not automatically a useful action
+
+RQ2 evaluates both distribution recognition and what happens afterward.
+
+External window detection: 115/132 = 87.12%
+
+Reference false alerts: 28/252 = 11.11%
+
+Future routing adds 218 false positives and no gold detections
+
+Speaker notes: The monitor exceeds the 80% sensitivity target but misses the 5% reference-alert target. Policy FPR is 2479/2497, gold recall remains 69/69, and no positive population improvement lower bound is established. Overlapping windows and future activations are dependent. H2 is unsupported, with an identified reason rather than an unexplained failure label.
+
+Evidence: §§4.3, 5.1; Tables 4.4–4.5
+
+
+
+SLIDE 11 — The client-path modification has a measured benefit
+
+S changes client connection ownership while keeping structural scoring fixed.
+
+Median paired p95 reduction: 79.68% at concurrency 64
+
+Worker successful p95: 71.999 ms; 0 errors / 100,000 attempts
+
+99,999 / 99,999 comparable predictions agree
+
+Speaker notes: S uses synthetic structural-only closed-loop HTTP work. Ratio .203249, 97.5% CI [.18790,.21351]. Strict response agreement remains unmet because admission sequence differs and one shared-client request times out. All 80 final arms are retained; no predecessor arm is pooled. This does not establish transformer-service acceleration or production capacity.
+
+Evidence: §4.9; Tables 4.18–4.20 and B.1
+
+
+
+SLIDE 12 — Verify fitting inputs instead of trusting a plausible metric
+
+P directly links each new shuffled-label fit to its consumed label vector.
+
+Five seeds, 42–46; all converge below 5,000 iterations
+
+Validation AUC range 0.3940–0.6965; AP 0.4027–0.7683
+
+Every outcome retained; no seed selection or favorable reruns
+
+Speaker notes: True validation labels select each descriptive threshold. Near-0.5 score centers do not imply chance ranking; AUC depends on order. The audit proves label linkage for the five new fits, not historical retroauthentication, absence of leakage or a formal .05 permutation test. Five permutations would not support such a test.
+
+Evidence: §4.10.4; Table 4.24; P-all-seeds.csv
+
+
+
+SLIDE 13 — What the dissertation adds to established methods
+
+The contribution is tested engineering knowledge about constrained decisions.
+
+Measure same-example repair before optimizing deferral
+
+Test low-FPR discrimination alongside representation invariance
+
+Separate model calls, actual computation and client-observed service cost
+
+Speaker notes: Ahamed et al. already examine normalization and two-source transfer. ExpertFusion's repository documents calibrated expert fusion. This dissertation does not claim those components as inventions. Its empirical connection among error overlap, risk constraints, a fixed routing revision and measured computation provides a concrete design decision. The overlap bound itself is not presented as a new theorem.
+
+Evidence: §§2.2–2.9, 5.2; Tables 2.1 and 5.1
+
+
+
+SLIDE 14 — Hypothesis decisions and positive findings are different levels
+
+All original questions have direct answers; every numerical requirement remains visible.
+
+Original checks: H1 5/10, H2 1/4, H3 2/8 pass
+
+Joint H1–H3: unsupported; all constituent conditions are required
+
+Positive findings: structural gain, exact invariance, recall-only NI and HTTP improvement
+
+Speaker notes: Eight passes replace the historical nine because the 69-case noninferiority interval was corrected. New R recall-only findings do not retroactively restore the original pass. D and S joint requirements remain unmet despite successful properties and measured improvements. Completed research and passing every operating target are not synonyms.
+
+Evidence: §§4.7, 5.1–5.6; Tables 4.14 and 5.2; corrected-primary-gates.csv
+
+
+
+SLIDE 15 — The technical answer is actionable
+
+Change what the evidence identifies, and test every consequence.
+
+Shared decision errors require changed information or operating-point development
+
+A useful route must find repairs while controlling harms and compute
+
+Optimize the measured service path without calling it better detection
+
+Speaker notes: This connects diagnosis to modification without hiding tradeoffs. The current experiments reject the wider external gate, establish exact representation conformance with its cost, support bounded recall-only statements and demonstrate a client-path latency effect. New studies would need new populations and declared development rules, not relabeled historical outcomes.
+
+Evidence: §§5.2–5.6
+
+
+
+SLIDE 16 — A traceable review package
+
+A reader can move from question to method, table and retained evidence.
+
+Manuscript + seven-comment response + extended methods
+
+Corrected ledger + F/R/C/P aggregates + freeze identities
+
+Original record preserved; new record-level identities remain private
+
+Speaker notes: The public projection contains aggregates, permitted identities and verification scope. It is not a complete independent reproduction of private row-level evidence. Saved-observation verification is arithmetic reconstruction, not empirical replication. The draft meets the 150-page total ceiling but its 106-page body exceeds the approximately 80-page program recommendation; no waiver or acceptance is implied.
+
+Evidence: Appendices A–C; EVIDENCE_MAP.txt; VERIFICATION.txt

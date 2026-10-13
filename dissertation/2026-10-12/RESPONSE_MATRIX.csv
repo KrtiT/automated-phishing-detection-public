@@ -1,0 +1,8 @@
+comment,question,manuscript,state
+1,External false positives: separate input effects from useful discrimination,"Sections 3.4, 4.8.1 and 4.10.1; Table 4.21",evidence_integrated_package_verified
+2,Second-stage use: test repair before paying for more calls,"Sections 3.7, 3.16, 4.8.1 and 4.10.2–4.10.3; Tables 4.22–4.23",evidence_integrated_package_verified
+3,Paired recall: correct uncertainty and expand the evaluation unit,"Sections 3.8, 3.16.1–3.16.2 and 4.10.2; Tables 4.3, 4.14 and 4.22",evidence_integrated_package_verified
+4,Engineering contribution: identify which intervention can change the decision,"Sections 2.2–2.9, 5.1–5.3 and 5.6; Tables 2.1 and 5.1–5.2",evidence_integrated_package_verified
+5,Service performance: match each claim to the measured work,"Sections 3.15.5, 3.16.3, 4.9 and 4.10.3; Tables 4.18–4.20, 4.23 and B.1",evidence_integrated_package_verified
+6,Shuffled-label controls: verify the actual fitting input,Sections 3.16.3 and 4.10.4; Table 4.24,evidence_integrated_package_verified
+7,Scope and presentation: put the research argument first,"Title, abstract, Chapters 1–5 and Appendices A–C",evidence_integrated_package_verified

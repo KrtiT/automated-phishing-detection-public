@@ -1,0 +1,68 @@
+COMPLETED MANUSCRIPT REVISION MAP — 12 OCTOBER 2026
+
+The supplied Word manuscript, not the older repository Markdown, is the basis
+of this revision. Submitted original SHA256:
+b0dad1835252ba6a1a95d29e5eb2695f9437a868b4ee7cb4f62a991c3114f7b5
+The original remains unchanged. Current edition identities are in SHA256SUMS.txt.
+
+Title, abstract and Chapter 1
+The title now specifies cross-dataset reliability and computational trade-offs
+in cascaded URL phishing detection. The original RQ1–RQ3, H1–H3 and numerical
+requirements remain. Both advisors' acknowledgments and supplied front-matter
+credentials are preserved. The abstract distinguishes original results from
+corrected inference and the separately specified diagnostic comparisons.
+
+Chapter 2
+The closest-work synthesis distinguishes established representation, shift and
+expert-combination methods from the measured conditional-repair/risk/cost
+question. Newcombe, Ojala and Garriga, and the ExpertFusion author-repository
+reference are added. The bibliography has 62 unique, alphabetically arranged
+entries. Source-specific reading scope is recorded in CONTRIBUTION_MATRIX.txt.
+
+Chapter 3
+The corrected paired method replaces zero-uncertainty interpretations with a
+conservative exact envelope and approximate paired-score sensitivity. Dependence
+and evaluation units are explicit. Section 3.16 describes the separate P/F/R/C
+freeze, retrospective domain-balanced selection, audited labels, controlled
+prefix intervention and actual model-cost comparison. No claim of campaign
+independence or prospective traffic validation is made. D and S remain separate.
+
+Chapter 4
+All 22 original requirements are retained alongside corrected adjudication.
+Eight component checks pass: H1 5/10, H2 1/4 and H3 2/8. One former H3 pass is
+not established after correcting uncertainty for the 69 concordant positive
+pairs. Joint H1–H3 remain unsupported. Tables 4.21–4.24 and Section 4.10 present
+all F/R/C/P outcomes, including lost detections, routing harms and every control
+seed. R supports two new recall-only noninferiority statements under stated
+labeled-pair assumptions; it does not replace original H3. C measures computation,
+not HTTP acceleration. S's service comparison remains synthetic and structural.
+
+Chapter 5
+Direct RQ answers connect observations to mechanisms and design choices: inspect
+conditional expert repair, measure low-FPR discrimination after representation
+changes, and distinguish detector computation from service-path improvements.
+Positive findings and adverse outcomes are both part of the engineering account.
+The argument does not claim an invented normalization method or a new overlap
+theorem. All original commitments, D/S comparisons and later P/F/R/C findings
+retain their distinct evidential roles.
+
+Presentation and traceability
+Detailed execution histories move to appendices and the companion Extended
+Methods and Chronology. That supplement preserves the full pre-condensation
+method/discussion record; the main manuscript governs current conclusions.
+Double spacing, table structures, four figures and supplied credentials remain.
+All 127 navigation targets are refreshed and checked against the rendered PDF.
+The main PDF has 150 pages, including 106 main-body pages; the latter exceeds
+the approximately 80-page recommendation, and no length waiver is implied.
+The 31 tables, four figures and 16 review slides have explicit evidence mappings.
+The seven-comment response and deck state the same populations and decisions.
+
+Verification scope
+Automated checks cover the 25 manuscript tests, paragraph/cell rendering,
+navigation, caption/figure geometry, citation linkage and privacy derivatives.
+The saved-evidence verifier checks 506 bound files and 258 host observations
+and reconstructs its declared P/F/R/C outputs without fitting or predictions.
+Not every secondary F feature delta or R date/FPR summary is independently
+recomputed. The package verification record separates software tests, local
+saved-observation verification and public reproducibility. Neither this map nor
+the checks constitute advisor acceptance or university clearance.

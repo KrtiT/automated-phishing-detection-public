@@ -1,0 +1,83 @@
+AUDITED TRAINING-LABEL CONTROLS — SCIENTIFIC SPECIFICATION, 12 OCTOBER 2026
+
+Purpose and status
+
+Repeat the five label-permutation controls once with evidence at estimator.fit.
+This is a post-review diagnostic of NEW fits. It does not authenticate the old
+fits, establish exchangeability, certify absence of leakage, or replace any
+original H1–H3 decision. Scientific choices below are fixed before research fits.
+Execution remains held until the complete study admission and frozen-code profile
+are verified. This document alone grants no protected-data or execution access.
+
+Inputs and scope
+
+Use the original retained PhiUSIIL training and validation partitions, in their
+unchanged row order, original raw_url representation and internal label polarity
+(1 = phishing, 0 = legitimate). Do not reopen the downloaded CSV or archives.
+Do not access group-test or external records in these fits or threshold selection.
+
+Local partition directory relative to gwu_working:
+automated-phishing-detection-public/data/processed/phiusiil-v1/
+train.jsonl: 575f2fb13a0766020e29d78bf8e633a185b381abde7060bdd1ed04cc4a5e38a0
+validation.jsonl: 970c6568a6400a1fc265b7809ef7bd9d1c297632799cbb88801313bc34ac415a
+preparation summary: 1a85a7eecc0f5baa7c59e03a0cbde63fd4595409feb918dc5ff916ead7cd5c9e
+suffix rules: 65365c4c9a4a6f746d53aadc758ab6b08aa10bb1379fea8ac353e381bca4b62e
+
+Expected counts: training 166,248 (94,373 negative; 71,875 positive), validation
+32,695 (20,209 negative; 12,486 positive). Validate partition hashes, row identity,
+class counts and train/validation domain disjointness before the first fit.
+
+Retain the accepted unshuffled result, without fitting another reference:
+reports/rq1-baseline-v2-summary.json, SHA-256
+bf5b3a6f0fc705d26852da4dd0053c6111ffc3e500d7a2e95dfba5ad859b279c.
+Its Logistic-L1 validation counts are TP12,289/FN197/FP177/TN20,032.
+Its historical runtime warnings remain in the evidence. This is a retained
+reference, not a simultaneous randomized numerical-runtime comparison.
+
+Fit and analysis
+
+Run permutation seeds 42, 43, 44, 45, 46 in that order, once each, with NumPy PCG64.
+Permute only the ordered training labels; preserve class totals. Keep validation
+labels unchanged. Use all 25 original structural features. Fit StandardScaler on
+training features only, with centering/scaling; apply it to validation features.
+Use LogisticRegression: L1, saga, C=1, balanced class weights, intercept enabled,
+max_iter=5000, tol=1e-4, solver random_state=42. Do not increase iterations or
+change seeds after inspecting results. Numerical/runtime and warning guards stay
+enabled; the pinned runtime uses one numerical thread.
+
+Keep baselines.select_validation_threshold unchanged: validation-label selection
+at the original Clopper–Pearson FPR constraint, with its existing recall/threshold
+tie breaks. Report this label-informed operating point separately from ranking.
+Record every seed's class counts, convergence/iteration state, threshold status,
+TP/FN/FP/TN, recall, observed FPR, ROC AUC and average precision. These validation
+metrics are diagnostics, not holdout estimates of deployable control performance.
+
+Evidence and stopping rule
+
+Before calling fit, persist the exact ordered IDs and label array supplied to the
+estimator, PCG64 permutation-index digest, source/scaled feature digests and shape,
+class totals, classifier parameters and seed. Pass verified read-only copies into
+fit. Persist the return event and numeric fitted-state checkpoint; verify the
+serialized model's exact score parity on validation. Save aligned validation
+scores and a linkage record. Reconstruct the expected permutation independently
+when reading each member's retained evidence; do not fit or score in that verifier.
+
+The parent schedule rechecks live admission before each member and publication.
+It stops at the first fit, receipt, scoring, verification, admission or publication
+failure. Preserve completed, failed and unstarted seeds and the failure stage.
+Do not resume, replace a seed, discard an anomalous control, or create a fresh
+attempt automatically. All five are required for a completed family; an interrupted
+family is a retained incomplete diagnostic, never five claimed successful controls.
+
+Interpretation
+
+Report individual outcomes, including unexpected ones; do not demand exactly .5
+ROC AUC, zero recall or a particular FPR. Any ranking signal calls for a traced
+explanation before claims about leakage. Five permutations are not a .05-level
+permutation test (even a valid corrected Monte Carlo test would have minimum
+p=1/6). No new hypothesis threshold or pass criterion is created here.
+
+Acceptance is a reproducible, contemporaneously observed execution plus consistent
+disk evidence. Hashes alone are not proof of chronology, producer exit or lawful
+access. The bounded worker and verifier implement evidence handling; neither is
+the missing final execution authorization.

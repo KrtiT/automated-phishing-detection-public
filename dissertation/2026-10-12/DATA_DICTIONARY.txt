@@ -1,0 +1,53 @@
+AGGREGATE DATA DICTIONARY — 12 OCTOBER REVISION
+
+All CSV headers are machine-readable. Rates and interval endpoints are fractions
+unless a column explicitly says milliseconds (ms). Multiply fractions by 100 for
+percentages or percentage-point differences. Blank CSV cells / JSON null mean
+not defined or not applicable, never zero. No raw URLs, domains or row identifiers
+from the new experiments are included.
+
+F-formatting: stratum and spelling identify fixed-model cells. rows is the
+denominator; alerts and decision_flips are integer counts. TP is meaningful only
+for positive reference strata, FP/FPR for certified negatives; Tranco supplies
+alerts, not verified benign outcomes. All characters after the scheme colon are
+unchanged; fitting, scaler and threshold are fixed. Secondary positives and
+Tranco retain their distinct label roles.
+
+R-routing: one URL per domain; P=1392, N=1262, total=2654. Counts are paired across
+systems. logical_calls are routing selections, not timed executions. Repairs and
+harms compare against structural decisions within each reference class. FPR upper
+bounds and paired intervals are conditional on independent labeled units, not
+campaign-independence certificates. Ranking/AP reflect this retained frame.
+R-paired-contrasts: positive paired cells, individual two-sided 95% exact-envelope
+endpoints; primary_statements and approximate/date sensitivities remain in JSON.
+The new recall-only statements do not change original H1–H3 decisions.
+
+C-all-arms: 6 paths x 5 repetitions; 1000 measured requests and 100 excluded
+warmups per arm. Counters are measured-phase differences. Summed scoring seconds
+exclude HTTP, request generation and whole-arm setup. Quantiles use linear
+interpolation. C-cost-summary reports medians of run quantiles and paired
+summed-scoring-time ratios to structural, with observed min/max, not confidence
+intervals. Five cyclic rotations are not fully position-balanced. The workload
+has a designed 1% positive mixture, not estimated field prevalence. No C/S pooling.
+
+P-all-seeds: seeds 42–46, original training partition with audited shuffled labels;
+validation P=12486, N=20209. Iterations and label changes describe the fit audit.
+AUC/AP use unchanged validation labels, which also select each operating point.
+TP/FP therefore describe validation-selected thresholds, not held-out efficacy.
+Small coefficients or probabilities near .5 do not imply chance ranking. These
+five diagnostic fits do not establish a formal .05 permutation test or certify
+historical label consumption. JSON retains score quantiles and scoring-audit scope.
+
+corrected-primary-gates: preserves original status, metric, operator and threshold,
+with corrected estimates, uncertainty, method and decision. Eight passes remain;
+one original H3 recall-margin pass changes. Original joint hypotheses remain
+unsupported. An observed agreement result is not a zero-uncertainty guarantee.
+
+freeze-identities: exact hashes of permitted input/output identities and frozen
+research commit/profile. These are identities, not access capabilities or public
+record-level data. The retained local verification reconstructed counts, P linkage,
+R membership/repairs/ranking and C quantiles/counters from saved observations.
+Not every secondary F feature delta or R date/FPR summary was independently
+recomputed by that verifier. Aggregate consistency is weaker than independent
+reproduction of private observations. Historical data/code remain in the separate
+research-record-2026-10-04 release, subject to its own license and privacy record.

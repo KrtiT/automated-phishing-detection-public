@@ -1,0 +1,995 @@
+{
+  "C": {
+    "directional": {
+      "calls_per_1000": 15,
+      "median_elapsed_ratio": 1.5885861791228468,
+      "median_run_quantiles_ms": {
+        "p50": 0.189584,
+        "p95": 0.21742115,
+        "p99": 6.801885829999998
+      },
+      "ratio_range": [
+        1.537503347042357,
+        1.6272723818635975
+      ]
+    },
+    "original": {
+      "calls_per_1000": 0,
+      "median_elapsed_ratio": 1.0094751470857712,
+      "median_run_quantiles_ms": {
+        "p50": 0.188833,
+        "p95": 0.20369934999999997,
+        "p99": 0.2450409199999999
+      },
+      "ratio_range": [
+        0.9584094795125102,
+        1.0471996594286141
+      ]
+    },
+    "structural": {
+      "calls_per_1000": 0,
+      "median_elapsed_ratio": 1.0,
+      "median_run_quantiles_ms": {
+        "p50": 0.186917,
+        "p95": 0.198084,
+        "p99": 0.22564249999999997
+      },
+      "ratio_range": [
+        1.0,
+        1.0
+      ]
+    },
+    "symmetric": {
+      "calls_per_1000": 17,
+      "median_elapsed_ratio": 1.6458973978991562,
+      "median_run_quantiles_ms": {
+        "p50": 0.189459,
+        "p95": 0.22306905,
+        "p99": 6.76887934
+      },
+      "ratio_range": [
+        1.5847060091252791,
+        1.7430259239012713
+      ]
+    },
+    "symmetric_control": {
+      "calls_per_1000": 17,
+      "median_elapsed_ratio": 1.7095875457436984,
+      "median_run_quantiles_ms": {
+        "p50": 0.1888335,
+        "p95": 0.2330934,
+        "p99": 7.0147160699999995
+      },
+      "ratio_range": [
+        1.525310162930664,
+        1.7545542808275592
+      ]
+    },
+    "transformer": {
+      "calls_per_1000": 1000,
+      "median_elapsed_ratio": 30.781208193557585,
+      "median_run_quantiles_ms": {
+        "p50": 5.558625,
+        "p95": 6.657018449999999,
+        "p99": 16.48354851
+      },
+      "ratio_range": [
+        29.48780996441021,
+        31.9270055591071
+      ]
+    }
+  },
+  "F": {
+    "certified": {
+      "http": {
+        "alerts": 2497,
+        "decision_flips": 236,
+        "false_positive": 2497,
+        "fpr": 1.0,
+        "recall": null,
+        "rows": 2497,
+        "true_positive": 0
+      },
+      "https": {
+        "alerts": 50,
+        "decision_flips": 2211,
+        "false_positive": 50,
+        "fpr": 0.020024028834601523,
+        "recall": null,
+        "rows": 2497,
+        "true_positive": 0
+      },
+      "original": {
+        "alerts": 2261,
+        "decision_flips": 0,
+        "false_positive": 2261,
+        "fpr": 0.9054865839006808,
+        "recall": null,
+        "rows": 2497,
+        "true_positive": 0
+      }
+    },
+    "gold": {
+      "http": {
+        "alerts": 69,
+        "decision_flips": 0,
+        "false_positive": 0,
+        "fpr": null,
+        "recall": 1.0,
+        "rows": 69,
+        "true_positive": 69
+      },
+      "https": {
+        "alerts": 22,
+        "decision_flips": 47,
+        "false_positive": 0,
+        "fpr": null,
+        "recall": 0.3188405797101449,
+        "rows": 69,
+        "true_positive": 22
+      },
+      "original": {
+        "alerts": 69,
+        "decision_flips": 0,
+        "false_positive": 0,
+        "fpr": null,
+        "recall": 1.0,
+        "rows": 69,
+        "true_positive": 69
+      }
+    },
+    "secondary": {
+      "http": {
+        "alerts": 4972,
+        "decision_flips": 0,
+        "false_positive": 0,
+        "fpr": null,
+        "recall": 1.0,
+        "rows": 4972,
+        "true_positive": 4972
+      },
+      "https": {
+        "alerts": 687,
+        "decision_flips": 4285,
+        "false_positive": 0,
+        "fpr": null,
+        "recall": 0.13817377312952533,
+        "rows": 4972,
+        "true_positive": 687
+      },
+      "original": {
+        "alerts": 4972,
+        "decision_flips": 0,
+        "false_positive": 0,
+        "fpr": null,
+        "recall": 1.0,
+        "rows": 4972,
+        "true_positive": 4972
+      }
+    },
+    "tranco": {
+      "http": {
+        "alerts": 1163,
+        "decision_flips": 0,
+        "false_positive": 0,
+        "fpr": null,
+        "recall": null,
+        "rows": 1163,
+        "true_positive": 0
+      },
+      "https": {
+        "alerts": 63,
+        "decision_flips": 1100,
+        "false_positive": 0,
+        "fpr": null,
+        "recall": null,
+        "rows": 1163,
+        "true_positive": 0
+      },
+      "original": {
+        "alerts": 1163,
+        "decision_flips": 0,
+        "false_positive": 0,
+        "fpr": null,
+        "recall": null,
+        "rows": 1163,
+        "true_positive": 0
+      }
+    }
+  },
+  "P": [
+    {
+      "coefficient_l2": 0.05842736174547957,
+      "iteration_limit": 5000,
+      "iterations": [
+        2001
+      ],
+      "permuted_label_changes": 81656,
+      "result": {
+        "analysis_role": "descriptive_secondary_not_primary",
+        "class_counts": {
+          "0": 20209,
+          "1": 12486
+        },
+        "model_kind": "permutation",
+        "row_count": 32695,
+        "score_metrics": {
+          "average_precision": 0.4870988200440637,
+          "roc_auc": 0.4717998513325275
+        },
+        "scoring_audit": {
+          "batch_size": 1,
+          "max_absolute_decision_difference": 2.220446049250313e-16,
+          "max_absolute_probability_difference": 2.220446049250313e-16,
+          "platform_identity": {
+            "numpy_blas_name": "scipy-openblas",
+            "platform_machine": "arm64",
+            "sys_platform": "darwin"
+          },
+          "portable_exact_parity": true,
+          "threshold_role": "secondary_descriptive_operating_point",
+          "warning_records": []
+        },
+        "seed": 42,
+        "source_identity_verified": true,
+        "validation_threshold": {
+          "candidate_count": 12880,
+          "counts": {
+            "false_negative": 10863,
+            "false_positive": 178,
+            "negative": 20209,
+            "positive": 12486,
+            "true_negative": 20031,
+            "true_positive": 1623
+          },
+          "fpr_upper_95": 0.00996796597890856,
+          "observed_fpr": 0.008807956850908011,
+          "recall": 0.1299855838539164,
+          "status": "selected",
+          "threshold": 0.5042071644591366
+        }
+      },
+      "score_quantiles": {
+        "0": 2.2508314864508534e-06,
+        "0.01": 0.4930597368716132,
+        "0.25": 0.4985606578564262,
+        "0.5": 0.4996484439752259,
+        "0.75": 0.500949860622423,
+        "0.99": 0.5178688868500658,
+        "1": 0.7126130556262332
+      },
+      "seed": 42
+    },
+    {
+      "coefficient_l2": 0.06089056644702457,
+      "iteration_limit": 5000,
+      "iterations": [
+        698
+      ],
+      "permuted_label_changes": 81512,
+      "result": {
+        "analysis_role": "descriptive_secondary_not_primary",
+        "class_counts": {
+          "0": 20209,
+          "1": 12486
+        },
+        "model_kind": "permutation",
+        "row_count": 32695,
+        "score_metrics": {
+          "average_precision": 0.6717988219418739,
+          "roc_auc": 0.6418615936790667
+        },
+        "scoring_audit": {
+          "batch_size": 1,
+          "max_absolute_decision_difference": 4.440892098500626e-16,
+          "max_absolute_probability_difference": 2.220446049250313e-16,
+          "platform_identity": {
+            "numpy_blas_name": "scipy-openblas",
+            "platform_machine": "arm64",
+            "sys_platform": "darwin"
+          },
+          "portable_exact_parity": true,
+          "threshold_role": "secondary_descriptive_operating_point",
+          "warning_records": []
+        },
+        "seed": 43,
+        "source_identity_verified": true,
+        "validation_threshold": {
+          "candidate_count": 12880,
+          "counts": {
+            "false_negative": 8026,
+            "false_positive": 175,
+            "negative": 20209,
+            "positive": 12486,
+            "true_negative": 20034,
+            "true_positive": 4460
+          },
+          "fpr_upper_95": 0.009810484431152821,
+          "observed_fpr": 0.008659508139937652,
+          "recall": 0.35720006407176036,
+          "status": "selected",
+          "threshold": 0.5031540848581733
+        }
+      },
+      "score_quantiles": {
+        "0": 0.3121607269849351,
+        "0.01": 0.4895953967697015,
+        "0.25": 0.4976997545672034,
+        "0.5": 0.49991133037142876,
+        "0.75": 0.5018127357452663,
+        "0.99": 0.5108310279252938,
+        "1": 0.8930332471767051
+      },
+      "seed": 43
+    },
+    {
+      "coefficient_l2": 0.04044012458314774,
+      "iteration_limit": 5000,
+      "iterations": [
+        1010
+      ],
+      "permuted_label_changes": 81690,
+      "result": {
+        "analysis_role": "descriptive_secondary_not_primary",
+        "class_counts": {
+          "0": 20209,
+          "1": 12486
+        },
+        "model_kind": "permutation",
+        "row_count": 32695,
+        "score_metrics": {
+          "average_precision": 0.5205932202303077,
+          "roc_auc": 0.5486743202760688
+        },
+        "scoring_audit": {
+          "batch_size": 1,
+          "max_absolute_decision_difference": 1.1102230246251565e-16,
+          "max_absolute_probability_difference": 2.220446049250313e-16,
+          "platform_identity": {
+            "numpy_blas_name": "scipy-openblas",
+            "platform_machine": "arm64",
+            "sys_platform": "darwin"
+          },
+          "portable_exact_parity": true,
+          "threshold_role": "secondary_descriptive_operating_point",
+          "warning_records": []
+        },
+        "seed": 44,
+        "source_identity_verified": true,
+        "validation_threshold": {
+          "candidate_count": 12880,
+          "counts": {
+            "false_negative": 11236,
+            "false_positive": 176,
+            "negative": 20209,
+            "positive": 12486,
+            "true_negative": 20033,
+            "true_positive": 1250
+          },
+          "fpr_upper_95": 0.009862987029358838,
+          "observed_fpr": 0.008708991043594438,
+          "recall": 0.10011212558065033,
+          "status": "selected",
+          "threshold": 0.5058518481954868
+        }
+      },
+      "score_quantiles": {
+        "0": 0.31978176925159857,
+        "0.01": 0.4864423663723629,
+        "0.25": 0.49856283230028564,
+        "0.5": 0.4997455739620686,
+        "0.75": 0.5015820460346538,
+        "0.99": 0.5119424046280079,
+        "1": 0.9405087096147698
+      },
+      "seed": 44
+    },
+    {
+      "coefficient_l2": 0.08514373784391652,
+      "iteration_limit": 5000,
+      "iterations": [
+        700
+      ],
+      "permuted_label_changes": 81754,
+      "result": {
+        "analysis_role": "descriptive_secondary_not_primary",
+        "class_counts": {
+          "0": 20209,
+          "1": 12486
+        },
+        "model_kind": "permutation",
+        "row_count": 32695,
+        "score_metrics": {
+          "average_precision": 0.40269829431318366,
+          "roc_auc": 0.39400472534384734
+        },
+        "scoring_audit": {
+          "batch_size": 1,
+          "max_absolute_decision_difference": 4.440892098500626e-16,
+          "max_absolute_probability_difference": 2.220446049250313e-16,
+          "platform_identity": {
+            "numpy_blas_name": "scipy-openblas",
+            "platform_machine": "arm64",
+            "sys_platform": "darwin"
+          },
+          "portable_exact_parity": true,
+          "threshold_role": "secondary_descriptive_operating_point",
+          "warning_records": []
+        },
+        "seed": 45,
+        "source_identity_verified": true,
+        "validation_threshold": {
+          "candidate_count": 12880,
+          "counts": {
+            "false_negative": 11756,
+            "false_positive": 178,
+            "negative": 20209,
+            "positive": 12486,
+            "true_negative": 20031,
+            "true_positive": 730
+          },
+          "fpr_upper_95": 0.00996796597890856,
+          "observed_fpr": 0.008807956850908011,
+          "recall": 0.05846548133909979,
+          "status": "selected",
+          "threshold": 0.5087053417015189
+        }
+      },
+      "score_quantiles": {
+        "0": 0.10721236266683529,
+        "0.01": 0.48094864381046953,
+        "0.25": 0.4979695985623791,
+        "0.5": 0.5001171060764624,
+        "0.75": 0.5023487614586957,
+        "0.99": 0.5136164591423725,
+        "1": 0.7495261980856132
+      },
+      "seed": 45
+    },
+    {
+      "coefficient_l2": 0.02988063733198199,
+      "iteration_limit": 5000,
+      "iterations": [
+        341
+      ],
+      "permuted_label_changes": 81336,
+      "result": {
+        "analysis_role": "descriptive_secondary_not_primary",
+        "class_counts": {
+          "0": 20209,
+          "1": 12486
+        },
+        "model_kind": "permutation",
+        "row_count": 32695,
+        "score_metrics": {
+          "average_precision": 0.7683120689451126,
+          "roc_auc": 0.696523061938035
+        },
+        "scoring_audit": {
+          "batch_size": 1,
+          "max_absolute_decision_difference": 4.440892098500626e-16,
+          "max_absolute_probability_difference": 2.220446049250313e-16,
+          "platform_identity": {
+            "numpy_blas_name": "scipy-openblas",
+            "platform_machine": "arm64",
+            "sys_platform": "darwin"
+          },
+          "portable_exact_parity": true,
+          "threshold_role": "secondary_descriptive_operating_point",
+          "warning_records": []
+        },
+        "seed": 46,
+        "source_identity_verified": true,
+        "validation_threshold": {
+          "candidate_count": 12881,
+          "counts": {
+            "false_negative": 5604,
+            "false_positive": 177,
+            "negative": 20209,
+            "positive": 12486,
+            "true_negative": 20032,
+            "true_positive": 6882
+          },
+          "fpr_upper_95": 0.009915480854183582,
+          "observed_fpr": 0.008758473947251225,
+          "recall": 0.5511773185968285,
+          "status": "selected",
+          "threshold": 0.5014918824187501
+        }
+      },
+      "score_quantiles": {
+        "0": 0.08339987797226776,
+        "0.01": 0.48713508686879253,
+        "0.25": 0.4981382073037061,
+        "0.5": 0.49951744458029096,
+        "0.75": 0.5008965177081233,
+        "0.99": 0.5145370354086969,
+        "1": 0.7794129577729502
+      },
+      "seed": 46
+    }
+  ],
+  "R": {
+    "contrasts": {
+      "directional_minus_transformer": {
+        "cells": {
+          "both_negative": 0,
+          "both_positive": 1392,
+          "candidate_only": 0,
+          "reference_only": 0
+        },
+        "coverage": "individual_contrast_conditional_on_iid_labeled_pairs",
+        "date_cluster_sensitivity": {
+          "campaign_independence_established": false,
+          "generator": "PCG64",
+          "groups": 56,
+          "inferential_decision": false,
+          "largest_group": 362,
+          "lower": 0.0,
+          "method": "source_event_date_cluster_percentile_sensitivity",
+          "replicates": 2000,
+          "seed": 20261012,
+          "upper": 0.0
+        },
+        "exact": {
+          "confidence": 0.95,
+          "estimate": 0.0,
+          "lower": -0.0031430578591464067,
+          "method": "bonferroni_clopper_pearson_discordance",
+          "upper": 0.0031430578591464067
+        },
+        "newcombe10_sensitivity": {
+          "confidence": 0.95,
+          "estimate": 0.0,
+          "lower": -0.0027520738808972656,
+          "method": "newcombe_1998_method_10",
+          "upper": 0.0027520738808972656
+        }
+      },
+      "original_minus_transformer": {
+        "cells": {
+          "both_negative": 0,
+          "both_positive": 1392,
+          "candidate_only": 0,
+          "reference_only": 0
+        },
+        "coverage": "individual_contrast_conditional_on_iid_labeled_pairs",
+        "date_cluster_sensitivity": {
+          "campaign_independence_established": false,
+          "generator": "PCG64",
+          "groups": 56,
+          "inferential_decision": false,
+          "largest_group": 362,
+          "lower": 0.0,
+          "method": "source_event_date_cluster_percentile_sensitivity",
+          "replicates": 2000,
+          "seed": 20261012,
+          "upper": 0.0
+        },
+        "exact": {
+          "confidence": 0.95,
+          "estimate": 0.0,
+          "lower": -0.0031430578591464067,
+          "method": "bonferroni_clopper_pearson_discordance",
+          "upper": 0.0031430578591464067
+        },
+        "newcombe10_sensitivity": {
+          "confidence": 0.95,
+          "estimate": 0.0,
+          "lower": -0.0027520738808972656,
+          "method": "newcombe_1998_method_10",
+          "upper": 0.0027520738808972656
+        }
+      },
+      "symmetric_minus_structural": {
+        "cells": {
+          "both_negative": 0,
+          "both_positive": 1392,
+          "candidate_only": 0,
+          "reference_only": 0
+        },
+        "coverage": "individual_contrast_conditional_on_iid_labeled_pairs",
+        "date_cluster_sensitivity": {
+          "campaign_independence_established": false,
+          "generator": "PCG64",
+          "groups": 56,
+          "inferential_decision": false,
+          "largest_group": 362,
+          "lower": 0.0,
+          "method": "source_event_date_cluster_percentile_sensitivity",
+          "replicates": 2000,
+          "seed": 20261012,
+          "upper": 0.0
+        },
+        "exact": {
+          "confidence": 0.95,
+          "estimate": 0.0,
+          "lower": -0.0031430578591464067,
+          "method": "bonferroni_clopper_pearson_discordance",
+          "upper": 0.0031430578591464067
+        },
+        "newcombe10_sensitivity": {
+          "confidence": 0.95,
+          "estimate": 0.0,
+          "lower": -0.0027520738808972656,
+          "method": "newcombe_1998_method_10",
+          "upper": 0.0027520738808972656
+        }
+      },
+      "symmetric_minus_transformer": {
+        "cells": {
+          "both_negative": 0,
+          "both_positive": 1392,
+          "candidate_only": 0,
+          "reference_only": 0
+        },
+        "coverage": "individual_contrast_conditional_on_iid_labeled_pairs",
+        "date_cluster_sensitivity": {
+          "campaign_independence_established": false,
+          "generator": "PCG64",
+          "groups": 56,
+          "inferential_decision": false,
+          "largest_group": 362,
+          "lower": 0.0,
+          "method": "source_event_date_cluster_percentile_sensitivity",
+          "replicates": 2000,
+          "seed": 20261012,
+          "upper": 0.0
+        },
+        "exact": {
+          "confidence": 0.95,
+          "estimate": 0.0,
+          "lower": -0.0031430578591464067,
+          "method": "bonferroni_clopper_pearson_discordance",
+          "upper": 0.0031430578591464067
+        },
+        "newcombe10_sensitivity": {
+          "confidence": 0.95,
+          "estimate": 0.0,
+          "lower": -0.0027520738808972656,
+          "method": "newcombe_1998_method_10",
+          "upper": 0.0027520738808972656
+        }
+      }
+    },
+    "estimand": "domain_balanced_retained_source_frame",
+    "original_hypotheses_reclassified": false,
+    "primary_statements": {
+      "original_noninferiority": {
+        "interpretation": "conditional_recall_only_not_joint_deployment_adequacy",
+        "lower": -0.0031430578591464067,
+        "margin": -0.02,
+        "supported": true
+      },
+      "symmetric_benefit_and_budget": {
+        "conditions": {
+          "calls_at_most_thirty_percent": true,
+          "observed_fpr_at_most_one_percent": false,
+          "positive_recall_difference_lower_bound": false
+        },
+        "supported": false
+      },
+      "symmetric_noninferiority": {
+        "interpretation": "conditional_recall_only_not_joint_deployment_adequacy",
+        "lower": -0.0031430578591464067,
+        "margin": -0.02,
+        "supported": true
+      }
+    },
+    "ranking": {
+      "structural": {
+        "average_precision": 0.7485036381009966,
+        "roc_auc": 0.75492883263202
+      },
+      "transformer": {
+        "average_precision": 0.6908647910680972,
+        "roc_auc": 0.7062407781846003
+      }
+    },
+    "systems": {
+      "directional": {
+        "call_fraction": 0.006782215523737754,
+        "false_negative": 0,
+        "false_positive": 1046,
+        "fpr": 0.8288431061806656,
+        "fpr_upper_95_iid_conditional": 0.8460984536522288,
+        "logical_calls": 18,
+        "negative": 1262,
+        "negative_calls": 18,
+        "negative_harms": 18,
+        "negative_repairs": 0,
+        "positive": 1392,
+        "positive_calls": 0,
+        "positive_harms": 0,
+        "positive_repairs": 0,
+        "recall": 1.0,
+        "rows": 2654,
+        "true_negative": 216,
+        "true_positive": 1392
+      },
+      "directional_control": {
+        "call_fraction": 0.006782215523737754,
+        "false_negative": 0,
+        "false_positive": 1029,
+        "fpr": 0.8153724247226625,
+        "fpr_upper_95_iid_conditional": 0.8331761681110773,
+        "logical_calls": 18,
+        "negative": 1262,
+        "negative_calls": 8,
+        "negative_harms": 1,
+        "negative_repairs": 0,
+        "positive": 1392,
+        "positive_calls": 10,
+        "positive_harms": 0,
+        "positive_repairs": 0,
+        "recall": 1.0,
+        "rows": 2654,
+        "true_negative": 233,
+        "true_positive": 1392
+      },
+      "original": {
+        "call_fraction": 0.0,
+        "false_negative": 0,
+        "false_positive": 1028,
+        "fpr": 0.8145800316957211,
+        "fpr_upper_95_iid_conditional": 0.8324148824375452,
+        "logical_calls": 0,
+        "negative": 1262,
+        "negative_calls": 0,
+        "negative_harms": 0,
+        "negative_repairs": 0,
+        "positive": 1392,
+        "positive_calls": 0,
+        "positive_harms": 0,
+        "positive_repairs": 0,
+        "recall": 1.0,
+        "rows": 2654,
+        "true_negative": 234,
+        "true_positive": 1392
+      },
+      "structural": {
+        "call_fraction": 0.0,
+        "false_negative": 0,
+        "false_positive": 1028,
+        "fpr": 0.8145800316957211,
+        "fpr_upper_95_iid_conditional": 0.8324148824375452,
+        "logical_calls": 0,
+        "negative": 1262,
+        "negative_calls": 0,
+        "negative_harms": 0,
+        "negative_repairs": 0,
+        "positive": 1392,
+        "positive_calls": 0,
+        "positive_harms": 0,
+        "positive_repairs": 0,
+        "recall": 1.0,
+        "rows": 2654,
+        "true_negative": 234,
+        "true_positive": 1392
+      },
+      "symmetric": {
+        "call_fraction": 0.007912584777694047,
+        "false_negative": 0,
+        "false_positive": 1046,
+        "fpr": 0.8288431061806656,
+        "fpr_upper_95_iid_conditional": 0.8460984536522288,
+        "logical_calls": 21,
+        "negative": 1262,
+        "negative_calls": 21,
+        "negative_harms": 18,
+        "negative_repairs": 0,
+        "positive": 1392,
+        "positive_calls": 0,
+        "positive_harms": 0,
+        "positive_repairs": 0,
+        "recall": 1.0,
+        "rows": 2654,
+        "true_negative": 216,
+        "true_positive": 1392
+      },
+      "symmetric_control": {
+        "call_fraction": 0.007912584777694047,
+        "false_negative": 0,
+        "false_positive": 1030,
+        "fpr": 0.8161648177496038,
+        "fpr_upper_95_iid_conditional": 0.8339373293406537,
+        "logical_calls": 21,
+        "negative": 1262,
+        "negative_calls": 11,
+        "negative_harms": 2,
+        "negative_repairs": 0,
+        "positive": 1392,
+        "positive_calls": 10,
+        "positive_harms": 0,
+        "positive_repairs": 0,
+        "recall": 1.0,
+        "rows": 2654,
+        "true_negative": 232,
+        "true_positive": 1392
+      },
+      "transformer": {
+        "call_fraction": 1.0,
+        "false_negative": 0,
+        "false_positive": 1221,
+        "fpr": 0.9675118858954042,
+        "fpr_upper_95_iid_conditional": 0.975295307480208,
+        "logical_calls": 2654,
+        "negative": 1262,
+        "negative_calls": 1262,
+        "negative_harms": 194,
+        "negative_repairs": 1,
+        "positive": 1392,
+        "positive_calls": 1392,
+        "positive_harms": 0,
+        "positive_repairs": 0,
+        "recall": 1.0,
+        "rows": 2654,
+        "true_negative": 41,
+        "true_positive": 1392
+      }
+    }
+  },
+  "bound_files_checked": 506,
+  "host_guard_scope": "AC_thermal_known_command_patterns_not_all_OS_activity",
+  "host_observations": 258,
+  "new_fits_or_predictions": false,
+  "profile_sha256": "84e4d47f2c7c6249766dc677b6b7c2cad5be8fdaefb65195d786be418463c4d6",
+  "retained_output_hashes": {
+    "C-admitted.json": "f1b5ec7e7eb9084e54f6f144fcd88c8a83e7826ffaac65ebc6599a218fbb2f5f",
+    "C-completed.json": "ef97c1f3d40993e0985ee61a7fd10efb83d0230da417e31f7b61881e6bb1f8a3",
+    "C/actual-counts-including-warmups.json": "feb2555bdd8bc9e21272a985437d1863b3579962969e1ebd4b77f525b41da7c5",
+    "C/arm-0-directional-summary.json": "4ceacdaabc773e1989183a802491825a69a2f5e1e8248aad23b22f8ea0e9f623",
+    "C/arm-0-directional.jsonl": "58582847c5e9110caedc099fd91b1d7103b718174674eb5dd74069150765ca59",
+    "C/arm-0-original-summary.json": "db2c899080f78fa6fed7c485f44ee4cd684b2a6cdf351ea24b17373938918e11",
+    "C/arm-0-original.jsonl": "a6db2062f585362d09237bb3f5ff9d0a5dbfe1ce9090c1eaf633f53d91e7c716",
+    "C/arm-0-structural-summary.json": "572ade381be24b1d5d1924d348e7505f836e62b0a6a83210afd40d73e43fbe49",
+    "C/arm-0-structural.jsonl": "18269e69de51bc642459ee36f1ae26b078a1fde04e126cd0f0a48023f46ef0f1",
+    "C/arm-0-symmetric-summary.json": "328808c24380c071078848259d81172ce84567cdbbf185eaa1c34699b88ada6d",
+    "C/arm-0-symmetric.jsonl": "0f99c60f4286cd8e254569f3544840a50acee4ebe7c4dc6682285631d7c7991f",
+    "C/arm-0-symmetric_control-summary.json": "73fc995f01d5e37d5134ffc21128c13c39809e475e4838ce278fc8ed433212f5",
+    "C/arm-0-symmetric_control.jsonl": "7907c4697cf3b2f0e232e5a8f66201e51578ceb98c50e5e3b329a5e551ad6542",
+    "C/arm-0-transformer-summary.json": "00c0692f018d303e2339aa61a76da717e07abcffe979ba11d1cc7154dce2749a",
+    "C/arm-0-transformer.jsonl": "e3a6ad4759cd25038e77f9fca563d27a6d6b99637620117e77c88e1355cf5e70",
+    "C/arm-1-directional-summary.json": "720870d567921392f89342df9c1e3436cb5c14b59cdf0fa8e8ac74973ecdcee5",
+    "C/arm-1-directional.jsonl": "5417a97042ae613df169536cca28be0eb062262adf4fc5db7bbe8a36a6a9ad87",
+    "C/arm-1-original-summary.json": "c1056797d37c1b1b548c7a853cc6ec8243da9293feb4f5b65b15f32be7c977ba",
+    "C/arm-1-original.jsonl": "b2fe972bbd52948dfc9fb07aa1398e1e51211b3a05907963f6b19989fdeeb4a7",
+    "C/arm-1-structural-summary.json": "68f95892240f4fbff0eebb7354367a86824c910e68a455e20440ffe6cc9280b4",
+    "C/arm-1-structural.jsonl": "042ec13b2326c7c7a96dbf75766070b3cdc21a4e996b8daeedcdb9f40103f128",
+    "C/arm-1-symmetric-summary.json": "9126a5ff961dd5eb703e26890b5968303df6717dc5f1281e41e4df68f44effa3",
+    "C/arm-1-symmetric.jsonl": "8e1dd8c0180834d4d9c880cbeb3d0769ad277cd798b20bd587afd205c451b4fd",
+    "C/arm-1-symmetric_control-summary.json": "955656e27ae39ff6e8539a981a12d0310826034715acbd0e4630c820e7c1077c",
+    "C/arm-1-symmetric_control.jsonl": "1cdee4d5bf1a914a63b29d8d8165981339252ea859d9062662300d2070683443",
+    "C/arm-1-transformer-summary.json": "eb4a251d49d0064552120d11ab8fb3d68e27386398ee0a646d3954cc27ef1cc6",
+    "C/arm-1-transformer.jsonl": "8d51245830e2c03d0f0de15e8cd689045fb6049d4be9fad8fdb41eef240494ae",
+    "C/arm-2-directional-summary.json": "26fc25192f040c1f49a3f9893343c7c1c026251c5166939b68036dbfe2e45ab0",
+    "C/arm-2-directional.jsonl": "a560492ed42c3818408b417b491cd23d0f4ac99c33da9991518ec7cfb571a135",
+    "C/arm-2-original-summary.json": "dcdac6c8dd651b7a06d1052a4a9f08e1202065880b462033fb170175c4a282a7",
+    "C/arm-2-original.jsonl": "f97c9d427935cf126a607062a5b2a98e048d43dcff586b224c1fa809a994104c",
+    "C/arm-2-structural-summary.json": "73cca0a0ffa68a2d305afe82d9759287f29be61eee279d2c77b3159eecd6bc2d",
+    "C/arm-2-structural.jsonl": "45a5ef826333c6b24e28780d9b5321b1ff6aa65106b6558eb1a745db3869bd64",
+    "C/arm-2-symmetric-summary.json": "3e52d04a220cf4b87d5420a60ea69ade2a62d5bf21ae17f0a89caae65c44aae9",
+    "C/arm-2-symmetric.jsonl": "666a8d5687f8003d768f62ee8c9de080d33126ce51312fdc45b8c6969b2786cb",
+    "C/arm-2-symmetric_control-summary.json": "e14928b9670d1474ac7106764813355b9304df9e0f404b7c751f4098b116bb78",
+    "C/arm-2-symmetric_control.jsonl": "da264629064beed0dc7e62d488eddbb6a24d747af6750474fb3ee20468539850",
+    "C/arm-2-transformer-summary.json": "1cba6f85485838f75efd63ecba3d8e7bea53aecb9f37f9d2c21c0d3487c1070e",
+    "C/arm-2-transformer.jsonl": "c5ead23c660728b25625d10db5ba736d3d57fd2ffd8d7b070d0eee9c1a6a76fa",
+    "C/arm-3-directional-summary.json": "22a3258886b3d7967549175e2c88d1c3c37a15a289e02897a0d33510b8a05696",
+    "C/arm-3-directional.jsonl": "adc9686c9187d49a807dec342180979de5a2514876bc0449ebb79144048d73c2",
+    "C/arm-3-original-summary.json": "f44990f31bf9bb1ea7a508de0e2493c460d07ece880431ac42b4fe7be5bbc36b",
+    "C/arm-3-original.jsonl": "a80fa84547fda2f9ccaeb34240500d48f11461ec5fc863b8c60f55658dab59a5",
+    "C/arm-3-structural-summary.json": "167085b6b6ce28d2b61278d5f54d340e094129e7279f8b6e0ab4fec96e1fd93b",
+    "C/arm-3-structural.jsonl": "c488d09098460eaf07c323fe3a333a291bba29f9277de343eb20d72271a26c80",
+    "C/arm-3-symmetric-summary.json": "cbf1b290c8fa26a4b15bd341ab6ff2365cb5b0caf0e7bdd10e3925141b4ad561",
+    "C/arm-3-symmetric.jsonl": "2f681f65cc9407bc7453d4875756d1aaccb28cc5565ff1561020a7f3487eafcd",
+    "C/arm-3-symmetric_control-summary.json": "ac959c1bf246d093dd2d4f4704f3d27eff3d70bbf52af5490af7406c9abc83b3",
+    "C/arm-3-symmetric_control.jsonl": "0b9eb6dcb3567219b1c73858385584f99ef8d9c247056dbe2a0eadbf0bc926b3",
+    "C/arm-3-transformer-summary.json": "9d224fe826e8fa12b9efa0487ea999b5b4db04a08d03418b9e91ea1cb68bd62c",
+    "C/arm-3-transformer.jsonl": "1648b6c283413c5897116a886653ddacbf1afc50078f1beea11d1d70510a8930",
+    "C/arm-4-directional-summary.json": "919f4e7b08417272f92371628a4dc6c47af696282d8765e4962f9027ce946792",
+    "C/arm-4-directional.jsonl": "ba847ba22af1d25d654a0c3c856ec95bacfb06ad24931ae044701b6f56979ad4",
+    "C/arm-4-original-summary.json": "24edaee60dd34759eaf7f75a3b2121f747f43f20bcb9af5f0411c684f22914bd",
+    "C/arm-4-original.jsonl": "82e38d7210237c8bdb6186bb2a5ec9b069fb497c4a8e085a0b072d68517e3274",
+    "C/arm-4-structural-summary.json": "7b4b1711ec57bd7f5a202e0927af732140f93fa6d62789268c49a86912f64d94",
+    "C/arm-4-structural.jsonl": "b3cb7b6a0e02ab81f7bd71154b59c87563cc20d2b7459ef8ab8bb1c6e3ca4d1b",
+    "C/arm-4-symmetric-summary.json": "e45f9ea7803401cdb2101379949732f76d9506f73a66d809c32ae1d9d4fe0e7d",
+    "C/arm-4-symmetric.jsonl": "a11a052c5d6d91d11f9ec00401fe238d6dc30f961533a0df6b880bef8a8d6a02",
+    "C/arm-4-symmetric_control-summary.json": "6f2a548893d43eda21c214cf02b07f3712c52f31aeb91a0de1bd03ad2c27b85d",
+    "C/arm-4-symmetric_control.jsonl": "8d53a463ad6b06470156ccdeea50b01ddce7a0a0f07bce7d25dbbf29681208d1",
+    "C/arm-4-transformer-summary.json": "4201150e15ed4673bd3b1bca005eddc4e346d2341bd037319c61c76b299a795f",
+    "C/arm-4-transformer.jsonl": "697b9ece5b93bc17b74da6fef198198048d1cec3a204b4d519a3c28c84befb0f",
+    "C/cost-membership.json": "4c492a5b1e39dff8a487613cce66f0f7242d32bedb6850c04cb9099b2711d467",
+    "C/cost-started.json": "1c458963b52181aae2bfe489e166077390436538d2a623dca4b54af59c454fad",
+    "C/cost-summary.json": "03a43eb57970f4b262505c15ff7a643066141b909d414a35bb1b4a6972b4f7fb",
+    "F-admitted.json": "27940fc767e4949f9ef8b84190dbc581010952ab19993972c3fc84cc686a7460",
+    "F-completed.json": "cc5a661fd972f3b551b1077b1ff327cec238227a9e8c935902febf7d8f88c446",
+    "F/formatting-events.jsonl": "6c95d96c342ca5e27311c2ad2fd67e4e926f3b5c9ae1988fd013da6cc0ec4baa",
+    "F/formatting-predictions.jsonl": "66d13df8ecec1c0c4a97fa3e488c6d90057f73298dd6818d56ca41c0f1ee5799",
+    "F/formatting-started.json": "03a2826825d580b56fdfacf6c6a9ad0803f13e2c37cc832f2b9fa26066a93efd",
+    "F/formatting-summary.json": "a4316bcd090ae71de97a3a204e1483d3bab004c76f974cf56ce3011fddd5ab1a",
+    "P-admitted.json": "41c53aceed973387c485379eff44f1da697ef7e4d1cc247f953f87ba6b0d61eb",
+    "P-completed.json": "acf795310618d8398f931ecb3df3e32443f02cdd2652ca3dde3d1ee19c008d72",
+    "P-summary.json": "22120f3242d69a96402678f8e7c5880306218d8c3db45ed6b5ac2cdc9f983032",
+    "P/evidence/accepted-comparison.json": "bf5b3a6f0fc705d26852da4dd0053c6111ffc3e500d7a2e95dfba5ad859b279c",
+    "P/evidence/members.json": "ec020c22eb88274b9fd106c9c37598da02ef22d749cbdc37acf911e7dfa510c6",
+    "P/family-started.json": "9edd12dcbb9f55738ae74bc1c97316357f7b33a254365dc3472502cfeaaba318",
+    "P/finalize.claim": "63b3e84f6d5b34d0bbe0e030df708cb0c1a14d3d233421a0a913da9d40ee0b0e",
+    "P/outcome.json": "bc8daa08daa9078f5135cedfeb715fe4aec770440258f7ff364ef2d9e4014b16",
+    "P/reservation.json": "686e7ecb4852e3e1737d35b1c0cb0fb87a559af375832413f5919c77b17570aa",
+    "P/seed-42-summary.json": "5fd16a1d0f5342aab2244a821249a5d504c7099f2ab9813c2b78e49cf3ebd39e",
+    "P/seed-42/evidence/fit-linkage.json": "33a2c248197658368d7816b3cf56b9c9934806e26c04f969f038605cc9a12acc",
+    "P/seed-42/evidence/model.json": "b6f28d37c59575ffc42cc08dd6b942f4831256280ceea0c3094c5a3460215792",
+    "P/seed-42/evidence/scoring-audit.json": "c729ec27d6d5c3d48f3c07bcaf830c0efa0358f793eb3f54d775fe760677845b",
+    "P/seed-42/evidence/threshold.json": "4cbca2f0b593463b2ccd21f56e87cb5673d35406e2b7f71bbe289c26dbfc2333",
+    "P/seed-42/evidence/validation-predictions.jsonl": "42f16e0dd01bc0beca9f8e4a91db0850abb5573aff37838e1d2b67438f75463c",
+    "P/seed-42/finalize.claim": "6754912cb13b15629029378343062265d2c12c959e0dd607622b54e196052152",
+    "P/seed-42/fit-call-prepared.json": "7c172a49b13cc8d92b3ee178262febb7049eb4b8875a78ce3e85b07db3b4795d",
+    "P/seed-42/fit-call-returned.json": "0964b190233e51d6d8051b7077925ed749f9691dd8da9ae4153fd0df2717b05f",
+    "P/seed-42/fit-state.json": "59607fdd95dca0eb1f7ecf2b3325c8de23ab7ea9ee36a019cc9e62e80e8256be",
+    "P/seed-42/member-started.json": "40ec3bdbff10853163d4518cf572e205fe6967f1eae1f6542df9aaf71872e2e3",
+    "P/seed-42/outcome.json": "7ec322f48bb1e84932f2ef7f3298e5de9392f8c74b335ea16180a9fa2c61be0a",
+    "P/seed-42/reservation.json": "acdde8fb36a5e263653355a67d816f3d264b211c1a32b75df362c8a514f6eac6",
+    "P/seed-43-summary.json": "c552fe7ffd30e7ca788eb37014344a0ebd7192d62aebdec781058a30c937c9da",
+    "P/seed-43/evidence/fit-linkage.json": "e3be521389c84b914467ae9b009deffde73797193e5354c407d6d6026f948f87",
+    "P/seed-43/evidence/model.json": "f3cf518d102f4719be2b9b86519358c131a0b1619b2af298a5811a40ae884d16",
+    "P/seed-43/evidence/scoring-audit.json": "2259362e7c5ff778e5ce46b78634e56fa83ec513cdd3fc83e5b21dbd3ac6abb4",
+    "P/seed-43/evidence/threshold.json": "b1ca9a87da50601588e809e10c0a89bdfeed3c08f0b17cb4d696e5e05793fa0f",
+    "P/seed-43/evidence/validation-predictions.jsonl": "25cbd03f9114f1aea8093a2d9eda73025fd12f763703b4d92cd0e95472b14350",
+    "P/seed-43/finalize.claim": "6bed965fdc772625ff1060629a3cfedeb4614e02d89f248bae07854102b6a9a7",
+    "P/seed-43/fit-call-prepared.json": "ec5c9cdd8d1b54cffbf85cd15e6f98cd33c5a4d2c1914dd44cfbeff7b37a18e0",
+    "P/seed-43/fit-call-returned.json": "00a2565478dad0c62402a68b2d414b67db15769137114f99ce01c9e5040d4dbf",
+    "P/seed-43/fit-state.json": "33946514b2f8b292a4d8f12d461faee1b4c8ce93f29871032d2a72b612568b45",
+    "P/seed-43/member-started.json": "99c8e5c4c492720119c9a0f0b8f131505072f46ead1e4d4e20d32f430f3a8fb5",
+    "P/seed-43/outcome.json": "bdaeb00a5d0f0bf907e059216f98ab9d5e5af7f13c3bc5ad0c19e621cb17c143",
+    "P/seed-43/reservation.json": "f42627539b9d720db69f1e7c72468db9f51b93413a2334cb5cf25ffa2bb84ab1",
+    "P/seed-44-summary.json": "f02452325bf37fd8b2ed72dff1af049be0d0ce6c1ec0c704b8e38f0fcb811f2f",
+    "P/seed-44/evidence/fit-linkage.json": "a1054770b09ab0abdde83bbf3c053b3b901919d1d3a8af785b337ddca31d0048",
+    "P/seed-44/evidence/model.json": "6fd1f0218b8e667d274bb0d7c11859d4fc3ff764776990dbd8dd603c9573de67",
+    "P/seed-44/evidence/scoring-audit.json": "309af938a2bfa7fb0fa6968404bb29bfe531832c0b34735fbebae5bd07261d34",
+    "P/seed-44/evidence/threshold.json": "207ac8019c1f57d62cce229dec2db8fb96405d60ccbc0b0f4ed7c3cf75f8b590",
+    "P/seed-44/evidence/validation-predictions.jsonl": "a91c8374e0f74fd2f13beadb08df367017a48eaff3ca33a7cfa531a9fe44775d",
+    "P/seed-44/finalize.claim": "375f17a41c7a2d91033b17e7fc34910f05408e7128c69fda0e1a5d6c61228089",
+    "P/seed-44/fit-call-prepared.json": "cf84295b487f04e29d85e61095fa2a37af03bf03a2e02a2a55a0be5c7449d296",
+    "P/seed-44/fit-call-returned.json": "8b0105124984a959cfaab3313e22eabba19be3d10b50fb391674b212922d1918",
+    "P/seed-44/fit-state.json": "246e470110c69ef2a5fba20a5104705dc9748da0b1358fc434d5149b6a5121e0",
+    "P/seed-44/member-started.json": "3a6a272ef4796f5cb02d2d5516ccdcd963a55478fbc9f9fe942b59217f85980a",
+    "P/seed-44/outcome.json": "ea510ce9e4f698a2f5233895b1b04509b0c244dd30625b0139d662976907c1ec",
+    "P/seed-44/reservation.json": "d562ce8435ec5ef267186fd75c0144b786f6a43dd156cdb0fedfb7c5e78ca707",
+    "P/seed-45-summary.json": "e8ef60021ab69af5f894585ecb6f8c386f508a63f0232c6f539d3131c76c790d",
+    "P/seed-45/evidence/fit-linkage.json": "9739a249c28b8f2538f2697740a9379e68462dce683f5d0b6ea856bb48623f2c",
+    "P/seed-45/evidence/model.json": "8aba0d802558a3d3c29f0b3ff457e8157353078b47c0783e82c570c605c79ac6",
+    "P/seed-45/evidence/scoring-audit.json": "2259362e7c5ff778e5ce46b78634e56fa83ec513cdd3fc83e5b21dbd3ac6abb4",
+    "P/seed-45/evidence/threshold.json": "10ef8e9cb6d822b84c8b9a95de5121d0883467b64289ee3660a2c8b0e80425fe",
+    "P/seed-45/evidence/validation-predictions.jsonl": "28d3d1cb73f93f597f36062c7e68a4572bfa60f8afedc2ef7aee37894391579d",
+    "P/seed-45/finalize.claim": "1fd1b7eb865f8a775472c575371097be141f7bb1128df86ee71dc9e474c0021f",
+    "P/seed-45/fit-call-prepared.json": "84f13cb3faa59504bd2ec509ebfefc2b2f0f7178f847ce5e2b90cbbf05bdfede",
+    "P/seed-45/fit-call-returned.json": "c15c489f7354b04e57af89abd77f7cc5068abbbbc6270d06d5bb396d450b3925",
+    "P/seed-45/fit-state.json": "202fd99b60e95786e17366194215602ed255b6d5425e25f790a9f974e6e0f11d",
+    "P/seed-45/member-started.json": "9f6895a81966fe83bfaf44406c3d9ad2eddbc206db4f5571ac502838d557dcf8",
+    "P/seed-45/outcome.json": "5fbc732e1a86c471fbac2dc1d9a435df4b2058761bef3efa98aa2ec63fa3fa70",
+    "P/seed-45/reservation.json": "eb0a680ed7f00bc5d1f589c9e5a937afdaba6bc72d813a7914fea3ec720e186c",
+    "P/seed-46-summary.json": "9698d901b31d38fd761b77707136ab2355acc779da45bf66f29a8657af29322e",
+    "P/seed-46/evidence/fit-linkage.json": "bd83659dc28fca07bc228e07c12e4624e3e57493a999928bcd5b85881137bdda",
+    "P/seed-46/evidence/model.json": "6cd9d33e49da967a558c6e74e061dbf812d5313642f28955d41dd491d58d1fb9",
+    "P/seed-46/evidence/scoring-audit.json": "2259362e7c5ff778e5ce46b78634e56fa83ec513cdd3fc83e5b21dbd3ac6abb4",
+    "P/seed-46/evidence/threshold.json": "bd608634fbb27886054296d9651ec0a471b4e32ae5cd08937d622b0c90c1292e",
+    "P/seed-46/evidence/validation-predictions.jsonl": "1b7289b1f2911f281d810f7641e76751f3f698f5faa6deb6a0611bddf4655f92",
+    "P/seed-46/finalize.claim": "8b4d2e9f288cf3c342e033dfc6ad1d16709c98d801942c53d0b56a41dbae2080",
+    "P/seed-46/fit-call-prepared.json": "56b4f73f8633e6b1d13a1072e5cf427b5bb414dd6712be5be62f6fa41e9871cf",
+    "P/seed-46/fit-call-returned.json": "7ce96e68b690d1b039d1849bff1bd6c8c51fdbbac751c91c955e69127cea36af",
+    "P/seed-46/fit-state.json": "a7d2e5cff3a7b20a0530577eaa49835cf1d715aff3ea5c16fb4a2e0179a93379",
+    "P/seed-46/member-started.json": "27f64737d3aac2505fbaf3982761a05efbe37f8c5781548a312e5dbb97406002",
+    "P/seed-46/outcome.json": "4c23619c817a451b760823a489aee6160092f986db56d32bbb9113ca1d469c19",
+    "P/seed-46/reservation.json": "0d94c6391d6c109aed8307a2533863760c2a2121aecc7faddeafbbd779fbba81",
+    "R-admitted.json": "5015f2ca168e4d8c23c4acafdc17f4c4f943b74d56dfab154b24b0b0beb93f0a",
+    "R-completed.json": "f07dc69e2ded20bf3902e90ba091637d3ed323c3d51c87f05eb77b5784101eb2",
+    "R/actual-counts.json": "fd820b185ea8668eb601b8f9c179274be123b248188139cbd850ee67aaeb216e",
+    "R/routing-predictions.jsonl": "346eaa25e351eca67e208c5b0fee073564bf185343fdb970db020adf405537c4",
+    "R/routing-started.json": "c77b63e26e3c00b5acad49c5eda07cb237094b9f6bd1dfbcd582620683ab0c1c",
+    "R/routing-summary.json": "e7c77b9a61df5ce5592141a5e9890b9f445d9936f26d61dc6234cf50bf98a8c4",
+    "parent-completed.json": "04b8b3ecdd6a7cfc78ed10d49bc9125706957a3d97798b3c929d4a4dab6d6b5a",
+    "parent-started.json": "4e3795c820057cbed236d257eb94b6286eed1d7cf5e6df36ad2f0c932b1c0128",
+    "profile.json": "84e4d47f2c7c6249766dc677b6b7c2cad5be8fdaefb65195d786be418463c4d6"
+  },
+  "status": "verified_saved_evidence"
+}

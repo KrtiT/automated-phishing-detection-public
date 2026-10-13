@@ -6,6 +6,16 @@ cite the work. They are not a professional biography.
 
 ## Current publication
 
+The current [October 12 revision](../dissertation/2026-10-12/README.md) includes
+aggregate results, 35 exact source/specification/test snapshots and 506 hash-only
+freeze bindings. New URLs, domains, row-level predictions, host observations and
+execution-profile locators remain private. The [derivative receipt](../dissertation/2026-10-12/document-checks/privacy-derivatives.json)
+records Office metadata cleanup, including an unused template-editor identity;
+visible scientific text, tables and figures are unchanged by that cleanup.
+The main manuscript's supplied credentials and both advisors' credits remain.
+
+The following October 4 record describes the earlier release and is preserved:
+
 The [privacy record](2026-10-04/publication.json) identifies the changes made
 after the repository-linked dissertation edition:
 

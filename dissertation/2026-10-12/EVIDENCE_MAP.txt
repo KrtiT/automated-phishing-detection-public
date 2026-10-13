@@ -1,0 +1,207 @@
+EVIDENCE MAP — 12 OCTOBER REVISION
+
+All manuscript tables, figures and review slides. Inherited means dissertation/2026-10-04 in the same repository; that edition remains historical, not current adjudication.
+
+Table 2.1. Closest prior work and the boundary of the present contribution.
+
+PDF physical page 40; Revised literature synthesis in the manuscript; CONTRIBUTION_MATRIX.txt; inherited literature/source-claims.json (historical).
+
+Figure 3.1. Frozen inference, future-only routing and separate evaluation boundaries.
+
+PDF physical page 45; Inherited evidence: [gwu-system-dataflow-20261001.pdf](manuscript/gwu-system-dataflow-20261001.pdf); [draw_system_dataflow_20261001.py](analysis-scripts/dissertation/draw_system_dataflow_20261001.py)
+
+Table 3.1. Reading map from technical component to experiment and evidence.
+
+PDF physical page 46; Inherited evidence: [CODE_AND_ENVIRONMENT.json](provenance/CODE_AND_ENVIRONMENT.json); [rq1-transformer-cascade-contract-v2.json](provenance/original/measured-source/data/rq1-transformer-cascade-contract-v2.json); [rq2-gmm-development-contract-v1.json](provenance/original/measured-source/data/rq2-gmm-development-contract-v1.json)
+
+Figure 3.2. Source and partition roles in the bounded detection comparison. Arrows show permitted information flow; domain exclusion does not establish temporal or source-mechanism independence.
+
+PDF physical page 62; Inherited evidence: [followup-source-partitions.pdf](manuscript/followup-source-partitions.pdf); [comparison-specification-v1.md](provenance/followup/comparison-specification-v1.md); [verification.json](aggregate-data/detection-D/verification.json)
+
+Table 4.1. Retained external source, tier and outcome composition.
+
+PDF physical page 71; Inherited evidence: [source-contingency.csv](aggregate-data/source-contingency.csv)
+
+Table 4.2a. Confusion counts; P and N are the declared stratum denominators.
+
+PDF physical page 72; Inherited evidence: [primary-results.json](aggregate-data/primary-results.json); [primary-gates.csv](aggregate-data/primary-gates.csv)
+
+Table 4.2b. Observed rates and historical row-wise binomial upper bounds. The latter do not establish population coverage for dependent URLs.
+
+PDF physical page 73; Inherited evidence: [primary-results.json](aggregate-data/primary-results.json); [primary-gates.csv](aggregate-data/primary-gates.csv)
+
+Table 4.3. All six primary paired recall contrasts after the uncertainty correction. Differences and intervals are percentage points; methods and dependence assumptions are specified in Section 3.8.
+
+PDF physical page 74; aggregate-data/paired-and-dependence-audit.json; aggregate-data/corrected-primary-gates.csv. Corrected exact gold-pair envelopes and dependence interpretation replace historical [0,0] certainty.
+
+Table 4.4. Training-only GMM model-selection record.
+
+PDF physical page 76; Inherited evidence: [complete-secondary-results.json](aggregate-data/complete-secondary-results.json); [rq2-gmm-development-contract-v1.json](provenance/original/measured-source/data/rq2-gmm-development-contract-v1.json)
+
+Table 4.5. Frozen GMM and descriptive comparator monitors. All rates use complete overlapping windows, without independent-binomial intervals.
+
+PDF physical page 77; Inherited evidence: [complete-secondary-results.json](aggregate-data/complete-secondary-results.json); [external-monitor-windows.csv](aggregate-data/external-monitor-windows.csv)
+
+Table 4.6. All 25 operational groups. Each row pools five complete repeats. Fixed and transformer rows contain 50,000 requests; live shift contains 43,505. Physical attempts are transformer forward attempts divided by all measured client requests, not a latency reduction.
+
+PDF physical page 79; Inherited evidence: [operational-groups.csv](aggregate-data/operational-groups.csv); [operational-runs.csv](aggregate-data/operational-runs.csv)
+
+Table 4.7. Five-run throughput and post-phase drain ranges. Full individual run values and counters are in operational-runs.csv; ranges are descriptions, not uncertainty intervals or best-run selection.
+
+PDF physical page 81; Inherited evidence: [operational-runs.csv](aggregate-data/operational-runs.csv)
+
+Table 4.8. Selected full-metric summaries. External AP and calibration describe the observed 69-positive/2,497-negative mixture, not production prevalence. All columns, precision, F2, MCC and balanced accuracy remain in secondary-metrics.csv.
+
+PDF physical page 84; Inherited evidence: [secondary-metrics.csv](aggregate-data/secondary-metrics.csv); [calibration-bins.csv](aggregate-data/calibration-bins.csv)
+
+Table 4.9. Additional positive tiers and label-free controls at frozen primary thresholds.
+
+PDF physical page 86; Inherited evidence: [secondary-metrics.csv](aggregate-data/secondary-metrics.csv)
+
+Table 4.10. Every accepted permutation comparator; no seed selection.
+
+PDF physical page 87; Inherited evidence: [secondary-metrics.csv](aggregate-data/secondary-metrics.csv); [complete-secondary-results.json](aggregate-data/complete-secondary-results.json)
+
+Table 4.11. Transformer seed/runtime sensitivity at each accepted secondary operating point. T denotes transformer. All five secondary cascades coincide with Logistic-L1 on these evaluated populations.
+
+PDF physical page 88; Inherited evidence: [secondary-metrics.csv](aggregate-data/secondary-metrics.csv); [seed-logical-invocations.csv](aggregate-data/seed-logical-invocations.csv)
+
+Table 4.12. Positive-only paired McNemar tables and four-slot Holm adjustment. “Underflow” means the saved floating-point computation returned 0.0, not an exact mathematical p-value of zero.
+
+PDF physical page 89; Inherited evidence: [primary-results.json](aggregate-data/primary-results.json)
+
+Table 4.13. Accepted label-free development probe accounting.
+
+PDF physical page 90; Inherited evidence: [complete-secondary-results.json](aggregate-data/complete-secondary-results.json); [probe-decisions-and-scores.csv](aggregate-data/probe-decisions-and-scores.csv); [probe-monitors-and-scores.csv](aggregate-data/probe-monitors-and-scores.csv)
+
+Table 4.14. All 22 primary hypothesis checks with unchanged numerical requirements and corrected paired inference. A failed inferential check means its requirement is not established.
+
+PDF physical page 93; aggregate-data/corrected-primary-gates.csv: all 22 original and corrected decisions side by side.
+
+Table 4.15. Additional benchmark admission; reason incidences are overlapping.
+
+PDF physical page 98; Inherited evidence: [verification.json](aggregate-data/detection-D/verification.json); [domain-size-distribution.csv](aggregate-data/detection-D/domain-size-distribution.csv)
+
+Table 4.16. Additional benchmark detection results; P=4,651 and N=3,971.
+
+PDF physical page 99; Inherited evidence: [detection-metrics.csv](aggregate-data/detection-D/detection-metrics.csv); [verification.json](aggregate-data/detection-D/verification.json)
+
+Figure 4.1. Candidate-minus-comparator recall difference at frozen thresholds; 97.5% domain-cluster interval.
+
+PDF physical page 100; Inherited evidence: [followup-paired-recall.pdf](manuscript/followup-paired-recall.pdf); [verification.json](aggregate-data/detection-D/verification.json)
+
+Figure 4.2. Fixed-bin calibration and bin populations on the admitted benchmark. Small populated bins can have extreme fractions; empty bins have no reliability point. The class mixture is not deployment prevalence.
+
+PDF physical page 101; Inherited evidence: [followup-calibration.pdf](manuscript/followup-calibration.pdf); [calibration-bins.csv](aggregate-data/detection-D/calibration-bins.csv)
+
+Table 4.17. Prespecified follow-up D requirements, separate from H1.
+
+PDF physical page 102; Inherited evidence: [verification.json](aggregate-data/detection-D/verification.json); [scheme-invariance.csv](aggregate-data/detection-D/scheme-invariance.csv)
+
+Table 4.18. All ten structural-detector concurrency-64 pairs; success-only p95 in milliseconds.
+
+PDF physical page 104; Inherited evidence: [primary-pairs.csv](aggregate-data/service-S/primary-pairs.csv)
+
+Table 4.19. Complete pooled service groups; success p50/p95/p99 in milliseconds and attempted throughput in requests per second.
+
+PDF physical page 105; Inherited evidence: [group-metrics.csv](aggregate-data/service-S/group-metrics.csv)
+
+Table 4.20. Prespecified S requirements and verified decisions.
+
+PDF physical page 107; Inherited evidence: [requirements.csv](aggregate-data/service-S/requirements.csv); [verification.json](aggregate-data/service-S/verification.json)
+
+Table 4.21. Frozen structural-model scheme intervention. P=69 gold positives; N=2,497 certified negatives. Every character after the scheme colon is preserved.
+
+PDF physical page 109; aggregate-data/F-formatting.csv and F-formatting.json: all four strata and three spellings.
+
+Table 4.22. R cohort decisions and logical expert selections. P=1,392; N=1,262. Every row uses the same one-URL-per-domain cohort; calls are out of 2,654 records.
+
+PDF physical page 110; aggregate-data/R-routing.csv and R-paired-contrasts.csv; R-routing.json includes ranking and source-date sensitivity.
+
+Table 4.23. Actual detector computation on C's fixed 1,000-string workload. Quantiles are medians of five run quantiles in milliseconds. Ratio is the median paired summed-scoring-time ratio to structural-only, not an HTTP latency ratio.
+
+PDF physical page 112; aggregate-data/C-cost-summary.csv and C-all-arms.csv: six paths, all 30 arms, actual counters and warmup exclusion.
+
+Table 4.24. All five audited shuffled-label fits. Validation P=12,486; N=20,209. AUC and AP use unchanged validation labels; TP/FP use validation-selected descriptive operating points.
+
+PDF physical page 113; aggregate-data/P-all-seeds.csv and P-all-seeds.json: all five seeds, convergence, probabilities and validation-selected descriptive operating points.
+
+Table 5.1. Technical contributions, supporting observations and reusable value.
+
+PDF physical page 119; Manuscript research synthesis; current aggregate-data F/R/C/P and corrected ledger; inherited D/S source evidence.
+
+Table 5.2. Decisions at the hypothesis, component and follow-up levels.
+
+PDF physical page 122; aggregate-data/corrected-primary-gates.csv; R-routing.json primary_statements; inherited D/S requirements. Original versus later statements remain distinct.
+
+Table A.1. Research questions, complete evidence products and reading order.
+
+PDF physical page 140; Original reproduction routes (dissertation/2026-10-04) supplemented by the current EVIDENCE_MAP.txt and DATA_DICTIONARY.txt.
+
+Table B.1. Complete 80-arm schedule; success-only p95 in milliseconds, attempted throughput in requests/s and terminal error counts.
+
+PDF physical page 143; Inherited evidence: [arm-metrics.csv](aggregate-data/service-S/arm-metrics.csv)
+
+Slide 1: A constrained detector, evaluated end to end
+
+Manuscript title; §§1.3–1.5
+
+Slide 2: Three questions, unchanged numerical commitments
+
+§§1.4.1–1.4.3; corrected-primary-gates.csv
+
+Slide 3: Why each comparison exists
+
+§§3.15–3.16; Appendices A–C
+
+Slide 4: Structural information adds recall; specificity does not transfer
+
+§§3.8, 4.2; Tables 4.2–4.3
+
+Slide 5: Diagnose the shared errors before redesigning the gate
+
+§4.8.1; saved-score-routing-replay-v2.json
+
+Slide 6: Changing the scheme moves both classes
+
+§4.10.1; Table 4.21; F-formatting.csv
+
+Slide 7: A wider gate must select repairs, not simply more cases
+
+§§3.16.1–3.16.2, 4.10.2; Table 4.22; R-routing.csv
+
+Slide 8: More precise recall evidence, without changing the original verdict
+
+§§3.8, 4.10.2; Table 4.3; R-paired-contrasts.csv
+
+Slide 9: Rare expert calls appear in p99, not necessarily p95
+
+§4.10.3; Table 4.23; C-cost-summary.csv and C-all-arms.csv
+
+Slide 10: A monitor signal is not automatically a useful action
+
+§§4.3, 5.1; Tables 4.4–4.5
+
+Slide 11: The client-path modification has a measured benefit
+
+§4.9; Tables 4.18–4.20 and B.1
+
+Slide 12: Verify fitting inputs instead of trusting a plausible metric
+
+§4.10.4; Table 4.24; P-all-seeds.csv
+
+Slide 13: What the dissertation adds to established methods
+
+§§2.2–2.9, 5.2; Tables 2.1 and 5.1
+
+Slide 14: Hypothesis decisions and positive findings are different levels
+
+§§4.7, 5.1–5.6; Tables 4.14 and 5.2; corrected-primary-gates.csv
+
+Slide 15: The technical answer is actionable
+
+§§5.2–5.6
+
+Slide 16: A traceable review package
+
+Appendices A–C; EVIDENCE_MAP.txt; VERIFICATION.txt

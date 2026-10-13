@@ -1,0 +1,40 @@
+{
+  "history_rewritten": false,
+  "raw_revision_records_published": false,
+  "office_derivatives": {
+    "manuscript/Tallam_Krti_Praxis_Revision_2026-10-12.docx": {
+      "source_sha256": "8e4aed08aa7735409acb82bc1c35c49dc35b03d19fb5880071a17900293b02f4",
+      "public_sha256": "ef4e5b16d8d539050a34cee95b6147c5e46df4ca890724c274e57e879ee14484",
+      "changed_parts": [
+        "word/people.xml"
+      ],
+      "visible_content_changed": false
+    },
+    "manuscript/Extended_Methods_and_Chronology_2026-10-12.docx": {
+      "source_sha256": "f213d3ec1ac233c564673e5ee6d612520a44e1f216c9c496000b75a88c1e5e8a",
+      "public_sha256": "fe8a2d2483e7e9e5621012d37f7b8d8649c40c7f55d0ceb7721ea8ab8a3b0510",
+      "changed_parts": [
+        "docProps/core.xml",
+        "docProps/app.xml"
+      ],
+      "visible_content_changed": false
+    },
+    "advisor/Advisor_Response_2026-10-12.docx": {
+      "source_sha256": "8e9bff1b2e89a5368ca2758c3ce09cf674c00fb6167bb8325287ace9dde09e24",
+      "public_sha256": "1e2ea2ff7f7ce26bad5bb59b789d835565db188ecc3fc922076af46ac97c18fa",
+      "changed_parts": [
+        "docProps/core.xml",
+        "docProps/app.xml"
+      ],
+      "visible_content_changed": false
+    },
+    "advisor/Tallam_Advisor_Revision_2026-10-12.pptx": {
+      "source_sha256": "620e5a97de84a485eab59c04ef69b314bd2e6a6ecc80d1814144298020baa495",
+      "public_sha256": "620e5a97de84a485eab59c04ef69b314bd2e6a6ecc80d1814144298020baa495",
+      "changed_parts": [],
+      "visible_content_changed": false
+    }
+  },
+  "author_attribution": "Research author and scholarly credits retained; prior-degree lines appear only in manuscript front matter as supplied for the GWU template.",
+  "boundary": "Current-file metadata cleanup does not remove personal information from historical Git commits, releases or third-party copies."
+}

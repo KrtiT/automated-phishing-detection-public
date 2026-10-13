@@ -1,0 +1,5 @@
+contrast,both_negative,both_positive,candidate_only,reference_only,estimate,lower,upper,confidence,method,coverage
+directional_minus_transformer,0,1392,0,0,0.0,-0.0031430578591464067,0.0031430578591464067,0.95,bonferroni_clopper_pearson_discordance,individual_contrast_conditional_on_iid_labeled_pairs
+original_minus_transformer,0,1392,0,0,0.0,-0.0031430578591464067,0.0031430578591464067,0.95,bonferroni_clopper_pearson_discordance,individual_contrast_conditional_on_iid_labeled_pairs
+symmetric_minus_structural,0,1392,0,0,0.0,-0.0031430578591464067,0.0031430578591464067,0.95,bonferroni_clopper_pearson_discordance,individual_contrast_conditional_on_iid_labeled_pairs
+symmetric_minus_transformer,0,1392,0,0,0.0,-0.0031430578591464067,0.0031430578591464067,0.95,bonferroni_clopper_pearson_discordance,individual_contrast_conditional_on_iid_labeled_pairs

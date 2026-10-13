@@ -1,0 +1,11 @@
+{
+  "status": "specified_patterns_clear",
+  "scope": {
+    "text_files": 73,
+    "office_parts": 159,
+    "pdfs": 4
+  },
+  "raw_revision_records_published": false,
+  "history_rewritten": false,
+  "limits": "Pattern scan of current edition text, Office XML/relationships and PDF text/metadata/links; no embedded PDF files. Not a universal privacy guarantee or historical erasure."
+}

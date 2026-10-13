@@ -1,102 +1,120 @@
-# Automated Phishing Detection for Frontier AI Inference
+# Cross-Dataset Reliability and Computational Trade-offs in Cascaded URL Phishing Detection
 
-**CyberSentinel — completed research, code and evidence; author review edition, 4 October 2026.**
+**CyberSentinel — completed research, code and evidence; author review revision, 12 October 2026.**
 
-This repository contains the implemented gateway, the completed original
-evaluation, two disclosed engineering follow-ups, and the dissertation review
-package. The investigation follows **design → evaluation → diagnosis → bounded
-modification → measured comparison**. It answers the active questions from the
-August 20 and September 3 advisor decks without replacing their decision rules.
+This repository connects the implemented URL gateway to its data, measurements
+and dissertation. The argument follows **design → evaluation → diagnosis →
+bounded modification → measured comparison**. The current edition answers the
+seven October 12 review comments through corrected paired inference and a
+completed, separately frozen P/F/R/C comparison. Original requirements, adverse
+outcomes and historical evidence remain visible.
 
 ## Start Here
 
-- [Reviewer guide](REVIEWER_GUIDE.md): the argument, numerical requirements,
-  code/data provenance and a short route through the evidence.
-- [Retained research data and freezes](research-archive/2026-10-04/README.md):
-  licensed raw inputs, prepared splits, fitted artifacts, row-level predictions,
-  request measurements and interrupted attempts, with download/recomputation commands.
-- [Read the dissertation PDF](dissertation/2026-10-04/manuscript/Tallam_Krti_Praxis_Integrated_2026-10-04.pdf)
-  · [Word review copy](dissertation/2026-10-04/manuscript/Tallam_Krti_Praxis_Integrated_2026-10-04.docx)
-  · [searchable Markdown](dissertation/2026-10-04/manuscript/Tallam_Krti_Praxis_Integrated_2026-10-04.md).
-- [Advisor presentation PDF](dissertation/2026-10-04/advisor/Tallam_Praxis_Advisor_Integrated_2026-10-04.pdf)
-  · [PowerPoint](dissertation/2026-10-04/advisor/Tallam_Praxis_Advisor_Integrated_2026-10-04.pptx)
-  · [speaker notes](dissertation/2026-10-04/advisor/Tallam_Praxis_Advisor_Integrated_2026-10-04_Speaker_Notes.txt).
-- [Research argument and question-by-question evidence map](dissertation/2026-10-04/RESEARCH_STORY.md).
-- [Every table, figure and slide → source evidence](dissertation/2026-10-04/EVIDENCE_MAP.md).
-- [Complete package index](dissertation/2026-10-04/README.md),
-  [aggregate dictionaries](dissertation/2026-10-04/RESEARCH_DATA_DICTIONARY.txt),
-  [reproduction boundaries](dissertation/2026-10-04/REPRODUCTION.md),
-  and [SHA-256 manifest](dissertation/2026-10-04/SHA256SUMS.txt).
+- [Reviewer guide](REVIEWER_GUIDE.md): questions, evidence and numerical requirements.
+- [Current dissertation PDF](dissertation/2026-10-12/manuscript/Tallam_Krti_Praxis_Revision_2026-10-12.pdf)
+  · [Word review copy](dissertation/2026-10-12/manuscript/Tallam_Krti_Praxis_Revision_2026-10-12.docx).
+- [Response to all seven review comments](dissertation/2026-10-12/advisor/Advisor_Response_2026-10-12.pdf)
+  · [response matrix](dissertation/2026-10-12/RESPONSE_MATRIX.csv).
+- [Advisor presentation PDF](dissertation/2026-10-12/advisor/Tallam_Advisor_Revision_2026-10-12.pdf)
+  · [PowerPoint](dissertation/2026-10-12/advisor/Tallam_Advisor_Revision_2026-10-12.pptx).
+- [Research story and RQ answers](dissertation/2026-10-12/RESEARCH_STORY.md)
+  · [every table, figure and slide mapped](dissertation/2026-10-12/EVIDENCE_MAP.txt).
+- [Complete current package](dissertation/2026-10-12/README.md),
+  [reproduction guide](dissertation/2026-10-12/REPRODUCTION.md),
+  [verification record](dissertation/2026-10-12/VERIFICATION.txt)
+  and [file manifest](dissertation/2026-10-12/SHA256SUMS.txt).
+- [Original retained data and freezes](research-archive/2026-10-04/README.md):
+  licensed inputs, splits, fitted artifacts, predictions, request measurements
+  and interrupted attempts, with download and recomputation commands.
+
+The October 12 Word/PDF governs current conclusions. The
+[October 4 edition](dissertation/2026-10-04/README.md) remains historical,
+including its nine-pass count and old title. It is not the current review copy.
 
 ## What the Investigation Establishes
 
-1. **Build and evaluate the complete path.** A 25-feature structural detector,
-   selective character transformer, GMM monitor and future-only routing policy
-   are connected to an actual HTTP service. The original evidence covers
-   34,593 internal and 8,701 external rows, all **22 primary checks**, all
-   **125 operational cells / 25 groups**, and the declared secondary analyses.
-2. **Locate the constraints instead of relying on one accuracy score.**
-   Structural features increase internal recall over length alone by 64.07
-   percentage points. The frozen cascade adds no recall, external specificity
-   is poor, and the GMM detects 115/132 external windows while its independent
-   reference audit alerts on 28/252 windows. Selectivity alone does not meet
-   the designated latency and external-safety requirements.
-3. **Modify a diagnosed representation dependency.** The transport-neutral
-   follow-up achieves exact feature and score invariance across **8,622**
-   opposite-scheme pairs, versus 481 baseline decision flips. At frozen
-   thresholds it produces 251 fewer false positives and 184 fewer true
-   positives. Invariance is established; external low-FPR efficacy is not.
-4. **Measure a service change separately.** In the complete 80-arm service
-   schedule, worker-specific connections reduce the primary median paired p95
-   ratio to 0.20325 (**79.68%** reduction), with a 97.5% ratio interval of
-   [0.18790, 0.21351]. Primary worker success p95 is 72.00 ms with zero errors
-   in 100,000 attempts. These are synthetic service inputs and an unchanged
-   structural scorer, **not transformer or cascade acceleration**.
-5. **Keep the response contract visible.** Primary predictions agree for
-   **99,999/99,999** comparable pairs. Strict response equality is only
-   **799/100,000** requested pairs: admission sequence differs for 99,200
-   pairs, and one shared-client timeout is noncomparable. Four of five service
-   requirements pass; the full conjunction does not.
+1. **Complete-path evaluation.** A 25-feature structural detector, selective
+   character transformer, GMM monitor and future-only routing policy connect to
+   an HTTP service. Original evaluation covers 34,593 internal and 8,701 external
+   rows, all **22 primary checks**, all **125 cells / 25 operational groups** and
+   the declared secondary analyses.
+2. **Conditional expert value.** Structural features improve recall over length
+   alone by 64.07 percentage points internally and 76.81 externally. The original
+   cascade adds no recall. On 2,497 certified external negatives the transformer
+   repairs no structural error and introduces 218; 2,261 errors are shared.
+   That identifies why routing among these unchanged decisions cannot meet the
+   1% false-positive requirement on this cohort.
+3. **A measured representation trade-off.** D establishes exact invariance across
+   **8,622** opposite-scheme pairs, with 251 fewer false positives and 184 fewer
+   detections after refit/calibration. The separate fixed-model F comparison
+   reduces certified false positives from 2,261 to 50 under forced HTTPS but
+   reduces gold detections from 69 to 22. Neither is a scheme-only efficacy cure.
+4. **Corrected and expanded paired evidence.** The original 69-pair uncertainty
+   envelope is ±6.1533 percentage points, not zero. R evaluates a frozen wider
+   gate on 1,392 positive and 1,262 negative domains, one URL per domain. Two
+   separately specified recall-only statements satisfy the −2-point margin under
+   labeled-pair independence assumptions. The selected gates nevertheless add
+   18 false positives without repairing selected errors. R is retrospective
+   domain-balanced evidence, not campaign-independent or future-traffic validation.
+5. **Actual computation and HTTP costs, separately.** In C the symmetric gate
+   makes 17 expert calls per 1,000 requests and costs 1.646 times structural
+   summed-scoring time. S's separate 80-arm synthetic structural-only HTTP
+   comparison reduces median paired p95 by **79.68%**. Its primary worker success
+   p95 is 71.999 ms with zero errors in 100,000 attempts. Comparable predictions
+   agree for **99,999/99,999** pairs; strict full-response equality is
+   **799/100,000**, owing to admission ordering and one shared-client timeout.
+   S is not transformer acceleration; C is not an HTTP benchmark.
+6. **Audited reliability controls.** All five P shuffled-label fits retain
+   fit-boundary label linkage and every outcome. Their validation-selected
+   operating points are diagnostic, not held-out efficacy or a formal
+   five-permutation significance test.
 
 **H1, H2 and H3 are not supported under their unchanged conjunctive rules.**
-Nine original component checks pass and thirteen fail; none remains unadjudicated.
-The later D and S comparisons do not retroactively change these decisions.
-The contribution is a measured, auditable account of how representation,
-threshold transfer, routing and service execution interact, together with
-specific verified engineering properties and an explicit boundary on efficacy.
-It is not a claim of a production-ready low-FPR detector or an unprecedented
-learning algorithm.
+Corrected inference leaves **eight passing component checks out of 22**:
+H1 5/10, H2 1/4 and H3 2/8. One historical H3 pass is no longer established.
+No numerical threshold is relaxed. D/S and the new R recall-only statements are
+separate findings, not retroactive replacements for the original hypotheses.
 
-## Exact Research Questions
+The contribution is a measured engineering account of conditional expert repair,
+representation stability, low-FPR discrimination and execution cost. It does not
+claim invention of normalization or expert fusion, a new overlap theorem, or a
+production-ready low-FPR detector. The [closest-work comparison](dissertation/2026-10-12/CONTRIBUTION_MATRIX.txt)
+states the source-specific evidence and reading scope.
+
+## Research Questions
 
 - **RQ1:** What incremental value do structural URL features and character-level
   representations provide under registrable-domain-disjoint and external evaluation?
 - **RQ2:** Can GMM-based monitoring detect an external source/domain shift and
   guide escalation without exceeding the low-FPR operating constraint?
-- **RQ3:** What detection, escalation, throughput, and latency tradeoffs determine
+- **RQ3:** What detection, escalation, throughput and latency trade-offs determine
   whether the fixed cascade is viable inline?
 
-The [research story](dissertation/2026-10-04/RESEARCH_STORY.md) gives direct
-answers, metrics, thresholds, chapter locations and machine-readable evidence.
-Earlier fusion/distillation proposals are historical; no completed distillation
-experiment is claimed.
+The [research story](dissertation/2026-10-12/RESEARCH_STORY.md) gives direct
+answers, metrics, thresholds and chapter/evidence locations. RQ2 is answered by
+both monitor sensitivity and the consequences of routing: 115/132 external
+window alerts, 28/252 reference alerts and 218 added certified false positives
+without a gold-detection gain.
 
-## Code, Provenance and Verification
+## Code, Data and Verification
 
-The original completed study used revision
-`77d128377ce5b401437d7179f5cd78fb4294b72c`; the follow-ups used
-`ef8ba5f0b357cf3dd60c4d663e6297d13334460c`. This publication retains their source
-history and makes no new scientific measurements. The publication revision adds
-documents, aggregate evidence, documentation checks and a test-double lifecycle
-correction; it does not replace the frozen measured revisions.
+Original producer: `77d128377ce5b401437d7179f5cd78fb4294b72c`.
+D/S producer: `ef8ba5f0b357cf3dd60c4d663e6297d13334460c`.
+P/F/R/C base code: `f77027b3963f4e7ee6b831b9f09ff04c71491001`,
+plus [35 exact frozen specifications/code/tests](dissertation/2026-10-12/REPRODUCTION.md).
+The [506-binding hash projection](dissertation/2026-10-12/provenance/freeze-projection.json)
+preserves identities without publishing private paths or granting execution access.
+Publication does not create new scientific measurements.
 
 Use Python 3.10 and the checked-in lock. On macOS arm64, select the
 [contract-pinned OpenBLAS wheel](dissertation/2026-10-04/REPRODUCTION.md#macos-arm64-test-environment)
-after syncing and before running tests; the default Accelerate build is rejected.
+after syncing; the default Accelerate build is rejected by the research contract.
 
 ```bash
 uv sync --locked --python 3.10.19
-uv run --locked --no-sync pytest -q tests/test_dissertation_publication.py
+uv run --locked --no-sync pytest -q tests/test_dissertation_revision.py tests/test_dissertation_publication.py
+PYTHONDONTWRITEBYTECODE=1 uv run --locked --no-sync pytest -q dissertation/2026-10-12/research-snapshot
 uv run --locked --no-sync ruff check src tests scripts
 uv run --locked --no-sync ruff format --check src tests scripts
 uv run --locked --no-sync pytest -q
@@ -104,42 +122,38 @@ uv run --locked --no-sync phishing-research --help
 uv build
 ```
 
-Tests use invented fixtures. The separately downloadable research release includes
-retained scientific datasets and row-level observations; they are not loaded by
-the ordinary test suite. The full suite is substantial; package checks alone are not evidence
-that the whole suite passed. See the exact commit's
-[GitHub Actions](https://github.com/KrtiT/automated-phishing-detection-public/actions)
-and the [verification record](dissertation/2026-10-04/VERIFICATION.md).
+Ordinary tests use invented fixtures or public aggregates, not private research
+records. Package tests alone do not prove the full suite passed. See the exact
+commit's [GitHub Actions](https://github.com/KrtiT/automated-phishing-detection-public/actions)
+and the current verification record.
 
-Interrupted attempts and adverse outcomes remain in the chronology. Original
-checkpoint recovery retained 72 verified cells and measured 53 complete cells;
-the separate interrupted 45-arm service schedule was excluded from the completed
-80-arm result. The [reproduction guide](dissertation/2026-10-04/REPRODUCTION.md)
-distinguishes public saved-observation recomputation from new training or timing.
+The local full-suite attempt is **not green**: historical authorization fixtures
+encounter a frozen-hash mismatch after report privacy projection. The same failure
+reproduces before this revision. The [verification record](dissertation/2026-10-12/VERIFICATION.txt)
+separates this known fixture incompatibility from the passing publication checks;
+the scientific hashes and fail-closed execution gates remain unchanged.
 
-## Publication and Review Boundaries
+## Publication Boundaries
 
-The [privacy review](privacy/README.md) records the current-file cleanup and its
-limits. Prior-degree details are confined to the GWU-template manuscript front
-matter and matching PDF. Personal machine paths in three reports are replaced
-with disclosed hash placeholders. Earlier Git history is preserved, not erased.
+The original [research release](research-archive/2026-10-04/README.md) accounts
+for 73,234 retained files: 72,754 byte-identical files, 340 disclosed metadata
+projections and 140 hash-only private files.
+The current revision adds public aggregates, source snapshots and hash identities.
+Its new record-level URLs, domains, predictions, host observations and private
+execution profile remain private. Aggregate checking is not complete independent
+reproduction of those private observations. Third-party inputs retain their
+[original licenses](research-archive/2026-10-04/LICENSES.md).
 
-The package is an author review edition, not institutional acceptance.
-Committee titles, institutional manuscript-length requirements and current
-academic-integrity clearance remain matters for the author and university.
-Acknowledgments thank both Amir Etemadi and Mazen Mheish; repository publication
-does not confirm their formal committee roles.
+The [privacy review](privacy/README.md) covers current-file metadata cleanup;
+earlier Git history, tags and copies are preserved, not erased. Supplied
+prior-degree lines remain only in manuscript front matter and its matching PDF.
+Both Amir Etemadi and Mazen Mheish are thanked. Formal committee roles, program
+clearance and submission acceptance remain university decisions.
 
-The versioned research release accounts for **73,234 retained files**: 72,754
-byte-identical files, 340 explicitly projected metadata containers and 140
-hash-only private execution files. It includes data, splits, model weights,
-predictions, request records and freezes—not just the manuscript. See the
-[archive inventory and exclusions](research-archive/2026-10-04/README.md#representation-and-exclusions).
-Third-party datasets retain their [original licenses](research-archive/2026-10-04/LICENSES.md).
-Private execution capabilities, correspondence, unrelated work and downloaded
-copyrighted papers are not redistributed. The public Word derivative removes template comments and
-local file links, with unchanged visible text, tables and figure bytes. The
-sealed review original is preserved.
+This is an author review edition: 150 PDF pages, 106 main-body pages, 31 tables,
+four figures, 127 checked navigation targets and 62 reference entries. It meets
+the supplied total ceiling but exceeds the approximately 80-page body
+recommendation; publication does not imply a waiver.
 
 ## Historical Record
 

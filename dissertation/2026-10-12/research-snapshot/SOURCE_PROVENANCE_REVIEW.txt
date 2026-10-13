@@ -1,0 +1,73 @@
+RETAINED PHISHVN SOURCE REVIEW — 12 OCTOBER 2026
+
+This is a provenance and eligibility review, not approval to score a cohort.
+Only publisher documentation and retained identity metadata were inspected.
+No URL destination, captured HTML, screenshot payload or new dataset was fetched.
+
+Primary documents inspected
+
+Repository revision bdebc126097d18e0837253f6367726ceb7303202:
+https://github.com/vuthainguyen1602/phishvn/blob/bdebc126097d18e0837253f6367726ceb7303202/docs/data_sources.md
+https://github.com/vuthainguyen1602/phishvn/blob/bdebc126097d18e0837253f6367726ceb7303202/docs/datasheet.md
+https://github.com/vuthainguyen1602/phishvn/blob/bdebc126097d18e0837253f6367726ceb7303202/docs/schema.md
+Release metadata: https://data.mendeley.com/datasets/b97hxbxtpd/4
+
+Data rights and target
+
+The publisher declares the URL/features/labels/docs tier CC BY 4.0. Gated malicious
+HTML/screenshots are outside this revision. Version 4 is documentation-only with
+unchanged Version 3 data. Retained inputs must match the already recorded source
+digest; documentation does not silently authorize a newer data release.
+
+Gold is the publisher's source/confidence designation. Positives derive from the
+NCSC anti-fraud feed, not this study's contemporaneous forensic examination or a
+uniformly verified credential-harvesting task. Certified negatives come from the
+trusted-organization/website registries. Preserve those labels and names without
+upgrading them to independently adjudicated truth. Gold-source agreement and
+source handling are evidence about provenance, not proof of zero label error.
+
+The published audit reviewed 200 stratified records: 149 were resolvable and 51
+unsure. The resolved positive errors were 12/99 (eleven bronze and one silver),
+and benign errors were 2/50 (both silver/Tranco). These are audit-stratum counts;
+the absence of a reported gold error in that sample does not certify every gold
+record. Neither these results nor predictor behavior may be used to relabel
+individual records in this revision.
+
+Time, allocation and dependence
+
+The NCSC source has no published event after February 18, 2025. Publisher split
+assignment is domain-grouped and temporal for dated records, deterministic by
+hash for undated records. Thus train/validation candidates are retrospective
+held-out domains for our models, not future-time confirmation. collected_at is
+a source event date, not necessarily the acquisition timestamp. No verified
+campaign-ID field establishes independence across distinct registered domains.
+
+The updated local exposure roster covers 58 files, 21 distinct contents and
+207,528 registered historical domains, with zero unresolved identities in that
+discovered roster. It includes the original group-test and interrupted attempts.
+It does not establish nonexposure in unrecorded activity elsewhere. After its
+exclusions, upper bounds are 1,617 positive URLs in 1,392 domains and 4,952
+certified-negative URLs in 1,262 domains. There are no cross-label candidate
+domains. All positive candidates are dated (61 dates); 3,523 negative rows lack
+dates. Calendar dates are not verified campaign clusters.
+
+Representation contract
+
+Publisher documentation treats HTTPS as a collection artifact and uses
+scheme-independent features. Its schema prose describes a scheme-stripped
+url_norm, while the retained accepted inputs inspected by preparation contain
+absolute HTTP/HTTPS strings. The retained data and tested parser, not an inferred
+schema correction, determine the model input contract. Do not silently add,
+strip or repair schemes. A controlled scheme intervention must explicitly
+change only the prefix of an otherwise unchanged accepted string, preserve the
+original, and distinguish a frozen-model contrast from D's refit/calibration.
+
+Scientific decision
+
+The retained cohort can support a separately labeled retrospective,
+domain-balanced comparison after fixed selection and complete admission. It
+cannot support an unconditional claim of independent campaigns, true field
+prevalence, future collection, or error-free labels. Paired model-based intervals
+must state independence and label assumptions, and fixed sensitivity analyses
+must accompany rather than erase those assumptions. No prediction is authorized
+by this metadata review; the whole-study execution barrier is still required.

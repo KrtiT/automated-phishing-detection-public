@@ -1,0 +1,216 @@
+BOUNDED POST-REVIEW STUDY — SCIENTIFIC SPECIFICATION, 12 OCTOBER 2026
+
+Status: prospective choices for the remaining work, before new fits or cohort
+predictions. User approved the revision plan. This specification is not a
+completed execution authorization. Exact code/runtime/model pins, private
+destinations, live parent admission and the all-task readiness barrier must
+be verified before execution. No standalone worker may bypass that barrier.
+
+Scope and scientific boundaries
+
+Retain the original 22 checks, 25 operational groups, D and S. The corrected
+original ledger has eight component passes, with H1–H3 jointly unsupported.
+New results do not retrospectively turn those decisions into passes. No new
+transformer training, architecture search, adversarial destination visits,
+threshold sweep on confirmation labels, or repeated full operational matrix.
+
+Use the existing accepted structural model, character transformer, their
+thresholds and singleton numerical convention. Pin the same artifacts from the
+reviewed-input inventory before opening them; do not choose alternative models
+after seeing results. The original cascade's half-width remains zero. Comparison
+D's already-fitted transport-neutral model and results remain a separate combined
+representation/refit/calibration intervention, not a frozen-model causal effect.
+
+There are three new scientific tasks: a frozen structural-input diagnostic;
+a fixed retained-domain comparison with a bounded routing-cost experiment; and
+five audited permutation fits. All three must have eligible inputs and frozen
+execution paths before the first model fit or new prediction. Preserve every
+failure, unstarted task and adverse result. A shortage or changed input holds
+the whole study; do not score the available subset or invent replacements.
+
+R: retrospective domain-balanced comparison
+
+Source: retained PhishVN publisher-source.json with SHA256
+97b3e71f6c3569ba9d98150efae0a986bcd19788d7f380db38a4b2a948589292.
+Use only publisher train/val; publisher test is excluded at domain level.
+No new download, original-archive reopening or live-site adjudication.
+SOURCE_PROVENANCE_REVIEW.txt controls interpretation and publisher attribution.
+
+Positive stratum: source=tinnhiemmang, tier=gold, label=phishing.
+Negative stratum: source=tinnhiem_org or tinnhiem_web, tier=gold, label=benign.
+Require nonempty label_source. Preserve collected_at, including missing values;
+do not drop undated negatives or assert temporal confirmation. Labels are
+publisher source-reference classifications, not new forensic judgments.
+
+Apply the existing strict canonicalizer and pinned public suffix rules, SHA256
+65365c4c9a4a6f746d53aadc758ab6b08aa10bb1379fea8ac353e381bca4b62e.
+Require publisher hostname agreement and reject invalid URLs or contradictory
+canonical labels. Exclude domains shared across publisher train/val and all
+publisher test domains. Exclude the union of original PhiUSIIL domains, the
+admitted D cohort and every historical domain in the 58-file exposure roster.
+Recompute roster identity coverage and compare file hashes before admission.
+Any added/missing/changed roster file or unresolved identity stops admission.
+
+The metadata upper bound is 1,392 positive and 1,262 negative registered domains.
+Use every eligible domain once, not an outcome-selected sample size. Choose one
+canonical URL within each domain by the lexicographically smallest SHA256 of
+the UTF-8 string 'advisor-review-20261012:row:' plus the canonical URL; break
+hash ties by canonical spelling, then original publisher row order. This is a
+fixed pseudorandom representative, not the shortest URL or easiest observation.
+Order the combined cohort by SHA256 of 'advisor-review-20261012:order:' plus
+registered domain, breaking ties by domain spelling. Retain source row locators
+and exact publisher url_norm privately. Model input is that unchanged url_norm,
+not a reconstructed canonical string. Do not expose URLs/domains/IDs publicly.
+
+Expected final N is fixed at 1,392 positives and 1,262 negatives. A discrepancy
+holds the complete study for an explained admission reconciliation before any
+prediction. Do not automatically substitute rows, expand N or change eligibility.
+Do not pool this cohort with the original 69 positives, or reuse it for training,
+calibration, gate selection or source-specific threshold selection.
+
+Estimand: detection/alert probability for a domain-balanced representative from
+this retained source frame. One URL per domain changes the weighting from the
+original URL-level study; report both designs separately. This is previously
+unscored, locally domain-disjoint retrospective evaluation, not new temporal,
+campaign-independent or field-prevalence sampling. The frame is not a probability
+sample of global traffic. Distinct domains and an audited local roster do not
+prove independent campaigns, accurate labels or nonexposure elsewhere.
+
+Fixed comparisons
+
+Score structural-only and transformer-only once per cohort record. Retain their
+scores/decisions, then derive original cascade, symmetric .20 and below-threshold
+.20 decisions using the unchanged expert thresholds and tested inclusive/exclusive
+boundaries in SAVED_SCORE_ROUTING_SPEC.txt. The symmetric gate is the sole selected
+primary revised rule; the below-threshold candidate is a retained secondary
+comparison. Selection was made on exposed internal outcomes, not this cohort.
+
+Include one matched-call-count hash control for each selected rule, using the
+existing prefix 'routing-control-20261012:' and frozen record IDs. Membership
+depends on identity and the selected rule's total call count, never correctness.
+This finite-batch offline control is not claimed as an online routing algorithm.
+Report TP/FN/FP/TN, recall/FPR, score discrimination, logical selections, repairs
+and harms for every system/stratum. Retain every record, including errors.
+
+Primary R statements: original cascade versus transformer at the -2-point recall
+margin; revised symmetric rule versus transformer at the same margin; revised
+symmetric rule versus structural-only for recall improvement (>0) accompanied
+by observed certified FPR <=1% and call fraction <=30%. Each statement uses all
+its conditions; no 'any significant comparison' success rule. No new aggregate
+H1–H3 pass is inferred. Directional/control/ranking analyses are descriptive.
+
+Inference and adequacy
+
+Use the conservative two-sided 95% discordance envelope in paired_inference.py,
+with four alpha/4 marginal tails, for nonstateful paired recall contrasts. Report
+Newcombe method 10 as a named approximate sensitivity, not an alternate decision
+chosen after inspecting results. These are conditional, contrast-specific
+intervals under IID labeled pairs, not simultaneous coverage of all comparisons.
+Maintain the original observed <=1% FPR gate; an accompanying one-sided 95%
+binomial upper bound is not silently made a new pass rule.
+
+Power planning: under the exposed internal symmetric-rule planning proportions
+b/n=45/14326 and c/n=103/14326, finite multinomial power at 1,392 IID pairs is
+98.2455% for the unchanged two-point margin. These are development-derived,
+URL-weighted proportions from repeated domains; transferring them to this new
+domain-balanced population is a planning assumption, not verified evidence.
+At equal recall and discordance .02, power is 96.5761%; at discordance .05 it
+falls to 53.7605%. At difference -.005 and discordance .02 it is 72.7225%.
+The 90% planning target is scenario-specific, not a guarantee of precision or a
+passing result. Fix N now; no optional stopping or outcome-triggered enlargement.
+
+Report a fixed source-event-date clustered sensitivity for positive contrasts,
+resampling complete date groups with replacement for 2,000 PCG64(20261012)
+replicates and percentile endpoints .025/.975. Preserve representative-row
+weighting within draws. Date is an observable grouping proxy, not a verified
+campaign label; sensitivity cannot certify independence. Report number of dates
+and largest cluster. A zero-width bootstrap remains descriptive, never superior
+to the conservative paired analysis. Unmeasured dependence remains explicit.
+
+F: frozen structural-input diagnostic on already-exposed records
+
+Use the same 8,701 accepted external records and primary gold/certified strata,
+unchanged labels and original structural weights/scaler/threshold. Compare exact
+retained publisher spelling with forced 'http:' and forced 'https:' prefixes;
+preserve every byte after the first colon. Validate only absolute HTTP(S) inputs.
+Do not canonicalize the path/query, alter host, or contact destinations.
+
+Compute each original/companion feature vector and score once. Check original
+replay against the accepted structural evidence before interpreting companions.
+Report feature changes, score shifts, decision flips and paired TP/FP changes
+for both transformations. Neither companion is chosen as a new deployed input
+after inspection. This identifies spelling sensitivity of the frozen model, not
+semantic equivalence of websites or the full cause of external source failure.
+Compare interpretation with D's distinct refit/calibration results and the
+already-computed threshold-only score frontiers. No new threshold tuning.
+
+C: actual routed computation, separate from service optimization S
+
+Select 10 positives and 990 negatives from R's fixed identity order before new
+scores. This 1%-reference mixture is a designed workload, not estimated traffic.
+Use exact retained strings and no destination network I/O. Measure six actual
+scoring paths: structural-only, transformer-only, original fixed cascade,
+selected symmetric, selected directional and the symmetric matched-call control.
+Use model instances with the accepted singleton numerical configuration; load
+outside timed regions. Count actual stage starts/completions and gate membership.
+Calls include actual work, not merely reconstructed masks from saved scores.
+
+Run five repetitions per path at concurrency one, with all 1,000 requests in
+the same fixed order. Use cyclic path-order rotation across repetitions,
+starting structural/transformer/original/symmetric/directional/control, shifting
+one place left on each subsequent repetition. Five rotations of six paths are
+not perfectly position-balanced; report this explicitly. Each
+arm has 100 warmup requests, drawn cyclically from the same manifest and
+excluded by subtracting the post-warmup counter snapshot. Retain all 30
+arms and their actual exits; no adaptive repetition, resume or fastest-run choice.
+Compare per-run summed request-scoring time, per-record p50/p95/p99, implied
+serial scoring throughput, errors and actual model counts. Time each scoring
+call only; evidence writes and admission checks stay outside request timers.
+Also retain whole-arm wall time, which includes that non-scoring overhead.
+Report every replicate and the median paired summed-scoring-time
+ratio to structural-only; with five pairs, do not claim precise run-level
+confidence or a test of the original HTTP p95 requirement.
+
+Construct C's matched-count control separately within its fixed 1,000-row
+workload, using that workload's symmetric-gate call count and the same identity
+hash rule. Freeze membership after R's scores are available but before any timed
+arm; correctness never enters membership. Retain this manifest and distinguish
+it from the R-wide matched-count control. Control requests still run stage one;
+only their second-stage membership is precomputed. All six paths must use the
+same scorer and input order, not separately optimized batch implementations.
+
+This experiment attributes incremental computation to routed detector work.
+It is not HTTP capacity, open-loop traffic, concurrency-64 performance or a
+remeasurement of S. For advisor comment 5, choose the expressly permitted scope
+restriction: S remains a synthetic structural closed-loop client/server result.
+No new claim of transformer-service speedup and no repeated 80-arm schedule.
+
+P: audited permutation controls
+
+PERMUTATION_DIAGNOSTIC_PROTOCOL.txt supplies the fixed seeds 42–46, retained
+partitions, model specification, label/feature receipts, checkpoint/reload parity,
+independent verification and stop-at-first-failure rule. No sixth seed, new
+unshuffled reference fit, external scoring by the controls or p-value from five
+permutations. Controls cannot authenticate the historical shuffled fits.
+
+Admission and execution order
+
+Prepare identity-only manifests and verify all R/F/C/P prerequisites without
+loading a model or inspecting new correctness outcomes. Bind this specification,
+source inventories, selected manifests, protocol, original model inventory,
+exact clean academic code revision and runtime in the new private parent profile.
+Record the user's real plan authorization and delegated implementation scope;
+do not fabricate advisor endorsement, consent timestamps or personal review of
+a later digest. The current document is not that final profile.
+
+Once the whole-study barrier and live authority are verified: run P once; run F
+once; run R scoring and fixed analysis once; run C's complete schedule once.
+Recheck parent-owned admission at task boundaries and before publication.
+Stable AC, recorded normal thermal state, numerical-thread guards and reserved
+machine conditions remain required for measurements. A session violation stops
+the schedule and preserves its prefix; it does not justify an automatic restart.
+
+Completion means verified outcomes and explanations, not desired hypothesis
+decisions. Only then integrate all results, move operational histories to
+appendices, update the advisor response/deck and run final document/publication
+checks. Keep raw private identities and unpublished authorization records local.

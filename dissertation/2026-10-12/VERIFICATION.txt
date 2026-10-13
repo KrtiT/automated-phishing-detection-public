@@ -1,0 +1,75 @@
+VERIFICATION RECORD — 12 OCTOBER 2026 REVISION
+
+This is an evidence-integrated author review package, not advisor acceptance,
+institutional clearance, a plagiarism certification or a guarantee of perfection.
+The original submitted manuscript and October 4 evidence edition are preserved.
+
+Scientific verification
+The sole P/F/R/C schedule is complete. A separate saved-evidence reconstruction
+verifies 506 bound files and 258 host observations and its declared P/F/R/C
+outputs without refitting, making new predictions or performing new timings.
+The retained receipt is document-checks/saved-evidence-verification.json.
+The scope is P consumed-label linkage, F paired counts, R membership/repairs/
+ranking and C arms/counters/quantiles. Secondary F feature deltas and R date/FPR
+summaries are not all independently recomputed. Public aggregate consistency
+does not establish independent reproduction of private record-level evidence.
+
+Document verification
+- 25 manuscript integration/preservation/narrative tests pass.
+- One regression test checks the public metadata derivative, including an unused
+  template-editor identity, while preserving the source and visible document XML.
+- Main PDF: 150 total pages, 106 main-body pages; 31 tables; four figures;
+  127 refreshed navigation targets; 2,099 nonempty paragraphs/cells rendered.
+- No detached table captions or figure/prose intersections are detected by the
+  retained rendering checks. Every manuscript page was inspected in contact
+  sheets; all four figures and revised tables received the geometry checks.
+- Response: three pages; deck: 16 slides; extended methods: 85 numbered pages.
+  PDF text extents stay within the pages and all visible slide text is rendered.
+- Bibliography: 62 unique alphabetically ordered references; 91 citation-reference
+  occurrences; zero unresolved internal link targets. Residual year-like strings
+  were reviewed as dates, numerical values and artifact identifiers. This is
+  linkage/consistency checking, not a full-paper audit of every citation claim.
+
+Publication verification
+The public derivative manifest covers every current-edition file except itself.
+All 35 frozen source/specification/test snapshots keep their original hashes.
+The 506-binding projection omits private locators and the runtime executable.
+New raw records and execution capabilities are not published. Specified path,
+personal-email, local-link, Office-comment and metadata patterns are checked;
+no automated scan can guarantee absence of every possible identifying detail.
+Previously published history and third-party copies have not been rewritten.
+
+Release checks
+- 18 current/historical publication tests pass.
+- 98 archived synthetic snapshot tests pass without research execution.
+- 147 paired-inference, power and audited-control tests pass for the producer
+  code being published with this edition; these use synthetic test fixtures.
+- 25 manuscript tests and the one public-derivative regression pass, as above.
+- Ruff checks and formatting checks pass for src, tests and scripts; the
+  dependency lock check, command help, source distribution and wheel build pass.
+
+Repository-wide test boundary
+The full local suite is NOT green. The attempted run was interrupted after
+640 passes and 16 failures in 150.87 seconds; this is a partial run, not an
+exhaustive failure count. All 16 observed failures are historical development-
+authorization tests in tests/test_development_execution.py. Their fixture copies
+privacy-projected public reports while the frozen contracts require the original
+bytes, so the expected fail-closed SHA-256 check occurs before the intended test.
+
+The same SHA-256 failure was reproduced in an isolated export of unchanged
+commit f77027b3963f4e7ee6b831b9f09ff04c71491001 using
+test_separate_binding_authenticates_development_only. The two affected reports
+and the contracts, fixture and execution gate are unchanged by this revision.
+No private report was restored, frozen hash replaced, gate weakened or failing
+test skipped to claim a green run. See document-checks/software-checks.json.
+The current scientific reconstruction and publication checks are separate from
+this pre-existing public-fixture incompatibility. Check GitHub Actions for the
+exact pushed commit; no full-suite or CI success is asserted by this package.
+
+Reading and formatting boundary
+The current Word controls the revised conclusions; the PDF is its checked render.
+The supplement preserves the earlier full method/discussion text for provenance.
+All original thresholds, corrected adverse outcomes and separate study scopes
+remain. The main body exceeds the approximately 80-page recommendation despite
+meeting the supplied 150-page total ceiling. Formal length/committee/submission
+acceptance remains a university decision, not a result of these checks.

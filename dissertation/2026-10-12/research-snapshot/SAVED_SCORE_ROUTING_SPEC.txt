@@ -1,0 +1,56 @@
+BOUNDED SAVED-SCORE ROUTING DIAGNOSIS — 12 OCTOBER 2026
+
+Status: descriptive replay of ALREADY-EXAMINED outcomes, fixed before this replay.
+No model fitting, new model predictions, service timing, hypothesis re-testing,
+new-cohort access or whole-study hold override. This is the gate-diagnosis part
+of the approved advisor revision, not its independent confirmation experiment.
+
+Read only accepted attempt-four saved predictions, unchanged:
+internal: 827323a5525992332247011e1cb55a661e2b90d4ee350d65eaee0d136dc52c39
+external: c819d7e713c6f27fbdc89ee0b6e3d523db23254c3a303027dd4a38f4cb5f758f
+Accepted cascade metadata:
+7ac88c784dbc299d436a029904f0c6bde5a8cf741e62028a7635e8672e55119c
+
+Keep both stored binary expert decisions and their original thresholds unchanged.
+The stage-one threshold is 0.2670846328466124; accepted half-width is exactly zero.
+Reconstruct abs(p_stage1 - threshold) <= 0 and check every saved band selection
+and cascade decision. Report exact ties, closest score distance, and logical
+transformer selections separately for internal and the complete external stream.
+
+Comparators: structural-only, always-transformer, original zero-width cascade.
+Two revised gate families, with no additional grid expansion after results:
+  symmetric: abs(p_stage1 - threshold) <= width;
+  directional: threshold-width <= p_stage1 < threshold (below), or
+               threshold <= p_stage1 <= threshold+width (above).
+Widths for each family/direction: 0.025, 0.05, 0.10, 0.20. All comparisons include
+all twelve bands, even when none meets the operating constraints. Routing uses
+only the cheap score, never label or transformer score.
+
+For EACH family, select on exposed internal outcomes only: eligible if observed
+FPR <=.01, recall >= always-transformer recall-.02, logical call fraction <=.30.
+Among eligible bands maximize TP, then minimize FP, then calls, then width, then
+lexicographic candidate name. If no band qualifies, report no eligible candidate;
+do not relax constraints. This development rule is not population noninferiority.
+Apply the selected literal band unchanged to external records, retaining their
+gold/certified/secondary/Tranco roles. No external outcome chooses a band.
+
+For each selected gate, use one fixed budget-matched diagnostic routing control:
+rank each cohort's record IDs by SHA256 of UTF-8 'routing-control-20261012:' + ID,
+break an impossible digest tie lexicographically by ID, and route exactly as many
+records as that gate selects in the full cohort. Labels never determine control
+selection. This hash-rank control assumes a known finite batch and is not a claim
+about an online Bernoulli router. No search over random seeds.
+
+Report full-cohort logical selections and rate; class-specific TP/FN/FP/TN,
+recall/FPR where both labels exist; transformer repairs and newly introduced
+errors separately by class; and differences from structural-only. Label-free
+Tranco receives only call and alert counts, not a claimed FPR. Preserve URL-
+weighted denominators and domain counts; no IID CIs on clustered rows. Report
+certified shared-error oracle floor, which bounds selectors of these fixed binary
+decisions only. No statement about attainable retrained/recalibrated performance.
+
+Call fractions quantify requested expert work, not measured latency, hardware
+speedup or actual serving invocations. Saved all-expert scores permit this replay;
+running it is not selective model execution. Actual benefit-versus-computation
+claims await the frozen execution comparison. Export aggregates/digests only,
+never individual identities or URLs. Write new output exclusively.

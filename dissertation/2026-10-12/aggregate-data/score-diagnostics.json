@@ -1,0 +1,1421 @@
+{
+  "analysis_role": "retrospective_diagnostic_not_untouched_confirmation",
+  "feature_replay_exact_rows": 43294,
+  "low_fpr_curve": "retrospective score frontier; not a deployment threshold or confirmation",
+  "populations": {
+    "gold_plus_certified": {
+      "classes": {
+        "0": {
+          "alert_rates": {
+            "logistic_l1": {
+              "domains": 234,
+              "equal_domain_weighted": 0.8193090759291977,
+              "largest_domain_rows": 614,
+              "url_weighted": 0.9054865839006808
+            },
+            "transformer": {
+              "domains": 234,
+              "equal_domain_weighted": 0.9678430576515392,
+              "largest_domain_rows": 614,
+              "url_weighted": 0.9927913496195434
+            }
+          },
+          "domains": 234,
+          "features": {
+            "fragment_codepoint_length": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "has_explicit_port": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "has_fragment_delimiter": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "has_query_delimiter": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "has_userinfo": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 1.0
+            },
+            "hostname_ascii_digit_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 4.0
+            },
+            "hostname_ascii_length": {
+              "0": 6.0,
+              "0.1": 18.0,
+              "0.25": 21.0,
+              "0.5": 26.0,
+              "0.75": 31.0,
+              "0.9": 34.0,
+              "1": 42.0
+            },
+            "hostname_hyphen_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 2.0
+            },
+            "hostname_label_count": {
+              "0": 2.0,
+              "0.1": 3.6000000000000227,
+              "0.25": 4.0,
+              "0.5": 4.0,
+              "0.75": 5.0,
+              "0.9": 5.0,
+              "1": 6.0
+            },
+            "hostname_punycode_label_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "is_https": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 1.0,
+              "1": 1.0
+            },
+            "path_codepoint_length": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 11.0
+            },
+            "path_segment_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 2.0
+            },
+            "percent_escape_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "query_codepoint_length": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "query_parameter_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "raw_url_ascii_digit_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 4.0
+            },
+            "raw_url_ascii_digit_ratio": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.13333333333333333
+            },
+            "raw_url_ascii_letter_count": {
+              "0": 9.0,
+              "0.1": 19.0,
+              "0.25": 22.0,
+              "0.5": 27.0,
+              "0.75": 32.0,
+              "0.9": 34.0,
+              "1": 42.0
+            },
+            "raw_url_codepoint_length": {
+              "0": 13.0,
+              "0.1": 25.0,
+              "0.25": 28.0,
+              "0.5": 33.0,
+              "0.75": 38.0,
+              "0.9": 41.0,
+              "1": 49.0
+            },
+            "raw_url_other_codepoint_count": {
+              "0": 4.0,
+              "0.1": 6.0,
+              "0.25": 6.0,
+              "0.5": 6.0,
+              "0.75": 7.0,
+              "0.9": 7.0,
+              "1": 8.0
+            },
+            "raw_url_other_codepoint_ratio": {
+              "0": 0.11428571428571428,
+              "0.1": 0.16253928346951604,
+              "0.25": 0.17142857142857143,
+              "0.5": 0.18421052631578946,
+              "0.75": 0.20689655172413793,
+              "0.9": 0.23076923076923078,
+              "1": 0.3157894736842105
+            },
+            "raw_url_unique_codepoint_count": {
+              "0": 9.0,
+              "0.1": 13.0,
+              "0.25": 14.0,
+              "0.5": 15.0,
+              "0.75": 17.0,
+              "0.9": 18.0,
+              "1": 21.0
+            },
+            "raw_url_utf8_byte_entropy_bits": {
+              "0": 3.0269868333592873,
+              "0.1": 3.4755307481784876,
+              "0.25": 3.588354347173233,
+              "0.5": 3.7193758224153695,
+              "0.75": 3.850153138655737,
+              "0.9": 3.952819531114783,
+              "1": 4.209147917027245
+            },
+            "raw_url_utf8_byte_length": {
+              "0": 13.0,
+              "0.1": 25.0,
+              "0.25": 28.0,
+              "0.5": 33.0,
+              "0.75": 38.0,
+              "0.9": 41.0,
+              "1": 49.0
+            }
+          },
+          "routing_strata": [
+            {
+              "both_right": 18,
+              "both_wrong": 0,
+              "lower_inclusive": 0.0,
+              "rows": 230,
+              "transformer_introduced_errors": 212,
+              "transformer_repairs": 0,
+              "upper": 0.1,
+              "upper_inclusive": false
+            },
+            {
+              "both_right": 0,
+              "both_wrong": 0,
+              "lower_inclusive": 0.1,
+              "rows": 5,
+              "transformer_introduced_errors": 5,
+              "transformer_repairs": 0,
+              "upper": 0.25,
+              "upper_inclusive": false
+            },
+            {
+              "both_right": 0,
+              "both_wrong": 4,
+              "lower_inclusive": 0.25,
+              "rows": 5,
+              "transformer_introduced_errors": 1,
+              "transformer_repairs": 0,
+              "upper": 0.5,
+              "upper_inclusive": false
+            },
+            {
+              "both_right": 0,
+              "both_wrong": 6,
+              "lower_inclusive": 0.5,
+              "rows": 6,
+              "transformer_introduced_errors": 0,
+              "transformer_repairs": 0,
+              "upper": 0.75,
+              "upper_inclusive": false
+            },
+            {
+              "both_right": 0,
+              "both_wrong": 1,
+              "lower_inclusive": 0.75,
+              "rows": 1,
+              "transformer_introduced_errors": 0,
+              "transformer_repairs": 0,
+              "upper": 0.9,
+              "upper_inclusive": false
+            },
+            {
+              "both_right": 0,
+              "both_wrong": 0,
+              "lower_inclusive": 0.9,
+              "rows": 0,
+              "transformer_introduced_errors": 0,
+              "transformer_repairs": 0,
+              "upper": 0.99,
+              "upper_inclusive": false
+            },
+            {
+              "both_right": 0,
+              "both_wrong": 2250,
+              "lower_inclusive": 0.99,
+              "rows": 2250,
+              "transformer_introduced_errors": 0,
+              "transformer_repairs": 0,
+              "upper": 1.0,
+              "upper_inclusive": true
+            }
+          ],
+          "rows": 2497,
+          "scores": {
+            "logistic_l1": {
+              "0": 0.001996905776219365,
+              "0.1": 0.9960668268748302,
+              "0.25": 0.9984581163159543,
+              "0.5": 0.9990724324582839,
+              "0.75": 0.9994887212873078,
+              "0.9": 0.9997749725157778,
+              "1": 0.9999999641982626
+            },
+            "transformer": {
+              "0": 0.0032161541748791933,
+              "0.1": 0.9999808073043823,
+              "0.25": 0.9999862909317017,
+              "0.5": 0.9999918937683105,
+              "0.75": 0.9999953508377075,
+              "0.9": 0.9999964237213135,
+              "1": 0.9999979734420776
+            }
+          }
+        },
+        "1": {
+          "alert_rates": {
+            "logistic_l1": {
+              "domains": 69,
+              "equal_domain_weighted": 1.0,
+              "largest_domain_rows": 1,
+              "url_weighted": 1.0
+            },
+            "transformer": {
+              "domains": 69,
+              "equal_domain_weighted": 1.0,
+              "largest_domain_rows": 1,
+              "url_weighted": 1.0
+            }
+          },
+          "domains": 69,
+          "features": {
+            "fragment_codepoint_length": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "has_explicit_port": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "has_fragment_delimiter": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "has_query_delimiter": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "has_userinfo": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "hostname_ascii_digit_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 1.0,
+              "0.9": 2.0,
+              "1": 4.0
+            },
+            "hostname_ascii_length": {
+              "0": 9.0,
+              "0.1": 12.0,
+              "0.25": 16.0,
+              "0.5": 20.0,
+              "0.75": 32.0,
+              "0.9": 48.2,
+              "1": 65.0
+            },
+            "hostname_hyphen_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 1.0,
+              "0.75": 2.0,
+              "0.9": 3.0,
+              "1": 5.0
+            },
+            "hostname_label_count": {
+              "0": 2.0,
+              "0.1": 2.0,
+              "0.25": 2.0,
+              "0.5": 3.0,
+              "0.75": 3.0,
+              "0.9": 4.0,
+              "1": 5.0
+            },
+            "hostname_punycode_label_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "is_https": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "path_codepoint_length": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "path_segment_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "percent_escape_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "query_codepoint_length": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "query_parameter_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "raw_url_ascii_digit_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 1.0,
+              "0.9": 2.0,
+              "1": 4.0
+            },
+            "raw_url_ascii_digit_ratio": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.016666666666666666,
+              "0.9": 0.03814026792750198,
+              "1": 0.2222222222222222
+            },
+            "raw_url_ascii_letter_count": {
+              "0": 10.0,
+              "0.1": 14.0,
+              "0.25": 17.0,
+              "0.5": 22.0,
+              "0.75": 31.0,
+              "0.9": 45.2,
+              "1": 61.0
+            },
+            "raw_url_codepoint_length": {
+              "0": 16.0,
+              "0.1": 19.0,
+              "0.25": 23.0,
+              "0.5": 27.0,
+              "0.75": 39.0,
+              "0.9": 55.2,
+              "1": 72.0
+            },
+            "raw_url_other_codepoint_count": {
+              "0": 4.0,
+              "0.1": 4.0,
+              "0.25": 5.0,
+              "0.5": 5.0,
+              "0.75": 7.0,
+              "0.9": 9.0,
+              "1": 10.0
+            },
+            "raw_url_other_codepoint_ratio": {
+              "0": 0.12121212121212122,
+              "0.1": 0.13803418803418804,
+              "0.25": 0.15217391304347827,
+              "0.5": 0.18518518518518517,
+              "0.75": 0.2222222222222222,
+              "0.9": 0.2512820512820513,
+              "1": 0.2727272727272727
+            },
+            "raw_url_unique_codepoint_count": {
+              "0": 10.0,
+              "0.1": 14.0,
+              "0.25": 15.0,
+              "0.5": 17.0,
+              "0.75": 21.0,
+              "0.9": 23.0,
+              "1": 25.0
+            },
+            "raw_url_utf8_byte_entropy_bits": {
+              "0": 3.202819531114783,
+              "0.1": 3.653509019887328,
+              "0.25": 3.7720552088742005,
+              "0.5": 3.9690016298759927,
+              "0.75": 4.134733807160776,
+              "0.9": 4.231769647948342,
+              "1": 4.39226564990975
+            },
+            "raw_url_utf8_byte_length": {
+              "0": 16.0,
+              "0.1": 19.0,
+              "0.25": 23.0,
+              "0.5": 27.0,
+              "0.75": 39.0,
+              "0.9": 55.2,
+              "1": 72.0
+            }
+          },
+          "routing_strata": [
+            {
+              "both_right": 0,
+              "both_wrong": 0,
+              "lower_inclusive": 0.0,
+              "rows": 0,
+              "transformer_introduced_errors": 0,
+              "transformer_repairs": 0,
+              "upper": 0.1,
+              "upper_inclusive": false
+            },
+            {
+              "both_right": 0,
+              "both_wrong": 0,
+              "lower_inclusive": 0.1,
+              "rows": 0,
+              "transformer_introduced_errors": 0,
+              "transformer_repairs": 0,
+              "upper": 0.25,
+              "upper_inclusive": false
+            },
+            {
+              "both_right": 0,
+              "both_wrong": 0,
+              "lower_inclusive": 0.25,
+              "rows": 0,
+              "transformer_introduced_errors": 0,
+              "transformer_repairs": 0,
+              "upper": 0.5,
+              "upper_inclusive": false
+            },
+            {
+              "both_right": 0,
+              "both_wrong": 0,
+              "lower_inclusive": 0.5,
+              "rows": 0,
+              "transformer_introduced_errors": 0,
+              "transformer_repairs": 0,
+              "upper": 0.75,
+              "upper_inclusive": false
+            },
+            {
+              "both_right": 0,
+              "both_wrong": 0,
+              "lower_inclusive": 0.75,
+              "rows": 0,
+              "transformer_introduced_errors": 0,
+              "transformer_repairs": 0,
+              "upper": 0.9,
+              "upper_inclusive": false
+            },
+            {
+              "both_right": 0,
+              "both_wrong": 0,
+              "lower_inclusive": 0.9,
+              "rows": 0,
+              "transformer_introduced_errors": 0,
+              "transformer_repairs": 0,
+              "upper": 0.99,
+              "upper_inclusive": false
+            },
+            {
+              "both_right": 69,
+              "both_wrong": 0,
+              "lower_inclusive": 0.99,
+              "rows": 69,
+              "transformer_introduced_errors": 0,
+              "transformer_repairs": 0,
+              "upper": 1.0,
+              "upper_inclusive": true
+            }
+          ],
+          "rows": 69,
+          "scores": {
+            "logistic_l1": {
+              "0": 0.998143710190729,
+              "0.1": 0.9990107850931835,
+              "0.25": 0.9995861254134025,
+              "0.5": 0.9999123679660946,
+              "0.75": 0.9999981025408206,
+              "0.9": 0.9999999153804866,
+              "1": 0.999999999994243
+            },
+            "transformer": {
+              "0": 0.9999779462814331,
+              "0.1": 0.9999843835830688,
+              "0.25": 0.999988317489624,
+              "0.5": 0.9999932050704956,
+              "0.75": 0.999996542930603,
+              "0.9": 0.9999975204467774,
+              "1": 0.9999982118606567
+            }
+          }
+        }
+      },
+      "models": {
+        "logistic_l1": {
+          "average_precision": 0.3148822345040831,
+          "best_observed_recall_at_one_percent_fpr": {
+            "false_positives": 24,
+            "negative_count": 2497,
+            "positive_count": 69,
+            "recall": 0.2898550724637681,
+            "threshold": 0.9999922320874516,
+            "true_positives": 20
+          },
+          "roc_auc": 0.8512388779578973
+        },
+        "transformer": {
+          "average_precision": 0.09992654374972518,
+          "best_observed_recall_at_one_percent_fpr": {
+            "false_positives": 13,
+            "negative_count": 2497,
+            "positive_count": 69,
+            "recall": 0.10144927536231885,
+            "threshold": 0.999997615814209,
+            "true_positives": 7
+          },
+          "roc_auc": 0.5922730464963754
+        }
+      }
+    },
+    "internal": {
+      "classes": {
+        "0": {
+          "alert_rates": {
+            "logistic_l1": {
+              "domains": 19824,
+              "equal_domain_weighted": 0.007833938660209847,
+              "largest_domain_rows": 124,
+              "url_weighted": 0.007746583115409286
+            },
+            "transformer": {
+              "domains": 19824,
+              "equal_domain_weighted": 0.008834181060050973,
+              "largest_domain_rows": 124,
+              "url_weighted": 0.01011496521438792
+            }
+          },
+          "domains": 19824,
+          "features": {
+            "fragment_codepoint_length": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "has_explicit_port": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "has_fragment_delimiter": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "has_query_delimiter": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "has_userinfo": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "hostname_ascii_digit_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 5.0
+            },
+            "hostname_ascii_length": {
+              "0": 9.0,
+              "0.1": 13.0,
+              "0.25": 16.0,
+              "0.5": 19.0,
+              "0.75": 22.0,
+              "0.9": 26.0,
+              "1": 48.0
+            },
+            "hostname_hyphen_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 4.0
+            },
+            "hostname_label_count": {
+              "0": 3.0,
+              "0.1": 3.0,
+              "0.25": 3.0,
+              "0.5": 3.0,
+              "0.75": 3.0,
+              "0.9": 4.0,
+              "1": 6.0
+            },
+            "hostname_punycode_label_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "is_https": {
+              "0": 1.0,
+              "0.1": 1.0,
+              "0.25": 1.0,
+              "0.5": 1.0,
+              "0.75": 1.0,
+              "0.9": 1.0,
+              "1": 1.0
+            },
+            "path_codepoint_length": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "path_segment_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "percent_escape_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "query_codepoint_length": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "query_parameter_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "raw_url_ascii_digit_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 5.0
+            },
+            "raw_url_ascii_digit_ratio": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.23809523809523808
+            },
+            "raw_url_ascii_letter_count": {
+              "0": 10.0,
+              "0.1": 16.0,
+              "0.25": 18.0,
+              "0.5": 22.0,
+              "0.75": 25.0,
+              "0.9": 28.0,
+              "1": 51.0
+            },
+            "raw_url_codepoint_length": {
+              "0": 17.0,
+              "0.1": 21.0,
+              "0.25": 24.0,
+              "0.5": 27.0,
+              "0.75": 30.0,
+              "0.9": 34.0,
+              "1": 56.0
+            },
+            "raw_url_other_codepoint_count": {
+              "0": 5.0,
+              "0.1": 5.0,
+              "0.25": 5.0,
+              "0.5": 5.0,
+              "0.75": 5.0,
+              "0.9": 6.0,
+              "1": 9.0
+            },
+            "raw_url_other_codepoint_ratio": {
+              "0": 0.08928571428571429,
+              "0.1": 0.15151515151515152,
+              "0.25": 0.1724137931034483,
+              "0.5": 0.19230769230769232,
+              "0.75": 0.2222222222222222,
+              "0.9": 0.25,
+              "1": 0.35
+            },
+            "raw_url_unique_codepoint_count": {
+              "0": 9.0,
+              "0.1": 13.0,
+              "0.25": 15.0,
+              "0.5": 16.0,
+              "0.75": 18.0,
+              "0.9": 19.0,
+              "1": 24.0
+            },
+            "raw_url_utf8_byte_entropy_bits": {
+              "0": 3.0441104177484006,
+              "0.1": 3.584183719779189,
+              "0.25": 3.73215889136457,
+              "0.5": 3.8664331502253835,
+              "0.75": 3.9937305842314768,
+              "0.9": 4.0980685120588385,
+              "1": 4.415311532225102
+            },
+            "raw_url_utf8_byte_length": {
+              "0": 17.0,
+              "0.1": 21.0,
+              "0.25": 24.0,
+              "0.5": 27.0,
+              "0.75": 30.0,
+              "0.9": 34.0,
+              "1": 56.0
+            }
+          },
+          "routing_strata": [
+            {
+              "both_right": 19432,
+              "both_wrong": 0,
+              "lower_inclusive": 0.0,
+              "rows": 19603,
+              "transformer_introduced_errors": 171,
+              "transformer_repairs": 0,
+              "upper": 0.1,
+              "upper_inclusive": false
+            },
+            {
+              "both_right": 468,
+              "both_wrong": 0,
+              "lower_inclusive": 0.1,
+              "rows": 489,
+              "transformer_introduced_errors": 21,
+              "transformer_repairs": 0,
+              "upper": 0.25,
+              "upper_inclusive": false
+            },
+            {
+              "both_right": 17,
+              "both_wrong": 9,
+              "lower_inclusive": 0.25,
+              "rows": 114,
+              "transformer_introduced_errors": 1,
+              "transformer_repairs": 87,
+              "upper": 0.5,
+              "upper_inclusive": false
+            },
+            {
+              "both_right": 0,
+              "both_wrong": 3,
+              "lower_inclusive": 0.5,
+              "rows": 34,
+              "transformer_introduced_errors": 0,
+              "transformer_repairs": 31,
+              "upper": 0.75,
+              "upper_inclusive": false
+            },
+            {
+              "both_right": 0,
+              "both_wrong": 0,
+              "lower_inclusive": 0.75,
+              "rows": 20,
+              "transformer_introduced_errors": 0,
+              "transformer_repairs": 20,
+              "upper": 0.9,
+              "upper_inclusive": false
+            },
+            {
+              "both_right": 0,
+              "both_wrong": 0,
+              "lower_inclusive": 0.9,
+              "rows": 5,
+              "transformer_introduced_errors": 0,
+              "transformer_repairs": 5,
+              "upper": 0.99,
+              "upper_inclusive": false
+            },
+            {
+              "both_right": 0,
+              "both_wrong": 0,
+              "lower_inclusive": 0.99,
+              "rows": 2,
+              "transformer_introduced_errors": 0,
+              "transformer_repairs": 2,
+              "upper": 1.0,
+              "upper_inclusive": true
+            }
+          ],
+          "rows": 20267,
+          "scores": {
+            "logistic_l1": {
+              "0": 0.00142941352314537,
+              "0.1": 0.003940772935552598,
+              "0.25": 0.005252400094393442,
+              "0.5": 0.00810810753016653,
+              "0.75": 0.017862615706331166,
+              "0.9": 0.04263149286122939,
+              "1": 0.9985646619453111
+            },
+            "transformer": {
+              "0": 0.002355213975533843,
+              "0.1": 0.0033467162400484087,
+              "0.25": 0.003814502153545618,
+              "0.5": 0.004551263060420752,
+              "0.75": 0.005695987027138472,
+              "0.9": 0.007587461918592454,
+              "1": 0.9574294090270996
+            }
+          }
+        },
+        "1": {
+          "alert_rates": {
+            "logistic_l1": {
+              "domains": 9757,
+              "equal_domain_weighted": 0.9881616162442788,
+              "largest_domain_rows": 552,
+              "url_weighted": 0.9868072036856066
+            },
+            "transformer": {
+              "domains": 9757,
+              "equal_domain_weighted": 0.9938181964008833,
+              "largest_domain_rows": 552,
+              "url_weighted": 0.9932290939550468
+            }
+          },
+          "domains": 9757,
+          "features": {
+            "fragment_codepoint_length": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 289.0
+            },
+            "has_explicit_port": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 1.0
+            },
+            "has_fragment_delimiter": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 1.0
+            },
+            "has_query_delimiter": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 1.0
+            },
+            "has_userinfo": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 0.0
+            },
+            "hostname_ascii_digit_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 2.0,
+              "0.9": 7.0,
+              "1": 40.0
+            },
+            "hostname_ascii_length": {
+              "0": 4.0,
+              "0.1": 13.0,
+              "0.25": 17.0,
+              "0.5": 22.0,
+              "0.75": 31.0,
+              "0.9": 42.0,
+              "1": 104.0
+            },
+            "hostname_hyphen_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 1.0,
+              "0.9": 2.0,
+              "1": 22.0
+            },
+            "hostname_label_count": {
+              "0": 2.0,
+              "0.1": 2.0,
+              "0.25": 3.0,
+              "0.5": 3.0,
+              "0.75": 4.0,
+              "0.9": 4.0,
+              "1": 8.0
+            },
+            "hostname_punycode_label_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 2.0
+            },
+            "is_https": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 1.0,
+              "0.9": 1.0,
+              "1": 1.0
+            },
+            "path_codepoint_length": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 1.0,
+              "0.75": 4.0,
+              "0.9": 20.0,
+              "1": 778.0
+            },
+            "path_segment_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 1.0,
+              "0.9": 2.0,
+              "1": 33.0
+            },
+            "percent_escape_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 27.0
+            },
+            "query_codepoint_length": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 679.0
+            },
+            "query_parameter_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.0,
+              "0.9": 0.0,
+              "1": 51.0
+            },
+            "raw_url_ascii_digit_count": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 4.0,
+              "0.9": 11.0,
+              "1": 293.0
+            },
+            "raw_url_ascii_digit_ratio": {
+              "0": 0.0,
+              "0.1": 0.0,
+              "0.25": 0.0,
+              "0.5": 0.0,
+              "0.75": 0.09210526315789473,
+              "0.9": 0.2,
+              "1": 0.6333333333333333
+            },
+            "raw_url_ascii_letter_count": {
+              "0": 6.0,
+              "0.1": 16.0,
+              "0.25": 20.0,
+              "0.5": 25.0,
+              "0.75": 36.0,
+              "0.9": 57.0,
+              "1": 558.0
+            },
+            "raw_url_codepoint_length": {
+              "0": 15.0,
+              "0.1": 22.0,
+              "0.25": 26.0,
+              "0.5": 34.0,
+              "0.75": 48.0,
+              "0.9": 80.5,
+              "1": 822.0
+            },
+            "raw_url_other_codepoint_count": {
+              "0": 4.0,
+              "0.1": 5.0,
+              "0.25": 5.0,
+              "0.5": 6.0,
+              "0.75": 8.0,
+              "0.9": 11.0,
+              "1": 125.0
+            },
+            "raw_url_other_codepoint_ratio": {
+              "0": 0.0196078431372549,
+              "0.1": 0.1262135922330097,
+              "0.25": 0.16216216216216217,
+              "0.5": 0.19230769230769232,
+              "0.75": 0.22,
+              "0.9": 0.25,
+              "1": 0.38028169014084506
+            },
+            "raw_url_unique_codepoint_count": {
+              "0": 8.0,
+              "0.1": 14.0,
+              "0.25": 16.0,
+              "0.5": 19.0,
+              "0.75": 23.0,
+              "0.9": 30.0,
+              "1": 47.0
+            },
+            "raw_url_utf8_byte_entropy_bits": {
+              "0": 2.7709505944546686,
+              "0.1": 3.653996738665709,
+              "0.25": 3.8282375018429544,
+              "0.5": 4.046439344671016,
+              "0.75": 4.303783770917412,
+              "0.9": 4.676085501131211,
+              "1": 5.300776492698246
+            },
+            "raw_url_utf8_byte_length": {
+              "0": 15.0,
+              "0.1": 22.0,
+              "0.25": 26.0,
+              "0.5": 34.0,
+              "0.75": 48.0,
+              "0.9": 80.5,
+              "1": 822.0
+            }
+          },
+          "routing_strata": [
+            {
+              "both_right": 0,
+              "both_wrong": 49,
+              "lower_inclusive": 0.0,
+              "rows": 160,
+              "transformer_introduced_errors": 0,
+              "transformer_repairs": 111,
+              "upper": 0.1,
+              "upper_inclusive": false
+            },
+            {
+              "both_right": 0,
+              "both_wrong": 2,
+              "lower_inclusive": 0.1,
+              "rows": 26,
+              "transformer_introduced_errors": 0,
+              "transformer_repairs": 24,
+              "upper": 0.25,
+              "upper_inclusive": false
+            },
+            {
+              "both_right": 20,
+              "both_wrong": 0,
+              "lower_inclusive": 0.25,
+              "rows": 24,
+              "transformer_introduced_errors": 1,
+              "transformer_repairs": 3,
+              "upper": 0.5,
+              "upper_inclusive": false
+            },
+            {
+              "both_right": 154,
+              "both_wrong": 0,
+              "lower_inclusive": 0.5,
+              "rows": 162,
+              "transformer_introduced_errors": 8,
+              "transformer_repairs": 0,
+              "upper": 0.75,
+              "upper_inclusive": false
+            },
+            {
+              "both_right": 485,
+              "both_wrong": 0,
+              "lower_inclusive": 0.75,
+              "rows": 498,
+              "transformer_introduced_errors": 13,
+              "transformer_repairs": 0,
+              "upper": 0.9,
+              "upper_inclusive": false
+            },
+            {
+              "both_right": 1037,
+              "both_wrong": 0,
+              "lower_inclusive": 0.9,
+              "rows": 1050,
+              "transformer_introduced_errors": 13,
+              "transformer_repairs": 0,
+              "upper": 0.99,
+              "upper_inclusive": false
+            },
+            {
+              "both_right": 12395,
+              "both_wrong": 0,
+              "lower_inclusive": 0.99,
+              "rows": 12406,
+              "transformer_introduced_errors": 11,
+              "transformer_repairs": 0,
+              "upper": 1.0,
+              "upper_inclusive": true
+            }
+          ],
+          "rows": 14326,
+          "scores": {
+            "logistic_l1": {
+              "0": 0.001765426560847024,
+              "0.1": 0.9667889582291119,
+              "0.25": 0.9990688243802889,
+              "0.5": 0.9998550711124017,
+              "0.75": 0.9999999981989398,
+              "0.9": 1.0,
+              "1": 1.0
+            },
+            "transformer": {
+              "0": 0.002947834087535739,
+              "0.1": 0.9999834299087524,
+              "0.25": 0.9999904632568359,
+              "0.5": 0.9999957084655762,
+              "0.75": 0.9999974966049194,
+              "0.9": 0.9999979734420776,
+              "1": 0.9999986886978149
+            }
+          }
+        }
+      },
+      "models": {
+        "logistic_l1": {
+          "average_precision": 0.9959782822706125,
+          "best_observed_recall_at_one_percent_fpr": {
+            "false_positives": 172,
+            "negative_count": 20267,
+            "positive_count": 14326,
+            "recall": 0.9870166131509144,
+            "threshold": 0.25321325152219915,
+            "true_positives": 14140
+          },
+          "roc_auc": 0.9948562338460734
+        },
+        "transformer": {
+          "average_precision": 0.9983095541614161,
+          "best_observed_recall_at_one_percent_fpr": {
+            "false_positives": 194,
+            "negative_count": 20267,
+            "positive_count": 14326,
+            "recall": 0.9932290939550468,
+            "threshold": 0.035460762679576874,
+            "true_positives": 14229
+          },
+          "roc_auc": 0.998042375733077
+        }
+      }
+    }
+  },
+  "published_ranking_metrics_verified": true,
+  "source_sha256": {
+    "external": "c819d7e713c6f27fbdc89ee0b6e3d523db23254c3a303027dd4a38f4cb5f758f",
+    "internal": "827323a5525992332247011e1cb55a661e2b90d4ee350d65eaee0d136dc52c39"
+  },
+  "uncertainty": "descriptive only; no IID confidence intervals on clustered URLs"
+}

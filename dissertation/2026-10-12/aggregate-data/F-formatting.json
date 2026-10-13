@@ -1,0 +1,118 @@
+{
+  "certified": {
+    "http": {
+      "alerts": 2497,
+      "decision_flips": 236,
+      "false_positive": 2497,
+      "fpr": 1.0,
+      "recall": null,
+      "rows": 2497,
+      "true_positive": 0
+    },
+    "https": {
+      "alerts": 50,
+      "decision_flips": 2211,
+      "false_positive": 50,
+      "fpr": 0.020024028834601523,
+      "recall": null,
+      "rows": 2497,
+      "true_positive": 0
+    },
+    "original": {
+      "alerts": 2261,
+      "decision_flips": 0,
+      "false_positive": 2261,
+      "fpr": 0.9054865839006808,
+      "recall": null,
+      "rows": 2497,
+      "true_positive": 0
+    }
+  },
+  "gold": {
+    "http": {
+      "alerts": 69,
+      "decision_flips": 0,
+      "false_positive": 0,
+      "fpr": null,
+      "recall": 1.0,
+      "rows": 69,
+      "true_positive": 69
+    },
+    "https": {
+      "alerts": 22,
+      "decision_flips": 47,
+      "false_positive": 0,
+      "fpr": null,
+      "recall": 0.3188405797101449,
+      "rows": 69,
+      "true_positive": 22
+    },
+    "original": {
+      "alerts": 69,
+      "decision_flips": 0,
+      "false_positive": 0,
+      "fpr": null,
+      "recall": 1.0,
+      "rows": 69,
+      "true_positive": 69
+    }
+  },
+  "secondary": {
+    "http": {
+      "alerts": 4972,
+      "decision_flips": 0,
+      "false_positive": 0,
+      "fpr": null,
+      "recall": 1.0,
+      "rows": 4972,
+      "true_positive": 4972
+    },
+    "https": {
+      "alerts": 687,
+      "decision_flips": 4285,
+      "false_positive": 0,
+      "fpr": null,
+      "recall": 0.13817377312952533,
+      "rows": 4972,
+      "true_positive": 687
+    },
+    "original": {
+      "alerts": 4972,
+      "decision_flips": 0,
+      "false_positive": 0,
+      "fpr": null,
+      "recall": 1.0,
+      "rows": 4972,
+      "true_positive": 4972
+    }
+  },
+  "tranco": {
+    "http": {
+      "alerts": 1163,
+      "decision_flips": 0,
+      "false_positive": 0,
+      "fpr": null,
+      "recall": null,
+      "rows": 1163,
+      "true_positive": 0
+    },
+    "https": {
+      "alerts": 63,
+      "decision_flips": 1100,
+      "false_positive": 0,
+      "fpr": null,
+      "recall": null,
+      "rows": 1163,
+      "true_positive": 0
+    },
+    "original": {
+      "alerts": 1163,
+      "decision_flips": 0,
+      "false_positive": 0,
+      "fpr": null,
+      "recall": null,
+      "rows": 1163,
+      "true_positive": 0
+    }
+  }
+}

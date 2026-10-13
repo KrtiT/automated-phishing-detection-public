@@ -1,0 +1,28 @@
+Prospective implementation clarification, recorded before P/F/R/C execution.
+
+The identity-only population receipt preserves its specification digest
+252c9d67b146129bdc2e549131e872c77c290009ea6444c58deed0909cce1a24.
+The current specification is a successor, not falsely presented as those same
+bytes. The population receipt and original selector remain unmodified.
+
+Since population preparation, the computation design has been clarified:
+- five cyclic rotations of six paths are not perfectly position-balanced;
+- C's matched-count control uses membership within its fixed 1,000-row workload;
+- request timers include scoring only, with whole-arm overhead separately retained;
+- the reported ratio is paired summed request-scoring time versus structural-only;
+- 100 warmups apply to each arm, excluded by counter-snapshot subtraction.
+
+No model fit, new prediction or timing result informed these clarifications.
+There is no change to R eligibility, selection, source labels, fixed sample size,
+model artifacts, inference thresholds, primary R statements or original hypotheses.
+The final profile binds both the original population receipt and the current
+specification. Independent field-by-field reconstruction of the selected cohort
+is required before that profile is finalized. New source access is not introduced.
+
+The single-process parent owns P, F, R and C admissions in that order, rechecking
+input identities and its live host monitor. Normal AC/thermal observations are
+sampled before and during execution; this is not proof of continuous unobserved
+physical conditions. No fixture admission callback is used with research inputs.
+Any failure is retained and stops this schedule; no automatic restart is permitted.
+The public package will contain aggregate results and releasable code, not the
+private profile, host process observations or raw retained identities.

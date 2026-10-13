@@ -1,0 +1,8 @@
+{
+  "aggregate_comparisons": 119,
+  "independent_of_replay_implementation": true,
+  "new_model_predictions_or_fits": false,
+  "report_sha256": "68bbd42b2ea5b9a5dfdbbb8e0a0452954bd94119f4e2bb8d76b90fa8d4770f52",
+  "status": "all_reconstructed_counts_and_selections_agree",
+  "verifier_sha256": "4a2316ad7c5011ff5fbce7beefc0d1b76f8c054fcc947222558499dfca250349"
+}

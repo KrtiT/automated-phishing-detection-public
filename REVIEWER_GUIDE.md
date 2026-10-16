@@ -2,9 +2,10 @@
 
 **15 October 2026 · authoritative branch: `praxis-realignment-v3`**
 
-The central result is an explanation of why internally successful URL detection
-fails external operating requirements, and why plausible representation, routing
-and service changes address different parts of that failure.
+The central contribution is an empirical design basis for CyberSentinel: measured
+representation value, an exact bound on routing between fixed decisions, a tested
+explanation of shuffled-label ranking and a demonstrated client-path optimization.
+Each result connects an engineering choice to its benefit, cost and applicability.
 
 ## Reading route
 
@@ -28,12 +29,12 @@ and service changes address different parts of that failure.
 
 | Claim | Manuscript | Supporting record |
 |---|---|---|
-| Internal feature gains fail to transfer | Sections 4.2 and 5.1 | Tables 4.2–4.3; original archive |
-| Shared errors limit unchanged decision selection | Sections 4.8.1 and 4.10.2 | Table 4.22; original paired decisions; October 12 R aggregates |
-| Scheme invariance is insufficient for useful detection | Sections 4.8.3 and 4.10.1 | Tables 4.16–4.17 and 4.21; D and F evidence |
+| Internal representation value and external specificity are quantified | Sections 4.2 and 5.1 | Tables 4.2–4.3; original archive |
+| Paired errors establish an exact bound for fixed-decision routing | Sections 4.8.1 and 4.10.2 | Table 4.22; original paired decisions; October 12 R aggregates |
+| Scheme invariance and its detection trade-offs are measured | Sections 4.8.3 and 4.10.1 | Tables 4.16–4.17 and 4.21; D and F evidence |
 | Shuffled training labels can retain substantial ranking | Sections 3.16 and 4.10.4 | [Mechanism report](dissertation/2026-10-15/diagnostics/REPORT.md), all 99 fits, five continuations |
 | Expert computation and HTTP cost are distinct | Sections 4.9.2 and 4.10.3 | Tables 4.18–4.19 and 4.23; S and C evidence |
-| Original requirements remain unmet | Sections 4.7 and 5.3 | [Corrected decisions](dissertation/2026-10-12/aggregate-data/corrected-primary-gates.csv) |
+| Complete operating requirements are adjudicated | Sections 4.7 and 5.2.3 | [Corrected decisions](dissertation/2026-10-12/aggregate-data/corrected-primary-gates.csv) |
 | Figures, tables and links survive export | Complete Word/PDF | [Verification](dissertation/2026-10-15/VERIFICATION.md) |
 | Authorship and assistance are disclosed | Original provenance | [Authorship record](research-archive/2026-10-04/PROVENANCE.md#authorship-and-assistance) |
 

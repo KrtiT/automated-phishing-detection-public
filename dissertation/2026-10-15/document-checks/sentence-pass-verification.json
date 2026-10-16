@@ -1,8 +1,10 @@
 {
   "status": "verified",
   "reviewed_sentence_edits": 40,
-  "docx_sha256": "52bbdf7830836e6219df4062d243c6f9f47a2ffb190f0d472702438b82de45d0",
-  "pdf_sha256": "54b542941688394822cc0e1285558792e332948ae7b9f8995157b26aa1b0fafe",
+  "reviewed_contribution_framing_edits": 43,
+  "intermediate_docx_sha256": "52bbdf7830836e6219df4062d243c6f9f47a2ffb190f0d472702438b82de45d0",
+  "docx_sha256": "4ecf82372d9cd2370a0121d9ca446aa9954ff0cd50bb5b515a520b6c859571f9",
+  "pdf_sha256": "5061a26d75599614f5340cebff6c054330d515ee2a58dd98c2cd53dab3f9ed11",
   "paragraphs_preserved": 657,
   "tables_byte_identical_to_pre_pass": 31,
   "image_parts_byte_identical": 4,
@@ -11,5 +13,5 @@
   "all_existing_hyperlinks_preserved": true,
   "all_numerical_tokens_preserved": true,
   "no_unlisted_content_or_structure_changes": true,
-  "semantic_review": "All 40 edits reviewed against the preceding sentences for preservation of findings, methods, qualifications and citations."
+  "semantic_review": "All 40 sentence edits and 43 contribution-framing edits reviewed for preserved findings, methods, qualifications and citations. The abstract adds the existing 64.07-percentage-point internal recall gain and 8,622-pair invariance result; no original numerical token is removed. Formal hypothesis decisions and detailed routing/computation outcomes remain in the main text."
 }

@@ -1,5 +1,5 @@
 {
-  "docx_sha256": "52bbdf7830836e6219df4062d243c6f9f47a2ffb190f0d472702438b82de45d0",
+  "docx_sha256": "4ecf82372d9cd2370a0121d9ca446aa9954ff0cd50bb5b515a520b6c859571f9",
   "internal_word_hyperlinks": 305,
   "bookmarks": 131,
   "cross_reference_counts": {
@@ -15,8 +15,8 @@
       "all_paragraph_index": 230,
       "label": "Chapter 3",
       "text": "Chapter 3",
-      "start": 351,
-      "end": 360,
+      "start": 357,
+      "end": 366,
       "expected_anchor": "heading_23",
       "actual_anchor": "heading_23",
       "status": "correct"
@@ -81,8 +81,8 @@
       "all_paragraph_index": 239,
       "label": "Chapter 5",
       "text": "Chapter 5",
-      "start": 302,
-      "end": 311,
+      "start": 273,
+      "end": 282,
       "expected_anchor": "heading_62",
       "actual_anchor": "heading_62",
       "status": "correct"
@@ -147,8 +147,8 @@
       "all_paragraph_index": 257,
       "label": "Section 4.8",
       "text": "Sections 4.8",
-      "start": 488,
-      "end": 500,
+      "start": 568,
+      "end": 580,
       "expected_anchor": "heading_53",
       "actual_anchor": "heading_53",
       "status": "correct"
@@ -158,8 +158,8 @@
       "all_paragraph_index": 257,
       "label": "Section 4.10.1",
       "text": "4.10.1",
-      "start": 505,
-      "end": 511,
+      "start": 585,
+      "end": 591,
       "expected_anchor": "revision_heading_4010",
       "actual_anchor": "revision_heading_4010",
       "status": "correct"
@@ -169,8 +169,8 @@
       "all_paragraph_index": 258,
       "label": "Section 4.8.1",
       "text": "Sections 4.8.1",
-      "start": 436,
-      "end": 450,
+      "start": 515,
+      "end": 529,
       "expected_anchor": "heading_54",
       "actual_anchor": "heading_54",
       "status": "correct"
@@ -180,8 +180,8 @@
       "all_paragraph_index": 258,
       "label": "Section 4.10.2",
       "text": "4.10.2",
-      "start": 455,
-      "end": 461,
+      "start": 534,
+      "end": 540,
       "expected_anchor": "revision_heading_4012",
       "actual_anchor": "revision_heading_4012",
       "status": "correct"
@@ -279,8 +279,8 @@
       "all_paragraph_index": 295,
       "label": "Table 2.1",
       "text": "Table 2.1",
-      "start": 341,
-      "end": 350,
+      "start": 346,
+      "end": 355,
       "expected_anchor": "table_1",
       "actual_anchor": "table_1",
       "status": "correct"
@@ -598,8 +598,8 @@
       "all_paragraph_index": 405,
       "label": "Appendix A",
       "text": "Appendix A",
-      "start": 0,
-      "end": 10,
+      "start": 57,
+      "end": 67,
       "expected_anchor": "heading_73",
       "actual_anchor": "heading_73",
       "status": "correct"
@@ -609,8 +609,8 @@
       "all_paragraph_index": 405,
       "label": "Appendix C",
       "text": "Appendix C",
-      "start": 178,
-      "end": 188,
+      "start": 284,
+      "end": 294,
       "expected_anchor": "revision_heading_4018",
       "actual_anchor": "revision_heading_4018",
       "status": "correct"
@@ -686,8 +686,8 @@
       "all_paragraph_index": 450,
       "label": "Section 4.1",
       "text": "Sections 4.1",
-      "start": 65,
-      "end": 77,
+      "start": 171,
+      "end": 183,
       "expected_anchor": "heading_46",
       "actual_anchor": "heading_46",
       "status": "correct"
@@ -697,8 +697,8 @@
       "all_paragraph_index": 450,
       "label": "Section 4.7",
       "text": "4.7",
-      "start": 78,
-      "end": 81,
+      "start": 184,
+      "end": 187,
       "expected_anchor": "heading_52",
       "actual_anchor": "heading_52",
       "status": "correct"
@@ -708,8 +708,8 @@
       "all_paragraph_index": 450,
       "label": "Section 4.8",
       "text": "Sections 4.8",
-      "start": 170,
-      "end": 182,
+      "start": 269,
+      "end": 281,
       "expected_anchor": "heading_53",
       "actual_anchor": "heading_53",
       "status": "correct"
@@ -719,8 +719,8 @@
       "all_paragraph_index": 450,
       "label": "Section 4.10",
       "text": "4.10",
-      "start": 183,
-      "end": 187,
+      "start": 282,
+      "end": 286,
       "expected_anchor": "revision_heading_4009",
       "actual_anchor": "revision_heading_4009",
       "status": "correct"
@@ -829,8 +829,8 @@
       "all_paragraph_index": 584,
       "label": "Table 4.3",
       "text": "Table 4.3",
-      "start": 191,
-      "end": 200,
+      "start": 147,
+      "end": 156,
       "expected_anchor": "table_6",
       "actual_anchor": "table_6",
       "status": "correct"
@@ -840,8 +840,8 @@
       "all_paragraph_index": 584,
       "label": "Section 4.5",
       "text": "Section 4.5",
-      "start": 678,
-      "end": 689,
+      "start": 619,
+      "end": 630,
       "expected_anchor": "heading_50",
       "actual_anchor": "heading_50",
       "status": "correct"
@@ -1236,8 +1236,8 @@
       "all_paragraph_index": 1539,
       "label": "Table 4.20",
       "text": "Table 4.20",
-      "start": 39,
-      "end": 49,
+      "start": 42,
+      "end": 52,
       "expected_anchor": "table_23",
       "actual_anchor": "table_23",
       "status": "correct"
@@ -1291,8 +1291,8 @@
       "all_paragraph_index": 1733,
       "label": "Table 4.14",
       "text": "Table 4.14",
-      "start": 209,
-      "end": 219,
+      "start": 260,
+      "end": 270,
       "expected_anchor": "table_17",
       "actual_anchor": "table_17",
       "status": "correct"
@@ -1302,8 +1302,8 @@
       "all_paragraph_index": 1734,
       "label": "Table 4.2",
       "text": "Tables 4.2",
-      "start": 499,
-      "end": 509,
+      "start": 591,
+      "end": 601,
       "expected_anchor": "table_4_2_summary",
       "actual_anchor": "table_4_2_summary",
       "status": "correct"
@@ -1313,8 +1313,8 @@
       "all_paragraph_index": 1734,
       "label": "Table 4.3",
       "text": "4.3",
-      "start": 510,
-      "end": 513,
+      "start": 602,
+      "end": 605,
       "expected_anchor": "table_6",
       "actual_anchor": "table_6",
       "status": "correct"
@@ -1324,8 +1324,8 @@
       "all_paragraph_index": 1736,
       "label": "Table 4.5",
       "text": "Table 4.5",
-      "start": 459,
-      "end": 468,
+      "start": 483,
+      "end": 492,
       "expected_anchor": "table_8",
       "actual_anchor": "table_8",
       "status": "correct"
@@ -1335,8 +1335,8 @@
       "all_paragraph_index": 1737,
       "label": "Table 4.6",
       "text": "Tables 4.6",
-      "start": 513,
-      "end": 523,
+      "start": 545,
+      "end": 555,
       "expected_anchor": "table_9",
       "actual_anchor": "table_9",
       "status": "correct"
@@ -1346,8 +1346,8 @@
       "all_paragraph_index": 1737,
       "label": "Table 4.7",
       "text": "4.7",
-      "start": 524,
-      "end": 527,
+      "start": 556,
+      "end": 559,
       "expected_anchor": "table_10",
       "actual_anchor": "table_10",
       "status": "correct"
@@ -1357,8 +1357,8 @@
       "all_paragraph_index": 1737,
       "label": "Table 4.14",
       "text": "4.14",
-      "start": 532,
-      "end": 536,
+      "start": 564,
+      "end": 568,
       "expected_anchor": "table_17",
       "actual_anchor": "table_17",
       "status": "correct"
@@ -1368,8 +1368,8 @@
       "all_paragraph_index": 1740,
       "label": "Section 4.8.1",
       "text": "Sections 4.8.1",
-      "start": 344,
-      "end": 358,
+      "start": 406,
+      "end": 420,
       "expected_anchor": "heading_54",
       "actual_anchor": "heading_54",
       "status": "correct"
@@ -1379,8 +1379,8 @@
       "all_paragraph_index": 1740,
       "label": "Section 4.10.2",
       "text": "4.10.2",
-      "start": 363,
-      "end": 369,
+      "start": 425,
+      "end": 431,
       "expected_anchor": "revision_heading_4012",
       "actual_anchor": "revision_heading_4012",
       "status": "correct"
@@ -1390,8 +1390,8 @@
       "all_paragraph_index": 1741,
       "label": "Table 4.21",
       "text": "Table 4.21",
-      "start": 0,
-      "end": 10,
+      "start": 87,
+      "end": 97,
       "expected_anchor": "revision_table_4011",
       "actual_anchor": "revision_table_4011",
       "status": "correct"
@@ -1401,8 +1401,8 @@
       "all_paragraph_index": 1741,
       "label": "Table 4.16",
       "text": "Tables 4.16",
-      "start": 79,
-      "end": 90,
+      "start": 157,
+      "end": 168,
       "expected_anchor": "table_19",
       "actual_anchor": "table_19",
       "status": "correct"
@@ -1412,8 +1412,8 @@
       "all_paragraph_index": 1741,
       "label": "Table 4.17",
       "text": "4.17",
-      "start": 91,
-      "end": 95,
+      "start": 169,
+      "end": 173,
       "expected_anchor": "table_20",
       "actual_anchor": "table_20",
       "status": "correct"
@@ -1423,8 +1423,8 @@
       "all_paragraph_index": 1742,
       "label": "Table 4.18",
       "text": "Tables 4.18",
-      "start": 69,
-      "end": 80,
+      "start": 154,
+      "end": 165,
       "expected_anchor": "table_21",
       "actual_anchor": "table_21",
       "status": "correct"
@@ -1434,8 +1434,8 @@
       "all_paragraph_index": 1742,
       "label": "Table 4.19",
       "text": "4.19",
-      "start": 81,
-      "end": 85,
+      "start": 166,
+      "end": 170,
       "expected_anchor": "table_22",
       "actual_anchor": "table_22",
       "status": "correct"
@@ -1445,8 +1445,8 @@
       "all_paragraph_index": 1742,
       "label": "Table 4.23",
       "text": "Table 4.23",
-      "start": 152,
-      "end": 162,
+      "start": 173,
+      "end": 183,
       "expected_anchor": "revision_table_4015",
       "actual_anchor": "revision_table_4015",
       "status": "correct"
@@ -1588,8 +1588,8 @@
       "all_paragraph_index": 1773,
       "label": "Appendix A",
       "text": "Appendix A",
-      "start": 0,
-      "end": 10,
+      "start": 82,
+      "end": 92,
       "expected_anchor": "heading_73",
       "actual_anchor": "heading_73",
       "status": "correct"
@@ -1599,8 +1599,8 @@
       "all_paragraph_index": 1773,
       "label": "Appendix C",
       "text": "Appendix C",
-      "start": 81,
-      "end": 91,
+      "start": 246,
+      "end": 256,
       "expected_anchor": "revision_heading_4018",
       "actual_anchor": "revision_heading_4018",
       "status": "correct"
@@ -1879,7 +1879,7 @@
       "reason": "Section 3.2 belongs to the cited paper, not this manuscript."
     }
   ],
-  "pdf_sha256": "54b542941688394822cc0e1285558792e332948ae7b9f8995157b26aa1b0fafe",
+  "pdf_sha256": "5061a26d75599614f5340cebff6c054330d515ee2a58dd98c2cd53dab3f9ed11",
   "logical_click_targets_checked": 424,
   "pdf_internal_annotations": 438,
   "pdf_link_checks": [
@@ -2198,18 +2198,18 @@
         7
       ],
       "destination_pages": [
-        25
+        26
       ],
       "annotation_count": 1
     },
     {
-      "label": "3",
+      "label": "4",
       "anchor": "heading_7",
       "source_pages": [
         7
       ],
       "destination_pages": [
-        25
+        26
       ],
       "annotation_count": 1
     },
@@ -2242,18 +2242,18 @@
         8
       ],
       "destination_pages": [
-        26
+        27
       ],
       "annotation_count": 1
     },
     {
-      "label": "4",
+      "label": "5",
       "anchor": "heading_9",
       "source_pages": [
         8
       ],
       "destination_pages": [
-        26
+        27
       ],
       "annotation_count": 1
     },
@@ -4717,7 +4717,7 @@
         25
       ],
       "destination_pages": [
-        25
+        26
       ],
       "annotation_count": 1
     },
@@ -4835,7 +4835,7 @@
       "label": "Sections 4.8.1",
       "anchor": "heading_54",
       "source_pages": [
-        28
+        29
       ],
       "destination_pages": [
         93
@@ -4846,7 +4846,7 @@
       "label": "4.10.2",
       "anchor": "revision_heading_4012",
       "source_pages": [
-        28
+        29
       ],
       "destination_pages": [
         107
@@ -5212,7 +5212,7 @@
         54
       ],
       "destination_pages": [
-        26
+        27
       ],
       "annotation_count": 1
     },
@@ -5451,7 +5451,7 @@
       "label": "Section 4.6",
       "anchor": "heading_51",
       "source_pages": [
-        68
+        69
       ],
       "destination_pages": [
         89
@@ -5517,7 +5517,7 @@
       "label": "Section 4.5",
       "anchor": "heading_50",
       "source_pages": [
-        72
+        71
       ],
       "destination_pages": [
         81
@@ -6045,7 +6045,7 @@
       "label": "Sections 4.8.1",
       "anchor": "heading_54",
       "source_pages": [
-        116
+        117
       ],
       "destination_pages": [
         93
@@ -6056,7 +6056,7 @@
       "label": "4.10.2",
       "anchor": "revision_heading_4012",
       "source_pages": [
-        116
+        117
       ],
       "destination_pages": [
         107
@@ -6067,7 +6067,7 @@
       "label": "Table 4.21",
       "anchor": "revision_table_4011",
       "source_pages": [
-        116
+        117
       ],
       "destination_pages": [
         106
@@ -6078,7 +6078,7 @@
       "label": "Tables 4.16",
       "anchor": "table_19",
       "source_pages": [
-        116
+        117
       ],
       "destination_pages": [
         97
@@ -6089,7 +6089,7 @@
       "label": "4.17",
       "anchor": "table_20",
       "source_pages": [
-        116
+        117
       ],
       "destination_pages": [
         100
@@ -6166,7 +6166,7 @@
       "label": "Sections 4.8.1",
       "anchor": "heading_54",
       "source_pages": [
-        118
+        119
       ],
       "destination_pages": [
         93
@@ -6177,7 +6177,7 @@
       "label": "4.10.2",
       "anchor": "revision_heading_4012",
       "source_pages": [
-        118
+        119
       ],
       "destination_pages": [
         107
@@ -6188,7 +6188,7 @@
       "label": "Table 4.5",
       "anchor": "table_8",
       "source_pages": [
-        118
+        119
       ],
       "destination_pages": [
         75
@@ -6221,7 +6221,7 @@
       "label": "Table 4.22",
       "anchor": "revision_table_4013",
       "source_pages": [
-        119
+        120
       ],
       "destination_pages": [
         108
@@ -6232,7 +6232,7 @@
       "label": "Sections 4.9",
       "anchor": "heading_57",
       "source_pages": [
-        119
+        120
       ],
       "destination_pages": [
         101
@@ -6243,7 +6243,7 @@
       "label": "4.10.3",
       "anchor": "revision_heading_4014",
       "source_pages": [
-        119
+        120
       ],
       "destination_pages": [
         109
@@ -6323,7 +6323,7 @@
         138
       ],
       "destination_pages": [
-        25
+        26
       ],
       "annotation_count": 1
     },

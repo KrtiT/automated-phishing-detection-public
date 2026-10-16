@@ -1,8 +1,9 @@
-# Cross-dataset reliability: manuscript and control diagnosis
+# Cross-dataset reliability: manuscript and research evidence
 
-The manuscript explains why strong internal URL detection fails to transfer,
-why shared errors limit expert routing, and why representation invariance and
-service speed must be evaluated alongside detection quality.
+CyberSentinel provides an empirical design basis for cascaded URL phishing
+detection. The manuscript connects representation, expert selection and execution
+cost through controlled comparisons, giving each design decision a measurable
+benefit, trade-off and scope.
 
 - [Read the dissertation](manuscript/Tallam_Krti_Praxis_Strengthened_2026-10-15.pdf)
   · [Word copy](manuscript/Tallam_Krti_Praxis_Strengthened_2026-10-15.docx).
@@ -10,45 +11,51 @@ service speed must be evaluated alongside detection quality.
 - [Reproduce and verify](REPRODUCTION.md) · [data dictionary](DATA_DICTIONARY.md).
 - [Document and numerical verification](VERIFICATION.md) · [file hashes](SHA256SUMS.txt).
 
-## What the evidence adds
+## Research contributions
 
-The original external cohort contains 2,261 false positives shared by both
-models among 2,497 certified negatives. Selecting between those unchanged
-binary decisions has a 90.5487% false-positive floor. On the separate routing
-cohort, wider gates add 18 false positives without selecting a repair. Universal
-positive detection makes recall-only noninferiority a limited practical result.
+Structural features increase internal recall by 64.07 percentage points at
+0.7747% FPR. Scheme interventions isolate sensitivity to supplied spelling, and
+a refit achieves exact invariance across 8,622 paired inputs. Labeled comparisons
+quantify the associated detection losses and remaining specificity shortfall,
+connecting a verified representation property to its practical consequences.
 
-Scheme interventions identify sensitivity to URL spelling. A separate refit
-achieves exact scheme invariance across 8,622 pairs but loses detections and
-retains poor specificity. The controls explain another consequence of the
-format–class association: small coefficients learned from randomized labels can
-still order the unchanged validation labels. All 99 additional permutations
-complete without warnings; their AUCs span 0.1046–0.9496.
-Fixed-score term removal and five stricter optimization checks support the
-mechanism. These diagnostics explain the audited pipeline; they do not identify
-collection-source causality or certify that every possible leakage path is absent.
+Paired errors establish an exact routing bound for the evaluated decisions.
+The models share 2,261 false positives among 2,497 certified external negatives,
+imposing a 90.5487% false-positive floor on selection between their unchanged
+binary decisions. Wider gates on a separate cohort add 18 false positives without
+selected repairs. This gives redesign a concrete priority: improve the available
+decisions before increasing calls. Recall-only noninferiority addresses preservation
+at complete observed recall; specificity and corrections determine useful expert value.
 
-The service experiments distinguish expert computation from request handling.
-Worker-owned clients reduce median paired p95 by 79.68% in the tested synthetic,
-structural-only HTTP setup. A similar improvement without a model supports a
-client/transport explanation. Sparse expert calls increase scoring time by
-1.646 times on a different workload; the two measurements cannot be pooled.
+Audited controls explain how small random coefficients can rank unchanged
+validation labels when format and class are associated. All 99 additional
+permutations complete without warnings, spanning AUC 0.1046–0.9496. Fixed-score
+term removal and five stricter optimization checks support the mechanism.
+These analyses characterize the audited pipeline; they do not identify
+collection-source causality or certify every possible leakage path.
+
+The service experiments demonstrate a client-path optimization and quantify
+expert work separately. Worker-owned clients reduce median paired p95 by 79.68%
+in the tested synthetic structural-only HTTP setup. A similar no-model improvement
+supports a client/transport explanation. Sparse expert calls increase scoring
+time by 1.646 times on a different workload; combining the results would not
+establish a net transformer-service speedup.
 
 The original H1–H3 joint requirements remain unsupported, with eight passing
-component checks of 22. The scientific contribution is the evidence explaining
-these failures and the design decisions it constrains.
+component checks of 22. Their decisions distinguish gateway readiness from the
+measured representation, routing, control and service contributions.
 
 ## Reading and evidence structure
 
-The Word/PDF pair is the current reading edition: 149 pages,
-31 tables, four original figures and 127 navigation targets.
-The abstract and Chapters 1–5 now develop the connected argument. Sections 3.16
-and 4.10.4 contain the control methods and mechanism results. Appendices retain
-provenance and the distinctions between hypothesis tests and diagnostic analyses.
+The current Word/PDF edition contains 149 pages, 31 tables, four original
+figures and 127 navigation targets. The abstract and Chapters 1–5 lead with what
+the experiments establish and the engineering choices they inform. Sections 3.16
+and 4.10.4 explain the control methods and mechanism. Appendices retain provenance
+and the distinctions between hypothesis tests and diagnostic analyses.
 
 Earlier [October 4](../2026-10-04/README.md) and
 [October 12](../2026-10-12/README.md) editions retain their original evidence.
 The [October 12 response](../2026-10-12/advisor/Advisor_Response_2026-10-12.pdf)
-and presentation remain historical companion materials, not revised copies of
-this edition. All original numerical result tables and hypothesis decisions are
-preserved. The new figure in `diagnostics/` supports the control report.
+and presentation remain historical companion materials for those editions.
+All original numerical result tables and hypothesis decisions are preserved.
+The supporting diagnostic figure is in `diagnostics/`.

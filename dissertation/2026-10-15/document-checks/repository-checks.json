@@ -1,12 +1,12 @@
 {
   "status": "verified",
-  "checked_at": "2026-10-16T03:37:29.265024+00:00",
+  "checked_at": "2026-10-16T03:50:43.349574+00:00",
   "scope": "Focused publication tests, public diagnostic aggregates, new-package integrity/privacy, current reading links and unchanged historical snapshots; not the full research software suite.",
   "commands": [
     {
       "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python -m pytest -q tests/test_dissertation_revision.py tests/test_dissertation_publication.py",
       "exit_code": 0,
-      "stdout": "..................                                                       [100%]\n18 passed in 0.21s\n",
+      "stdout": "..................                                                       [100%]\n18 passed in 0.22s\n",
       "stderr": ""
     },
     {
@@ -25,20 +25,22 @@
   "publication_tests_passed": 18,
   "additional_permutation_fits": 99,
   "strict_continuations": 5,
-  "docx_sha256": "52bbdf7830836e6219df4062d243c6f9f47a2ffb190f0d472702438b82de45d0",
-  "pdf_sha256": "54b542941688394822cc0e1285558792e332948ae7b9f8995157b26aa1b0fafe",
+  "docx_sha256": "4ecf82372d9cd2370a0121d9ca446aa9954ff0cd50bb5b515a520b6c859571f9",
+  "pdf_sha256": "5061a26d75599614f5340cebff6c054330d515ee2a58dd98c2cd53dab3f9ed11",
   "sentence_edits_verified": 40,
+  "contribution_framing_edits_verified": 43,
   "tables": 31,
   "original_images": 4,
   "pdf_pages": 149,
-  "local_markdown_links_checked": 54,
-  "text_files_scanned": 244,
+  "local_markdown_links_checked": 51,
+  "text_files_scanned": 245,
   "docx_xml_parts_scanned": 25,
   "flagged_private_paths_or_credentials": 0,
   "unexpected_file_types_or_symlinks": 0,
   "raw_record_or_cache_files": 0,
   "published_sources_match_measured_or_reviewed_sources": true,
   "historical_snapshots_unchanged": true,
+  "scientific_evidence_unchanged_during_contribution_framing": true,
   "figure_review": "All points and axis labels visible after export; panels A and B include full [0,1] AUC range.",
   "whitespace_check": "Includes staged and unstaged changes against HEAD. CRLF line endings in generated CSV evidence are preserved and accepted; other whitespace checks remain enabled."
 }

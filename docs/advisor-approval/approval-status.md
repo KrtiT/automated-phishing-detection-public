@@ -2,28 +2,29 @@
 
 ## Completed Evidence — 15 October 2026
 
-The original research is complete: **22 primary checks, 125 operational cells
-and 25 operational groups**, with secondary analyses and the separate D/S
-follow-ups. **H1, H2 and H3 are not supported** under their unchanged conjunctive
-rules (eight passing checks after corrected paired inference). D and S remain
-separate, fully reported comparisons rather than replacements for H1–H3.
+The research establishes measured representation trade-offs, a bound on routing
+between fixed model decisions, an explanation of shuffled-label ranking and a
+client-path optimization. The manuscript connects those findings to the design
+choices they inform.
 
-Read the [current research story](../../dissertation/2026-10-15/README.md),
-[manuscript and evidence index](../../dissertation/2026-10-15/README.md), and
-[reproduction boundaries](../../dissertation/2026-10-15/REPRODUCTION.md).
-The implementation, completed measurements and final adjudication supersede the
-earlier completion-status statements below; they do not alter frozen methods,
-retrospectively claim advisor approval or erase interrupted attempts.
+The complete evaluation covers **22 primary checks, 125 operational cells and
+25 operational groups**, with eight passing component checks after corrected
+paired inference. H1, H2 and H3 are not supported under their original joint
+requirements.
+D/S and P/F/R/C comparisons retain their own populations and decisions, including
+the two recall-only R findings; they do not replace the original hypotheses.
 
-The current revision adds completed P/F/R/C diagnostics, a corrected 22-check
-ledger and two separately specified recall-only findings on R. These do not
-replace original H1–H3 or their thresholds. The October 4 edition remains a
-historical record; its nine-pass count is superseded by the current correction.
+Read the [manuscript and evidence index](../../dissertation/2026-10-15/README.md),
+[control mechanism](../../dissertation/2026-10-15/diagnostics/REPORT.md), and
+[reproduction guide](../../dissertation/2026-10-15/REPRODUCTION.md).
+The control explanation is supported by complete randomization, fixed-score
+component removal and stricter convergence checks. The paper leads with these
+research contributions; its appendices and supporting records preserve provenance.
 
-The [control mechanism](../../dissertation/2026-10-15/diagnostics/REPORT.md)
-now has tested support from complete randomization, fixed-score component removal
-and numerical convergence checks. The manuscript integrates those findings into
-the research argument; provenance remains in its appendices and supporting records.
+The completed measurements and adjudication supersede earlier completion-status
+statements. Frozen methods, interrupted attempts and the historical snapshot below
+remain intact. The October 4 nine-pass count is superseded by corrected inference;
+publication establishes neither retrospective advisor approval nor submission acceptance.
 
 <details>
 <summary>Historical snapshot — preserved pre-synthesis record at ef8ba5f</summary>

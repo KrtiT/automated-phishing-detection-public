@@ -2,11 +2,11 @@
 
 **CyberSentinel — research, code and evidence; author review edition, 15 October 2026.**
 
-Strong internal detection can fail across sources. This investigation explains
-that failure through controlled tests of URL representation, shared model errors,
-selective expert calls and the costs of inference and request handling. The
-contribution is a reproducible engineering account of which changes help, which
-introduce errors and which properties do not establish gateway reliability.
+CyberSentinel establishes an empirical design basis for cascaded URL phishing
+detection. Controlled comparisons quantify representation value, expert correction
+opportunities and execution costs. The research connects each engineering choice
+to a measured property, its detection consequences and the evidence needed to
+judge its usefulness.
 
 ## Start here
 
@@ -22,41 +22,46 @@ introduce errors and which properties do not establish gateway reliability.
 
 ## What the research establishes
 
-1. **Internal gains do not establish transfer.** Structural features add
-   64.07 percentage points of internal recall over length alone at 0.7747% FPR.
-   External certified FPR rises to 90.5487% at the selected threshold.
-2. **Shared errors bound routing.** Both models falsely flag the same 2,261 of
-   2,497 certified external negatives. Selection between those unchanged binary
-   decisions inherits a 90.5487% FPR floor. Wider gates on a separate cohort add
-   18 false positives without selecting a repair. Recall-only noninferiority has
-   limited practical value when every model detects every positive and flags most
-   negatives.
-3. **Invariance and detection are separate requirements.** Forced HTTPS under
-   frozen weights reduces false positives from 2,261 to 50 but detections from
-   69 to 22. A separate refit establishes exact invariance across **8,622** pairs,
-   with 251 fewer false positives and 184 fewer detections. Neither intervention
-   meets the detection requirement.
-4. **The randomized controls have a tested mechanism.** All validation negatives
+1. **Measured representation value.** Structural features add 64.07 percentage
+   points of internal recall over length alone at 0.7747% FPR. External certified
+   FPR is 90.5487%, identifying specificity on the intended source as a distinct
+   design requirement.
+2. **An exact routing bound for the evaluated decisions.** Both models share
+   2,261 false positives among 2,497 certified external negatives. Selection
+   between their unchanged binary decisions inherits a 90.5487% FPR floor.
+   Wider gates on a separate cohort add 18 false positives without a repair.
+   This directs engineering effort toward better available decisions before
+   increasing calls. Recall-only noninferiority measures preservation at complete
+   observed recall; specificity and selected repairs determine practical utility.
+3. **Verified scheme invariance with measured detection trade-offs.** A refit
+   achieves exact invariance across **8,622** pairs, with 251 fewer false positives
+   and 184 fewer detections. A separate frozen-weight intervention reduces false
+   positives from 2,261 to 50 and detections from 69 to 22 under forced HTTPS.
+   These comparisons connect a checkable representation property to its labeled
+   consequences. Both retain specificity shortfalls.
+4. **A tested explanation of shuffled-label ranking.** All validation negatives
    use HTTPS, compared with 46.6362% of positives. Small random fitted coefficients
-   can order that unchanged class structure even when scores are close to 0.5.
-   All 99 additional permutations complete; AUC spans 0.1046–0.9496.
-   Independent validation-label shuffling yields mean AUC 0.5000.
-   Component removal and stricter convergence checks support the explanation;
-   they do not identify collection-source causality or prove absence of all leakage.
-5. **Model and service costs require different measurements.** Sparse expert
-   calls cost 1.646 times structural summed-scoring time on the computation
-   workload. Worker-owned clients reduce median paired p95 by **79.68%** in a
-   separate synthetic structural-only HTTP setup. Comparable predictions agree
-   for **99,999/99,999** pairs; strict response equality is **799/100,000**, because
-   admission order changes and one shared-client request times out. The no-model
-   control supports a client/transport explanation, not transformer acceleration.
+   can order that unchanged class structure even with scores near 0.5. All 99
+   additional permutations complete; AUC spans 0.1046–0.9496. Independent
+   validation-label shuffling yields mean AUC 0.5000. Component removal and
+   stricter convergence checks provide complementary support. Collection-source
+   causality and certification against every leakage path remain outside that result.
+5. **A measured client-path optimization.** Worker-owned clients reduce median
+   paired p95 by **79.68%** in the synthetic structural-only HTTP setup, with a
+   similar no-model improvement. Comparable predictions agree for **99,999/99,999**
+   pairs; strict response equality is **799/100,000**, reflecting admission-order
+   changes and one shared-client timeout. Separate computation measurements show
+   sparse expert calls cost 1.646 times structural summed-scoring time. The two
+   experiments locate different costs; the HTTP result is not transformer acceleration.
 
-**H1, H2 and H3 are not supported** under their unchanged joint rules.
-The complete record contains **22 primary checks**, **125 operational cells**
-and **25 operational groups**. Corrected inference gives eight passing component
-checks: H1 5/10, H2 1/4 and H3 2/8. D/S requirements and R recall-only comparisons
-remain distinct. The [contribution comparison](dissertation/2026-10-12/CONTRIBUTION_MATRIX.txt)
-places the results alongside prior work; this is not a deployment-ready detector.
+The evidence covers **22 primary checks**, **125 operational cells** and
+**25 operational groups**, with eight passing component checks: H1 5/10,
+H2 1/4 and H3 2/8. H1, H2 and H3 are not supported under their original joint
+requirements, so the evaluated gateway is not deployment-ready. D/S requirements
+and R recall-only
+comparisons retain their separate decisions. The
+[contribution comparison](dissertation/2026-10-12/CONTRIBUTION_MATRIX.txt) places
+these measured design findings alongside prior work.
 
 ## Research questions
 

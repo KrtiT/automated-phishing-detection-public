@@ -2,7 +2,7 @@
 
 The Word/PDF pair contains 149 total pages and 104 main-body pages,
 31 tables, four original figures and 127 checked navigation targets. Double
-spacing and Times New Roman are retained. The 167-word abstract fits one page.
+spacing and Times New Roman are retained. The 161-word abstract fits one page.
 The manuscript meets the supplied 150-page total ceiling; the body still exceeds
 the approximately 80-page recommendation.
 
@@ -17,7 +17,7 @@ the approximately 80-page recommendation.
   original SHA-256 digests, without requiring the private fit receipts.
 - The document audit verifies all original numerical result tables, hypothesis
   statements, references and original figure bytes. Changes are logged for
-  92 original paragraphs, ten additions and 13 interpretive table cells.
+  94 original paragraphs, ten additions and 13 interpretive table cells.
 - All 2,119 nonempty paragraphs and table cells render. No table caption is
   detached and no figure intersects prose. Internal and exported external links,
   references and document privacy checks pass. The changed prose and selected
@@ -29,9 +29,18 @@ paragraph and run formatting, hyperlinks and all unedited text. All numerical
 tokens in the edited paragraphs are preserved; the changes received a semantic
 review for retained findings, methods, qualifications and citations.
 
-Word SHA-256: `52bbdf7830836e6219df4062d243c6f9f47a2ffb190f0d472702438b82de45d0`
+A further contribution-focused pass reframes 43 paragraphs around measured
+achievements and engineering decisions. The independent structural check verifies
+both editorial stages against their preserved predecessors. All original numerical
+tokens, tables, images, paragraph/run formatting and hyperlinks remain intact.
+The abstract adds two existing results: the 64.07-percentage-point internal recall
+gain and verified invariance across 8,622 pairs. Formal hypothesis decisions,
+detection losses, false-positive rates, and methodological qualifications remain
+explicit in the main text.
 
-PDF SHA-256: `54b542941688394822cc0e1285558792e332948ae7b9f8995157b26aa1b0fafe`
+Word SHA-256: `4ecf82372d9cd2370a0121d9ca446aa9954ff0cd50bb5b515a520b6c859571f9`
+
+PDF SHA-256: `5061a26d75599614f5340cebff6c054330d515ee2a58dd98c2cd53dab3f9ed11`
 
 The machine-readable receipts are in `document-checks/` and `diagnostics/`.
 The change ledger is an editorial record; it does not overwrite prior editions.

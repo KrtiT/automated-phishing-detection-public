@@ -1,0 +1,13 @@
+{
+  "source_docx_sha256": "4ecf82372d9cd2370a0121d9ca446aa9954ff0cd50bb5b515a520b6c859571f9",
+  "source_pdf_sha256": "5061a26d75599614f5340cebff6c054330d515ee2a58dd98c2cd53dab3f9ed11",
+  "source_commit": "ab31003684ba8695f89ca6ca766a708bc0165539",
+  "reason": "The author confirmed that the described practitioner discussions did not occur and requested removal of that claim.",
+  "changes": [
+    {
+      "pre_pass_paragraph_index": 20,
+      "before": "I am grateful to the security practitioners and research and industry colleagues who shared their experiences of deploying detection systems and responding to incidents. Those discussions helped me describe the practical limits of detection in production. I also thank the contributors who made the datasets and benchmarks publicly available, and my family, friends and online communities for their support while I wrote, reran experiments and discussed this work.",
+      "after": "I also thank the contributors who made the datasets and benchmarks publicly available, and my family, friends and online communities for their support while I wrote, reran experiments and discussed this work."
+    }
+  ]
+}

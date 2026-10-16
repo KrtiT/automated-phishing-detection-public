@@ -17,7 +17,7 @@ the approximately 80-page recommendation.
   original SHA-256 digests, without requiring the private fit receipts.
 - The document audit verifies all original numerical result tables, hypothesis
   statements, references and original figure bytes. Changes are logged for
-  94 original paragraphs, ten additions and 13 interpretive table cells.
+  95 original paragraphs, ten additions and 13 interpretive table cells.
 - All 2,119 nonempty paragraphs and table cells render. No table caption is
   detached and no figure intersects prose. Internal and exported external links,
   references and document privacy checks pass. The changed prose and selected
@@ -38,9 +38,14 @@ gain and verified invariance across 8,622 pairs. Formal hypothesis decisions,
 detection losses, false-positive rates, and methodological qualifications remain
 explicit in the main text.
 
-Word SHA-256: `4ecf82372d9cd2370a0121d9ca446aa9954ff0cd50bb5b515a520b6c859571f9`
+The author requested removal of two sentences about practitioner discussions
+from the acknowledgements. An exact comparison with the preceding published
+edition confirms this is the only manuscript change, with the remaining
+acknowledgements, research content and formatting preserved.
 
-PDF SHA-256: `5061a26d75599614f5340cebff6c054330d515ee2a58dd98c2cd53dab3f9ed11`
+Word SHA-256: `0ffa5fc27ef87b87ac80f84f9592fe2d362bf933395b36ed41b7fa6acb6a0637`
+
+PDF SHA-256: `1751a4b286b3e9becb6462384a8552f2677bf61695990f2295d60f285879b3eb`
 
 The machine-readable receipts are in `document-checks/` and `diagnostics/`.
 The change ledger is an editorial record; it does not overwrite prior editions.

@@ -2,9 +2,11 @@
   "status": "verified",
   "reviewed_sentence_edits": 40,
   "reviewed_contribution_framing_edits": 43,
+  "author_requested_acknowledgement_corrections": 1,
+  "acknowledgement_correction_is_only_change_from_published_predecessor": true,
   "intermediate_docx_sha256": "52bbdf7830836e6219df4062d243c6f9f47a2ffb190f0d472702438b82de45d0",
-  "docx_sha256": "4ecf82372d9cd2370a0121d9ca446aa9954ff0cd50bb5b515a520b6c859571f9",
-  "pdf_sha256": "5061a26d75599614f5340cebff6c054330d515ee2a58dd98c2cd53dab3f9ed11",
+  "docx_sha256": "0ffa5fc27ef87b87ac80f84f9592fe2d362bf933395b36ed41b7fa6acb6a0637",
+  "pdf_sha256": "1751a4b286b3e9becb6462384a8552f2677bf61695990f2295d60f285879b3eb",
   "paragraphs_preserved": 657,
   "tables_byte_identical_to_pre_pass": 31,
   "image_parts_byte_identical": 4,
@@ -13,5 +15,5 @@
   "all_existing_hyperlinks_preserved": true,
   "all_numerical_tokens_preserved": true,
   "no_unlisted_content_or_structure_changes": true,
-  "semantic_review": "All 40 sentence edits and 43 contribution-framing edits reviewed for preserved findings, methods, qualifications and citations. The abstract adds the existing 64.07-percentage-point internal recall gain and 8,622-pair invariance result; no original numerical token is removed. Formal hypothesis decisions and detailed routing/computation outcomes remain in the main text."
+  "semantic_review": "All 40 sentence edits and 43 contribution-framing edits reviewed for preserved findings, methods, qualifications and citations. The abstract adds the existing 64.07-percentage-point internal recall gain and 8,622-pair invariance result; no original numerical token is removed. Formal hypothesis decisions and detailed routing/computation outcomes remain in the main text. One acknowledgement correction removes the practitioner-discussion claim the author confirmed was inaccurate; the remaining acknowledgements and all research content are unchanged."
 }

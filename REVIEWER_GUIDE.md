@@ -2,41 +2,49 @@
 
 **15 October 2026 · authoritative branch: `praxis-realignment-v3`**
 
-The central contribution is an empirical design basis for CyberSentinel: measured
-representation value, an exact bound on routing between fixed decisions, a tested
-explanation of shuffled-label ranking and a demonstrated client-path optimization.
-Each result connects an engineering choice to its benefit, cost and applicability.
+The manuscript develops an empirical design argument through RQ1–RQ3:
+representation and transfer, monitoring and action, and selective execution and
+service cost. Each question links a design rationale, a specified comparison,
+measured outcomes and an engineering implication.
 
 ## Reading route
 
 1. Read the abstract and Chapters 1 and 5 in the
-   [manuscript](dissertation/2026-10-15/manuscript/Tallam_Krti_Praxis_Strengthened_2026-10-15.pdf).
-   They connect the research questions to the contribution and its design implications.
-2. Read Chapters 3–4 for populations, paired estimands, controls and results.
-   Sections 3.16 and 4.10.4 explain the shuffled-label mechanism. The
-   [diagnostic report](dissertation/2026-10-15/diagnostics/REPORT.md) supplies
-   complete aggregate evidence and a standalone figure.
+   [manuscript](dissertation/2026-10-15/manuscript/Tallam_Krti_Praxis_Strengthened_2026-10-15.pdf)
+   for the research questions, contributions and synthesis.
+2. Read Chapters 3–4 for models, populations, paired estimands and results.
+   Sections 3.15–3.16 introduce the diagnostic comparisons motivated by the initial
+   evaluation, with specifications fixed before their execution. Sections 4.8–4.10
+   connect representation, expert selection and service choices to their consequences.
 3. Use the [current reproduction guide](dissertation/2026-10-15/REPRODUCTION.md)
-   to check all 99 fits and five optimization continuations. Its adapter verifies
-   the numerical inputs before a new permutation run. Original private fit receipts
-   are required to re-authenticate the five earlier audited fits.
+   and [control report](dissertation/2026-10-15/diagnostics/REPORT.md) for all 99
+   permutations and five convergence continuations. The adapter authenticates
+   numerical input arrays; original private fit receipts are needed to re-authenticate
+   the five earlier audited fits.
 4. Follow the [original archive](research-archive/2026-10-04/README.md) and
-   [component evidence](dissertation/2026-10-12/REPRODUCTION.md) for the remaining
-   detection, routing and service results. Earlier review responses and slides
-   remain companion records for their dated editions.
+   [component evidence](dissertation/2026-10-12/REPRODUCTION.md) for detection,
+   monitoring, routing and service measurements. Dated responses and slides remain
+   companion records for their own editions.
 
 ## Follow a claim to its evidence
 
-| Claim | Manuscript | Supporting record |
+| Research question or finding | Manuscript | Supporting record |
 |---|---|---|
-| Internal representation value and external specificity are quantified | Sections 4.2 and 5.1 | Tables 4.2–4.3; original archive |
-| Paired errors establish an exact bound for fixed-decision routing | Sections 4.8.1 and 4.10.2 | Table 4.22; original paired decisions; October 12 R aggregates |
-| Scheme invariance and its detection trade-offs are measured | Sections 4.8.3 and 4.10.1 | Tables 4.16–4.17 and 4.21; D and F evidence |
-| Shuffled training labels can retain substantial ranking | Sections 3.16 and 4.10.4 | [Mechanism report](dissertation/2026-10-15/diagnostics/REPORT.md), all 99 fits, five continuations |
-| Expert computation and HTTP cost are distinct | Sections 4.9.2 and 4.10.3 | Tables 4.18–4.19 and 4.23; S and C evidence |
-| Complete operating requirements are adjudicated | Sections 4.7 and 5.2.3 | [Corrected decisions](dissertation/2026-10-12/aggregate-data/corrected-primary-gates.csv) |
-| Figures, tables and links survive export | Complete Word/PDF | [Verification](dissertation/2026-10-15/VERIFICATION.md) |
-| Authorship and assistance are disclosed | Original provenance | [Authorship record](research-archive/2026-10-04/PROVENANCE.md#authorship-and-assistance) |
+| RQ1: internal recall gain, format association and external scheme sensitivity | Sections 4.2, 4.8 and 4.10.1 | Tables 4.2–4.3, 4.16–4.17, 4.21; D/F evidence |
+| RQ2: monitoring sensitivity and the consequences of escalation | Sections 4.3 and 5.1 | Table 4.5; original primary results |
+| RQ3: available expert corrections, selected repairs and routing bound | Sections 4.8.1 and 4.10.2 | Table 4.22; paired decisions and R aggregates |
+| Client ownership and separate expert-computation cost | Sections 4.9.2 and 4.10.3 | Tables 4.18–4.19 and 4.23; S/C evidence |
+| Shuffled-label ranking and numerical controls | Sections 3.16 and 4.10.4 | [Mechanism report](dissertation/2026-10-15/diagnostics/REPORT.md) |
+| H1–H3 decisions under the original joint criteria | Sections 4.7 and 5.2.3 | [Corrected decisions](dissertation/2026-10-12/aggregate-data/corrected-primary-gates.csv) |
+| Preservation of content, formatting, figures and links | Complete Word/PDF | [Verification](dissertation/2026-10-15/VERIFICATION.md) |
+| Authorship and assistance | Original provenance | [Authorship record](research-archive/2026-10-04/PROVENANCE.md#authorship-and-assistance) |
+
+The [claim-to-evidence map](dissertation/2026-10-15/document-checks/three-contribution-evidence-map.json)
+records source hashes and the limits of each interpretation. In particular, the
+validation-format association is not a quantified decomposition of group-test
+recall, and the routing bound concerns selection between unchanged binary decisions
+on the stated cohort. The separate refit and fixed-weight experiments use different
+cohorts and cannot be pooled as a single causal normalization effect.
 
 ## Numerical requirements
 
@@ -62,16 +70,16 @@ All three original joint hypotheses are adjudicated as not supported. Useful
 positive findings—including structural recall gains, exact scheme invariance and
 the measured client-path improvement—are presented with their actual boundaries.
 
-## Manuscript conventions and formal review
+## Manuscript conventions and defense copy
 
-The current copy uses the GWU Praxis structure, double spacing, numbered sections,
-portrait Letter pages, author–date citations and an unnumbered bibliography.
-It contains **149 pages**, 31 tables and four figures. The supplied
-D.Eng. guidance sets a 150-page total ceiling and recommends approximately 80
-main-body pages; the manuscript meets the total ceiling but remains longer than
-that body recommendation. The verification record gives the rendered boundaries.
+The manuscript retains the established GW Praxis structure, Times New Roman,
+double spacing, portrait Letter pages, numbered sections, author–date citations
+and an unnumbered bibliography. It contains **150 pages**, including **104 main-body
+pages**, 31 tables and four figures. The supplied guidance gives a 150-page total
+ceiling and an approximately 80-page body recommendation; the latter remains a
+length consideration.
 
-Both Amir Etemadi and Mazen Mheish are thanked. Academic-integrity clearance,
-formal committee roles, scope approval and final submission acceptance remain
-university decisions. Publication and software checks do not establish them.
-Private correspondence and marked-up historical manuscripts are excluded.
+The author confirmed Amir Etemadi and Mazen Mheish as co-directors and Vijay
+Raghavan as committee member. This copy is for an upcoming defense and does not
+certify a completed final examination. Prior-degree dates remain as supplied by
+the author. University approval and acceptance are separate from repository checks.

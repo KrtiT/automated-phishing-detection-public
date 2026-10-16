@@ -1,0 +1,31 @@
+{
+  "status": "reviewed",
+  "docx_sha256": "9a621c338808d64c5742223b73d295fcd42391c57af6a99a81f9bf69c40c1dd8",
+  "pdf_sha256": "eb0b8d98033094ff025e534f4e8aec47e2b05946f03bedbc55b00263308c07ce",
+  "pdf_pages": 150,
+  "main_body_pages": 104,
+  "body_start_pdf_page": 24,
+  "references_start_pdf_page": 128,
+  "abstract_pages": [
+    6,
+    7
+  ],
+  "abstract_words": 219,
+  "abstract_fits_one_page": false,
+  "review": "The approved 219-word abstract is exact, with chat paragraph breaks joined to preserve the existing single-paragraph abstract. Visually inspected both abstract pages and the updated contents. All other manuscript text is preserved apart from the author-saved title date; all table text, math XML, figure pixels and active link labels/destinations match the preceding verified edition. Complete rendering and actual PDF link checks pass.",
+  "preceding_full_review": "pre-abstract-reading-review.json",
+  "confirmed_committee_roles": {
+    "co_directors": [
+      "Amir Etemadi",
+      "Mazen Mheish"
+    ],
+    "member": "Vijay Raghavan"
+  },
+  "submission_stage": "upcoming defense",
+  "inaccurate_practitioner_acknowledgement_removed": true,
+  "visual_review_pdf_pages": [
+    6,
+    7,
+    8
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "status": "local_checks_passed",
+  "checked_at": "2026-10-16T05:30:20.558027+00:00",
+  "baseline_commit": "b123b7efe49ab362153bb12cc7bf6b993b8784ba",
+  "scope": "Complete local software suite and repository CI-equivalent commands on the current runtime/test source. Document rendering, retained scientific measurements and university acceptance are separate checks.",
+  "runtime": {
+    "python": "3.10.19",
+    "system": "Darwin",
+    "machine": "arm64",
+    "numpy": "2.2.6",
+    "blas": [
+      {
+        "internal_api": "openblas",
+        "version": "0.3.29",
+        "threading_layer": "pthreads",
+        "architecture": "neoversen1"
+      }
+    ],
+    "pytest": "8.4.2"
+  },
+  "full_suite": {
+    "status": "passed",
+    "command": ".venv/bin/python -m pytest -q --tb=short",
+    "exit_code": 0,
+    "summary": "13313 passed, 2 skipped in 3882.66s (1:04:42)",
+    "passed": 13313,
+    "failed": 0,
+    "skipped": 2,
+    "xfailed": 0,
+    "xpassed": 0,
+    "log_sha256": "6c6a3a212efe684be556c88e81ab0d55b1d40e4e84c867059a0df2002d46e14e"
+  },
+  "ancillary_checks": [
+    {
+      "command": ".venv/bin/ruff check src tests scripts",
+      "exit_code": 0,
+      "stdout": "All checks passed!\n",
+      "stderr": ""
+    },
+    {
+      "command": ".venv/bin/ruff format --check src tests scripts",
+      "exit_code": 0,
+      "stdout": "1131 files already formatted\n",
+      "stderr": ""
+    },
+    {
+      "command": "uv lock --check",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Resolved 56 packages in 17ms\n"
+    },
+    {
+      "command": ".venv/bin/phishing-research --help",
+      "exit_code": 0,
+      "stdout": "usage: phishing-research [-h]\n                         {validate-manifest,prepare-phiusiil,fit-baselines,fit-transformer-cascade,fit-gmm-monitor,verify-transformer-bundle}\n                         ...\n\npositional arguments:\n  {validate-manifest,prepare-phiusiil,fit-baselines,fit-transformer-cascade,fit-gmm-monitor,verify-transformer-bundle}\n\noptions:\n  -h, --help            show this help message and exit\n",
+      "stderr": ""
+    },
+    {
+      "command": "uv build",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Building source distribution...\nBuilding wheel from source distribution...\nSuccessfully built dist/automated_phishing_detection-0.1.0.dev0.tar.gz\nSuccessfully built dist/automated_phishing_detection-0.1.0.dev0-py3-none-any.whl\n"
+    }
+  ],
+  "source_file_count": 1134,
+  "source_fingerprint_sha256": "e143930218b827088e9980b4da62a6764db975f4e95773e4a57a708759405e02",
+  "source_fingerprint_method": "SHA-256 of compact sorted JSON mapping tracked src/tests/scripts files, pyproject.toml, uv.lock, CI workflow and the new test helper to their SHA-256 hashes.",
+  "changed_test_file_sha256": {
+    "tests/public_binding_fixtures.py": "ec6f99217cab3a6e6dd16d21e44a724660058b9ceff79f54c7de6138533cd9bb",
+    "tests/test_development_execution.py": "c0e14436077c8d43d9dbdc82d908845d2ce19540d29f3e1e70461540865c445a",
+    "tests/test_seed_probe_execution.py": "2ab16315a80685ea826de57cc287845c9961189adede57fcfef03d7bdf1aa51f"
+  },
+  "fixture_fix": "Authenticate the two approved public privacy projections for mocked synthetic bindings. Original historical pins and production binders are unchanged; regression tests reject historical-pin substitution and committed report tampering.",
+  "remote_ci": {
+    "status": "not_claimed_by_this_local_receipt",
+    "workflow": ".github/workflows/ci.yml",
+    "note": "Pushing the edition triggers GitHub CI on the new commit. Consult that run for its separate result."
+  }
+}

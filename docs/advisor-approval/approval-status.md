@@ -2,29 +2,37 @@
 
 ## Completed Evidence — 15 October 2026
 
-The research establishes measured representation trade-offs, a bound on routing
-between fixed model decisions, an explanation of shuffled-label ranking and a
-client-path optimization. The manuscript connects those findings to the design
-choices they inform.
+CyberSentinel links three research questions to measurable design consequences:
 
-The complete evaluation covers **22 primary checks, 125 operational cells and
-25 operational groups**, with eight passing component checks after corrected
-paired inference. H1, H2 and H3 are not supported under their original joint
-requirements.
-D/S and P/F/R/C comparisons retain their own populations and decisions, including
-the two recall-only R findings; they do not replace the original hypotheses.
+- **RQ1:** internal representation gains, format–class association, fixed-weight
+  scheme sensitivity and separately evaluated scheme invariance.
+- **RQ2:** distribution-monitor sensitivity and the detection outcomes of its
+  escalation policy.
+- **RQ3:** available expert corrections, selected decisions, computation and
+  client/service performance.
+
+The internal 64.07-percentage-point gain is interpreted alongside the validation
+format association; its HTTPS-attributable fraction is not identified. Paired
+outputs bound the benefit available to unchanged-decision routing. A no-model
+control supports the measured client-path improvement. The shuffled-label controls
+supply a tested explanation of validation ranking within the fixed-data experiment.
+
+The study covers **22 primary checks, 125 operational cells and 25 operational
+groups**. Eight component checks pass after corrected inference.
+H1, H2 and H3 are not supported under their original joint requirements. D/S and F/R/C/P
+retain their separate populations and decisions. The initial results motivated
+the diagnostic comparisons, whose specifications were fixed before execution.
 
 Read the [manuscript and evidence index](../../dissertation/2026-10-15/README.md),
 [control mechanism](../../dissertation/2026-10-15/diagnostics/REPORT.md), and
 [reproduction guide](../../dissertation/2026-10-15/REPRODUCTION.md).
-The control explanation is supported by complete randomization, fixed-score
-component removal and stricter convergence checks. The paper leads with these
-research contributions; its appendices and supporting records preserve provenance.
+The current copy is for the upcoming defense, with author-confirmed co-directors
+Amir Etemadi and Mazen Mheish and committee member Vijay Raghavan.
 
-The completed measurements and adjudication supersede earlier completion-status
-statements. Frozen methods, interrupted attempts and the historical snapshot below
-remain intact. The October 4 nine-pass count is superseded by corrected inference;
-publication establishes neither retrospective advisor approval nor submission acceptance.
+Completed measurements supersede the completion-status statements below. The
+historical records and frozen methods retain their original bytes. The October 4
+nine-pass count is superseded by the corrected eight-pass adjudication; publication
+does not confer advisor approval or submission acceptance.
 
 <details>
 <summary>Historical snapshot — preserved pre-synthesis record at ef8ba5f</summary>

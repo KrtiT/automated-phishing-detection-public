@@ -1,0 +1,71 @@
+{
+  "status": "verified",
+  "docx_sha256": "9a621c338808d64c5742223b73d295fcd42391c57af6a99a81f9bf69c40c1dd8",
+  "pdf_sha256": "eb0b8d98033094ff025e534f4e8aec47e2b05946f03bedbc55b00263308c07ce",
+  "prior_verified_docx_sha256": "e486282cb71e1b5f18e2c9b3591868fae6c6e51bf34d37dd26b5839e854ca369",
+  "author_saved_docx_sha256": "52796505005e59d53791479050ab06d00c92f4a222ee331a0563f2b6f5356403",
+  "author_save": {
+    "paragraphs_compared": 2254,
+    "only_text_change": {
+      "paragraph": 4,
+      "before": "October 2, 2026",
+      "after": "November 5th, 2026"
+    },
+    "word_reserialized_package": true,
+    "table_cell_text_preserved": true,
+    "math_xml_preserved": true,
+    "hyperlink_labels_and_targets_preserved": true,
+    "word_caption_self_link_serialization": "Table 4.2 self-link converted to a HYPERLINK field; all destinations retained",
+    "page_size_and_margins_preserved": true,
+    "figure_pixel_data_preserved": 4
+  },
+  "abstract_update": {
+    "approved_text_exact": true,
+    "changed_body_paragraph": 23,
+    "paragraph_formatting_preserved": true,
+    "all_other_document_nodes_identical_after_allowing_navigation_caches": true,
+    "all_other_package_parts_identical_to_author_save": true
+  },
+  "navigation_cache_changes": [
+    {
+      "bookmark": "list_figures",
+      "before": "xiii",
+      "after": "xiv"
+    },
+    {
+      "bookmark": "list_tables",
+      "before": "xiv",
+      "after": "xv"
+    },
+    {
+      "bookmark": "symbols",
+      "before": "xvii",
+      "after": "xviii"
+    },
+    {
+      "bookmark": "acronyms",
+      "before": "xviii",
+      "after": "xix"
+    },
+    {
+      "bookmark": "glossary",
+      "before": "xxi",
+      "after": "xxii"
+    }
+  ],
+  "layout": {
+    "pdf_pages": 150,
+    "main_body_pages": 104,
+    "body_start_pdf_page": 24,
+    "references_start_pdf_page": 128,
+    "abstract_pages": [
+      6,
+      7
+    ],
+    "abstract_words": 219,
+    "abstract_fits_one_page": false
+  },
+  "render_receipt_sha256": "bd28dd3327c7fc7e4dd4ad508a870c50ee801576f974e377c0c29cdc4420c11b",
+  "figure_preservation_note": "Word renamed and re-encoded the images during the author save. Decoded RGBA pixels and dimensions remain identical; package-byte identity is asserted only for the subsequent abstract update.",
+  "prior_verification_note": "Earlier editorial receipts retain the hashes and exact-XML assertions of their own stage. This receipt connects that verified stage to the author save and the final abstract/export."
+}

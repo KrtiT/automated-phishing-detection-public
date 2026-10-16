@@ -1,61 +1,71 @@
 # Cross-dataset reliability: manuscript and research evidence
 
-CyberSentinel provides an empirical design basis for cascaded URL phishing
-detection. The manuscript connects representation, expert selection and execution
-cost through controlled comparisons, giving each design decision a measurable
-benefit, trade-off and scope.
+CyberSentinel connects representation, monitoring and selective expert execution
+to detection and service outcomes. The Praxis follows RQ1–RQ3 from design rationale
+and method through controlled comparisons, results and engineering implications.
 
-- [Read the dissertation](manuscript/Tallam_Krti_Praxis_Strengthened_2026-10-15.pdf)
+- [Dissertation PDF](manuscript/Tallam_Krti_Praxis_Strengthened_2026-10-15.pdf)
   · [Word copy](manuscript/Tallam_Krti_Praxis_Strengthened_2026-10-15.docx).
 - [Shuffled-label mechanism and evidence](diagnostics/REPORT.md).
 - [Reproduce and verify](REPRODUCTION.md) · [data dictionary](DATA_DICTIONARY.md).
-- [Document and numerical verification](VERIFICATION.md) · [file hashes](SHA256SUMS.txt).
+- [Verification](VERIFICATION.md) · [file hashes](SHA256SUMS.txt).
 
-## Research contributions
+## Research questions and contributions
 
-Structural features increase internal recall by 64.07 percentage points at
-0.7747% FPR. Scheme interventions isolate sensitivity to supplied spelling, and
-a refit achieves exact invariance across 8,622 paired inputs. Labeled comparisons
-quantify the associated detection losses and remaining specificity shortfall,
-connecting a verified representation property to its practical consequences.
+**RQ1 — Representation and transfer.** The measured internal recall gain is
+64.07 percentage points at 0.7747% FPR. Validation controls reveal strong
+format–class association, while the fixed-weight scheme intervention changes
+external false positives from 2,261 to 50 and gold detections from 69 to 22.
+A separate refit verifies scheme invariance across 8,622 pairs and quantifies its
+detection trade-off. The experiments identify format dependence; their different
+partitions and interventions do not quantify the fraction of internal gain due
+to HTTPS or isolate normalization as the cause of the refit's detection changes.
 
-Paired errors establish an exact routing bound for the evaluated decisions.
-The models share 2,261 false positives among 2,497 certified external negatives,
-imposing a 90.5487% false-positive floor on selection between their unchanged
-binary decisions. Wider gates on a separate cohort add 18 false positives without
-selected repairs. This gives redesign a concrete priority: improve the available
-decisions before increasing calls. Recall-only noninferiority addresses preservation
-at complete observed recall; specificity and corrections determine useful expert value.
+**RQ2 — Monitoring and action.** The monitor flags 87.12% of external windows
+and 11.11% of audit windows. Replay selects the expert for 94.8512% of requests,
+adds 218 certified false positives and retains 69/69 gold detections. Evaluating
+both alerts and subsequent decisions supplies a concrete test of monitoring utility.
 
-Audited controls explain how small random coefficients can rank unchanged
-validation labels when format and class are associated. All 99 additional
-permutations complete without warnings, spanning AUC 0.1046–0.9496. Fixed-score
-term removal and five stricter optimization checks support the mechanism.
-These analyses characterize the audited pipeline; they do not identify
-collection-source causality or certify every possible leakage path.
+**RQ3 — Selective execution and service cost.** Both models flag the same 2,261
+of 2,497 certified benign URLs. Selection between their unchanged decisions has
+an exact 90.5487% FPR floor on that cohort. On separate data, wider gates select
+no repairs and add 18 false positives. Worker-owned clients reduce median paired
+HTTP p95 by 79.68% in the single-host synthetic structural-only experiment; a
+no-model control supports the client-path explanation. Expert computation is
+measured separately, so these results do not establish a net transformer-service
+speedup. Comparable predictions agree despite changed admission order.
 
-The service experiments demonstrate a client-path optimization and quantify
-expert work separately. Worker-owned clients reduce median paired p95 by 79.68%
-in the tested synthetic structural-only HTTP setup. A similar no-model improvement
-supports a client/transport explanation. Sparse expert calls increase scoring
-time by 1.646 times on a different workload; combining the results would not
-establish a net transformer-service speedup.
+The shuffled-label analysis supports interpretation of RQ1. Across all 99
+additional permutations, AUC spans 0.1046–0.9496; validation-label randomization
+returns mean AUC 0.5000. Fixed-score component removal and five stricter
+convergence checks support the explanation of small random coefficients ranking
+structured validation labels. Collection-source causality is not identified.
 
-The original H1–H3 joint requirements remain unsupported, with eight passing
-component checks of 22. Their decisions distinguish gateway readiness from the
-measured representation, routing, control and service contributions.
+The original joint hypotheses H1–H3 remain unsupported, with eight passing
+component checks of 22. These decisions retain the stated operating criteria
+while the experiments establish specific design properties and consequences.
 
-## Reading and evidence structure
+## Manuscript and evidence structure
 
-The current Word/PDF edition contains 149 pages, 31 tables, four original
-figures and 127 navigation targets. The abstract and Chapters 1–5 lead with what
-the experiments establish and the engineering choices they inform. Sections 3.16
-and 4.10.4 explain the control methods and mechanism. Appendices retain provenance
-and the distinctions between hypothesis tests and diagnostic analyses.
+The defense reading copy contains 150 total pages, 104 main-body pages,
+31 tables, four original figures and 127 navigation entries. The abstract is
+219 words and spans two pages with the existing double spacing. The original RQ/hypothesis statements, numerical result cells, equations,
+references and figure pixels are preserved. Five interpretive cells in Table 5.1
+are refined to match the evidence.
 
-Earlier [October 4](../2026-10-04/README.md) and
-[October 12](../2026-10-12/README.md) editions retain their original evidence.
-The [October 12 response](../2026-10-12/advisor/Advisor_Response_2026-10-12.pdf)
-and presentation remain historical companion materials for those editions.
-All original numerical result tables and hypothesis decisions are preserved.
-The supporting diagnostic figure is in `diagnostics/`.
+Sections 3.15–3.16 explain the diagnostic design rationale and the sequence of
+specification and execution. Appendices retain the detailed provenance. Earlier
+[October 4](../2026-10-04/README.md) and [October 12](../2026-10-12/README.md)
+editions and their companion responses retain their original evidence.
+The [claim-to-evidence map](document-checks/three-contribution-evidence-map.json)
+connects the synthesis to source aggregates and interpretation boundaries.
+
+The [abstract/export check](document-checks/abstract-update-verification.json)
+connects the earlier manuscript verification to the author-saved title date and
+approved abstract. Earlier receipts retain their own document hashes.
+
+The [final prose verification](document-checks/posture-verification.json) extends
+that chain through 27 interpretive edits and four updated navigation caches.
+All numerical results and formal decisions are preserved. The full local software
+suite records 13,313 passed tests, two skipped and zero failures in the
+[software receipt](document-checks/software-checks.json).

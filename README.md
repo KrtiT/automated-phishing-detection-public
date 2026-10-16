@@ -1,12 +1,11 @@
 # Cross-Dataset Reliability and Computational Trade-offs in Cascaded URL Phishing Detection
 
-**CyberSentinel — research, code and evidence; author review edition, 15 October 2026.**
+**CyberSentinel — research, code and evidence; defense reading edition, 15 October 2026.**
 
-CyberSentinel establishes an empirical design basis for cascaded URL phishing
-detection. Controlled comparisons quantify representation value, expert correction
-opportunities and execution costs. The research connects each engineering choice
-to a measured property, its detection consequences and the evidence needed to
-judge its usefulness.
+CyberSentinel connects URL representation, distribution monitoring and selective
+expert execution to measured detection and service outcomes. Paired comparisons,
+controlled input interventions and service measurements explain how design choices
+affect a cascaded phishing detector and provide concrete criteria for its evaluation.
 
 ## Start here
 
@@ -20,65 +19,61 @@ judge its usefulness.
 - [Component evidence and corrected decisions](dissertation/2026-10-12/README.md)
   · [response to seven review comments](dissertation/2026-10-12/advisor/Advisor_Response_2026-10-12.pdf).
 
-## What the research establishes
+## Research questions and findings
 
-1. **Measured representation value.** Structural features add 64.07 percentage
-   points of internal recall over length alone at 0.7747% FPR. External certified
-   FPR is 90.5487%, identifying specificity on the intended source as a distinct
-   design requirement.
-2. **An exact routing bound for the evaluated decisions.** Both models share
-   2,261 false positives among 2,497 certified external negatives. Selection
-   between their unchanged binary decisions inherits a 90.5487% FPR floor.
-   Wider gates on a separate cohort add 18 false positives without a repair.
-   This directs engineering effort toward better available decisions before
-   increasing calls. Recall-only noninferiority measures preservation at complete
-   observed recall; specificity and selected repairs determine practical utility.
-3. **Verified scheme invariance with measured detection trade-offs.** A refit
-   achieves exact invariance across **8,622** pairs, with 251 fewer false positives
-   and 184 fewer detections. A separate frozen-weight intervention reduces false
-   positives from 2,261 to 50 and detections from 69 to 22 under forced HTTPS.
-   These comparisons connect a checkable representation property to its labeled
-   consequences. Both retain specificity shortfalls.
-4. **A tested explanation of shuffled-label ranking.** All validation negatives
-   use HTTPS, compared with 46.6362% of positives. Small random fitted coefficients
-   can order that unchanged class structure even with scores near 0.5. All 99
-   additional permutations complete; AUC spans 0.1046–0.9496. Independent
-   validation-label shuffling yields mean AUC 0.5000. Component removal and
-   stricter convergence checks provide complementary support. Collection-source
-   causality and certification against every leakage path remain outside that result.
-5. **A measured client-path optimization.** Worker-owned clients reduce median
-   paired p95 by **79.68%** in the synthetic structural-only HTTP setup, with a
-   similar no-model improvement. Comparable predictions agree for **99,999/99,999**
-   pairs; strict response equality is **799/100,000**, reflecting admission-order
-   changes and one shared-client timeout. Separate computation measurements show
-   sparse expert calls cost 1.646 times structural summed-scoring time. The two
-   experiments locate different costs; the HTTP result is not transformer acceleration.
+1. **RQ1 — Representation and transfer.** Structural features add 64.07 percentage
+   points of internal recall at 0.7747% FPR. Validation controls identify a strong
+   format–class association: all 20,209 negatives use HTTPS, versus 46.6362% of
+   positives. A negative HTTPS indicator alone has AUC 0.7668. The separate
+   fixed-weight intervention reduces external false positives from 2,261 to 50
+   and gold detections from 69 to 22. These findings identify format dependence
+   as a design target; they do not quantify the HTTPS-attributable share of the
+   group-test recall gain. A separate refit verifies invariance across **8,622**
+   pairs and measures its detection trade-off.
+2. **RQ2 — Monitoring and action.** The GMM flags **115/132 external windows
+   (87.12%)** and **28/252 audit windows (11.11%)**. Stateful replay selects the
+   expert for 94.8512% of requests and adds **218 certified false positives**
+   while retaining 69/69 gold detections. Following alerts into decisions makes
+   the response's utility measurable alongside the monitor's sensitivity.
+3. **RQ3 — Selective execution and service cost.** The two models falsely flag
+   the same **2,261 of 2,497** certified negatives. Any router choosing between
+   their unchanged binary decisions therefore inherits a **90.5487% FPR floor**
+   on that cohort. Wider gates select no repairs and add 18 false positives on
+   a separate cohort. Service experiments identify a useful implementation
+   change: worker-owned clients reduce median paired HTTP p95 by **79.68%** on
+   one host with synthetic structural-only requests. A no-model control supports
+   the client-path explanation. Separate computation measurements quantify expert
+   cost rather than a net transformer-service speedup.
+
+Across the primary service pairs, all **99,999** comparable successful responses
+agree on predictions; only **799/100,000** requested responses agree on every
+field except request ID. This separates prediction agreement from admission order.
+
+The shuffled-label experiments support RQ1's interpretation: all **99** additional
+training permutations complete, with AUC **0.1046–0.9496**; independent validation-label
+shuffling gives mean AUC **0.5000**. Component-removal and convergence checks explain
+how small random fitted coefficients rank structured validation labels. HTTPS
+alone does not explain the highest AUC, and collection-source causality is not
+identified by these comparisons.
 
 The evidence covers **22 primary checks**, **125 operational cells** and
 **25 operational groups**, with eight passing component checks: H1 5/10,
 H2 1/4 and H3 2/8. H1, H2 and H3 are not supported under their original joint
-requirements, so the evaluated gateway is not deployment-ready. D/S requirements
-and R recall-only
-comparisons retain their separate decisions. The
-[contribution comparison](dissertation/2026-10-12/CONTRIBUTION_MATRIX.txt) places
-these measured design findings alongside prior work.
+requirements. The research contribution is the connection from implemented
+design choices to their measured detection and execution consequences. D/S and
+R recall-only comparisons retain their separate decisions. The
+[contribution comparison](dissertation/2026-10-12/CONTRIBUTION_MATRIX.txt) locates
+the measured findings in the research literature.
 
-## Research questions
-
-- **RQ1:** Which structural and character-level representation gains survive
-  domain-disjoint internal and external evaluation?
-- **RQ2:** Does monitoring identify input departure and guide escalation within
-  the false-positive constraint?
-- **RQ3:** What detection, invocation, throughput and latency trade-offs govern
-  inline viability?
-
-Chapters 3–5 define the comparisons, present the numerical evidence and answer
-these questions. Sections 3.16 and 4.10.4 integrate the control mechanism into the
-methods and results. Appendices retain evidence locations and methodological
-history. The current edition has 149 pages, 31 tables, four original
-figures, 127 navigation targets and 62 reference entries. It meets the supplied
-150-page total ceiling but remains above the approximately 80-page body
-recommendation; this is not a waiver or submission approval.
+Chapters 1–5 follow the established Praxis structure: problem and research
+questions, related work, methods, results, and discussion. Sections 3.15–3.16
+explain how the initial results motivated the diagnostic comparisons and when
+their specifications were fixed. The copy is prepared for the upcoming defense:
+Amir Etemadi and Mazen Mheish are co-directors; Vijay Raghavan is the committee member.
+It contains **150 total pages**, **104 main-body pages**, **31 tables**, **four figures**,
+**127 navigation entries** and **62 references**. It is within the supplied
+150-page total ceiling and exceeds the approximately 80-page body recommendation.
+The Word copy remains editable for author review.
 
 ## Code, data and verification
 
@@ -99,11 +94,14 @@ uv run --locked --no-sync pytest -q tests/test_dissertation_revision.py tests/te
 uv run --locked --no-sync python dissertation/2026-10-15/diagnostics/source/verify_public_diagnostics.py dissertation/2026-10-15/diagnostics
 ```
 
-Publication checks do not establish that the full suite passes. The retained
-[October 12 verification](dissertation/2026-10-12/VERIFICATION.txt) records a
-pre-existing full-suite fixture incompatibility involving frozen hashes after
-privacy projection. The [current verification](dissertation/2026-10-15/VERIFICATION.md)
-states the checks actually run for this edition.
+The full local software suite passes **13,313 tests**, with **two skipped** and
+**zero failures**. The [software receipt](dissertation/2026-10-15/document-checks/software-checks.json)
+records the tested source and runtime; GitHub CI supplies its own commit-specific result.
+
+The [current verification](dissertation/2026-10-15/VERIFICATION.md) distinguishes
+software checks from document and scientific-evidence checks. Synthetic execution
+fixtures authenticate the published compatibility-report projections; production
+binders and frozen research hashes retain their original checks.
 
 The original archive accounts for 73,234 files: 72,754 unchanged files, 340
 disclosed metadata projections and 140 hash-only private entries. It remains available under its

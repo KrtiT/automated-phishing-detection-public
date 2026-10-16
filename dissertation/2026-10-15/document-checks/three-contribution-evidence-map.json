@@ -1,0 +1,259 @@
+{
+  "status": "verified",
+  "scope": "Current RQ synthesis checked against retained numerical sources; no scientific evidence files modified.",
+  "docx_sha256": "e486282cb71e1b5f18e2c9b3591868fae6c6e51bf34d37dd26b5839e854ca369",
+  "source_sha256": {
+    "dissertation/2026-10-04/aggregate-data/primary-results.json": "a3745f77f4949c59ed753985e179114250abdb642cd6ae797f309f539ba3ef46",
+    "dissertation/2026-10-15/diagnostics/saved-fit-diagnosis.json": "78854fcacbb240a3bf94c25de193cb66d8d86ec00701d016c19f6bd64c9b88a8",
+    "dissertation/2026-10-15/diagnostics/diagnostic-summary.json": "ed89f73c15e4bc984f961cd2109fb433022595b46777e9c38d159606ff477833",
+    "dissertation/2026-10-12/aggregate-data/F-formatting.json": "57a5f1ecf5a4564002a5bb19a81a9c2cd81e2488725ea00ed9aefbe55260b141",
+    "dissertation/2026-10-04/aggregate-data/detection-D/detection-metrics.csv": "44c025b361b94e80330a1a02a3692ad5336eeab842872d4b7a40257c63d7bfaf",
+    "dissertation/2026-10-04/aggregate-data/detection-D/scheme-invariance.csv": "19e60bab1b54d4338faba14020ba5dfa7f13acb3a558b26b6618053de1cbb1a1",
+    "dissertation/2026-10-12/aggregate-data/paired-and-dependence-audit.json": "86e8dc03c923e1a0810558e08292f3ea480ebf9c9b862c5583135b857d8928d6",
+    "dissertation/2026-10-12/aggregate-data/R-routing.json": "990f4cf734be12b523e41dca9f2de479007530ed93f5998ed36eea681d5feeab",
+    "dissertation/2026-10-04/aggregate-data/verification.json": "558cbe9b1204875f8422eb1614b81e9512128d00ca0719370e4ea24a65241ef6",
+    "dissertation/2026-10-04/aggregate-data/service-S/primary-pairs.csv": "efcdc5a4e4d3ecc74c7642bf8f9070c6adf4144399857b40da642a04562ea95f",
+    "dissertation/2026-10-04/aggregate-data/service-S/pair-metrics.csv": "7c84413ea6aa6dac787c23e7b2851bc39d77787e59f6c84cd902f7e8b5eab466",
+    "dissertation/2026-10-12/aggregate-data/C-cost-summary.json": "c1768d3f5df1d145d42f6ac85669c683348c6b710a0f237eb1363e073798d98b",
+    "dissertation/2026-10-12/aggregate-data/corrected-primary-gates.csv": "4856cfc8996bdab4d44dff73f8262f714b6e2f2c627ef8354f0e70477bffdfcc"
+  },
+  "claims": [
+    {
+      "finding": "RQ1 internal representation comparison",
+      "sections": [
+        "4.2",
+        "5.1",
+        "5.2.1"
+      ],
+      "values": {
+        "recall_gain_percentage_points": 64.0723160686863,
+        "candidate_true_positives": 14137,
+        "length_only_true_positives": 4958,
+        "positives": 14326,
+        "false_positives": 157,
+        "negatives": 20267
+      },
+      "sources": [
+        "dissertation/2026-10-04/aggregate-data/primary-results.json"
+      ],
+      "scope": "Group-test comparison, distinct from the 32,695-row control-validation partition. No experiment quantifies the HTTPS-attributable fraction of this gain."
+    },
+    {
+      "finding": "RQ1 validation format association and training-label controls",
+      "sections": [
+        "3.16.3",
+        "4.10.4",
+        "5.1"
+      ],
+      "values": {
+        "https_by_class": {
+          "0": {
+            "n": 20209,
+            "https": 20209,
+            "fraction": 1.0
+          },
+          "1": {
+            "n": 12486,
+            "https": 5823,
+            "fraction": 0.4663623258049015
+          }
+        },
+        "negative_https_indicator_auc": 0.7668188370975493,
+        "permutations": 99,
+        "auc": {
+          "n": 99,
+          "mean": 0.47788912875419737,
+          "sd": 0.16843354865814536,
+          "min": 0.10458346630427078,
+          "q025": 0.20609187867134432,
+          "median": 0.4478917619858543,
+          "q975": 0.771793126001156,
+          "max": 0.94956008406688
+        },
+        "randomized_validation_auc": {
+          "n": 99,
+          "mean": 0.5000209842203988,
+          "sd": 0.0032194243664703547,
+          "min": 0.49331395058749633,
+          "q025": 0.49488390696922435,
+          "median": 0.5000162109416473,
+          "q975": 0.5058844131960529,
+          "max": 0.506633411904385
+        },
+        "without_https_auc": {
+          "n": 99,
+          "mean": 0.501540213451319,
+          "sd": 0.10628886127380072,
+          "min": 0.2155122708684159,
+          "q025": 0.2910841079214916,
+          "median": 0.5035086672004605,
+          "q975": 0.6748170160981605,
+          "max": 0.8110768478529592
+        },
+        "convergence": {
+          "n": 5,
+          "warnings": 0,
+          "max_absolute_auc_change": 0.0004063614041531216,
+          "max_iterations": 2759,
+          "max_mean_loss_kkt_residual": 3.4824501739883926e-09
+        }
+      },
+      "sources": [
+        "dissertation/2026-10-15/diagnostics/saved-fit-diagnosis.json",
+        "dissertation/2026-10-15/diagnostics/diagnostic-summary.json"
+      ],
+      "scope": "Conditional algorithmic sensitivity on fixed features. HTTPS alone does not explain the highest AUC; collection-source causality is unidentified. Empirical permutation ranges are not population confidence intervals or leakage p-values."
+    },
+    {
+      "finding": "RQ1 fixed-weight scheme intervention",
+      "sections": [
+        "4.10.1",
+        "5.1"
+      ],
+      "values": {
+        "certified_false_positives": [
+          2261,
+          50
+        ],
+        "gold_true_positives": [
+          69,
+          22
+        ]
+      },
+      "sources": [
+        "dissertation/2026-10-12/aggregate-data/F-formatting.json"
+      ],
+      "scope": "Original spelling versus forced HTTPS under unchanged structural weights and threshold. Prefix changes can affect multiple features; this is not an isolated coefficient intervention."
+    },
+    {
+      "finding": "RQ1 scheme-neutral refit",
+      "sections": [
+        "4.8.2",
+        "4.8.3",
+        "5.1"
+      ],
+      "values": {
+        "exact_feature_and_score_pairs": 8622,
+        "decision_flips": 0,
+        "candidate_false_positives": 3689,
+        "negatives": 3971,
+        "candidate_true_positives": 4435,
+        "positives": 4651,
+        "fewer_false_positives": 251,
+        "fewer_true_positives": 184
+      },
+      "sources": [
+        "dissertation/2026-10-04/aggregate-data/detection-D/detection-metrics.csv",
+        "dissertation/2026-10-04/aggregate-data/detection-D/scheme-invariance.csv"
+      ],
+      "scope": "Separate refit and cohort from the frozen-weight intervention. Invariance and detection are distinct properties; no pooled causal normalization effect is estimated."
+    },
+    {
+      "finding": "RQ2 monitor sensitivity and escalation outcomes",
+      "sections": [
+        "4.3",
+        "5.1"
+      ],
+      "values": {
+        "external_alert_windows": [
+          115,
+          132
+        ],
+        "audit_alert_windows": [
+          28,
+          252
+        ],
+        "logical_stage2_mask": [
+          8253,
+          8701
+        ],
+        "logical_escalation_percent": 94.85116653258247,
+        "added_certified_false_positives": 218,
+        "gold_true_positives": 69
+      },
+      "sources": [
+        "dissertation/2026-10-04/aggregate-data/primary-results.json",
+        "dissertation/2026-10-04/aggregate-data/verification.json"
+      ],
+      "archived_routing_record": {
+        "path": "gwu_working/study-urlnorm-v1-2026-09-30-attempt-4/external/evidence/routing.json",
+        "sha256": "d3c80baefff503cdf466dbd5b1a7d90885b6b1efd3af1d29521b5ce1dfe27e4f",
+        "authenticated_by": "dissertation/2026-10-04/aggregate-data/verification.json"
+      },
+      "scope": "Ordered stateful replay. The 8,253 logical selections are policy decisions, not a count of physical transformer calls during offline score preparation."
+    },
+    {
+      "finding": "RQ3 expert correction opportunities",
+      "sections": [
+        "4.8.1",
+        "4.10.2",
+        "5.2.1"
+      ],
+      "values": {
+        "paired_certified_cells": {
+          "both_negative": 18,
+          "both_positive": 2261,
+          "candidate_only": 0,
+          "reference_only": 218
+        },
+        "certified_negatives": 2497,
+        "observed_selection_fpr_floor": 0.9054865839006808,
+        "separate_positive_domains": 1392,
+        "separate_negative_domains": 1262,
+        "wider_gate_selected_repairs": 0,
+        "wider_gate_added_false_positives": 18
+      },
+      "sources": [
+        "dissertation/2026-10-12/aggregate-data/paired-and-dependence-audit.json",
+        "dissertation/2026-10-12/aggregate-data/R-routing.json"
+      ],
+      "scope": "Exact empirical floor for selection between unchanged binary model decisions on the stated cohort; it is not a bound on retraining, new experts or score fusion. Recall-only noninferiority on the separate cohort supplies limited incremental utility."
+    },
+    {
+      "finding": "RQ3 service implementation and expert computation",
+      "sections": [
+        "4.9.2",
+        "4.10.3",
+        "5.1"
+      ],
+      "values": {
+        "primary_pairs": 10,
+        "median_paired_p95_reduction_percent": 79.6751012670286,
+        "no_model_median_paired_p95_reduction_percent": 80.84891291346709,
+        "primary_pair_totals": {
+          "requested": 100000,
+          "both_successful": 99999,
+          "prediction_agreement": 99999,
+          "exact_except_request_id": 799
+        },
+        "separate_symmetric_expert_elapsed_ratio": 1.6458973978991562
+      },
+      "sources": [
+        "dissertation/2026-10-04/aggregate-data/service-S/primary-pairs.csv",
+        "dissertation/2026-10-04/aggregate-data/service-S/pair-metrics.csv",
+        "dissertation/2026-10-12/aggregate-data/C-cost-summary.json"
+      ],
+      "scope": "Single-host synthetic structural-only HTTP workload. The no-model control supports a client-path explanation. Prediction agreement does not establish identical admission order. Separate expert measurements cannot be combined into a net transformer-service speedup."
+    },
+    {
+      "finding": "Original joint hypothesis decisions",
+      "sections": [
+        "4.7",
+        "5.2.3"
+      ],
+      "values": {
+        "component_checks": 22,
+        "passing_checks": 8,
+        "passes_by_hypothesis": {
+          "H1": 5,
+          "H2": 1,
+          "H3": 2
+        }
+      },
+      "sources": [
+        "dissertation/2026-10-12/aggregate-data/corrected-primary-gates.csv"
+      ],
+      "scope": "H1, H2 and H3 retain their original joint criteria and remain unsupported; component findings and separate diagnostic decisions are reported individually."
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "status": "reviewed",
+  "docx_sha256": "e486282cb71e1b5f18e2c9b3591868fae6c6e51bf34d37dd26b5839e854ca369",
+  "pdf_sha256": "772117fb8468a29bfea0dece2111e2e76f6fa7b6257efb68086fd812ab73618d",
+  "pdf_pages": 149,
+  "main_body_pages": 104,
+  "body_start_pdf_page": 23,
+  "references_start_pdf_page": 127,
+  "reviewed_pdf_pages": [
+    2,
+    6,
+    28,
+    57,
+    62,
+    115,
+    118,
+    126
+  ],
+  "abstract_words": 166,
+  "abstract_fits_one_page": true,
+  "review": "Reviewed all 32 current paragraph edits and five interpretive-cell edits against RQ1\u2013RQ3 and their source evidence, following the earlier complete reading and sentence pass. Visually inspected the committee page, abstract, contributions, methods, Table 5.1 and conclusion. Numerical result cells, hypothesis statements, equations, references, figure bytes and unlisted content are preserved; altered cross-references are verified against the rendered PDF.",
+  "confirmed_committee_roles": {
+    "co_directors": [
+      "Amir Etemadi",
+      "Mazen Mheish"
+    ],
+    "member": "Vijay Raghavan"
+  },
+  "submission_stage": "upcoming defense",
+  "inaccurate_practitioner_acknowledgement_removed": true
+}

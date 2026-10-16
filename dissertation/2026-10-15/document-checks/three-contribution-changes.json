@@ -1,0 +1,255 @@
+{
+  "source_docx_sha256": "0ffa5fc27ef87b87ac80f84f9592fe2d362bf933395b36ed41b7fa6acb6a0637",
+  "organization": "RQ1 representation, RQ2 monitoring, RQ3 selective execution and service, as requested by the author; error overlap is supporting model analysis.",
+  "changes": [
+    {
+      "pre_pass_paragraph_index": 9,
+      "before": "Amir Etemadi, Associate Professor of Engineering and Applied Science",
+      "after": "Amir Etemadi, Associate Professor of Engineering and Applied Science, Praxis Co-Director",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 10,
+      "before": "Mazen Mheish, Professorial Lecturer in Engineering and Applied Science",
+      "after": "Mazen Mheish, Professorial Lecturer in Engineering and Applied Science, Praxis Co-Director",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 23,
+      "before": "This Praxis establishes an empirical design basis for cascaded uniform resource locator (URL) phishing detection. CyberSentinel integrates structural classification, a character transformer and distribution monitoring. Controlled comparisons connect representation, expert selection and execution cost to engineering decisions. Structural features increase internal recall by 64.07 percentage points. A scheme-neutral refit achieves exact invariance across 8,622 paired inputs, while labeled evaluation quantifies detection losses and remaining false alerts. Paired decisions establish a 90.5487% false-positive floor for routing between unchanged decisions, based on 2,261 shared errors among 2,497 certified external negatives. Audited controls explain how small random coefficients rank structured validation labels despite probabilities near 0.5; component removal, 99 permutations and stricter convergence support the mechanism. Worker-owned clients reduce median paired 95th-percentile latency by 79.68% in synthetic structural-only Hypertext Transfer Protocol (HTTP) measurements, supported by a no-model control. Expert computation is measured separately. The contribution is a reproducible basis for choosing interventions through useful corrections, tested representation properties, detection trade-offs and measured request-path efficiency.",
+      "after": "This Praxis builds and evaluates CyberSentinel, a cascaded uniform resource locator (URL) phishing detector combining structural classification, a character transformer and distribution monitoring. Paired experiments answer three research questions about representation, monitoring and inline execution. Structural features improve internal recall by 64.07 percentage points; validation controls identify a strong format–class association that qualifies transfer. Forcing Hypertext Transfer Protocol Secure (HTTPS) under fixed weights reduces external false positives from 2,261 to 50 and gold detections from 69 to 22, directly measuring scheme sensitivity. Monitoring recognizes 87.12% of external windows, while its escalation adds 218 false positives without another gold detection. Paired model decisions establish a 90.5487% false-positive floor for selection between unchanged decisions on the evaluated cohort. Supporting service experiments reduce median paired 95th-percentile latency by 79.68% through worker-owned clients in single-host synthetic structural-only Hypertext Transfer Protocol (HTTP) measurements, with a no-model control supporting the client-path explanation. The contribution is a reproducible evaluation connecting representation choices, useful expert corrections, monitoring actions and execution costs to gateway design.",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 234,
+      "before": "The experiments translate design questions into paired measurements. Scheme changes test representation stability; decisions on the same inputs quantify expert correction opportunities. Label permutations explain ranking behavior, and client controls locate request overhead separately from expert computation. Measuring benefit and cost together makes the results useful for choosing an intervention.",
+      "after": "Each research question informs a design decision. Paired comparisons measure representation value; scheme interventions test format dependence. Monitoring replay and routing comparisons measure useful expert corrections. Shuffled-label controls explain validation ranking, while client and computation measurements locate execution costs.",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 236,
+      "before": "This Praxis establishes an empirical design basis for cascaded URL detection: assess discrimination across sources, select experts for the corrections they provide, and optimize the measured execution path. CyberSentinel supplies a concrete implementation in which paired interventions quantify these relationships. The contribution is the connection between observed behavior, a tested explanation and an actionable design decision.",
+      "after": "CyberSentinel connects URL representation, monitoring and selective execution to measured detection and service outcomes. Paired comparisons identify format dependence, quantify expert corrections and evaluate escalation. Controlled service measurements locate a client-path improvement. Together, these results provide an empirical basis for choosing and evaluating gateway designs.",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 239,
+      "before": "The objectives are to quantify the value and transfer of URL representations, measure the corrections supplied by monitoring and expert selection, and determine their computation and service costs. Both positive and negative labels are evaluated at fixed operating points. Chapter 5 turns these measurements into design priorities for the gateway.",
+      "after": "The objectives are to quantify representation value across sources, evaluate monitoring through its subsequent decisions, and measure the detection and execution consequences of selective expert use. Both classes are assessed at fixed operating points. Chapter 5 connects the results to gateway design priorities.",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 255,
+      "before": "Sections 1.4.1–1.4.3 state the commitments presented in the August 20 and September 3 advisor decks and carried forward on September 17, including their historical bootstrap specification. The post-review correction in Section 3.8 replaces inadequate paired uncertainty without relaxing any metric or numerical margin. Tables 4.3 and 4.14 and the current RQ/H answers use that correction; original estimates and decisions remain available for comparison in the retained record.",
+      "after": "Sections 1.4.1–1.4.3 define the original operating requirements and bootstrap specification. Section 3.8 supplies the paired uncertainty correction used in Tables 4.3 and 4.14 and the RQ/H answers. The correction preserves every metric and numerical margin; Appendix C retains the original estimates and decisions.",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 257,
+      "before": "The representation contribution is a measured account of stability and detection quality. Controlled scheme changes isolate spelling sensitivity under frozen weights; a separate refit achieves exact invariance across 8,622 pairs and quantifies the accompanying loss of detections. Audited shuffled-label controls explain how small random coefficients sustain ranking when URL format remains associated with class. These results give concrete engineering content to the robustness questions studied by Ahamed et al. (2026), Rashid et al. (2024) and Tsai et al. (2024) (Sections 4.8 and 4.10.1).",
+      "after": "For RQ1, the study connects internal discrimination to URL-format dependence. Structural features add 64.07 percentage points of internal recall; validation controls reveal format–class association, and a fixed-weight scheme intervention measures external sensitivity. A separate refit achieves exact invariance across 8,622 pairs with a measured detection trade-off. These experiments develop the robustness questions of Ahamed et al. (2026), Rashid et al. (2024) and Tsai et al. (2024) without assigning an unmeasured share of the gain to HTTPS (Sections 4.8 and 4.10.1).",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 258,
+      "before": "The routing contribution is a direct measurement of expert value: available corrections, selected repairs and introduced errors. Shared false positives establish an exact bound for routers choosing between the observed binary decisions. Wider gates add errors without selecting repairs, identifying model decisions and evidence as the next intervention targets. This applies the downstream-error analysis of Jitkrittum et al. (2023) to a URL gateway and makes useful corrections the criterion for expert selection (Sections 4.8.1 and 4.10.2).",
+      "after": "For RQ2, the study follows distribution alerts into detection decisions. The GMM recognizes 87.12% of external windows; escalation adds 218 certified false positives without another gold detection. The comparison establishes why response utility must accompany sensitivity. Paired routing analysis identifies the expert corrections available to that response, applying the downstream-error reasoning of Jitkrittum et al. (2023) to this gateway (Sections 4.8.1 and 4.10.2).",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 259,
+      "before": "The systems contribution locates execution costs and demonstrates a client-path optimization. Worker-owned clients improve synthetic structural-only HTTP latency, with a similar improvement in the no-model control. Comparable predictions are preserved while admission order changes. Separate measurements show that sparse expert calls increase scoring time and p99. Building on established cascades (Li et al., 2021), the study connects each intervention to its measured cost and response properties.",
+      "after": "For RQ3, paired decisions quantify expert value and separate measurements locate execution cost. The models' common false positives establish a 90.5487% floor for routing between unchanged decisions. Supporting service experiments demonstrate faster worker-owned clients on synthetic structural-only HTTP requests, corroborated by a no-model control. Comparable predictions agree despite changed admission order; expert scoring cost is measured separately. Building on established cascades (Li et al., 2021), the study connects selective execution to detection and service behavior.",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 295,
+      "before": "The research gap is an actionable connection between detection measurements and system design. Aggregate accuracy leaves representation dependencies, expert correction opportunities and request-path costs unresolved. This study addresses that gap with controlled comparisons that identify where an intervention acts and measure its consequences. Table 2.1 places the contribution alongside research on robustness, adaptation and deferral.",
+      "after": "The study connects URL-detector design to detection and execution through three questions: representation value across sources, monitoring-guided escalation, and selective expert execution. Paired outcomes and controlled interventions explain the results and identify design targets. Table 2.1 relates this contribution to robustness, adaptation and deferral research.",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 297,
+      "before": "The evaluation connects four kinds of evidence to design choices. Structural-versus-length comparisons quantify feature value; scheme interventions measure representation stability and detection trade-offs. Paired errors determine available expert corrections, and shuffled labels explain validation ranking. Separate scoring and HTTP measurements locate execution cost. Together, they provide a reproducible basis for selecting and evaluating changes to CyberSentinel.",
+      "after": "Structural-versus-length comparisons establish the internal baseline; validation controls and scheme interventions examine its format dependence. Ordered replay follows monitoring alerts into decisions. Paired outputs measure expert corrections and introduced errors, while separate scoring and HTTP measurements locate execution cost. Each comparison informs a gateway design choice.",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 336,
+      "before": "Under the September 21 amendment, OpenBLAS/MPS scoring processes each record individually. This singleton convention followed a development comparison that changed one transformer decision. The historical weights, thresholds and band were retained without recalibration, and all accepted paired predictions use the amended convention. Equivalence to the earlier batch-scoring procedure and its checkpoint selection has not been established. Appendix C records the chronology.",
+      "after": "OpenBLAS/MPS scoring processes each record individually. A development comparison identified one transformer decision that changed with batch scoring, motivating this singleton convention. Weights, thresholds and the routing band were retained without recalibration; all accepted paired predictions use singleton scoring. Equivalence to the earlier batch procedure and its checkpoint selection has not been established. Appendix C records the scoring amendment.",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 369,
+      "before": "D tests whether scheme neutralization produces both invariance and better detection. S tests whether changing client ownership improves latency while preserving the response contract. Each primary comparison uses a two-sided 97.5% bootstrap interval, dividing the error allowance between them without requiring their independence; finite-sample coverage remains approximate. Their specifications precede candidate fitting, additional-benchmark predictions and primary client measurements. The transformer, GMM and H1–H3 criteria remain unchanged.",
+      "after": "The initial evaluation motivated two controlled comparisons: D tests scheme invariance and detection; S tests client ownership, latency and response agreement. Specifications were fixed before candidate fitting, additional-benchmark predictions and primary client measurements. Each comparison uses a two-sided 97.5% bootstrap interval, dividing the error allowance without requiring independence; finite-sample coverage remains approximate. The transformer, GMM and H1–H3 criteria remain unchanged.",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 388,
+      "before": "Four comparisons connect engineering choices to measurable consequences. F isolates scheme spelling under fixed weights; R evaluates expert selection on a domain-balanced retrospective cohort. C measures detector computation, and P explains shuffled-label ranking through input audits, component removal, repeated randomization and stricter convergence. Each retains its own population and decision rule, with the accepted models and H1–H3 and D/S requirements held fixed.",
+      "after": "The initial results motivated four diagnostic comparisons with specifications fixed before execution. F tests scheme spelling under fixed weights; R tests expert selection on a separate domain-balanced cohort; C measures detector computation; P examines shuffled-label ranking. Each retains its own population and decision rule, with accepted models and H1–H3 and D/S requirements unchanged. Section 3.16.3 specifies the additional control checks.",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 402,
+      "before": "A frozen conditional randomization protocol then schedules 99 additional training-label permutations, PCG64 seeds 1000–1098. It keeps the 166,248 training rows, 32,695 validation rows, training-fitted scaler, estimator settings and solver seed fixed. Every attempt is retained, including warnings or failures, with no seed substitutions or outcome-driven extension. True validation labels remain fixed and no threshold is selected. A reference comparison independently permutes validation labels using seed 210000 plus the fit seed. Constant-score AUC, removal of the HTTPS term and inverse-domain-size weighting provide further checks. Empirical quantiles summarize this fixed-data algorithmic distribution; they are not confidence intervals for new populations or a test certifying the absence of leakage (Ojala & Garriga, 2010).",
+      "after": "The ranking pattern in the five audited P fits motivated the additional permutation and convergence checks. Their fixed conditional randomization protocol schedules 99 additional training-label permutations, PCG64 seeds 1000–1098. It keeps the 166,248 training rows, 32,695 validation rows, training-fitted scaler, estimator settings and solver seed fixed. Every attempt is retained, including warnings or failures, with no seed substitutions or outcome-driven extension. True validation labels remain fixed and no threshold is selected. A reference comparison independently permutes validation labels using seed 210000 plus the fit seed. Constant-score AUC, removal of the HTTPS term and inverse-domain-size weighting provide further checks. Empirical quantiles summarize this fixed-data algorithmic distribution; they are not confidence intervals for new populations or a test certifying the absence of leakage (Ojala & Garriga, 2010).",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 405,
+      "before": "The results establish the value of structural features, quantify expert correction opportunities, test representation stability and locate service costs in CyberSentinel. Sections 4.1–4.7 present the detection, monitoring and service measurements and adjudicate H1–H3. Sections 4.8–4.10 connect those outcomes to controlled tests of shared errors, scheme dependence, client overhead and shuffled-label ranking.",
+      "after": "Sections 4.1–4.7 answer RQ1–RQ3 through representation, monitoring and service measurements and adjudicate H1–H3. Sections 4.8–4.10 explain the outcomes using scheme interventions, expert correction analysis, client controls and shuffled-label diagnostics. Each comparison connects an implemented design choice to its measured consequences.",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 422,
+      "before": "RQ1 establishes the internal value of structural features, but the evaluated detector does not retain a low FPR across sources. The cascade calls no expert and adds no recall. Because H1 requires both external specificity and an incremental cascade benefit, it remains unsupported. The observed errors motivate the representation and routing analyses that follow.",
+      "after": "RQ1 measures internal discrimination under the retained benchmark conventions. The format–class association and fixed-weight scheme test qualify transfer: the different partitions do not quantify the share of recall gain caused by HTTPS. The cascade calls no expert and adds no recall. H1 remains unsupported under its joint external-specificity and incremental-benefit criteria. Paired errors and scheme interventions identify concrete design targets.",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 470,
+      "before": "All evaluated internal negatives have is_https=1 and zero path length, whereas external gold-positive inputs have is_https=0. These summaries describe the evaluated subsets, not every training row or live transport behavior. External inputs use publisher url_norm. Because the extractor includes both is_https and string-composition features, a prefix change affects several predictors. This observation motivates the frozen-model test in Section 4.10.1 and neutralization across the affected feature pathways. It does not explain all external error. Separately, the no-model HTTP control motivates examining client organization while keeping the scorer fixed.",
+      "after": "All evaluated internal negatives have is_https=1 and zero path length; external gold-positive inputs have is_https=0. These subset summaries do not describe every training row or live transport; external inputs use publisher url_norm. Section 4.10.4 measures validation format–class association. This connects internal separability to the frozen-model test in Section 4.10.1. Because a prefix affects is_https and string-composition predictors, neutralization must cover several pathways. Collection-source causality remains unidentified. The no-model control separately motivates testing client organization with the scorer fixed.",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 516,
+      "before": "The other strata show the same direction of change. HTTPS reduces secondary-positive detections from 4,972 to 687 and label-free Tranco alerts from 1,163 to 63. F changes spelling while keeping weights and threshold fixed. D instead refits and recalibrates on the original development partitions. Together, they establish an observed scheme sensitivity and a tested invariance property, while leaving other external errors unexplained.",
+      "after": "HTTPS also reduces secondary-positive detections from 4,972 to 687 and label-free Tranco alerts from 1,163 to 63. F establishes scheme dependence under fixed weights and threshold; validation format–class association supplies related evidence about internal separability. D instead refits and recalibrates on the original development partitions, then evaluates another cohort. Its invariance and detection trade-off cannot be pooled with F or attributed to normalization alone.",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 535,
+      "before": "The controls support a computational explanation for the ranking: small random fitted coefficients act on validation data that retain class-related structure, producing substantial ranking without confident probabilities. Component removal, repeated randomization and convergence checks test different parts of this explanation. Correlated features also contribute, and the causal role of collection source remains unidentified. The diagnosis does not certify that all leakage is absent, authenticate historical fits, or validate threshold-selected performance.",
+      "after": "The controls explain how small random coefficients rank structured validation labels despite near-constant probabilities. Component removal, randomization and convergence checks support the mechanism; correlated features also contribute. Format–class association and the external scheme intervention converge on a representation dependency. The 32,695-row validation and 34,593-row group-test analyses do not identify the HTTPS-attributable fraction of the 64.07-point gain. Collection-source causality, historical-fit authentication and certification against every leakage path remain outside these checks; threshold-selected performance requires separate evaluation.",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 539,
+      "before": "RQ1—Representation and transfer. Structural features increase internal recall over length alone by 64.07 percentage points, with a 95% domain-clustered interval of [59.99, 67.63], at a false-positive rate (FPR) of 0.7747%. This establishes their internal value. External certified FPR is 90.5487%, compared with 9.4513% for length-only, while the calibrated cascade adds no recall and makes no evaluated expert calls. The design implication is to evaluate feature value jointly with specificity on the intended source. Those external and incremental-cascade conditions leave H1 unsupported (Tables 4.2–4.3).",
+      "after": "RQ1—Representation and transfer. Structural features add 64.07 percentage points of internal recall over length alone, with a 95% domain-clustered interval [59.99, 67.63], at false-positive rate (FPR) 0.7747%. Format–class association qualifies transfer without quantifying the HTTPS-attributable share. External certified FPR is 90.5487%, versus 9.4513% for length-only; the cascade adds no recall or expert calls. H1 remains unsupported under its joint criteria (Tables 4.2–4.3).",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 540,
+      "before": "The representation interventions establish a testable stability property and its detection trade-off. Scheme spelling changes frozen-model decisions; a separate refit achieves exact invariance while losing detections and retaining poor specificity. Together, these results justify evaluating representation stability alongside labeled detection quality. The populations and interventions differ, so their counts cannot be pooled or the refit's detection effect assigned to normalization alone.",
+      "after": "Paired errors explain the routing constraint: common false positives survive selection between unchanged decisions. Representation tests identify a separate target. Supplied scheme changes frozen-model decisions; a refit achieves exact invariance with detection losses and remaining false positives. These distinct interventions require their own labeled evaluation; the refit's detection effect cannot be assigned to normalization alone.",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 541,
+      "before": "RQ2—Monitoring and action. GMM detects input departure in 87.12% of external windows against an 80% target. Its audit false-alert rate is 11.11% against 5%, and escalation adds certified false positives without another gold detection. H2 remains unsupported. Following alerts into decisions establishes the design priority: select an action for the corrections it supplies, alongside the monitor's sensitivity. An expert sharing the first model's errors supplies no such correction. Table 4.5 gives the complete window denominators.",
+      "after": "RQ2—Monitoring and action. The GMM flags 115/132 external windows (87.12%) against an 80% target and 28/252 audit windows (11.11%) against 5%. Ordered, stateful replay selects the expert for 8,253/8,701 requests (94.8512%); the resulting policy adds 218 certified false positives and retains 69/69 gold detections. This measures response utility alongside input-departure recognition. H2 remains unsupported under its joint criteria (Table 4.5).",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 543,
+      "before": "The paired and cost comparisons provide a practical division of design work. Recall preservation, useful expert corrections, detector computation and service overhead each receive a separate measurement. Routing can add false positives at complete observed recall. Client ownership improves synthetic structural-only HTTP latency, while transformer calls increase scoring cost on another workload. This separation identifies the evidence needed to justify each intervention.",
+      "after": "The results identify three design priorities: evaluate representation stability with labeled detection, choose escalation for useful corrections, and distinguish expert computation from request handling. Client ownership improves synthetic structural-only HTTP latency; transformer calls increase scoring cost on another workload. Each result supports a specific intervention.",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 545,
+      "before": "The routing result supplies a concrete rule for allocating further engineering effort. Shared errors impose a 90.5487% false-positive floor: both models flag 2,261 of 2,497 certified negatives. On a separate cohort, wider gates select no repairs and add 18 errors. For these decisions, improving specificity requires a change to the model decisions or available evidence before widening the gate can help (Sections 4.8.1 and 4.10.2).",
+      "after": "The representation evidence identifies a concrete dependency. All 20,209 validation negatives use HTTPS, versus 46.6362% of positives; the negative HTTPS indicator has AUC 0.7668. The fixed-weight external intervention also changes decisions. This qualifies the internal gain without quantifying its HTTPS-attributable fraction. Paired error analysis establishes the decisions available to expert selection (Sections 4.8.1 and 4.10.2).",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 546,
+      "before": "The representation result couples a verified property with its detection consequences. Table 4.21 isolates scheme-spelling sensitivity under frozen weights. Tables 4.16–4.17 establish exact invariance after refitting and quantify the accompanying detection loss and poor specificity. Engineers can test that stability property directly, then assess its value against labeled outcomes. The refit was evaluated on a separate cohort, not the original PhishVN cohort.",
+      "after": "Table 4.21 isolates scheme sensitivity under fixed weights. Tables 4.16–4.17 verify exact invariance after refitting and quantify detection losses and remaining false positives. Different cohorts and fitting procedures prevent attribution of the refit's effect to normalization alone. Together with internal format association, these results justify testing scheme dependence in URL benchmarks without identifying collection-source causality.",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 547,
+      "before": "The systems result identifies an optimization in the measured client/transport path: worker-owned clients improve both structural and no-model workloads (Tables 4.18–4.19). Table 4.23 separately quantifies expert computation. Comparable predictions stay equal while admission order changes, making the response contract part of the optimization decision. Invocation counts, latency and response agreement therefore serve complementary engineering purposes.",
+      "after": "Monitoring escalation adds 218 false positives without another gold detection. Paired outputs explain the constraint: 2,261 common false positives among 2,497 negatives impose a 90.5487% floor on unchanged-decision selection. On the separate cohort, one repair is available, but wider gates select none and add 18 false positives. Supporting service measurements identify a client-path improvement (Tables 4.18–4.19); Table 4.23 measures expert cost. Comparable predictions agree despite changed admission order.",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 548,
+      "before": "These contributions develop established research questions through concrete gateway experiments. Ahamed et al. (2026) examine external specificity and class-specific transformations; the present work follows a fixed-weight scheme effect through to verified invariance and its detection cost. Jitkrittum et al. (2023) analyze downstream deferral errors; this study measures available corrections, selected repairs, introduced errors and expert-call cost. ExpertFusion's documented calibrated fusion and target-prior adaptation provide architectural context (aI-area, 2026; Hussain et al., 2027). That comparison remains confined to the documented architecture, without claiming full-paper coverage or superiority.",
+      "after": "These contributions develop established research questions through concrete gateway experiments. Jitkrittum et al. (2023) motivate examining downstream errors; this study measures available corrections, selected repairs and introduced errors. Ahamed et al. (2026) examine external specificity and class-specific transformations; the present experiments connect internal format association, a fixed-weight scheme effect and a separately verified invariance property. Monitoring replay then measures the outcome of changing routing. ExpertFusion's documented calibrated fusion and target-prior adaptation provide architectural context (aI-area, 2026; Hussain et al., 2027), within the documented comparison rather than a claim of full-paper coverage or superiority.",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 571,
+      "before": "This Praxis establishes an empirical basis for designing and evaluating a cascaded URL phishing gateway. The study quantifies the internal value of structural features, isolates scheme-spelling sensitivity and verifies exact invariance after refitting. The detection losses and poor external specificity identify the trade-offs attached to those representation choices. Audited randomized controls explain how small fitted coefficients produce substantial AUC when validation labels retain structure.",
+      "after": "CyberSentinel connects URL representation, monitoring and selective execution to measured outcomes. Structural features add 64.07 percentage points of internal recall within the benchmark. Validation controls identify format–class association, and a fixed-weight intervention establishes external scheme sensitivity. A separate refit achieves exact invariance across 8,622 pairs with measured detection losses. Together, these experiments provide concrete tests of representation stability and its consequences for labeled detection.",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 572,
+      "before": "Paired decisions turn expert selection into a measurable correction problem: shared errors bound available repairs, and selected calls reveal the errors introduced by routing. Complete observed recall requires specificity evidence to establish practical utility. Separate cost measurements quantify the increase in scoring work from sparse expert calls and a 79.68% median paired HTTP p95 reduction from worker-owned clients in the synthetic structural-only setup. Comparable predictions are preserved while admission order changes.",
+      "after": "Monitoring and routing experiments make expert value measurable. External-window sensitivity reaches 87.12%, while escalation adds 218 false positives without another gold detection. The models' 2,261 common false positives among 2,497 negatives establish a 90.5487% floor for selection between unchanged decisions. Wider gates on a separate cohort select no repairs and add 18 false positives. Available corrections and selected outcomes therefore guide expert and policy design.",
+      "replaced_cross_references": []
+    },
+    {
+      "pre_pass_paragraph_index": 573,
+      "before": "The resulting contribution is a tested basis for engineering decisions: improve the available evidence where errors coincide, select experts for useful corrections, assess invariance alongside detection, and optimize the observed request path against an explicit response contract. The H1–H3 decisions delimit the evaluated gateway's readiness. The paired measurements, mechanism tests and reproducible evidence establish how each design choice can be examined and improved.",
+      "after": "Worker-owned clients reduce median paired HTTP p95 by 79.68% in the single-host synthetic structural-only setup. A no-model control supports the client-path explanation; comparable predictions agree despite changed admission order. Expert scoring cost is measured separately. H1–H3 retain their original joint criteria. The resulting design guidance is concrete: test format dependence, select experts for useful corrections, follow alerts into decisions, and optimize the execution path identified by measurement.",
+      "replaced_cross_references": []
+    }
+  ],
+  "cells": [
+    {
+      "table": 27,
+      "row": 1,
+      "column": 0,
+      "before": "Established value of structural URL information",
+      "after": "Observed internal gain under benchmark conventions",
+      "replaced_cross_references": []
+    },
+    {
+      "table": 27,
+      "row": 1,
+      "column": 2,
+      "before": "Use the structural model as a measured internal baseline. External specificity and incremental cascade benefit remain unmet.",
+      "after": "Treat this as an internal baseline. Validation format–class association qualifies transfer without quantifying the HTTPS-attributable share of group-test recall gain.",
+      "replaced_cross_references": []
+    },
+    {
+      "table": 27,
+      "row": 2,
+      "column": 0,
+      "before": "Development benefit and external limits of selected expert repair",
+      "after": "Expert correction opportunities and the shared-error bound",
+      "replaced_cross_references": []
+    },
+    {
+      "table": 27,
+      "row": 4,
+      "column": 0,
+      "before": "Isolated scheme sensitivity and achieved feature-path invariance",
+      "after": "URL-format dependence and verified scheme invariance",
+      "replaced_cross_references": []
+    },
+    {
+      "table": 27,
+      "row": 4,
+      "column": 2,
+      "before": "The tested spelling dependency can be removed, but the refit's 92.90% FPR still requires discrimination work. Frozen spelling and refitting are distinct interventions on different cohorts.",
+      "after": "Test format dependence and labeled detection together. The refit's 92.90% FPR requires further discrimination work; fixed-weight spelling and refitting use different cohorts.",
+      "replaced_cross_references": []
+    }
+  ],
+  "added_cross_references": [
+    {
+      "text": "Appendix C",
+      "anchor": "revision_heading_4018"
+    },
+    {
+      "text": "Section 3.16.3",
+      "anchor": "revision_heading_4008"
+    },
+    {
+      "text": "Section 4.10.4",
+      "anchor": "revision_heading_4016"
+    }
+  ],
+  "submission_stage": "upcoming defense; co-directors and member confirmed by author; prior-degree dates left as requested; no passed-examination certification added"
+}

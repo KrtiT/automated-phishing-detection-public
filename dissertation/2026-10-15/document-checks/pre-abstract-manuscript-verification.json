@@ -1,0 +1,20 @@
+{
+  "status": "verified",
+  "docx_sha256": "e486282cb71e1b5f18e2c9b3591868fae6c6e51bf34d37dd26b5839e854ca369",
+  "pdf_sha256": "772117fb8468a29bfea0dece2111e2e76f6fa7b6257efb68086fd812ab73618d",
+  "scope": "Cumulative original-to-acknowledgement stage plus current document rendering, links and privacy checks. The subsequent RQ synthesis and five interpretive-cell edits are verified separately in three-contribution-verification.json.",
+  "revised_original_paragraphs_through_acknowledgement_stage": 95,
+  "inserted_paragraphs": 10,
+  "interpretive_table_cell_edits_through_acknowledgement_stage": 13,
+  "original_numerical_result_cells_preserved": true,
+  "tables": 31,
+  "original_hypotheses_references_and_historical_record_preserved": true,
+  "all_unlisted_package_structure_and_text_preserved": true,
+  "all_editable_text_double_spaced": true,
+  "figures_byte_identical": 4,
+  "navigation_entries": 127,
+  "pdf_pages": 149,
+  "original_body_paragraph_words": 17536,
+  "current_body_paragraph_words": 17102,
+  "body_word_count_scope": "Main-text paragraphs from Chapter 1 through the end of Chapter 5, excluding table cells and front/back matter"
+}

@@ -1,25 +1,30 @@
 {
   "status": "reviewed",
-  "docx_sha256": "0ffa5fc27ef87b87ac80f84f9592fe2d362bf933395b36ed41b7fa6acb6a0637",
-  "pdf_sha256": "1751a4b286b3e9becb6462384a8552f2677bf61695990f2295d60f285879b3eb",
-  "pdf_pages": 149,
-  "abstract_words": 161,
-  "abstract_fits_one_page": true,
+  "docx_sha256": "500f5ca98cce81f92ac76a9d4f23db01377e1c05a6d55ac73e2c44f7a5f8f384",
+  "pdf_sha256": "7087f0ab1ab4b97a3284bf35719da6fc6749748a3ef9ec4d65a878bdff7ef4d6",
+  "pdf_pages": 150,
   "main_body_pages": 104,
-  "body_boundaries": {
-    "Chapter 1\u2014Introduction": 23,
-    "References": 127
-  },
-  "reviewed_pdf_pages": [
-    5,
+  "body_start_pdf_page": 24,
+  "references_start_pdf_page": 128,
+  "abstract_words": 219,
+  "abstract_pages": [
     6,
-    23,
-    28,
-    29,
-    115,
-    117,
-    126
+    7
   ],
-  "review": "Reviewed all 43 contribution-framing edits for retained scientific meaning and clear design implications, building on the earlier complete reading and 40-paragraph sentence pass. Inspected the final abstract, introduction, contribution sections and conclusion. All result tables, figures, numerical tokens, paragraph/run formatting, links and unedited content are preserved. Reviewed the corrected acknowledgements on PDF page 5. The two sentences about practitioner discussions are absent; the other acknowledgements and the remainder of the manuscript are unchanged.",
-  "author_requested_acknowledgement_correction": true
+  "review": "Reviewed narrative and interpretive wording across the manuscript and screened all 31 tables. Revised 27 prose paragraphs to foreground research answers, quantitative findings and design consequences. Removed repetitive negative verdict endings from the research-question summaries. Formal hypothesis decisions, table cells, numerical results, substantive limitations, diagnostic timing disclosures, approved abstract, author date, references and appendices are preserved. Complete text, layout, navigation, citation and PDF-link checks pass.",
+  "preceding_full_review": "pre-posture-reading-review.json",
+  "visual_review_pdf_pages": [
+    116,
+    122,
+    127
+  ],
+  "confirmed_committee_roles": {
+    "co_directors": [
+      "Amir Etemadi",
+      "Mazen Mheish"
+    ],
+    "member": "Vijay Raghavan"
+  },
+  "submission_stage": "upcoming defense",
+  "inaccurate_practitioner_acknowledgement_removed": true
 }

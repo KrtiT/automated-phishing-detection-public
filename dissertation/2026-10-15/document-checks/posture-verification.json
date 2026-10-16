@@ -1,0 +1,57 @@
+{
+  "status": "verified",
+  "baseline_docx_sha256": "9a621c338808d64c5742223b73d295fcd42391c57af6a99a81f9bf69c40c1dd8",
+  "baseline_pdf_sha256": "eb0b8d98033094ff025e534f4e8aec47e2b05946f03bedbc55b00263308c07ce",
+  "docx_sha256": "500f5ca98cce81f92ac76a9d4f23db01377e1c05a6d55ac73e2c44f7a5f8f384",
+  "pdf_sha256": "7087f0ab1ab4b97a3284bf35719da6fc6749748a3ef9ec4d65a878bdff7ef4d6",
+  "paragraphs_edited": 27,
+  "audit_scope": {
+    "direct_body_paragraphs": 657,
+    "tables": 31,
+    "keyword_candidates": 114
+  },
+  "numeric_tokens_preserved_per_edited_paragraph": true,
+  "original_hypotheses_and_formal_decisions_unchanged": true,
+  "all_31_tables_exact_xml_preserved": true,
+  "approved_abstract_author_date_references_and_appendices_preserved": true,
+  "substantive_limitations_and_diagnostic_design_disclosures_preserved": true,
+  "paragraph_formatting_and_hyperlink_subtrees_preserved": true,
+  "all_other_document_nodes_and_package_parts_identical": true,
+  "original_image_bytes_preserved": 4,
+  "navigation_cache_changes": [
+    {
+      "bookmark": "heading_31",
+      "before": "26",
+      "after": "27"
+    },
+    {
+      "bookmark": "heading_60",
+      "before": "80",
+      "after": "81"
+    },
+    {
+      "bookmark": "table_9",
+      "before": "54",
+      "after": "55"
+    },
+    {
+      "bookmark": "revision_table_4011",
+      "before": "84",
+      "after": "85"
+    }
+  ],
+  "layout": {
+    "pdf_pages": 150,
+    "main_body_pages": 104,
+    "body_start_pdf_page": 24,
+    "references_start_pdf_page": 128,
+    "abstract_words": 219,
+    "abstract_pages": [
+      6,
+      7
+    ]
+  },
+  "render_receipt_sha256": "f13ec59f0a946c9196202cb2b8869dac85732ffcff2a1c4f41e139c87f6354d8",
+  "change_log_sha256": "288610336d1e2f955642f2571408ac478b650f0bda0a5f04c63984c29885a16f",
+  "verification_note": "The prior abstract/export receipt retains its own hashes. This receipt extends that chain by verifying only the declared interpretive prose and updated page caches."
+}

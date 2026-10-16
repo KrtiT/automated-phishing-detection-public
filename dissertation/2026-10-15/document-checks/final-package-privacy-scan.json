@@ -1,53 +1,64 @@
 {
-  "docx_sha256": "0ffa5fc27ef87b87ac80f84f9592fe2d362bf933395b36ed41b7fa6acb6a0637",
-  "pdf_sha256": "1751a4b286b3e9becb6462384a8552f2677bf61695990f2295d60f285879b3eb",
+  "docx_sha256": "500f5ca98cce81f92ac76a9d4f23db01377e1c05a6d55ac73e2c44f7a5f8f384",
+  "pdf_sha256": "7087f0ab1ab4b97a3284bf35719da6fc6749748a3ef9ec4d65a878bdff7ef4d6",
   "docx": {
     "package_files": [
       "[Content_Types].xml",
       "_rels/.rels",
-      "docProps/app.xml",
-      "docProps/core.xml",
-      "word/document.xml",
       "word/_rels/document.xml.rels",
-      "word/endnotes.xml",
-      "word/people.xml",
-      "word/numbering.xml",
+      "word/document.xml",
       "word/footnotes.xml",
-      "word/fontTable.xml",
-      "customXml/item2.xml",
-      "customXml/_rels/item2.xml.rels",
-      "customXml/itemProps2.xml",
-      "customXml/item1.xml",
-      "customXml/_rels/item1.xml.rels",
-      "customXml/itemProps1.xml",
-      "word/webSettings.xml",
-      "word/settings.xml",
+      "word/endnotes.xml",
       "word/footer1.xml",
-      "word/theme/theme1.xml",
-      "word/styles.xml",
+      "word/footer2.xml",
+      "word/footer3.xml",
+      "word/media/image1.png",
       "word/media/image2.png",
       "word/media/image3.png",
       "word/media/image4.png",
-      "word/media/image5.png",
-      "word/footer2.xml",
-      "word/footer3.xml",
-      "word/footer4.xml"
+      "word/theme/theme1.xml",
+      "word/settings.xml",
+      "customXml/itemProps2.xml",
+      "word/numbering.xml",
+      "word/styles.xml",
+      "word/webSettings.xml",
+      "word/fontTable.xml",
+      "docProps/core.xml",
+      "docProps/app.xml",
+      "customXml/itemProps1.xml",
+      "customXml/item1.xml",
+      "customXml/_rels/item1.xml.rels",
+      "customXml/_rels/item2.xml.rels",
+      "customXml/item2.xml"
     ],
     "metadata": {
+      "docProps/core.xml": {
+        "title": "Cross-Dataset Reliability and Computational Trade-offs in Cascaded URL Phishing Detection",
+        "creator": "Krti Tallam",
+        "lastModifiedBy": "Tallam, Krti",
+        "revision": "2",
+        "created": "2026-10-16T04:57:00Z",
+        "modified": "2026-10-16T05:02:00Z"
+      },
       "docProps/app.xml": {
+        "Template": "Normal.dotm",
+        "TotalTime": "0",
+        "Pages": "147",
+        "Words": "30675",
+        "Characters": "174850",
         "Application": "Microsoft Office Word",
         "DocSecurity": "0",
+        "Lines": "1457",
+        "Paragraphs": "410",
         "ScaleCrop": "false",
         "HeadingPairs": "Title1",
         "TitlesOfParts": "",
+        "Company": "",
         "LinksUpToDate": "false",
+        "CharactersWithSpaces": "205115",
         "SharedDoc": "false",
         "HyperlinksChanged": "false",
         "AppVersion": "16.0000"
-      },
-      "docProps/core.xml": {
-        "creator": "Krti Tallam",
-        "title": "Cross-Dataset Reliability and Computational Trade-offs in Cascaded URL Phishing Detection"
       }
     },
     "hidden_review_or_active_tags": [],
@@ -65,19 +76,19 @@
       "placeholder_or_edit_note": []
     },
     "custom_xml_stores": {
-      "customXml/item2.xml": {
+      "customXml/item1.xml": {
         "root": "Sources",
         "child_count": 0,
         "text": ""
       },
-      "customXml/item1.xml": {
+      "customXml/item2.xml": {
         "root": "Sources",
         "child_count": 0,
         "text": ""
       }
     },
     "notes_and_people_parts": {
-      "word/endnotes.xml": {
+      "word/footnotes.xml": {
         "text": "",
         "child_types": [
           "separator",
@@ -85,11 +96,7 @@
           "continuationNotice"
         ]
       },
-      "word/people.xml": {
-        "text": "",
-        "child_types": []
-      },
-      "word/footnotes.xml": {
+      "word/endnotes.xml": {
         "text": "",
         "child_types": [
           "separator",
@@ -101,7 +108,8 @@
     "alt_text_and_tooltips": [],
     "field_instruction_counts": {
       "PAGEREF": 119,
-      "PAGE": 3
+      "HYPERLINK": 1,
+      "PAGE": 2
     }
   },
   "pdf": {
@@ -113,7 +121,7 @@
       "keywords": "",
       "creator": "Writer",
       "producer": "LibreOffice 26.8.0.3 (AARCH64)",
-      "creationDate": "D:20261015205810-07'00'",
+      "creationDate": "D:20261015223059-07'00'",
       "modDate": "",
       "trapped": "",
       "encryption": null
@@ -137,7 +145,7 @@
   },
   "images": [
     {
-      "part": "word/media/image2.png",
+      "part": "word/media/image1.png",
       "size": [
         1296,
         1386
@@ -148,7 +156,7 @@
       "exif": {}
     },
     {
-      "part": "word/media/image3.png",
+      "part": "word/media/image2.png",
       "size": [
         1627,
         1670
@@ -160,7 +168,7 @@
       "exif": {}
     },
     {
-      "part": "word/media/image4.png",
+      "part": "word/media/image3.png",
       "size": [
         1800,
         975
@@ -172,7 +180,7 @@
       "exif": {}
     },
     {
-      "part": "word/media/image5.png",
+      "part": "word/media/image4.png",
       "size": [
         1800,
         2040

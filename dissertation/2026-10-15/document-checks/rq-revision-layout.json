@@ -1,0 +1,18 @@
+{
+  "pdf_pages": 149,
+  "main_body_pages": 104,
+  "body_start_pdf_page": 23,
+  "references_start_pdf_page": 127,
+  "reviewed_pdf_pages": [
+    2,
+    6,
+    28,
+    57,
+    62,
+    115,
+    118,
+    126
+  ],
+  "abstract_words": 166,
+  "abstract_fits_one_page": true
+}

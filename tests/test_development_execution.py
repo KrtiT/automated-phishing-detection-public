@@ -9,6 +9,7 @@ from hashlib import sha256
 from pathlib import Path
 
 import pytest
+from public_binding_fixtures import synthetic_public_pins
 
 from automated_phishing_detection import execution_preflight
 
@@ -40,7 +41,9 @@ def git(root, *args):
 def checkout(tmp_path, api, monkeypatch):
     root = tmp_path / "checkout"
     root.mkdir()
-    public = json.loads((ROOT / BASE).read_bytes())["public_file_sha256"]
+    public = synthetic_public_pins(
+        ROOT, json.loads((ROOT / BASE).read_bytes())["public_file_sha256"]
+    )
     for name in (*public, PROFILE, METHODS, BASE, "pyproject.toml", "uv.lock"):
         path = root / name
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -299,3 +302,42 @@ def test_runtime_and_import_binding_is_rechecked_at_end(api, checkout, monkeypat
         execution_preflight.ExecutionPreflightError, match="runtime changed"
     ):
         bind(api, checkout)
+
+
+@pytest.mark.parametrize(
+    "relative",
+    [
+        "reports/inference-compatibility-v1.json",
+        "reports/inference-compatibility-v1-preflight-correction.json",
+    ],
+)
+def test_public_projection_does_not_satisfy_historical_pin(checkout, relative):
+    historical = json.loads((ROOT / BASE).read_bytes())["public_file_sha256"]
+    with pytest.raises(execution_preflight.ExecutionPreflightError, match="SHA-256"):
+        execution_preflight._historical_v2_committed_files(
+            checkout[0], checkout[1], {relative: historical[relative]}
+        )
+
+
+def test_synthetic_base_rejects_committed_report_tampering(api, checkout):
+    root, _, digest, calls = checkout
+    relative = "reports/inference-compatibility-v1.json"
+    (root / relative).write_text("{}\n")
+    git(root, "add", relative)
+    git(
+        root,
+        "-c",
+        "user.name=Fixture",
+        "-c",
+        "user.email=fixture@example.invalid",
+        "commit",
+        "-qm",
+        "Tampered fixture",
+    )
+    revision = git(root, "rev-parse", "HEAD")
+    pins = synthetic_public_pins(
+        ROOT, json.loads((ROOT / BASE).read_bytes())["public_file_sha256"]
+    )
+    with pytest.raises(execution_preflight.ExecutionPreflightError, match="SHA-256"):
+        execution_preflight._historical_v2_committed_files(root, revision, pins)
+    assert calls == []

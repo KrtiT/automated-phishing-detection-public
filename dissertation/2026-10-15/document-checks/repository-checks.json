@@ -1,12 +1,12 @@
 {
   "status": "verified",
-  "checked_at": "2026-10-16T03:59:00.757351+00:00",
-  "scope": "Focused publication tests, public diagnostic aggregates, new-package integrity/privacy, current reading links and unchanged historical snapshots; not the full research software suite.",
+  "checked_at": "2026-10-16T05:33:15.639370+00:00",
+  "scope": "Focused publication tests, public diagnostic aggregates, package integrity/privacy, current reading links and unchanged historical snapshots. Full software results are recorded separately in software-checks.json.",
   "commands": [
     {
       "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python -m pytest -q tests/test_dissertation_revision.py tests/test_dissertation_publication.py",
       "exit_code": 0,
-      "stdout": "..................                                                       [100%]\n18 passed in 0.27s\n",
+      "stdout": "..................                                                       [100%]\n18 passed in 0.22s\n",
       "stderr": ""
     },
     {
@@ -25,17 +25,27 @@
   "publication_tests_passed": 18,
   "additional_permutation_fits": 99,
   "strict_continuations": 5,
-  "docx_sha256": "0ffa5fc27ef87b87ac80f84f9592fe2d362bf933395b36ed41b7fa6acb6a0637",
-  "pdf_sha256": "1751a4b286b3e9becb6462384a8552f2677bf61695990f2295d60f285879b3eb",
-  "sentence_edits_verified": 40,
-  "contribution_framing_edits_verified": 43,
+  "docx_sha256": "500f5ca98cce81f92ac76a9d4f23db01377e1c05a6d55ac73e2c44f7a5f8f384",
+  "pdf_sha256": "7087f0ab1ab4b97a3284bf35719da6fc6749748a3ef9ec4d65a878bdff7ef4d6",
+  "prior_editorial_stage_counts": {
+    "sentence_edits": 40,
+    "contribution_framing_edits": 43
+  },
+  "current_rq_revision": {
+    "paragraph_edits": 32,
+    "interpretive_cell_edits": 5
+  },
+  "software_receipt_sha256": "252fcc9278aaf4ad91f4f848588ff81a8696a4be23f7c0339aa518b7c3f4a309",
   "tables": 31,
   "original_images": 4,
-  "pdf_pages": 149,
-  "author_requested_acknowledgement_corrections": 1,
-  "local_markdown_links_checked": 51,
-  "text_files_scanned": 246,
-  "docx_xml_parts_scanned": 25,
+  "pdf_pages": 150,
+  "final_abstract_update_receipt_sha256": "e31e3d9122938742efc034e080ddbb347b61acbbf591667127ef78137ad06890",
+  "final_prose_revision_receipt_sha256": "323b087d62169de636f66cbcac123811f14b47a8d92d4856525ea74689829f45",
+  "final_prose_paragraphs_revised": 27,
+  "author_requested_acknowledgement_corrections": 0,
+  "local_markdown_links_checked": 63,
+  "text_files_scanned": 259,
+  "docx_xml_parts_scanned": 23,
   "flagged_private_paths_or_credentials": 0,
   "unexpected_file_types_or_symlinks": 0,
   "raw_record_or_cache_files": 0,

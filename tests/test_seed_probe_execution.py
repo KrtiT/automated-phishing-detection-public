@@ -9,6 +9,7 @@ from hashlib import sha256
 from pathlib import Path
 
 import pytest
+from public_binding_fixtures import synthetic_public_pins
 
 from automated_phishing_detection import execution_preflight
 
@@ -74,7 +75,9 @@ def git(root, *args):
 def checkout(tmp_path, api, monkeypatch):
     root = tmp_path / "checkout"
     root.mkdir()
-    public = json.loads((ROOT / BASE).read_bytes())["public_file_sha256"]
+    public = synthetic_public_pins(
+        ROOT, json.loads((ROOT / BASE).read_bytes())["public_file_sha256"]
+    )
     selected = (
         *public,
         PROFILE,

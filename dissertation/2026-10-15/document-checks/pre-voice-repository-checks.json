@@ -1,0 +1,57 @@
+{
+  "status": "verified",
+  "checked_at": "2026-10-16T05:33:15.639370+00:00",
+  "scope": "Focused publication tests, public diagnostic aggregates, package integrity/privacy, current reading links and unchanged historical snapshots. Full software results are recorded separately in software-checks.json.",
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python -m pytest -q tests/test_dissertation_revision.py tests/test_dissertation_publication.py",
+      "exit_code": 0,
+      "stdout": "..................                                                       [100%]\n18 passed in 0.22s\n",
+      "stderr": ""
+    },
+    {
+      "command": "python dissertation/2026-10-15/diagnostics/source/verify_public_diagnostics.py dissertation/2026-10-15/diagnostics",
+      "exit_code": 0,
+      "stdout": "{\n  \"status\": \"verified\",\n  \"additional_fits\": 99,\n  \"strict_continuations\": 5,\n  \"scope\": \"Completeness, source/protocol hashes and aggregate arithmetic; no independent validation of private rows.\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": "git -c core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol diff HEAD --check",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "publication_tests_passed": 18,
+  "additional_permutation_fits": 99,
+  "strict_continuations": 5,
+  "docx_sha256": "500f5ca98cce81f92ac76a9d4f23db01377e1c05a6d55ac73e2c44f7a5f8f384",
+  "pdf_sha256": "7087f0ab1ab4b97a3284bf35719da6fc6749748a3ef9ec4d65a878bdff7ef4d6",
+  "prior_editorial_stage_counts": {
+    "sentence_edits": 40,
+    "contribution_framing_edits": 43
+  },
+  "current_rq_revision": {
+    "paragraph_edits": 32,
+    "interpretive_cell_edits": 5
+  },
+  "software_receipt_sha256": "252fcc9278aaf4ad91f4f848588ff81a8696a4be23f7c0339aa518b7c3f4a309",
+  "tables": 31,
+  "original_images": 4,
+  "pdf_pages": 150,
+  "final_abstract_update_receipt_sha256": "e31e3d9122938742efc034e080ddbb347b61acbbf591667127ef78137ad06890",
+  "final_prose_revision_receipt_sha256": "323b087d62169de636f66cbcac123811f14b47a8d92d4856525ea74689829f45",
+  "final_prose_paragraphs_revised": 27,
+  "author_requested_acknowledgement_corrections": 0,
+  "local_markdown_links_checked": 63,
+  "text_files_scanned": 259,
+  "docx_xml_parts_scanned": 23,
+  "flagged_private_paths_or_credentials": 0,
+  "unexpected_file_types_or_symlinks": 0,
+  "raw_record_or_cache_files": 0,
+  "published_sources_match_measured_or_reviewed_sources": true,
+  "historical_snapshots_unchanged": true,
+  "scientific_evidence_unchanged_during_contribution_framing": true,
+  "figure_review": "All points and axis labels visible after export; panels A and B include full [0,1] AUC range.",
+  "whitespace_check": "Includes staged and unstaged changes against HEAD. CRLF line endings in generated CSV evidence are preserved and accepted; other whitespace checks remain enabled."
+}

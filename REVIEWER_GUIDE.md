@@ -2,7 +2,7 @@
 
 **15 October 2026 · authoritative branch: `praxis-realignment-v3`**
 
-The manuscript develops an empirical design argument through RQ1–RQ3:
+The manuscript presents a working URL gateway and its measured contributions through RQ1–RQ3:
 representation and transfer, monitoring and action, and selective execution and
 service cost. Each question links a design rationale, a specified comparison,
 measured outcomes and an engineering implication.
@@ -74,7 +74,7 @@ the measured client-path improvement—are presented with their actual boundarie
 
 The manuscript retains the established GW Praxis structure, Times New Roman,
 double spacing, portrait Letter pages, numbered sections, author–date citations
-and an unnumbered bibliography. It contains **150 pages**, including **104 main-body
+and an unnumbered bibliography. It contains **149 pages**, including **104 main-body
 pages**, 31 tables and four figures. The supplied guidance gives a 150-page total
 ceiling and an approximately 80-page body recommendation; the latter remains a
 length consideration.
@@ -83,3 +83,7 @@ The author confirmed Amir Etemadi and Mazen Mheish as co-directors and Vijay
 Raghavan as committee member. This copy is for an upcoming defense and does not
 certify a completed final examination. Prior-degree dates remain as supplied by
 the author. University approval and acceptance are separate from repository checks.
+
+The [sentence change log](dissertation/2026-10-15/document-checks/SENTENCE_CHANGES.md)
+and [revision receipt](dissertation/2026-10-15/document-checks/voice-verification.json)
+record the current editorial changes and content-preservation checks.

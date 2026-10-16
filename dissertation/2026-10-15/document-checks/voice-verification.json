@@ -1,0 +1,98 @@
+{
+  "status": "verified",
+  "baseline_commit": "29d6ecee541e70bde25d2a62dd88300a545a7201",
+  "baseline_docx_sha256": "500f5ca98cce81f92ac76a9d4f23db01377e1c05a6d55ac73e2c44f7a5f8f384",
+  "baseline_pdf_sha256": "7087f0ab1ab4b97a3284bf35719da6fc6749748a3ef9ec4d65a878bdff7ef4d6",
+  "docx_sha256": "056421a8941f5868a488a72634488a1dcf49977a3ff6fc13c3cc98191e4e25fa",
+  "pdf_sha256": "80c0308579148e70b2e9bb238ec827b03ac08ee344cf3227b1a515f1d35ffb5b",
+  "paragraphs_edited": 72,
+  "table_4_14_label_changes": 14,
+  "table_5_2_added_cells": 9,
+  "numeric_tokens_preserved_per_edited_paragraph": true,
+  "abstract_added_values": {
+    "98.6807%": "Structural internal recall, Table 4.2b",
+    "0.7747%": "Structural internal FPR, Table 4.2b"
+  },
+  "original_hypotheses_and_formal_decision_meanings_unchanged": true,
+  "all_existing_table_values_preserved_except_authorized_fail_to_not_met_labels": true,
+  "tables_exact_xml_preserved": 29,
+  "table_5_2_existing_cells_preserved_except_column_widths": true,
+  "author_date_references_appendices_equations_figures_preserved": true,
+  "diagnostic_design_disclosures_preserved_exactly": true,
+  "substantive_limitations_preserved_in_reviewed_rewrites": true,
+  "paragraph_and_run_formatting_hyperlink_subtrees_preserved": true,
+  "all_other_document_nodes_and_package_parts_identical": true,
+  "sentence_log_covers_all_declared_changes": true,
+  "sentence_change_groups": 115,
+  "navigation_cache_changes": [
+    {
+      "bookmark": "heading_15",
+      "before": "10",
+      "after": "11"
+    },
+    {
+      "bookmark": "heading_60",
+      "before": "81",
+      "after": "80"
+    },
+    {
+      "bookmark": "revision_heading_4009",
+      "before": "84",
+      "after": "83"
+    },
+    {
+      "bookmark": "heading_70",
+      "before": "103",
+      "after": "104"
+    },
+    {
+      "bookmark": "table_9",
+      "before": "55",
+      "after": "54"
+    },
+    {
+      "bookmark": "revision_table_4011",
+      "before": "85",
+      "after": "84"
+    },
+    {
+      "bookmark": "list_figures",
+      "before": "xiv",
+      "after": "xiii"
+    },
+    {
+      "bookmark": "list_tables",
+      "before": "xv",
+      "after": "xiv"
+    },
+    {
+      "bookmark": "symbols",
+      "before": "xviii",
+      "after": "xvii"
+    },
+    {
+      "bookmark": "acronyms",
+      "before": "xix",
+      "after": "xviii"
+    },
+    {
+      "bookmark": "glossary",
+      "before": "xxii",
+      "after": "xxi"
+    }
+  ],
+  "layout": {
+    "pdf_pages": 149,
+    "main_body_pages": 104,
+    "body_start_pdf_page": 23,
+    "references_start_pdf_page": 127,
+    "abstract_words": 199,
+    "abstract_pages": [
+      6
+    ]
+  },
+  "render_receipt_sha256": "6ea7674f92d75c5eed5395719fbe327b5cde456b177ee6a3f5caec4f8791875e",
+  "change_log_sha256": "52f4371b4b421916d9be62a6d416dfa1c0fa56b1e16c39239f2db61881730b7e",
+  "sentence_log_sha256": "c6f8469db7a51970cd936a32b5ef024c45a970f37219eb862f0ada11202460d1",
+  "verification_note": "Compared directly with the preceding published edition. Earlier receipts retain their own hashes. Scientific interpretation was reviewed alongside mechanical preservation; these checks are not a guarantee of institutional acceptance."
+}

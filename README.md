@@ -2,10 +2,10 @@
 
 **CyberSentinel — research, code and evidence; defense reading edition, 15 October 2026.**
 
-CyberSentinel connects URL representation, distribution monitoring and selective
-expert execution to measured detection and service outcomes. Paired comparisons,
-controlled input interventions and service measurements explain how design choices
-affect a cascaded phishing detector and provide concrete criteria for its evaluation.
+CyberSentinel is a working URL phishing gateway: a structural classifier, a character
+transformer, a distribution monitor and an HTTP service. Controlled experiments
+measure what each component contributes, verify scheme invariance and a service
+improvement, and establish concrete tests for representation and expert selection.
 
 ## Start here
 
@@ -22,7 +22,7 @@ affect a cascaded phishing detector and provide concrete criteria for its evalua
 ## Research questions and findings
 
 1. **RQ1 — Representation and transfer.** Structural features add 64.07 percentage
-   points of internal recall at 0.7747% FPR. Validation controls identify a strong
+   points of internal recall, reaching 98.6807% recall at 0.7747% FPR. Validation controls identify a strong
    format–class association: all 20,209 negatives use HTTPS, versus 46.6362% of
    positives. A negative HTTPS indicator alone has AUC 0.7668. The separate
    fixed-weight intervention reduces external false positives from 2,261 to 50
@@ -70,10 +70,12 @@ questions, related work, methods, results, and discussion. Sections 3.15–3.16
 explain how the initial results motivated the diagnostic comparisons and when
 their specifications were fixed. The copy is prepared for the upcoming defense:
 Amir Etemadi and Mazen Mheish are co-directors; Vijay Raghavan is the committee member.
-It contains **150 total pages**, **104 main-body pages**, **31 tables**, **four figures**,
+It contains **149 total pages**, **104 main-body pages**, **31 tables**, **four figures**,
 **127 navigation entries** and **62 references**. It is within the supplied
 150-page total ceiling and exceeds the approximately 80-page body recommendation.
-The Word copy remains editable for author review.
+The 199-word abstract fits one page. The Word copy remains editable for author review.
+The [sentence change log](dissertation/2026-10-15/document-checks/SENTENCE_CHANGES.md)
+records the latest edits against the preceding published edition.
 
 ## Code, data and verification
 

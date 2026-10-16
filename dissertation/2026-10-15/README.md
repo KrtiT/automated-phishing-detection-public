@@ -1,8 +1,9 @@
 # Cross-dataset reliability: manuscript and research evidence
 
-CyberSentinel connects representation, monitoring and selective expert execution
-to detection and service outcomes. The Praxis follows RQ1–RQ3 from design rationale
-and method through controlled comparisons, results and engineering implications.
+CyberSentinel is a working URL phishing gateway combining a structural classifier,
+a character transformer, a distribution monitor and an HTTP service. The Praxis
+follows RQ1–RQ3 from design choices through controlled tests, measured achievements
+and engineering findings.
 
 - [Dissertation PDF](manuscript/Tallam_Krti_Praxis_Strengthened_2026-10-15.pdf)
   · [Word copy](manuscript/Tallam_Krti_Praxis_Strengthened_2026-10-15.docx).
@@ -13,7 +14,7 @@ and method through controlled comparisons, results and engineering implications.
 ## Research questions and contributions
 
 **RQ1 — Representation and transfer.** The measured internal recall gain is
-64.07 percentage points at 0.7747% FPR. Validation controls reveal strong
+64.07 percentage points, reaching 98.6807% recall at 0.7747% FPR. Validation controls reveal strong
 format–class association, while the fixed-weight scheme intervention changes
 external false positives from 2,261 to 50 and gold detections from 69 to 22.
 A separate refit verifies scheme invariance across 8,622 pairs and quantifies its
@@ -47,11 +48,12 @@ while the experiments establish specific design properties and consequences.
 
 ## Manuscript and evidence structure
 
-The defense reading copy contains 150 total pages, 104 main-body pages,
-31 tables, four original figures and 127 navigation entries. The abstract is
-219 words and spans two pages with the existing double spacing. The original RQ/hypothesis statements, numerical result cells, equations,
-references and figure pixels are preserved. Five interpretive cells in Table 5.1
-are refined to match the evidence.
+The defense reading copy contains 149 total pages, 104 main-body pages,
+31 tables, four original figures and 127 navigation entries. The 199-word
+abstract fits one page. The existing RQ/hypothesis statements, numerical result
+values, equations, references and figure bytes are preserved. Table 4.14 uses
+“not met” for unmet conditions, and Table 5.2 adds the engineering insight from
+each comparison. Both retain their formal decision meanings.
 
 Sections 3.15–3.16 explain the diagnostic design rationale and the sequence of
 specification and execution. Appendices retain the detailed provenance. Earlier
@@ -64,8 +66,12 @@ The [abstract/export check](document-checks/abstract-update-verification.json)
 connects the earlier manuscript verification to the author-saved title date and
 approved abstract. Earlier receipts retain their own document hashes.
 
-The [final prose verification](document-checks/posture-verification.json) extends
+The [preceding prose verification](document-checks/posture-verification.json) extends
 that chain through 27 interpretive edits and four updated navigation caches.
 All numerical results and formal decisions are preserved. The full local software
 suite records 13,313 passed tests, two skipped and zero failures in the
 [software receipt](document-checks/software-checks.json).
+
+The [current revision receipt](document-checks/voice-verification.json) and
+[every sentence change](document-checks/SENTENCE_CHANGES.md) document the 72-paragraph
+research-voice revision and the two authorized table changes.

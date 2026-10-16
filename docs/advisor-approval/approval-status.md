@@ -2,7 +2,9 @@
 
 ## Completed Evidence — 15 October 2026
 
-CyberSentinel links three research questions to measurable design consequences:
+CyberSentinel implements a structural classifier, character transformer, distribution
+monitor and HTTP service. Three research questions connect this working gateway
+to measured achievements and design findings:
 
 - **RQ1:** internal representation gains, format–class association, fixed-weight
   scheme sensitivity and separately evaluated scheme invariance.

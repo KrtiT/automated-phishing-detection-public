@@ -1,0 +1,710 @@
+{
+  "status": "verified",
+  "docx_sha256": "500f5ca98cce81f92ac76a9d4f23db01377e1c05a6d55ac73e2c44f7a5f8f384",
+  "pdf_sha256": "7087f0ab1ab4b97a3284bf35719da6fc6749748a3ef9ec4d65a878bdff7ef4d6",
+  "word_external_hyperlinks": 63,
+  "unique_active_targets": 63,
+  "pdf_uri_annotations": 68,
+  "normalized_link_characters_checked": 2631,
+  "errors": [],
+  "unmatched_pdf_uri_annotations": [],
+  "unused_external_relationships": [],
+  "missing_pdf_targets": [],
+  "unexpected_pdf_targets": [],
+  "checks": [
+    {
+      "paragraph_index_including_cells": 1821,
+      "relationship": "rId15",
+      "label": "https://doi.org/10.3389/fcomp.2026.1834407",
+      "target": "https://doi.org/10.3389/fcomp.2026.1834407",
+      "pdf_pages": [
+        128
+      ],
+      "normalized_characters_checked": 38,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1822,
+      "relationship": "rId16",
+      "label": "https://github.com/aI-area/ExpertFusion/tree/af739b49a3759e507faeb2f2d6a531ecc6a4dd8e",
+      "target": "https://github.com/aI-area/ExpertFusion/tree/af739b49a3759e507faeb2f2d6a531ecc6a4dd8e",
+      "pdf_pages": [
+        128
+      ],
+      "normalized_characters_checked": 84,
+      "annotations_used": 2
+    },
+    {
+      "paragraph_index_including_cells": 1823,
+      "relationship": "rId17",
+      "label": "https://doi.org/10.3390/electronics15143051",
+      "target": "https://doi.org/10.3390/electronics15143051",
+      "pdf_pages": [
+        128
+      ],
+      "normalized_characters_checked": 41,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1824,
+      "relationship": "rId18",
+      "label": "https://www.usenix.org/conference/usenixsecurity22/presentation/arp",
+      "target": "https://www.usenix.org/conference/usenixsecurity22/presentation/arp",
+      "pdf_pages": [
+        128
+      ],
+      "normalized_characters_checked": 65,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1825,
+      "relationship": "rId19",
+      "label": "https://doi.org/10.1145/357830.357849",
+      "target": "https://doi.org/10.1145/357830.357849",
+      "pdf_pages": [
+        128
+      ],
+      "normalized_characters_checked": 34,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1826,
+      "relationship": "rId20",
+      "label": "https://doi.org/10.1007/s11235-020-00733-2",
+      "target": "https://doi.org/10.1007/s11235-020-00733-2",
+      "pdf_pages": [
+        129
+      ],
+      "normalized_characters_checked": 40,
+      "annotations_used": 2
+    },
+    {
+      "paragraph_index_including_cells": 1827,
+      "relationship": "rId21",
+      "label": "https://doi.org/10.1007/s10994-009-5152-4",
+      "target": "https://doi.org/10.1007/s10994-009-5152-4",
+      "pdf_pages": [
+        129
+      ],
+      "normalized_characters_checked": 39,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1828,
+      "relationship": "rId22",
+      "label": "https://doi.org/10.17487/RFC3986",
+      "target": "https://doi.org/10.17487/RFC3986",
+      "pdf_pages": [
+        129
+      ],
+      "normalized_characters_checked": 30,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1829,
+      "relationship": "rId23",
+      "label": "https://doi.org/10.1023/A:1010933404324",
+      "target": "https://doi.org/10.1023/A:1010933404324",
+      "pdf_pages": [
+        129
+      ],
+      "normalized_characters_checked": 37,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1830,
+      "relationship": "rId24",
+      "label": "https://doi.org/10.1145/1541880.1541882",
+      "target": "https://doi.org/10.1145/1541880.1541882",
+      "pdf_pages": [
+        129
+      ],
+      "normalized_characters_checked": 36,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1831,
+      "relationship": "rId25",
+      "label": "https://doi.org/10.1145/3143561",
+      "target": "https://doi.org/10.1145/3143561",
+      "pdf_pages": [
+        129
+      ],
+      "normalized_characters_checked": 29,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1832,
+      "relationship": "rId26",
+      "label": "https://doi.org/10.1186/s12864-019-6413-7",
+      "target": "https://doi.org/10.1186/s12864-019-6413-7",
+      "pdf_pages": [
+        129
+      ],
+      "normalized_characters_checked": 39,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1833,
+      "relationship": "rId27",
+      "label": "https://doi.org/10.1093/biomet/26.4.404",
+      "target": "https://doi.org/10.1093/biomet/26.4.404",
+      "pdf_pages": [
+        130
+      ],
+      "normalized_characters_checked": 35,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1834,
+      "relationship": "rId28",
+      "label": "https://doi.org/10.1145/2408776.2408794",
+      "target": "https://doi.org/10.1145/2408776.2408794",
+      "pdf_pages": [
+        130
+      ],
+      "normalized_characters_checked": 36,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1835,
+      "relationship": "rId29",
+      "label": "https://doi.org/10.1111/j.2517-6161.1977.tb01600.x",
+      "target": "https://doi.org/10.1111/j.2517-6161.1977.tb01600.x",
+      "pdf_pages": [
+        130
+      ],
+      "normalized_characters_checked": 44,
+      "annotations_used": 2
+    },
+    {
+      "paragraph_index_including_cells": 1836,
+      "relationship": "rId30",
+      "label": "https://doi.org/10.1214/aos/1176344552",
+      "target": "https://doi.org/10.1214/aos/1176344552",
+      "pdf_pages": [
+        130
+      ],
+      "normalized_characters_checked": 36,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1837,
+      "relationship": "rId31",
+      "label": "https://doi.org/10.1145/2523813",
+      "target": "https://doi.org/10.1145/2523813",
+      "pdf_pages": [
+        130
+      ],
+      "normalized_characters_checked": 29,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1838,
+      "relationship": "rId32",
+      "label": "https://proceedings.mlr.press/v97/geifman19a.html",
+      "target": "https://proceedings.mlr.press/v97/geifman19a.html",
+      "pdf_pages": [
+        130
+      ],
+      "normalized_characters_checked": 46,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1839,
+      "relationship": "rId33",
+      "label": "https://doi.org/10.1198/016214506000001437",
+      "target": "https://doi.org/10.1198/016214506000001437",
+      "pdf_pages": [
+        130
+      ],
+      "normalized_characters_checked": 40,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1840,
+      "relationship": "rId34",
+      "label": "https://jmlr.org/papers/v13/gretton12a.html",
+      "target": "https://jmlr.org/papers/v13/gretton12a.html",
+      "pdf_pages": [
+        131
+      ],
+      "normalized_characters_checked": 41,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1841,
+      "relationship": "rId35",
+      "label": "https://proceedings.mlr.press/v70/guo17a.html",
+      "target": "https://proceedings.mlr.press/v70/guo17a.html",
+      "pdf_pages": [
+        131
+      ],
+      "normalized_characters_checked": 42,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1842,
+      "relationship": "rId36",
+      "label": "https://arxiv.org/abs/2010.12847",
+      "target": "https://arxiv.org/abs/2010.12847",
+      "pdf_pages": [
+        131
+      ],
+      "normalized_characters_checked": 30,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1843,
+      "relationship": "rId37",
+      "label": "https://doi.org/10.1016/j.engappai.2021.104347",
+      "target": "https://doi.org/10.1016/j.engappai.2021.104347",
+      "pdf_pages": [
+        131
+      ],
+      "normalized_characters_checked": 41,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1844,
+      "relationship": "rId38",
+      "label": "https://doi.org/10.17632/c2gw7fy2j4.3",
+      "target": "https://doi.org/10.17632/c2gw7fy2j4.3",
+      "pdf_pages": [
+        131
+      ],
+      "normalized_characters_checked": 34,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1845,
+      "relationship": "rId39",
+      "label": "https://www.jstor.org/stable/4615733",
+      "target": "https://www.jstor.org/stable/4615733",
+      "pdf_pages": [
+        131
+      ],
+      "normalized_characters_checked": 34,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1846,
+      "relationship": "rId40",
+      "label": "https://doi.org/10.1016/j.eswa.2026.134089",
+      "target": "https://doi.org/10.1016/j.eswa.2026.134089",
+      "pdf_pages": [
+        131
+      ],
+      "normalized_characters_checked": 37,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1847,
+      "relationship": "rId41",
+      "label": "https://doi.org/10.1007/s11235-017-0414-0",
+      "target": "https://doi.org/10.1007/s11235-017-0414-0",
+      "pdf_pages": [
+        132
+      ],
+      "normalized_characters_checked": 39,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1848,
+      "relationship": "rId42",
+      "label": "https://doi.org/10.52202/075280-0431",
+      "target": "https://doi.org/10.52202/075280-0431",
+      "pdf_pages": [
+        132
+      ],
+      "normalized_characters_checked": 34,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1849,
+      "relationship": "rId43",
+      "label": "https://doi.org/10.1145/2464157.2464160",
+      "target": "https://doi.org/10.1145/2464157.2464160",
+      "pdf_pages": [
+        132
+      ],
+      "normalized_characters_checked": 36,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1850,
+      "relationship": "rId44",
+      "label": "https://doi.org/10.1109/SURV.2013.032213.00009",
+      "target": "https://doi.org/10.1109/SURV.2013.032213.00009",
+      "pdf_pages": [
+        132
+      ],
+      "normalized_characters_checked": 41,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1851,
+      "relationship": "rId45",
+      "label": "https://arxiv.org/abs/1802.03162",
+      "target": "https://arxiv.org/abs/1802.03162",
+      "pdf_pages": [
+        132
+      ],
+      "normalized_characters_checked": 30,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1852,
+      "relationship": "rId46",
+      "label": "https://doi.org/10.14722/ndss.2019.23386",
+      "target": "https://doi.org/10.14722/ndss.2019.23386",
+      "pdf_pages": [
+        132
+      ],
+      "normalized_characters_checked": 36,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1853,
+      "relationship": "rId47",
+      "label": "https://doi.org/10.18653/v1/2021.findings-emnlp.43",
+      "target": "https://doi.org/10.18653/v1/2021.findings-emnlp.43",
+      "pdf_pages": [
+        133
+      ],
+      "normalized_characters_checked": 46,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1854,
+      "relationship": "rId48",
+      "label": "https://proceedings.mlr.press/v80/lipton18a.html",
+      "target": "https://proceedings.mlr.press/v80/lipton18a.html",
+      "pdf_pages": [
+        133
+      ],
+      "normalized_characters_checked": 45,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1855,
+      "relationship": "rId49",
+      "label": "https://arxiv.org/abs/1711.05101",
+      "target": "https://arxiv.org/abs/1711.05101",
+      "pdf_pages": [
+        133
+      ],
+      "normalized_characters_checked": 30,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1856,
+      "relationship": "rId50",
+      "label": "https://doi.org/10.1109/TKDE.2018.2876857",
+      "target": "https://doi.org/10.1109/TKDE.2018.2876857",
+      "pdf_pages": [
+        133
+      ],
+      "normalized_characters_checked": 37,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1857,
+      "relationship": "rId51",
+      "label": "https://doi.org/10.1145/1557019.1557153",
+      "target": "https://doi.org/10.1145/1557019.1557153",
+      "pdf_pages": [
+        133
+      ],
+      "normalized_characters_checked": 36,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1858,
+      "relationship": "rId52",
+      "label": "https://doi.org/10.1109/TC.2017.2703808",
+      "target": "https://doi.org/10.1109/TC.2017.2703808",
+      "pdf_pages": [
+        133
+      ],
+      "normalized_characters_checked": 35,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1859,
+      "relationship": "rId53",
+      "label": "https://doi.org/10.1007/BF02295996",
+      "target": "https://doi.org/10.1007/BF02295996",
+      "pdf_pages": [
+        134
+      ],
+      "normalized_characters_checked": 32,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1860,
+      "relationship": "rId54",
+      "label": "https://doi.org/10.1002/(SICI)1097-0258(19981130)17:22%3C2635::AID-SIM954%3E3.0.CO;2-C",
+      "target": "https://doi.org/10.1002/(SICI)1097-0258(19981130)17:22%3C2635::AID-SIM954%3E3.0.CO;2-C",
+      "pdf_pages": [
+        134
+      ],
+      "normalized_characters_checked": 82,
+      "annotations_used": 2
+    },
+    {
+      "paragraph_index_including_cells": 1861,
+      "relationship": "rId55",
+      "label": "https://www.jmlr.org/papers/v11/ojala10a.html",
+      "target": "https://www.jmlr.org/papers/v11/ojala10a.html",
+      "pdf_pages": [
+        134
+      ],
+      "normalized_characters_checked": 42,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1862,
+      "relationship": "rId56",
+      "label": "https://arxiv.org/abs/1906.02530",
+      "target": "https://arxiv.org/abs/1906.02530",
+      "pdf_pages": [
+        134
+      ],
+      "normalized_characters_checked": 30,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1863,
+      "relationship": "rId57",
+      "label": "https://doi.org/10.1109/TKDE.2009.191",
+      "target": "https://doi.org/10.1109/TKDE.2009.191",
+      "pdf_pages": [
+        134
+      ],
+      "normalized_characters_checked": 33,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1864,
+      "relationship": "rId58",
+      "label": "https://jmlr.org/papers/v12/pedregosa11a.html",
+      "target": "https://jmlr.org/papers/v12/pedregosa11a.html",
+      "pdf_pages": [
+        135
+      ],
+      "normalized_characters_checked": 43,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1865,
+      "relationship": "rId59",
+      "label": "https://www.usenix.org/conference/usenixsecurity19/presentation/pendlebury",
+      "target": "https://www.usenix.org/conference/usenixsecurity19/presentation/pendlebury",
+      "pdf_pages": [
+        135
+      ],
+      "normalized_characters_checked": 72,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1866,
+      "relationship": "rId60",
+      "label": "https://doi.org/10.1016/j.cose.2023.103545",
+      "target": "https://doi.org/10.1016/j.cose.2023.103545",
+      "pdf_pages": [
+        135
+      ],
+      "normalized_characters_checked": 37,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1867,
+      "relationship": "rId61",
+      "label": "https://archive.ics.uci.edu/dataset/967/phiusiil+phishing+url+website+dataset",
+      "target": "https://archive.ics.uci.edu/dataset/967/phiusiil+phishing+url+website+dataset",
+      "pdf_pages": [
+        135
+      ],
+      "normalized_characters_checked": 74,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1868,
+      "relationship": "rId62",
+      "label": "https://doi.org/10.1007/s00521-017-3305-0",
+      "target": "https://doi.org/10.1007/s00521-017-3305-0",
+      "pdf_pages": [
+        135
+      ],
+      "normalized_characters_checked": 39,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1869,
+      "relationship": "rId63",
+      "label": "https://doi.org/10.1016/j.comnet.2024.110398",
+      "target": "https://doi.org/10.1016/j.comnet.2024.110398",
+      "pdf_pages": [
+        136
+      ],
+      "normalized_characters_checked": 39,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1870,
+      "relationship": "rId64",
+      "label": "https://doi.org/10.1111/ecog.02881",
+      "target": "https://doi.org/10.1111/ecog.02881",
+      "pdf_pages": [
+        136
+      ],
+      "normalized_characters_checked": 31,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1871,
+      "relationship": "rId65",
+      "label": "https://doi.org/10.1016/j.eswa.2018.09.029",
+      "target": "https://doi.org/10.1016/j.eswa.2018.09.029",
+      "pdf_pages": [
+        136
+      ],
+      "normalized_characters_checked": 36,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1872,
+      "relationship": "rId66",
+      "label": "https://doi.org/10.1371/journal.pone.0118432",
+      "target": "https://doi.org/10.1371/journal.pone.0118432",
+      "pdf_pages": [
+        136
+      ],
+      "normalized_characters_checked": 40,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1873,
+      "relationship": "rId67",
+      "label": "https://www.usenix.org/legacy/events/nsdi06/tech/schroeder.html",
+      "target": "https://www.usenix.org/legacy/events/nsdi06/tech/schroeder.html",
+      "pdf_pages": [
+        136
+      ],
+      "normalized_characters_checked": 60,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1874,
+      "relationship": "rId68",
+      "label": "https://doi.org/10.1214/aos/1176344136",
+      "target": "https://doi.org/10.1214/aos/1176344136",
+      "pdf_pages": [
+        136
+      ],
+      "normalized_characters_checked": 36,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1875,
+      "relationship": "rId69",
+      "label": "https://jmlr.org/papers/v8/sugiyama07a.html",
+      "target": "https://jmlr.org/papers/v8/sugiyama07a.html",
+      "pdf_pages": [
+        137
+      ],
+      "normalized_characters_checked": 41,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1876,
+      "relationship": "rId70",
+      "label": "https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/research-record-2026-10-04",
+      "target": "https://github.com/KrtiT/automated-phishing-detection-public/releases/tag/research-record-2026-10-04",
+      "pdf_pages": [
+        137
+      ],
+      "normalized_characters_checked": 99,
+      "annotations_used": 2
+    },
+    {
+      "paragraph_index_including_cells": 1877,
+      "relationship": "rId71",
+      "label": "https://doi.org/10.1111/j.2517-6161.1996.tb02080.x",
+      "target": "https://doi.org/10.1111/j.2517-6161.1996.tb02080.x",
+      "pdf_pages": [
+        137
+      ],
+      "normalized_characters_checked": 44,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1878,
+      "relationship": "rId72",
+      "label": "https://doi.org/10.1609/aaai.v38i19.30161",
+      "target": "https://doi.org/10.1609/aaai.v38i19.30161",
+      "pdf_pages": [
+        137
+      ],
+      "normalized_characters_checked": 37,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1879,
+      "relationship": "rId73",
+      "label": "https://arxiv.org/abs/1706.03762",
+      "target": "https://arxiv.org/abs/1706.03762",
+      "pdf_pages": [
+        137
+      ],
+      "normalized_characters_checked": 30,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1880,
+      "relationship": "rId74",
+      "label": "https://doi.org/10.1016/j.dib.2026.113195",
+      "target": "https://doi.org/10.1016/j.dib.2026.113195",
+      "pdf_pages": [
+        137
+      ],
+      "normalized_characters_checked": 36,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1881,
+      "relationship": "rId75",
+      "label": "https://doi.org/10.17632/b97hxbxtpd.4",
+      "target": "https://doi.org/10.17632/b97hxbxtpd.4",
+      "pdf_pages": [
+        138
+      ],
+      "normalized_characters_checked": 34,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1882,
+      "relationship": "rId76",
+      "label": "https://www.usenix.org/conference/usenixsecurity21/presentation/yang-limin",
+      "target": "https://www.usenix.org/conference/usenixsecurity21/presentation/yang-limin",
+      "pdf_pages": [
+        138
+      ],
+      "normalized_characters_checked": 72,
+      "annotations_used": 1
+    },
+    {
+      "paragraph_index_including_cells": 1883,
+      "relationship": "rId77",
+      "label": "https://arxiv.org/abs/1509.01626",
+      "target": "https://arxiv.org/abs/1509.01626",
+      "pdf_pages": [
+        138
+      ],
+      "normalized_characters_checked": 30,
+      "annotations_used": 1
+    }
+  ],
+  "scope": "Local DOCX/PDF correspondence, label identity, URL syntax and annotation coverage. Network/source identity checks are in external-url-final-audit.json. Text alignment ignores whitespace, soft hyphens and periods; target identity preserves punctuation and uses percent-decoding only."
+}

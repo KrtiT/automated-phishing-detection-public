@@ -1,22 +1,27 @@
 {
   "status": "reviewed",
-  "docx_sha256": "500f5ca98cce81f92ac76a9d4f23db01377e1c05a6d55ac73e2c44f7a5f8f384",
-  "pdf_sha256": "7087f0ab1ab4b97a3284bf35719da6fc6749748a3ef9ec4d65a878bdff7ef4d6",
-  "pdf_pages": 150,
+  "docx_sha256": "056421a8941f5868a488a72634488a1dcf49977a3ff6fc13c3cc98191e4e25fa",
+  "pdf_sha256": "80c0308579148e70b2e9bb238ec827b03ac08ee344cf3227b1a515f1d35ffb5b",
+  "pdf_pages": 149,
   "main_body_pages": 104,
-  "body_start_pdf_page": 24,
-  "references_start_pdf_page": 128,
-  "abstract_words": 219,
+  "body_start_pdf_page": 23,
+  "references_start_pdf_page": 127,
+  "abstract_words": 199,
   "abstract_pages": [
-    6,
-    7
+    6
   ],
-  "review": "Reviewed narrative and interpretive wording across the manuscript and screened all 31 tables. Revised 27 prose paragraphs to foreground research answers, quantitative findings and design consequences. Removed repetitive negative verdict endings from the research-question summaries. Formal hypothesis decisions, table cells, numerical results, substantive limitations, diagnostic timing disclosures, approved abstract, author date, references and appendices are preserved. Complete text, layout, navigation, citation and PDF-link checks pass.",
-  "preceding_full_review": "pre-posture-reading-review.json",
+  "review": "Reviewed all 72 rewritten paragraphs against their prior wording. The narrative leads with the implemented gateway, measured achievements and reusable design findings while retaining the RQ1\u2013RQ3 structure. Existing numerical results, substantive caveats, citations and diagnostic chronology remain. Formal decisions are preserved, with authorized fail-to-not-met labels and an insight column. Existing paragraph/run formatting and all image bytes remain exact. Complete text/table coverage, navigation, citations, links and privacy checks pass.",
+  "preceding_full_review": "pre-voice-reading-review.json",
   "visual_review_pdf_pages": [
-    116,
+    6,
+    25,
+    28,
+    90,
+    91,
+    115,
     122,
-    127
+    123,
+    126
   ],
   "confirmed_committee_roles": {
     "co_directors": [

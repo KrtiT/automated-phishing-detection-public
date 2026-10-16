@@ -1,0 +1,134 @@
+{
+  "status": "verified",
+  "spacing_policy": "User requested double spacing throughout all editable text",
+  "embedded_fonts": [
+    "BAAAAA+TimesNewRomanPS-BoldMT",
+    "CAAAAA+TimesNewRomanPSMT",
+    "DAAAAA+TimesNewRomanPS-ItalicMT",
+    "EAAAAA+TimesNewRomanPS-BoldMT",
+    "FAAAAA+TimesNewRomanPSMT",
+    "GAAAAA+TimesNewRomanPSMT"
+  ],
+  "pdf_pages": 150,
+  "rendered_nonempty_paragraphs_and_cells": 2118,
+  "navigation_entries": 127,
+  "tables": 31,
+  "table_pages": [
+    [
+      39,
+      40
+    ],
+    [
+      45
+    ],
+    [
+      69
+    ],
+    [
+      71
+    ],
+    [
+      72
+    ],
+    [
+      73
+    ],
+    [
+      75
+    ],
+    [
+      76
+    ],
+    [
+      78,
+      79
+    ],
+    [
+      80,
+      81
+    ],
+    [
+      83,
+      84
+    ],
+    [
+      85
+    ],
+    [
+      86
+    ],
+    [
+      87
+    ],
+    [
+      88
+    ],
+    [
+      89
+    ],
+    [
+      92,
+      93
+    ],
+    [
+      97
+    ],
+    [
+      98
+    ],
+    [
+      101
+    ],
+    [
+      103
+    ],
+    [
+      104
+    ],
+    [
+      106
+    ],
+    [
+      108
+    ],
+    [
+      109
+    ],
+    [
+      111
+    ],
+    [
+      112
+    ],
+    [
+      119,
+      120,
+      121
+    ],
+    [
+      123,
+      124
+    ],
+    [
+      139,
+      140
+    ],
+    [
+      142,
+      143,
+      144,
+      145,
+      146,
+      147
+    ]
+  ],
+  "figure_pages": [
+    44,
+    60,
+    99,
+    100
+  ],
+  "figure_prose_intersections": 0,
+  "detached_table_captions": 0,
+  "spacing_resolution": "Document defaults, based-on paragraph styles, and direct paragraph overrides; only the read-only audit copy is materialized."
+}

@@ -1,86 +1,75 @@
 # Verification of the defense reading edition
 
-The current Word/PDF pair contains **150 total pages and 104 main-body pages**,
-31 tables, four original figures and 127 checked navigation entries. Times New
-Roman and double spacing are retained. The approved **219-word abstract spans two
-pages**. The document is at the supplied 150-page total ceiling; its body exceeds
-the approximately 80-page recommendation.
+The current Word/PDF pair contains **149 total pages and 104 main-body pages**,
+31 tables, four original figures and 127 checked navigation entries. The
+**199-word abstract fits one page**. Times New Roman, double spacing, margins,
+paragraph styles and existing run formatting are preserved. The document is within
+the supplied 150-page total ceiling; its body exceeds the approximately 80-page
+recommendation.
 
 ## Scientific and document checks
 
-- All 99 additional permutation fits and five stricter continuations completed
-  without warnings. Independent score reconstruction and separate tie-aware
-  AUC/AP implementations reproduce the retained metrics. The public checker
-  verifies aggregates and rejects missing seeds, changed metrics and changed
-  producer source. Historical-fit authentication still requires private receipts.
-- The preceding RQ synthesis changed 32 paragraphs and five interpretive cells
-  in Table 5.1. Its exact-XML verification retains its original document hash in
-  [three-contribution-verification.json](document-checks/three-contribution-verification.json).
-  Earlier sentence and framing checks retain their stage-specific meaning.
-- The author then saved the document in Word, changing the title date from
-  October 2 to November 5th, 2026. Comparison of all 2,254 XML paragraphs finds
-  no other text change. All table-cell text, math XML, image dimensions and
-  decoded pixels, page sizes, margins and active hyperlink labels/destinations
-  are preserved. Word re-encoded images and changed field/style serialization;
-  these are not claimed to be package-byte identical to the preceding stage.
-- The approved abstract replaces only its existing paragraph. Five front-matter
-  page caches were updated. All other XML nodes and package parts are identical
-  to the author-saved document. The
-  [abstract/export receipt](document-checks/abstract-update-verification.json)
-  verifies that chain explicitly.
-- Complete text coverage, all 31 tables and four figures pass the export audit.
-  No table caption is detached and no figure intersects prose. All 127 navigation
-  entries, internal click destinations, exported external links and citation
-  checks pass. Effective double spacing is checked through document defaults,
-  inherited paragraph styles and direct formatting. Both abstract pages and the
-  updated contents received visual review. Package inspection flags no hidden
-  review content, local paths or credentials.
+The [revision receipt](document-checks/voice-verification.json) compares this edition
+directly with the preceding published Word file. The
+[sentence change log](document-checks/SENTENCE_CHANGES.md) records every changed
+sentence, grouped where sentences split or join; the
+[structured log](document-checks/voice-changes.json) retains complete paragraph pairs.
 
-The research questions, original result values, formal hypothesis decisions,
-equations, bibliography and research evidence remain intact. The author-confirmed
-committee roles are recorded for the upcoming defense; the copy does not assert
-a completed final examination. The inaccurate practitioner-discussion
-acknowledgement remains removed.
+- Seventy-two prose paragraphs are revised across the abstract and Chapters 1–5.
+  The argument leads with the working gateway, measured achievements and design
+  lessons while retaining RQ1–RQ3. Substantive limitations remain in the relevant
+  interpretations and Section 5.4. Diagnostic chronology is unchanged.
+- Every existing numerical result in the edited paragraphs is preserved. The
+  abstract adds internal structural recall of 98.6807% and FPR of 0.7747%, both
+  already reported in Table 4.2b. No research measurements were changed or added.
+- Table 4.14 changes 14 labels from “fail” to “not met,” without changing decisions.
+  Table 5.2 adds “What it revealed” and eight concise insight cells. All existing
+  cells retain their text; column widths accommodate the addition. The other
+  29 tables retain their exact XML.
+- Research questions, hypotheses, formal decision meanings, equations, references,
+  figure bytes, acknowledgements, committee details and the author-saved title
+  date remain intact. All document nodes outside the declared edits and refreshed
+  navigation caches are unchanged; other DOCX package parts are byte-identical.
+- Complete paragraph and table-cell coverage passes the PDF audit. All table rows
+  and four figures render, no caption is detached, and no figure intersects prose.
+  Navigation entries, internal destinations, exported external links and citation
+  checks pass. Visual review covers the abstract, thesis, contributions, formal
+  adjudication, expanded table, RQ synthesis and conclusion.
+- Package inspection finds no tracked revisions, substantive hidden review content,
+  local paths or credentials. The copy is for the upcoming defense and does not
+  certify a completed examination. The inaccurate practitioner acknowledgement
+  remains removed.
 
-Word SHA-256: `500f5ca98cce81f92ac76a9d4f23db01377e1c05a6d55ac73e2c44f7a5f8f384`
+Word SHA-256: `056421a8941f5868a488a72634488a1dcf49977a3ff6fc13c3cc98191e4e25fa`
 
-PDF SHA-256: `7087f0ab1ab4b97a3284bf35719da6fc6749748a3ef9ec4d65a878bdff7ef4d6`
+PDF SHA-256: `80c0308579148e70b2e9bb238ec827b03ac08ee344cf3227b1a515f1d35ffb5b`
 
-The current summary is in
-[manuscript-verification.json](document-checks/manuscript-verification.json).
-Earlier receipts are evidence for their named stages; the current summary and
-[final prose receipt](document-checks/posture-verification.json) identify the final artifacts. The
-[claim-to-evidence map](document-checks/three-contribution-evidence-map.json)
-was established against the preceding verified manuscript; the final update
-preserves its underlying scientific statements and sources.
+The [current summary](document-checks/manuscript-verification.json) identifies these
+artifacts. The [preceding prose receipt](document-checks/posture-verification.json),
+[abstract/export receipt](document-checks/abstract-update-verification.json) and
+[earlier RQ synthesis](document-checks/three-contribution-verification.json) retain
+their original hashes and stage-specific meaning. Replaced summaries and render
+checks are preserved as `pre-voice-*` records. The
+[claim-to-evidence map](document-checks/three-contribution-evidence-map.json) retains
+its source hashes; the research evidence is unchanged.
 
-## Final interpretive prose revision
+## Research evidence and repository checks
 
-The final pass revises 27 paragraphs to lead with research answers, quantitative
-findings and engineering implications. The
-[change log](document-checks/posture-changes.json) records each edit. The
-[verification receipt](document-checks/posture-verification.json) compares the
-result directly with the approved abstract edition: all 31 tables, numerical
-result tokens, formal hypothesis decisions, methods disclosures, references,
-appendices, image bytes and paragraph formatting are preserved. Four navigation
-page caches were refreshed. Every other document node and package part is unchanged.
-The approved abstract and author-saved title date remain exact. The discussion,
-hypothesis-relationship section and conclusion received visual review after export.
+All 99 additional permutation fits and five stricter continuations are retained.
+Independent score reconstruction and tie-aware AUC/AP calculations reproduce the
+saved metrics. The public checker validates completeness, source hashes and
+aggregate arithmetic; historical-fit authentication still requires private receipts.
 
-## Repository checks
+The complete local software suite previously passed **13,313 tests**, with
+**two skipped and zero failures**, on the source and runtime recorded in the
+[software receipt](document-checks/software-checks.json). This revision changes
+manuscript and documentation files. The
+[current repository check](document-checks/repository-checks.json) verifies that the
+tested software source fingerprint is unchanged, reruns the 18 historical-publication
+regressions and public diagnostic checker, and checks this edition's package,
+links, preserved evidence and hashes. These are distinct validation scopes.
 
-The complete local software suite passed **13,313 tests**, with **two skipped**
-and **zero failures**. Ruff, formatting, dependency-lock, CLI and package-build
-checks also passed. These results are recorded in
-[software-checks.json](document-checks/software-checks.json), separately from the
-focused publication checks in
-[repository-checks.json](document-checks/repository-checks.json).
-Synthetic execution fixtures authenticate two approved public compatibility-report
-projections before using their public hashes in mock bindings. Regression tests
-reject their use as original historical evidence and reject tampered reports.
-Production binders and frozen research contracts are unchanged.
-
-On macOS arm64, numerical tests use the contract-required NumPy 2.2.6/OpenBLAS
-0.3.29 build described in the reproduction instructions. The default Accelerate
-build is rejected by the scientific runtime checks. GitHub CI is a separate run
-on the pushed commit; the local receipt does not certify its outcome.
+On macOS arm64, the recorded numerical runtime uses NumPy 2.2.6/OpenBLAS 0.3.29.
+GitHub CI reports separately for each pushed commit; the local receipt does not
+certify a new remote run. Document and repository verification do not constitute
+institutional approval.

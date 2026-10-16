@@ -1,0 +1,30 @@
+{
+  "status": "reviewed",
+  "docx_sha256": "500f5ca98cce81f92ac76a9d4f23db01377e1c05a6d55ac73e2c44f7a5f8f384",
+  "pdf_sha256": "7087f0ab1ab4b97a3284bf35719da6fc6749748a3ef9ec4d65a878bdff7ef4d6",
+  "pdf_pages": 150,
+  "main_body_pages": 104,
+  "body_start_pdf_page": 24,
+  "references_start_pdf_page": 128,
+  "abstract_words": 219,
+  "abstract_pages": [
+    6,
+    7
+  ],
+  "review": "Reviewed narrative and interpretive wording across the manuscript and screened all 31 tables. Revised 27 prose paragraphs to foreground research answers, quantitative findings and design consequences. Removed repetitive negative verdict endings from the research-question summaries. Formal hypothesis decisions, table cells, numerical results, substantive limitations, diagnostic timing disclosures, approved abstract, author date, references and appendices are preserved. Complete text, layout, navigation, citation and PDF-link checks pass.",
+  "preceding_full_review": "pre-posture-reading-review.json",
+  "visual_review_pdf_pages": [
+    116,
+    122,
+    127
+  ],
+  "confirmed_committee_roles": {
+    "co_directors": [
+      "Amir Etemadi",
+      "Mazen Mheish"
+    ],
+    "member": "Vijay Raghavan"
+  },
+  "submission_stage": "upcoming defense",
+  "inaccurate_practitioner_acknowledgement_removed": true
+}

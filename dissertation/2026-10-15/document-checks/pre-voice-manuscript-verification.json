@@ -1,0 +1,38 @@
+{
+  "status": "verified",
+  "docx_sha256": "500f5ca98cce81f92ac76a9d4f23db01377e1c05a6d55ac73e2c44f7a5f8f384",
+  "pdf_sha256": "7087f0ab1ab4b97a3284bf35719da6fc6749748a3ef9ec4d65a878bdff7ef4d6",
+  "scope": "Final interpretive prose revision, exact preservation of scientific tables and formal decisions, complete rendering and link checks.",
+  "verification_chain": [
+    "pre-abstract-manuscript-verification.json",
+    "three-contribution-verification.json",
+    "abstract-update-verification.json",
+    "posture-verification.json"
+  ],
+  "prior_verified_docx_sha256": "9a621c338808d64c5742223b73d295fcd42391c57af6a99a81f9bf69c40c1dd8",
+  "prose_paragraphs_revised": 27,
+  "numeric_result_tokens_and_all_31_tables_preserved": true,
+  "hypotheses_equations_references_preserved": true,
+  "approved_abstract_author_date_and_method_disclosures_preserved": true,
+  "all_editable_text_double_spaced": true,
+  "spacing_resolution": "Document defaults, based-on paragraph styles, and direct paragraph overrides; only the read-only audit copy is materialized.",
+  "paragraph_formatting_preserved": true,
+  "all_existing_hyperlink_subtrees_preserved": true,
+  "figure_pixels_and_package_bytes_preserved": 4,
+  "tables": 31,
+  "navigation_entries": 127,
+  "pdf_pages": 150,
+  "main_body_pages": 104,
+  "body_start_pdf_page": 24,
+  "references_start_pdf_page": 128,
+  "abstract_words": 219,
+  "abstract_pages": [
+    6,
+    7
+  ],
+  "abstract_fits_one_page": false,
+  "rendered_nonempty_paragraphs_and_cells": 2118,
+  "figure_prose_intersections": 0,
+  "detached_table_captions": 0,
+  "author_title_date_preserved": "November 5th, 2026"
+}

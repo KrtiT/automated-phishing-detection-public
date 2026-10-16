@@ -1,0 +1,88 @@
+{
+  "unique_references": 63,
+  "body_citation_reference_links": 92,
+  "unresolved_internal_links": 0,
+  "residual_year_contexts": [
+    {
+      "year": "2026",
+      "context": "uirementsfor the degree of Doctor of Engineering\nOctober 2, 2026\nPraxis directed byAmir EtemadiAssociate Professor of Engineering"
+    },
+    {
+      "year": "2026",
+      "context": " and Applied Science, Praxis Committee Member\n\n\n\u00a9 Copyright 2026 by Krti Tallam\nAll rights reserved\nDedication\nI want to express "
+    },
+    {
+      "year": "2020",
+      "context": " (Pendlebury et al., 2019). Comparison D uses an additional 2020 benchmark that predates the reported PhiUSIIL phishing collectio"
+    },
+    {
+      "year": "2022",
+      "context": "ish and MalwareWorld for phishing URLs retrieved October 1, 2022\u2013May 21, 2023 (Prasad & Chandra, 2024a). The legitimate-URL colle"
+    },
+    {
+      "year": "2023",
+      "context": "reWorld for phishing URLs retrieved October 1, 2022\u2013May 21, 2023 (Prasad & Chandra, 2024a). The legitimate-URL collection window "
+    },
+    {
+      "year": "2020",
+      "context": "icting collection months, so the source is described as the 2020 benchmark. Its Alexa/Yandex legitimate-source mechanisms differ "
+    },
+    {
+      "year": "2042",
+      "context": "fixed 100-tree Random Forest achieves internal recall of 99.2042%, FPR of 0.7006%, AP of 0.996749 and AUC of 0.996394. Externally"
+    },
+    {
+      "year": "2001",
+      "context": "Seed\nROC AUC\nAP\nTP\nFP\nIterations\n42\n0.4718\n0.4871\n1,623\n178\n2001\n43\n0.6419\n0.6718\n4,460\n175\n698\n44\n0.5487\n0.5206\n1,250\n176\n1010\n4"
+    },
+    {
+      "year": "2061",
+      "context": "79, median 0.4479 and empirical 2.5th\u201397.5th percentiles [0.2061, 0.7718]. Of the 99 fits, 12 reach or exceed the original maximu"
+    },
+    {
+      "year": "2026",
+      "context": "A\u2014Evidence and Reproduction Map\nThe release research-record-2026-10-04, cited as Tallam (2026), contains the original data and me"
+    },
+    {
+      "year": "2026",
+      "context": "e record. Table A.1 uses filenames relative to dissertation/2026-10-04/aggregate-data unless another edition is named. Current or"
+    },
+    {
+      "year": "2026",
+      "context": "urrent original-hypothesis decisions remain in dissertation/2026-10-12/aggregate-data/corrected-primary-gates.csv; primary-gates."
+    },
+    {
+      "year": "2026",
+      "context": "cope-crosswalk-20261001.md; current decisions: dissertation/2026-10-12/aggregate-data/corrected-primary-gates.csv\nRQ1 representat"
+    },
+    {
+      "year": "2026",
+      "context": "v (25 rows)\nEvery primary decision\nSection 4.7\ndissertation/2026-10-12/aggregate-data/corrected-primary-gates.csv (22 rows); hist"
+    },
+    {
+      "year": "2026",
+      "context": "rimary-gates.csv (22 rows); historical ledger: dissertation/2026-10-04/aggregate-data/primary-gates.csv\nRanking, calibration and "
+    },
+    {
+      "year": "2026",
+      "context": "onitors-and-scores.csv; new control diagnosis: dissertation/2026-10-15/diagnostics/\nIntegrity and methodological history\nSections"
+    },
+    {
+      "year": "2026",
+      "context": "erification.json; provenance/Historical_Evidence_Supplement_2026-10-01.md\nThe original measured code revision is 77d128377ce5b401"
+    },
+    {
+      "year": "2026",
+      "context": "d60c4d663e6297d13334460c. The repository's research-archive/2026-10-04 guide supplies download, checksum, materialization and sav"
+    },
+    {
+      "year": "2026",
+      "context": "uirements remain preserved. Extended_Methods_and_Chronology_2026-10-12.docx gives the detailed history; Section 3.8 specifies cor"
+    },
+    {
+      "year": "2026",
+      "context": "e stricter numerical continuations. The public dissertation/2026-10-15 directory contains protocols, source, aggregate coefficien"
+    }
+  ],
+  "scope": "Citation linkage, bibliography uniqueness/order and internal link targets; not full-source verification of every literature claim or a plagiarism certification."
+}

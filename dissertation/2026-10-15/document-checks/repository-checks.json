@@ -1,0 +1,44 @@
+{
+  "status": "verified",
+  "checked_at": "2026-10-16T03:37:29.265024+00:00",
+  "scope": "Focused publication tests, public diagnostic aggregates, new-package integrity/privacy, current reading links and unchanged historical snapshots; not the full research software suite.",
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python -m pytest -q tests/test_dissertation_revision.py tests/test_dissertation_publication.py",
+      "exit_code": 0,
+      "stdout": "..................                                                       [100%]\n18 passed in 0.21s\n",
+      "stderr": ""
+    },
+    {
+      "command": "python dissertation/2026-10-15/diagnostics/source/verify_public_diagnostics.py dissertation/2026-10-15/diagnostics",
+      "exit_code": 0,
+      "stdout": "{\n  \"status\": \"verified\",\n  \"additional_fits\": 99,\n  \"strict_continuations\": 5,\n  \"scope\": \"Completeness, source/protocol hashes and aggregate arithmetic; no independent validation of private rows.\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": "git -c core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol diff HEAD --check",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "publication_tests_passed": 18,
+  "additional_permutation_fits": 99,
+  "strict_continuations": 5,
+  "docx_sha256": "52bbdf7830836e6219df4062d243c6f9f47a2ffb190f0d472702438b82de45d0",
+  "pdf_sha256": "54b542941688394822cc0e1285558792e332948ae7b9f8995157b26aa1b0fafe",
+  "sentence_edits_verified": 40,
+  "tables": 31,
+  "original_images": 4,
+  "pdf_pages": 149,
+  "local_markdown_links_checked": 54,
+  "text_files_scanned": 244,
+  "docx_xml_parts_scanned": 25,
+  "flagged_private_paths_or_credentials": 0,
+  "unexpected_file_types_or_symlinks": 0,
+  "raw_record_or_cache_files": 0,
+  "published_sources_match_measured_or_reviewed_sources": true,
+  "historical_snapshots_unchanged": true,
+  "figure_review": "All points and axis labels visible after export; panels A and B include full [0,1] AUC range.",
+  "whitespace_check": "Includes staged and unstaged changes against HEAD. CRLF line endings in generated CSV evidence are preserved and accepted; other whitespace checks remain enabled."
+}

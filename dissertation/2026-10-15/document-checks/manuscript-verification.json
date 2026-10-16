@@ -1,0 +1,18 @@
+{
+  "status": "verified",
+  "docx_sha256": "52bbdf7830836e6219df4062d243c6f9f47a2ffb190f0d472702438b82de45d0",
+  "pdf_sha256": "54b542941688394822cc0e1285558792e332948ae7b9f8995157b26aa1b0fafe",
+  "revised_original_paragraphs": 92,
+  "inserted_paragraphs": 10,
+  "edited_interpretive_table_cells": 13,
+  "all_original_result_tables_preserved": true,
+  "tables": 31,
+  "original_hypotheses_references_and_historical_record_preserved": true,
+  "all_unlisted_package_structure_and_text_preserved": true,
+  "all_editable_text_double_spaced": true,
+  "figures_byte_identical": 4,
+  "navigation_entries": 127,
+  "pdf_pages": 149,
+  "body_words_before": 17536,
+  "body_words_after": 17074
+}

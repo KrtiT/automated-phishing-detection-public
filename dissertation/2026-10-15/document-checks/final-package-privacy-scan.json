@@ -1,0 +1,189 @@
+{
+  "docx_sha256": "52bbdf7830836e6219df4062d243c6f9f47a2ffb190f0d472702438b82de45d0",
+  "pdf_sha256": "54b542941688394822cc0e1285558792e332948ae7b9f8995157b26aa1b0fafe",
+  "docx": {
+    "package_files": [
+      "[Content_Types].xml",
+      "_rels/.rels",
+      "docProps/app.xml",
+      "docProps/core.xml",
+      "word/document.xml",
+      "word/_rels/document.xml.rels",
+      "word/endnotes.xml",
+      "word/people.xml",
+      "word/numbering.xml",
+      "word/footnotes.xml",
+      "word/fontTable.xml",
+      "customXml/item2.xml",
+      "customXml/_rels/item2.xml.rels",
+      "customXml/itemProps2.xml",
+      "customXml/item1.xml",
+      "customXml/_rels/item1.xml.rels",
+      "customXml/itemProps1.xml",
+      "word/webSettings.xml",
+      "word/settings.xml",
+      "word/footer1.xml",
+      "word/theme/theme1.xml",
+      "word/styles.xml",
+      "word/media/image2.png",
+      "word/media/image3.png",
+      "word/media/image4.png",
+      "word/media/image5.png",
+      "word/footer2.xml",
+      "word/footer3.xml",
+      "word/footer4.xml"
+    ],
+    "metadata": {
+      "docProps/app.xml": {
+        "Application": "Microsoft Office Word",
+        "DocSecurity": "0",
+        "ScaleCrop": "false",
+        "HeadingPairs": "Title1",
+        "TitlesOfParts": "",
+        "LinksUpToDate": "false",
+        "SharedDoc": "false",
+        "HyperlinksChanged": "false",
+        "AppVersion": "16.0000"
+      },
+      "docProps/core.xml": {
+        "creator": "Krti Tallam",
+        "title": "Cross-Dataset Reliability and Computational Trade-offs in Cascaded URL Phishing Detection"
+      }
+    },
+    "hidden_review_or_active_tags": [],
+    "embedded_or_comment_parts": [],
+    "unusual_external_relationships": [],
+    "sensitive_pattern_matches": {
+      "private_key": [],
+      "aws_key": [],
+      "github_token": [],
+      "openai_key": [],
+      "jwt": [],
+      "local_path": [],
+      "credential_assignment": [],
+      "email_address": [],
+      "placeholder_or_edit_note": []
+    },
+    "custom_xml_stores": {
+      "customXml/item2.xml": {
+        "root": "Sources",
+        "child_count": 0,
+        "text": ""
+      },
+      "customXml/item1.xml": {
+        "root": "Sources",
+        "child_count": 0,
+        "text": ""
+      }
+    },
+    "notes_and_people_parts": {
+      "word/endnotes.xml": {
+        "text": "",
+        "child_types": [
+          "separator",
+          "continuationSeparator",
+          "continuationNotice"
+        ]
+      },
+      "word/people.xml": {
+        "text": "",
+        "child_types": []
+      },
+      "word/footnotes.xml": {
+        "text": "",
+        "child_types": [
+          "separator",
+          "continuationSeparator",
+          "continuationNotice"
+        ]
+      }
+    },
+    "alt_text_and_tooltips": [],
+    "field_instruction_counts": {
+      "PAGEREF": 119,
+      "PAGE": 3
+    }
+  },
+  "pdf": {
+    "metadata": {
+      "format": "PDF 1.7",
+      "title": "Cross-Dataset Reliability and Computational Trade-offs in Cascaded URL Phishing Detection",
+      "author": "Krti Tallam",
+      "subject": "",
+      "keywords": "",
+      "creator": "Writer",
+      "producer": "LibreOffice 26.8.0.3 (AARCH64)",
+      "creationDate": "D:20261015203148-07'00'",
+      "modDate": "",
+      "trapped": "",
+      "encryption": null
+    },
+    "embedded_files": [],
+    "non_link_annotations": [],
+    "invisible_text_spans": [],
+    "optional_content_groups": {},
+    "special_actions": [],
+    "sensitive_pattern_matches": {
+      "private_key": [],
+      "aws_key": [],
+      "github_token": [],
+      "openai_key": [],
+      "jwt": [],
+      "local_path": [],
+      "credential_assignment": [],
+      "email_address": [],
+      "placeholder_or_edit_note": []
+    }
+  },
+  "images": [
+    {
+      "part": "word/media/image2.png",
+      "size": [
+        1296,
+        1386
+      ],
+      "metadata": {
+        "dpi": "(96.012, 96.012)"
+      },
+      "exif": {}
+    },
+    {
+      "part": "word/media/image3.png",
+      "size": [
+        1627,
+        1670
+      ],
+      "metadata": {
+        "Software": "Matplotlib version3.10.3, https://matplotlib.org/",
+        "dpi": "(219.9894, 219.9894)"
+      },
+      "exif": {}
+    },
+    {
+      "part": "word/media/image4.png",
+      "size": [
+        1800,
+        975
+      ],
+      "metadata": {
+        "Software": "Matplotlib version3.10.3, https://matplotlib.org/",
+        "dpi": "(299.9994, 299.9994)"
+      },
+      "exif": {}
+    },
+    {
+      "part": "word/media/image5.png",
+      "size": [
+        1800,
+        2040
+      ],
+      "metadata": {
+        "Software": "Matplotlib version3.10.3, https://matplotlib.org/",
+        "dpi": "(299.9994, 299.9994)"
+      },
+      "exif": {}
+    }
+  ],
+  "scope": "Pattern and package inspection of both final artifacts, supplementing full-text human/model review. Expected author, committee, dedication and acknowledgement names, public research provenance and scientific limitations remain. This cannot certify all contextual confidentiality obligations.",
+  "status": "verified_no_flagged_content"
+}

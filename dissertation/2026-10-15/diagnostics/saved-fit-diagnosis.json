@@ -1,0 +1,1066 @@
+{
+  "protocol_sha256": "f71b21fd381dbdacfad1ccb19758c8cb9e96f75d65901acee3643d3915876aa1",
+  "source_commit": "ef6c4172d4320f81b154b0dea40911c3dc0015ae",
+  "runtime": {
+    "python": "3.10.19",
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "sklearn": "1.7.2",
+    "blas": "scipy-openblas"
+  },
+  "partitions": {
+    "training_rows": 166248,
+    "validation_rows": 32695,
+    "train_class_counts": [
+      94373,
+      71875
+    ],
+    "validation_class_counts": [
+      20209,
+      12486
+    ],
+    "train_validation_domain_id_and_canonical_url_disjoint": true,
+    "validation_domains": 29566,
+    "largest_validation_domain": 172,
+    "validation_unique_feature_vectors": 12882,
+    "https_by_validation_class": {
+      "0": {
+        "n": 20209,
+        "https": 20209,
+        "fraction": 1.0
+      },
+      "1": {
+        "n": 12486,
+        "https": 5823,
+        "fraction": 0.4663623258049015
+      }
+    }
+  },
+  "saved_fits": [
+    {
+      "seed": 42,
+      "model_sha256": "b6f28d37c59575ffc42cc08dd6b942f4831256280ceea0c3094c5a3460215792",
+      "all_input_identity_checks_passed": true,
+      "iterations": 2001,
+      "max_probability_reconstruction_error": 1.1102230246251565e-16,
+      "auc": 0.4717998513325275,
+      "ap": 0.4870988200440637,
+      "rank_sum_auc": 0.4717998513325275,
+      "reverse_logit_auc": 0.5282001486674724,
+      "without_https_auc": 0.5476162635617179,
+      "https_only_auc": 0.23318116290245075,
+      "domain_equal_weighted_auc": 0.46730608992864664,
+      "distinct_probabilities": 12879,
+      "score_quantiles": [
+        2.2508314864508534e-06,
+        0.4985606578564262,
+        0.4996484439752259,
+        0.500949860622423,
+        0.7126130556262332
+      ],
+      "coefficient_l2": 0.05842736174547957,
+      "kkt": {
+        "max_coefficient_residual_sum_loss": 0.32842195194133694,
+        "intercept_residual_sum_loss": 0.0005647292511765656,
+        "max_residual_mean_loss": 1.975494152960257e-06
+      },
+      "features": [
+        {
+          "feature": "raw_url_codepoint_length",
+          "coefficient": 0.0,
+          "positive_minus_negative_mean_logit_contribution": 0.0,
+          "component_auc": 0.5,
+          "auc_with_component_removed": 0.4717998513325275
+        },
+        {
+          "feature": "raw_url_utf8_byte_length",
+          "coefficient": 0.0,
+          "positive_minus_negative_mean_logit_contribution": 0.0,
+          "component_auc": 0.5,
+          "auc_with_component_removed": 0.4717998513325275
+        },
+        {
+          "feature": "hostname_ascii_length",
+          "coefficient": 0.00022937339425274777,
+          "positive_minus_negative_mean_logit_contribution": 0.00013556686368098325,
+          "component_auc": 0.6298708450242935,
+          "auc_with_component_removed": 0.4689074159020298
+        },
+        {
+          "feature": "path_codepoint_length",
+          "coefficient": -0.010503255222657071,
+          "positive_minus_negative_mean_logit_contribution": -0.002464471406232512,
+          "component_auc": 0.22032676597789524,
+          "auc_with_component_removed": 0.5137904227587686
+        },
+        {
+          "feature": "query_codepoint_length",
+          "coefficient": 0.0,
+          "positive_minus_negative_mean_logit_contribution": 0.0,
+          "component_auc": 0.5,
+          "auc_with_component_removed": 0.4717998513325275
+        },
+        {
+          "feature": "fragment_codepoint_length",
+          "coefficient": -0.025241263491535413,
+          "positive_minus_negative_mean_logit_contribution": -0.0010342966534959365,
+          "component_auc": 0.496916546532116,
+          "auc_with_component_removed": 0.4730594698344792
+        },
+        {
+          "feature": "hostname_label_count",
+          "coefficient": 0.0022820969554194024,
+          "positive_minus_negative_mean_logit_contribution": 2.2668806184593743e-05,
+          "component_auc": 0.48495318864208925,
+          "auc_with_component_removed": 0.4765434807891365
+        },
+        {
+          "feature": "hostname_ascii_digit_count",
+          "coefficient": 0.011414100316376448,
+          "positive_minus_negative_mean_logit_contribution": 0.007132759980830807,
+          "component_auc": 0.6527104726138839,
+          "auc_with_component_removed": 0.3555057858576657
+        },
+        {
+          "feature": "hostname_hyphen_count",
+          "coefficient": 0.007423669719445027,
+          "positive_minus_negative_mean_logit_contribution": 0.004414895971758782,
+          "component_auc": 0.6173610410803453,
+          "auc_with_component_removed": 0.37314504601034204
+        },
+        {
+          "feature": "hostname_punycode_label_count",
+          "coefficient": -0.0065101588276363104,
+          "positive_minus_negative_mean_logit_contribution": -0.0005273074511905636,
+          "component_auc": 0.4988787441934967,
+          "auc_with_component_removed": 0.47351111725017214
+        },
+        {
+          "feature": "path_segment_count",
+          "coefficient": 0.006583089131246442,
+          "positive_minus_negative_mean_logit_contribution": 0.0037800604126387357,
+          "component_auc": 0.6210956271023547,
+          "auc_with_component_removed": 0.4213750882011159
+        },
+        {
+          "feature": "query_parameter_count",
+          "coefficient": 0.00343366445528539,
+          "positive_minus_negative_mean_logit_contribution": 0.0008949817841736075,
+          "component_auc": 0.5265897805542207,
+          "auc_with_component_removed": 0.46999517979608685
+        },
+        {
+          "feature": "raw_url_ascii_letter_count",
+          "coefficient": -0.023592976480810577,
+          "positive_minus_negative_mean_logit_contribution": -0.008804134667231475,
+          "component_auc": 0.35459624522649097,
+          "auc_with_component_removed": 0.5715222009608751
+        },
+        {
+          "feature": "raw_url_ascii_digit_count",
+          "coefficient": 0.008948918738443116,
+          "positive_minus_negative_mean_logit_contribution": 0.002407737446782748,
+          "component_auc": 0.7000451837643098,
+          "auc_with_component_removed": 0.44729280326054843
+        },
+        {
+          "feature": "raw_url_other_codepoint_count",
+          "coefficient": 0.005339098942583953,
+          "positive_minus_negative_mean_logit_contribution": 0.002225196257885696,
+          "component_auc": 0.7661386037135703,
+          "auc_with_component_removed": 0.43427814965518075
+        },
+        {
+          "feature": "raw_url_ascii_digit_ratio",
+          "coefficient": -0.010379864755432282,
+          "positive_minus_negative_mean_logit_contribution": -0.00775663055144522,
+          "component_auc": 0.3015864937813432,
+          "auc_with_component_removed": 0.5746348404646378
+        },
+        {
+          "feature": "raw_url_other_codepoint_ratio",
+          "coefficient": -0.009650632136582482,
+          "positive_minus_negative_mean_logit_contribution": 0.0012658429715139698,
+          "component_auc": 0.5283874513258601,
+          "auc_with_component_removed": 0.5069392084021035
+        },
+        {
+          "feature": "raw_url_unique_codepoint_count",
+          "coefficient": 0.022487886660610492,
+          "positive_minus_negative_mean_logit_contribution": 0.016213893236540152,
+          "component_auc": 0.6984946282990989,
+          "auc_with_component_removed": 0.33699282906885897
+        },
+        {
+          "feature": "raw_url_utf8_byte_entropy_bits",
+          "coefficient": -0.02721504161231646,
+          "positive_minus_negative_mean_logit_contribution": -0.017905894123554138,
+          "component_auc": 0.3177161944560648,
+          "auc_with_component_removed": 0.6473532547556237
+        },
+        {
+          "feature": "percent_escape_count",
+          "coefficient": 0.006539297450292865,
+          "positive_minus_negative_mean_logit_contribution": 0.0004121513063406188,
+          "component_auc": 0.5040445298734583,
+          "auc_with_component_removed": 0.4706440256582845
+        },
+        {
+          "feature": "is_https",
+          "coefficient": 0.0014752282877207126,
+          "positive_minus_negative_mean_logit_contribution": -0.0018965970095310646,
+          "component_auc": 0.23318116290245075,
+          "auc_with_component_removed": 0.5476162635617179
+        },
+        {
+          "feature": "has_userinfo",
+          "coefficient": 0.0027100260113133495,
+          "positive_minus_negative_mean_logit_contribution": 6.257830492852263e-05,
+          "component_auc": 0.5000800897004645,
+          "auc_with_component_removed": 0.4716589760501082
+        },
+        {
+          "feature": "has_explicit_port",
+          "coefficient": -0.011631935624964137,
+          "positive_minus_negative_mean_logit_contribution": -0.00010965588027261198,
+          "component_auc": 0.49995995514976777,
+          "auc_with_component_removed": 0.4717998513325275
+        },
+        {
+          "feature": "has_query_delimiter",
+          "coefficient": 0.008837137720333368,
+          "positive_minus_negative_mean_logit_contribution": 0.0030454445604185336,
+          "component_auc": 0.5266698702546853,
+          "auc_with_component_removed": 0.4454260462548873
+        },
+        {
+          "feature": "has_fragment_delimiter",
+          "coefficient": 0.000130598332913383,
+          "positive_minus_negative_mean_logit_contribution": 1.3254946685431107e-05,
+          "component_auc": 0.503243632868813,
+          "auc_with_component_removed": 0.47172263485848864
+        }
+      ]
+    },
+    {
+      "seed": 43,
+      "model_sha256": "f3cf518d102f4719be2b9b86519358c131a0b1619b2af298a5811a40ae884d16",
+      "all_input_identity_checks_passed": true,
+      "iterations": 698,
+      "max_probability_reconstruction_error": 1.1102230246251565e-16,
+      "auc": 0.6418615936790667,
+      "ap": 0.6717988219418739,
+      "rank_sum_auc": 0.6418615936790667,
+      "reverse_logit_auc": 0.3581384063209333,
+      "without_https_auc": 0.40308345901618337,
+      "https_only_auc": 0.7668188370975493,
+      "domain_equal_weighted_auc": 0.6343162733031836,
+      "distinct_probabilities": 12879,
+      "score_quantiles": [
+        0.3121607269849351,
+        0.4976997545672034,
+        0.49991133037142876,
+        0.5018127357452663,
+        0.8930332471767051
+      ],
+      "coefficient_l2": 0.06089056644702457,
+      "kkt": {
+        "max_coefficient_residual_sum_loss": 0.5039141432648109,
+        "intercept_residual_sum_loss": 0.00010344381270499525,
+        "max_residual_mean_loss": 3.0310989802271948e-06
+      },
+      "features": [
+        {
+          "feature": "raw_url_codepoint_length",
+          "coefficient": 0.0009288748884017739,
+          "positive_minus_negative_mean_logit_contribution": 0.00036055106924592743,
+          "component_auc": 0.6988495926363352,
+          "auc_with_component_removed": 0.6378859518860838
+        },
+        {
+          "feature": "raw_url_utf8_byte_length",
+          "coefficient": 0.0009288748884017739,
+          "positive_minus_negative_mean_logit_contribution": 0.00036069735965113216,
+          "component_auc": 0.6988495926363352,
+          "auc_with_component_removed": 0.6378856269142673
+        },
+        {
+          "feature": "hostname_ascii_length",
+          "coefficient": -0.01154322532996232,
+          "positive_minus_negative_mean_logit_contribution": -0.0068224078901738825,
+          "component_auc": 0.37012915497570653,
+          "auc_with_component_removed": 0.7329434341295246
+        },
+        {
+          "feature": "path_codepoint_length",
+          "coefficient": 0.0031229887379486503,
+          "positive_minus_negative_mean_logit_contribution": 0.0007327743907484144,
+          "component_auc": 0.7796732340221048,
+          "auc_with_component_removed": 0.6318030977217122
+        },
+        {
+          "feature": "query_codepoint_length",
+          "coefficient": 0.0,
+          "positive_minus_negative_mean_logit_contribution": 0.0,
+          "component_auc": 0.5,
+          "auc_with_component_removed": 0.6418615936790667
+        },
+        {
+          "feature": "fragment_codepoint_length",
+          "coefficient": 0.003426069056849244,
+          "positive_minus_negative_mean_logit_contribution": 0.00014038804996169138,
+          "component_auc": 0.5030834534678841,
+          "auc_with_component_removed": 0.6415386786964575
+        },
+        {
+          "feature": "hostname_label_count",
+          "coefficient": 0.0005038394333197731,
+          "positive_minus_negative_mean_logit_contribution": 5.004799833311069e-06,
+          "component_auc": 0.48495318864208925,
+          "auc_with_component_removed": 0.6406145539642532
+        },
+        {
+          "feature": "hostname_ascii_digit_count",
+          "coefficient": 0.0041615929451107,
+          "positive_minus_negative_mean_logit_contribution": 0.0026006117690068244,
+          "component_auc": 0.6527104726138839,
+          "auc_with_component_removed": 0.6042865926607557
+        },
+        {
+          "feature": "hostname_hyphen_count",
+          "coefficient": 0.006368387931634874,
+          "positive_minus_negative_mean_logit_contribution": 0.0037873142648472587,
+          "component_auc": 0.6173610410803453,
+          "auc_with_component_removed": 0.5884317765304831
+        },
+        {
+          "feature": "hostname_punycode_label_count",
+          "coefficient": -0.002919251940223324,
+          "positive_minus_negative_mean_logit_contribution": -0.00023645249535959683,
+          "component_auc": 0.4988787441934967,
+          "auc_with_component_removed": 0.6436321907316341
+        },
+        {
+          "feature": "path_segment_count",
+          "coefficient": 0.003938851259005629,
+          "positive_minus_negative_mean_logit_contribution": 0.0022617186883846147,
+          "component_auc": 0.6210956271023547,
+          "auc_with_component_removed": 0.6047047045702221
+        },
+        {
+          "feature": "query_parameter_count",
+          "coefficient": -0.0015030151499072788,
+          "positive_minus_negative_mean_logit_contribution": -0.00039175964862649484,
+          "component_auc": 0.47341021944577927,
+          "auc_with_component_removed": 0.6433661180754024
+        },
+        {
+          "feature": "raw_url_ascii_letter_count",
+          "coefficient": 0.002715227885313003,
+          "positive_minus_negative_mean_logit_contribution": 0.0010132351029961222,
+          "component_auc": 0.645403754773509,
+          "auc_with_component_removed": 0.6318612121938589
+        },
+        {
+          "feature": "raw_url_ascii_digit_count",
+          "coefficient": 0.0022332939584179356,
+          "positive_minus_negative_mean_logit_contribution": 0.0006008754409911266,
+          "component_auc": 0.7000451837643098,
+          "auc_with_component_removed": 0.6340893259701694
+        },
+        {
+          "feature": "raw_url_other_codepoint_count",
+          "coefficient": -0.006924926908953947,
+          "positive_minus_negative_mean_logit_contribution": -0.002886127717363518,
+          "component_auc": 0.23386139628642977,
+          "auc_with_component_removed": 0.6875100518340351
+        },
+        {
+          "feature": "raw_url_ascii_digit_ratio",
+          "coefficient": -0.005382547746978125,
+          "positive_minus_negative_mean_logit_contribution": -0.004022252243409876,
+          "component_auc": 0.3015864937813432,
+          "auc_with_component_removed": 0.7122395946342778
+        },
+        {
+          "feature": "raw_url_other_codepoint_ratio",
+          "coefficient": -0.012378976946788547,
+          "positive_minus_negative_mean_logit_contribution": 0.0016237113528787639,
+          "component_auc": 0.5283874513258601,
+          "auc_with_component_removed": 0.6553037239305131
+        },
+        {
+          "feature": "raw_url_unique_codepoint_count",
+          "coefficient": -0.041123380295841616,
+          "positive_minus_negative_mean_logit_contribution": -0.029650189353286692,
+          "component_auc": 0.30150537170090097,
+          "auc_with_component_removed": 0.7498478438361728
+        },
+        {
+          "feature": "raw_url_utf8_byte_entropy_bits",
+          "coefficient": 0.036230870872973844,
+          "positive_minus_negative_mean_logit_contribution": 0.023837778648188493,
+          "component_auc": 0.6822838055439352,
+          "auc_with_component_removed": 0.4264682466431779
+        },
+        {
+          "feature": "percent_escape_count",
+          "coefficient": 0.0,
+          "positive_minus_negative_mean_logit_contribution": 0.0,
+          "component_auc": 0.5,
+          "auc_with_component_removed": 0.6418615936790667
+        },
+        {
+          "feature": "is_https",
+          "coefficient": -0.00879690714764275,
+          "positive_minus_negative_mean_logit_contribution": 0.011309563359257278,
+          "component_auc": 0.7668188370975493,
+          "auc_with_component_removed": 0.40308345901618337
+        },
+        {
+          "feature": "has_userinfo",
+          "coefficient": -0.00549384093023501,
+          "positive_minus_negative_mean_logit_contribution": -0.0001268604993184158,
+          "component_auc": 0.4999199102995355,
+          "auc_with_component_removed": 0.6419845717331571
+        },
+        {
+          "feature": "has_explicit_port",
+          "coefficient": 0.0022002991495199942,
+          "positive_minus_negative_mean_logit_contribution": 2.0742527115255753e-05,
+          "component_auc": 0.5000400448502322,
+          "auc_with_component_removed": 0.6418587046003572
+        },
+        {
+          "feature": "has_query_delimiter",
+          "coefficient": 0.01039377395921046,
+          "positive_minus_negative_mean_logit_contribution": 0.00358189080763824,
+          "component_auc": 0.5266698702546853,
+          "auc_with_component_removed": 0.6083087648695511
+        },
+        {
+          "feature": "has_fragment_delimiter",
+          "coefficient": 0.0,
+          "positive_minus_negative_mean_logit_contribution": 0.0,
+          "component_auc": 0.5,
+          "auc_with_component_removed": 0.6418615936790667
+        }
+      ]
+    },
+    {
+      "seed": 44,
+      "model_sha256": "6fd1f0218b8e667d274bb0d7c11859d4fc3ff764776990dbd8dd603c9573de67",
+      "all_input_identity_checks_passed": true,
+      "iterations": 1010,
+      "max_probability_reconstruction_error": 1.1102230246251565e-16,
+      "auc": 0.5486743202760688,
+      "ap": 0.5205932202303077,
+      "rank_sum_auc": 0.5486743202760688,
+      "reverse_logit_auc": 0.45132567972393123,
+      "without_https_auc": 0.5883493089874594,
+      "https_only_auc": 0.23318116290245075,
+      "domain_equal_weighted_auc": 0.5312066587423543,
+      "distinct_probabilities": 12879,
+      "score_quantiles": [
+        0.31978176925159857,
+        0.49856283230028564,
+        0.4997455739620686,
+        0.5015820460346538,
+        0.9405087096147698
+      ],
+      "coefficient_l2": 0.040440124583147746,
+      "kkt": {
+        "max_coefficient_residual_sum_loss": 0.20733698815279022,
+        "intercept_residual_sum_loss": 0.00013027053986647275,
+        "max_residual_mean_loss": 1.247154781728443e-06
+      },
+      "features": [
+        {
+          "feature": "raw_url_codepoint_length",
+          "coefficient": 0.0,
+          "positive_minus_negative_mean_logit_contribution": 0.0,
+          "component_auc": 0.5,
+          "auc_with_component_removed": 0.5486743202760688
+        },
+        {
+          "feature": "raw_url_utf8_byte_length",
+          "coefficient": 0.0,
+          "positive_minus_negative_mean_logit_contribution": 0.0,
+          "component_auc": 0.5,
+          "auc_with_component_removed": 0.5486743202760688
+        },
+        {
+          "feature": "hostname_ascii_length",
+          "coefficient": 0.009805170151638733,
+          "positive_minus_negative_mean_logit_contribution": 0.005795162815837911,
+          "component_auc": 0.6298708450242935,
+          "auc_with_component_removed": 0.44718058098096736
+        },
+        {
+          "feature": "path_codepoint_length",
+          "coefficient": -0.004156796984324522,
+          "positive_minus_negative_mean_logit_contribution": -0.0009753459372560127,
+          "component_auc": 0.22032676597789524,
+          "auc_with_component_removed": 0.5589782214747447
+        },
+        {
+          "feature": "query_codepoint_length",
+          "coefficient": 0.0012583672832670951,
+          "positive_minus_negative_mean_logit_contribution": 0.00023043472309708667,
+          "component_auc": 0.5265897805542207,
+          "auc_with_component_removed": 0.5473561632533808
+        },
+        {
+          "feature": "fragment_codepoint_length",
+          "coefficient": 0.0036744627997811067,
+          "positive_minus_negative_mean_logit_contribution": 0.00015056633668435908,
+          "component_auc": 0.5030834534678841,
+          "auc_with_component_removed": 0.548599077411354
+        },
+        {
+          "feature": "hostname_label_count",
+          "coefficient": -0.00021874960845752722,
+          "positive_minus_negative_mean_logit_contribution": -2.172910517803744e-06,
+          "component_auc": 0.5150468113579109,
+          "auc_with_component_removed": 0.5480413940698049
+        },
+        {
+          "feature": "hostname_ascii_digit_count",
+          "coefficient": -0.0022032393999894657,
+          "positive_minus_negative_mean_logit_contribution": -0.0013768214212984305,
+          "component_auc": 0.34728952738611607,
+          "auc_with_component_removed": 0.5679853543445526
+        },
+        {
+          "feature": "hostname_hyphen_count",
+          "coefficient": -0.005568378403452202,
+          "positive_minus_negative_mean_logit_contribution": -0.0033115443320754275,
+          "component_auc": 0.3826389589196548,
+          "auc_with_component_removed": 0.5989785862357934
+        },
+        {
+          "feature": "hostname_punycode_label_count",
+          "coefficient": -0.0049064441618611706,
+          "positive_minus_negative_mean_logit_contribution": -0.00039741036031505476,
+          "component_auc": 0.4988787441934967,
+          "auc_with_component_removed": 0.5498254259328317
+        },
+        {
+          "feature": "path_segment_count",
+          "coefficient": 0.007848694773873776,
+          "positive_minus_negative_mean_logit_contribution": 0.004506780906974043,
+          "component_auc": 0.6210956271023547,
+          "auc_with_component_removed": 0.48767272321396626
+        },
+        {
+          "feature": "query_parameter_count",
+          "coefficient": -0.012991259380452971,
+          "positive_minus_negative_mean_logit_contribution": -0.003386160951482188,
+          "component_auc": 0.47341021944577927,
+          "auc_with_component_removed": 0.5726302755934585
+        },
+        {
+          "feature": "raw_url_ascii_letter_count",
+          "coefficient": 0.012777559407062955,
+          "positive_minus_negative_mean_logit_contribution": 0.004768171316994715,
+          "component_auc": 0.645403754773509,
+          "auc_with_component_removed": 0.48994090760047015
+        },
+        {
+          "feature": "raw_url_ascii_digit_count",
+          "coefficient": -0.015884790718074724,
+          "positive_minus_negative_mean_logit_contribution": -0.004273857721147253,
+          "component_auc": 0.29995481623569026,
+          "auc_with_component_removed": 0.5959084189632088
+        },
+        {
+          "feature": "raw_url_other_codepoint_count",
+          "coefficient": 0.00561610327255376,
+          "positive_minus_negative_mean_logit_contribution": 0.0023406443896955608,
+          "component_auc": 0.7661386037135703,
+          "auc_with_component_removed": 0.518122594302006
+        },
+        {
+          "feature": "raw_url_ascii_digit_ratio",
+          "coefficient": -0.0032787777752288218,
+          "positive_minus_negative_mean_logit_contribution": -0.002450154068667232,
+          "component_auc": 0.3015864937813432,
+          "auc_with_component_removed": 0.5873555134682706
+        },
+        {
+          "feature": "raw_url_other_codepoint_ratio",
+          "coefficient": 0.012991113847790491,
+          "positive_minus_negative_mean_logit_contribution": -0.001704003419011848,
+          "component_auc": 0.47161254867413993,
+          "auc_with_component_removed": 0.5039520793547569
+        },
+        {
+          "feature": "raw_url_unique_codepoint_count",
+          "coefficient": 0.01702497661756615,
+          "positive_minus_negative_mean_logit_contribution": 0.012275104254918422,
+          "component_auc": 0.6984946282990989,
+          "auc_with_component_removed": 0.41005844602266084
+        },
+        {
+          "feature": "raw_url_utf8_byte_entropy_bits",
+          "coefficient": -0.016287111118783462,
+          "positive_minus_negative_mean_logit_contribution": -0.010715959630924223,
+          "component_auc": 0.3177161944560648,
+          "auc_with_component_removed": 0.6486079075296977
+        },
+        {
+          "feature": "percent_escape_count",
+          "coefficient": -0.0002685663569864788,
+          "positive_minus_negative_mean_logit_contribution": -1.6926890956176017e-05,
+          "component_auc": 0.49595547012654173,
+          "auc_with_component_removed": 0.5487603466567894
+        },
+        {
+          "feature": "is_https",
+          "coefficient": 0.0009582177609671289,
+          "positive_minus_negative_mean_logit_contribution": -0.0012319130232636714,
+          "component_auc": 0.23318116290245075,
+          "auc_with_component_removed": 0.5883493089874594
+        },
+        {
+          "feature": "has_userinfo",
+          "coefficient": -0.005229783104557152,
+          "positive_minus_negative_mean_logit_contribution": -0.00012076303343981986,
+          "component_auc": 0.4999199102995355,
+          "auc_with_component_removed": 0.5487990936012914
+        },
+        {
+          "feature": "has_explicit_port",
+          "coefficient": -0.0006549862651669674,
+          "positive_minus_negative_mean_logit_contribution": -6.174646919396715e-06,
+          "component_auc": 0.49995995514976777,
+          "auc_with_component_removed": 0.5486744787989061
+        },
+        {
+          "feature": "has_query_delimiter",
+          "coefficient": 0.0023165629353659694,
+          "positive_minus_negative_mean_logit_contribution": 0.0007983313391331156,
+          "component_auc": 0.5266698702546853,
+          "auc_with_component_removed": 0.5418138521487774
+        },
+        {
+          "feature": "has_fragment_delimiter",
+          "coefficient": 0.0007951998574162027,
+          "positive_minus_negative_mean_logit_contribution": 8.070801119107208e-05,
+          "component_auc": 0.503243632868813,
+          "auc_with_component_removed": 0.5482444816397146
+        }
+      ]
+    },
+    {
+      "seed": 45,
+      "model_sha256": "8aba0d802558a3d3c29f0b3ff457e8157353078b47c0783e82c570c605c79ac6",
+      "all_input_identity_checks_passed": true,
+      "iterations": 700,
+      "max_probability_reconstruction_error": 1.1102230246251565e-16,
+      "auc": 0.39400472534384734,
+      "ap": 0.40269829431318366,
+      "rank_sum_auc": 0.39400472534384734,
+      "reverse_logit_auc": 0.6059952746561527,
+      "without_https_auc": 0.4933525053230582,
+      "https_only_auc": 0.23318116290245075,
+      "domain_equal_weighted_auc": 0.4151932932073978,
+      "distinct_probabilities": 12879,
+      "score_quantiles": [
+        0.10721236266683529,
+        0.4979695985623791,
+        0.5001171060764624,
+        0.5023487614586957,
+        0.7495261980856132
+      ],
+      "coefficient_l2": 0.08514373784391652,
+      "kkt": {
+        "max_coefficient_residual_sum_loss": 0.5724967475191405,
+        "intercept_residual_sum_loss": 2.447536728311661e-05,
+        "max_residual_mean_loss": 3.4436308859002237e-06
+      },
+      "features": [
+        {
+          "feature": "raw_url_codepoint_length",
+          "coefficient": 0.0018176944825600142,
+          "positive_minus_negative_mean_logit_contribution": 0.0007055543189213747,
+          "component_auc": 0.6988495926363352,
+          "auc_with_component_removed": 0.3892047529077983
+        },
+        {
+          "feature": "raw_url_utf8_byte_length",
+          "coefficient": 0.0018176944825600142,
+          "positive_minus_negative_mean_logit_contribution": 0.0007058405913416029,
+          "component_auc": 0.6988495926363352,
+          "auc_with_component_removed": 0.3892047529077983
+        },
+        {
+          "feature": "hostname_ascii_length",
+          "coefficient": 0.0002224652064892602,
+          "positive_minus_negative_mean_logit_contribution": 0.0001314839082367962,
+          "component_auc": 0.6298708450242935,
+          "auc_with_component_removed": 0.39283765247429936
+        },
+        {
+          "feature": "path_codepoint_length",
+          "coefficient": 0.0245131867589797,
+          "positive_minus_negative_mean_logit_contribution": 0.005751745203033749,
+          "component_auc": 0.7796732340221048,
+          "auc_with_component_removed": 0.3523365774794198
+        },
+        {
+          "feature": "query_codepoint_length",
+          "coefficient": -0.005005156806158648,
+          "positive_minus_negative_mean_logit_contribution": -0.0009165542826973278,
+          "component_auc": 0.47341021944577927,
+          "auc_with_component_removed": 0.39651584201541124
+        },
+        {
+          "feature": "fragment_codepoint_length",
+          "coefficient": -0.011821310151115812,
+          "positive_minus_negative_mean_logit_contribution": -0.0004843949881246421,
+          "component_auc": 0.496916546532116,
+          "auc_with_component_removed": 0.39468468527593203
+        },
+        {
+          "feature": "hostname_label_count",
+          "coefficient": -0.013373626649473341,
+          "positive_minus_negative_mean_logit_contribution": -0.00013284455324391785,
+          "component_auc": 0.5150468113579109,
+          "auc_with_component_removed": 0.3709945608674471
+        },
+        {
+          "feature": "hostname_ascii_digit_count",
+          "coefficient": -0.011380515984406854,
+          "positive_minus_negative_mean_logit_contribution": -0.007111772870815488,
+          "component_auc": 0.34728952738611607,
+          "auc_with_component_removed": 0.4916072560721717
+        },
+        {
+          "feature": "hostname_hyphen_count",
+          "coefficient": 0.0019240961026183822,
+          "positive_minus_negative_mean_logit_contribution": 0.0011442702132175692,
+          "component_auc": 0.6173610410803453,
+          "auc_with_component_removed": 0.3786883756241748
+        },
+        {
+          "feature": "hostname_punycode_label_count",
+          "coefficient": 0.004982981314703913,
+          "positive_minus_negative_mean_logit_contribution": 0.0004036096884813849,
+          "component_auc": 0.5011212558065032,
+          "auc_with_component_removed": 0.3934423061325344
+        },
+        {
+          "feature": "path_segment_count",
+          "coefficient": -0.02480722777856823,
+          "positive_minus_negative_mean_logit_contribution": -0.014244500993915553,
+          "component_auc": 0.37890437289764534,
+          "auc_with_component_removed": 0.5141677507052741
+        },
+        {
+          "feature": "query_parameter_count",
+          "coefficient": 0.005042984620292553,
+          "positive_minus_negative_mean_logit_contribution": 0.0013144497465620653,
+          "component_auc": 0.5265897805542207,
+          "auc_with_component_removed": 0.38671842920798494
+        },
+        {
+          "feature": "raw_url_ascii_letter_count",
+          "coefficient": 0.017941197281281067,
+          "positive_minus_negative_mean_logit_contribution": 0.0066950737260395455,
+          "component_auc": 0.645403754773509,
+          "auc_with_component_removed": 0.35838744569829933
+        },
+        {
+          "feature": "raw_url_ascii_digit_count",
+          "coefficient": -0.02594911086906468,
+          "positive_minus_negative_mean_logit_contribution": -0.0069816977644198055,
+          "component_auc": 0.29995481623569026,
+          "auc_with_component_removed": 0.45240636557330377
+        },
+        {
+          "feature": "raw_url_other_codepoint_count",
+          "coefficient": 0.006985402349331333,
+          "positive_minus_negative_mean_logit_contribution": 0.002911332293092817,
+          "component_auc": 0.7661386037135703,
+          "auc_with_component_removed": 0.369082002651025
+        },
+        {
+          "feature": "raw_url_ascii_digit_ratio",
+          "coefficient": 0.009423823019032326,
+          "positive_minus_negative_mean_logit_contribution": 0.0070422028863707156,
+          "component_auc": 0.6984135062186567,
+          "auc_with_component_removed": 0.33968389492069606
+        },
+        {
+          "feature": "raw_url_other_codepoint_ratio",
+          "coefficient": 0.004795967627453806,
+          "positive_minus_negative_mean_logit_contribution": -0.0006290719433608457,
+          "component_auc": 0.47161254867413993,
+          "auc_with_component_removed": 0.3886583920599017
+        },
+        {
+          "feature": "raw_url_unique_codepoint_count",
+          "coefficient": 0.04669718639868758,
+          "positive_minus_negative_mean_logit_contribution": 0.03366893502008243,
+          "component_auc": 0.6984946282990989,
+          "auc_with_component_removed": 0.3003384593357258
+        },
+        {
+          "feature": "raw_url_utf8_byte_entropy_bits",
+          "coefficient": -0.04542923840725788,
+          "positive_minus_negative_mean_logit_contribution": -0.029889762603410298,
+          "component_auc": 0.3177161944560648,
+          "auc_with_component_removed": 0.6123869015845126
+        },
+        {
+          "feature": "percent_escape_count",
+          "coefficient": -0.007864720910251002,
+          "positive_minus_negative_mean_logit_contribution": -0.0004956885692696566,
+          "component_auc": 0.49595547012654173,
+          "auc_with_component_removed": 0.3966403299995267
+        },
+        {
+          "feature": "is_https",
+          "coefficient": 0.004024446832859082,
+          "positive_minus_negative_mean_logit_contribution": -0.005173947579334176,
+          "component_auc": 0.23318116290245075,
+          "auc_with_component_removed": 0.4933525053230582
+        },
+        {
+          "feature": "has_userinfo",
+          "coefficient": -0.00240727435080683,
+          "positive_minus_negative_mean_logit_contribution": -5.558734408547466e-05,
+          "component_auc": 0.4999199102995355,
+          "auc_with_component_removed": 0.3940682058140359
+        },
+        {
+          "feature": "has_explicit_port",
+          "coefficient": -0.00044136742847763864,
+          "positive_minus_negative_mean_logit_contribution": -4.160832337268133e-06,
+          "component_auc": 0.49995995514976777,
+          "auc_with_component_removed": 0.39401927377723867
+        },
+        {
+          "feature": "has_query_delimiter",
+          "coefficient": -0.0024974799223647167,
+          "positive_minus_negative_mean_logit_contribution": -0.0008606787497291216,
+          "component_auc": 0.47333012974531474,
+          "auc_with_component_removed": 0.3993869680135076
+        },
+        {
+          "feature": "has_fragment_delimiter",
+          "coefficient": -0.002967514512174576,
+          "positive_minus_negative_mean_logit_contribution": -0.00030118490619026684,
+          "component_auc": 0.4967563671311869,
+          "auc_with_component_removed": 0.39626236796167225
+        }
+      ]
+    },
+    {
+      "seed": 46,
+      "model_sha256": "6cd9d33e49da967a558c6e74e061dbf812d5313642f28955d41dd491d58d1fb9",
+      "all_input_identity_checks_passed": true,
+      "iterations": 341,
+      "max_probability_reconstruction_error": 1.1102230246251565e-16,
+      "auc": 0.696523061938035,
+      "ap": 0.7683120689451126,
+      "rank_sum_auc": 0.696523061938035,
+      "reverse_logit_auc": 0.30347693806196496,
+      "without_https_auc": 0.4195351532595224,
+      "https_only_auc": 0.7668188370975493,
+      "domain_equal_weighted_auc": 0.7146391470273579,
+      "distinct_probabilities": 12880,
+      "score_quantiles": [
+        0.08339987797226776,
+        0.4981382073037061,
+        0.49951744458029096,
+        0.5008965177081233,
+        0.7794129577729502
+      ],
+      "coefficient_l2": 0.02988063733198199,
+      "kkt": {
+        "max_coefficient_residual_sum_loss": 0.17641098187719217,
+        "intercept_residual_sum_loss": 4.431981775354643e-06,
+        "max_residual_mean_loss": 1.0611314534742802e-06
+      },
+      "features": [
+        {
+          "feature": "raw_url_codepoint_length",
+          "coefficient": 0.0,
+          "positive_minus_negative_mean_logit_contribution": 0.0,
+          "component_auc": 0.5,
+          "auc_with_component_removed": 0.6965230619380351
+        },
+        {
+          "feature": "raw_url_utf8_byte_length",
+          "coefficient": 0.0,
+          "positive_minus_negative_mean_logit_contribution": 0.0,
+          "component_auc": 0.5,
+          "auc_with_component_removed": 0.6965230619380351
+        },
+        {
+          "feature": "hostname_ascii_length",
+          "coefficient": -0.004401234060547747,
+          "positive_minus_negative_mean_logit_contribution": -0.002601267247485996,
+          "component_auc": 0.37012915497570653,
+          "auc_with_component_removed": 0.7406145325636702
+        },
+        {
+          "feature": "path_codepoint_length",
+          "coefficient": 0.0,
+          "positive_minus_negative_mean_logit_contribution": 0.0,
+          "component_auc": 0.5,
+          "auc_with_component_removed": 0.6965230619380351
+        },
+        {
+          "feature": "query_codepoint_length",
+          "coefficient": 0.004504598244235186,
+          "positive_minus_negative_mean_logit_contribution": 0.0008248910019172007,
+          "component_auc": 0.5265897805542207,
+          "auc_with_component_removed": 0.6953788163570553
+        },
+        {
+          "feature": "fragment_codepoint_length",
+          "coefficient": -0.006140926022398445,
+          "positive_minus_negative_mean_logit_contribution": -0.0002516331734525665,
+          "component_auc": 0.496916546532116,
+          "auc_with_component_removed": 0.6967459371211082
+        },
+        {
+          "feature": "hostname_label_count",
+          "coefficient": -0.005491921263695266,
+          "positive_minus_negative_mean_logit_contribution": -5.4553027824716595e-05,
+          "component_auc": 0.5150468113579109,
+          "auc_with_component_removed": 0.6927050275129462
+        },
+        {
+          "feature": "hostname_ascii_digit_count",
+          "coefficient": -0.007406867840469261,
+          "positive_minus_negative_mean_logit_contribution": -0.00462860926848573,
+          "component_auc": 0.34728952738611607,
+          "auc_with_component_removed": 0.7601556228997557
+        },
+        {
+          "feature": "hostname_hyphen_count",
+          "coefficient": -0.007153654227517154,
+          "positive_minus_negative_mean_logit_contribution": -0.004254316318746781,
+          "component_auc": 0.3826389589196548,
+          "auc_with_component_removed": 0.794971339744742
+        },
+        {
+          "feature": "hostname_punycode_label_count",
+          "coefficient": 0.006815059290105283,
+          "positive_minus_negative_mean_logit_contribution": 0.0005520036667496373,
+          "component_auc": 0.5011212558065032,
+          "auc_with_component_removed": 0.6953689562365766
+        },
+        {
+          "feature": "path_segment_count",
+          "coefficient": -0.014371635957326179,
+          "positive_minus_negative_mean_logit_contribution": -0.00825230390536422,
+          "component_auc": 0.37890437289764534,
+          "auc_with_component_removed": 0.7968713508785934
+        },
+        {
+          "feature": "query_parameter_count",
+          "coefficient": 0.0007442449048384881,
+          "positive_minus_negative_mean_logit_contribution": 0.00019398681538876583,
+          "component_auc": 0.5265897805542207,
+          "auc_with_component_removed": 0.6960645782249845
+        },
+        {
+          "feature": "raw_url_ascii_letter_count",
+          "coefficient": 0.0,
+          "positive_minus_negative_mean_logit_contribution": 0.0,
+          "component_auc": 0.5,
+          "auc_with_component_removed": 0.6965230619380351
+        },
+        {
+          "feature": "raw_url_ascii_digit_count",
+          "coefficient": -0.0011701181967485443,
+          "positive_minus_negative_mean_logit_contribution": -0.00031482433596922966,
+          "component_auc": 0.29995481623569026,
+          "auc_with_component_removed": 0.6989423225515373
+        },
+        {
+          "feature": "raw_url_other_codepoint_count",
+          "coefficient": 0.009136880691468575,
+          "positive_minus_negative_mean_logit_contribution": 0.0038080119776849313,
+          "component_auc": 0.7661386037135703,
+          "auc_with_component_removed": 0.6545929352696486
+        },
+        {
+          "feature": "raw_url_ascii_digit_ratio",
+          "coefficient": 0.009217052714042842,
+          "positive_minus_negative_mean_logit_contribution": 0.006887688265747448,
+          "component_auc": 0.6984135062186567,
+          "auc_with_component_removed": 0.6070272226592036
+        },
+        {
+          "feature": "raw_url_other_codepoint_ratio",
+          "coefficient": -0.001694630665061445,
+          "positive_minus_negative_mean_logit_contribution": 0.00022227935811049504,
+          "component_auc": 0.5283874513258601,
+          "auc_with_component_removed": 0.6956909517867296
+        },
+        {
+          "feature": "raw_url_unique_codepoint_count",
+          "coefficient": 0.001880633265693867,
+          "positive_minus_negative_mean_logit_contribution": 0.0013559472015862444,
+          "component_auc": 0.6984946282990989,
+          "auc_with_component_removed": 0.6806075632656519
+        },
+        {
+          "feature": "raw_url_utf8_byte_entropy_bits",
+          "coefficient": 0.005615988819891668,
+          "positive_minus_negative_mean_logit_contribution": 0.0036949898016153237,
+          "component_auc": 0.6822838055439352,
+          "auc_with_component_removed": 0.6432182123051499
+        },
+        {
+          "feature": "percent_escape_count",
+          "coefficient": -0.00378063864901654,
+          "positive_minus_negative_mean_logit_contribution": -0.00023828173742492285,
+          "component_auc": 0.49595547012654173,
+          "auc_with_component_removed": 0.6973438813002553
+        },
+        {
+          "feature": "is_https",
+          "coefficient": -0.00953027589197485,
+          "positive_minus_negative_mean_logit_contribution": 0.012252403853139937,
+          "component_auc": 0.7668188370975493,
+          "auc_with_component_removed": 0.4195351532595224
+        },
+        {
+          "feature": "has_userinfo",
+          "coefficient": 0.008712299587507953,
+          "positive_minus_negative_mean_logit_contribution": 0.00020117922777855107,
+          "component_auc": 0.5000800897004645,
+          "auc_with_component_removed": 0.6964423777769307
+        },
+        {
+          "feature": "has_explicit_port",
+          "coefficient": 0.002846860537372934,
+          "positive_minus_negative_mean_logit_contribution": 2.683775154060184e-05,
+          "component_auc": 0.5000400448502322,
+          "auc_with_component_removed": 0.696523061938035
+        },
+        {
+          "feature": "has_query_delimiter",
+          "coefficient": 0.00208751214813228,
+          "positive_minus_negative_mean_logit_contribution": 0.0007193961119004565,
+          "component_auc": 0.5266698702546853,
+          "auc_with_component_removed": 0.6928406794678772
+        },
+        {
+          "feature": "has_fragment_delimiter",
+          "coefficient": -0.00494966172819209,
+          "positive_minus_negative_mean_logit_contribution": -0.0005023609479118306,
+          "component_auc": 0.4967563671311869,
+          "auc_with_component_removed": 0.6997204675659621
+        }
+      ]
+    }
+  ]
+}

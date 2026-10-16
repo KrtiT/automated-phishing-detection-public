@@ -1,0 +1,19 @@
+{
+  "study": "retrospective-shuffled-label-mechanism-20261015-v1",
+  "status_at_creation": "frozen_before_new_permutation_fits",
+  "source_commit": "ef6c4172d4320f81b154b0dea40911c3dc0015ae",
+  "train_sha256": "575f2fb13a0766020e29d78bf8e633a185b381abde7060bdd1ed04cc4a5e38a0",
+  "validation_sha256": "970c6568a6400a1fc265b7809ef7bd9d1c297632799cbb88801313bc34ac415a",
+  "additional_seed_start": 1000,
+  "additional_seed_stop_exclusive": 1099,
+  "n_permutations": 99,
+  "generator": "PCG64",
+  "classifier": {"C": 1.0, "class_weight": "balanced", "fit_intercept": true, "max_iter": 5000, "penalty": "l1", "random_state": 42, "solver": "saga", "tol": 0.0001},
+  "scaler": "StandardScaler fit on training features only; unchanged across permutations",
+  "validation": "true labels fixed, no threshold selection or tuning",
+  "random_validation_seed": 210000,
+  "additional_comparisons": ["constant_score", "same_frozen_scores_with_independently_permuted_validation_labels", "fixed_score_remove_is_https", "fixed_score_reverse_sign", "domain_equal_weighted_auc", "weighted_L1_KKT_residual"],
+  "execution": {"processes": 4, "numerical_threads_per_process": 1, "retain_failed_attempts": true, "replace_failed_seeds": false},
+  "interpretation": "conditional algorithmic sensitivity under deliberate row-label randomization, not formal significance testing, independent-campaign inference, or proof of absence of leakage",
+  "stopping_rule": "Run all scheduled99 attempts once; stop only on input identity/runtime failure. Report failed and nonconverged fits separately, with no seed substitutions or outcome-driven extensions."
+}

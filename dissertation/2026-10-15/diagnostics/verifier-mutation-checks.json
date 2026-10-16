@@ -1,0 +1,18 @@
+{
+  "status": "verified",
+  "checks": [
+    {
+      "case": "missing_seed",
+      "rejected": true
+    },
+    {
+      "case": "changed_metric",
+      "rejected": true
+    },
+    {
+      "case": "changed_source",
+      "rejected": true
+    }
+  ],
+  "scope": "Invented mutations of public aggregate copies; no research refits."
+}

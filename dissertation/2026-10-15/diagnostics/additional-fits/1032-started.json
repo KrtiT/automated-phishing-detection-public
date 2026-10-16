@@ -1,0 +1,23 @@
+{
+  "seed": 1032,
+  "started": "2026-10-16T03:05:53.233982+00:00",
+  "protocol_sha256": "f71b21fd381dbdacfad1ccb19758c8cb9e96f75d65901acee3643d3915876aa1",
+  "consumed_labels_sha256": "79ecec94b8285aa1962d3d8d612705b2fc3eed5d14ac3dc8b3e797d991dbf047",
+  "permutation_indices_sha256": "cc814d8e93ca8ddeff838640f8099cf1110727821feedf6557c4b15ef757c544",
+  "consumed_features_sha256": "2dd6b8ffaddb600005f03428b1c8805921264ad6c20cba46cedb46911ed307c5",
+  "class_counts": [
+    94373,
+    71875
+  ],
+  "parameters": {
+    "C": 1.0,
+    "class_weight": "balanced",
+    "fit_intercept": true,
+    "max_iter": 5000,
+    "penalty": "l1",
+    "random_state": 42,
+    "solver": "saga",
+    "tol": 0.0001
+  },
+  "analysis_source_sha256": "b5bb8b27aa84c1fcfbeb1216f1a445eecd020455e590ed553911c408435bdd1d"
+}

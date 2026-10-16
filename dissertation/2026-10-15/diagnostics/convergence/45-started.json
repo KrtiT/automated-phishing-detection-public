@@ -1,0 +1,25 @@
+{
+  "seed": 45,
+  "started": "2026-10-16T03:03:08.931058+00:00",
+  "input_labels_sha256": "20404e8c46c26e51f57842972c30790923250d9cf98fd00c4fbfebc0db5e789f",
+  "parameters": {
+    "C": 1.0,
+    "class_weight": "balanced",
+    "dual": false,
+    "fit_intercept": true,
+    "intercept_scaling": 1,
+    "l1_ratio": null,
+    "max_iter": 20000,
+    "multi_class": "deprecated",
+    "n_jobs": null,
+    "penalty": "l1",
+    "random_state": 42,
+    "solver": "saga",
+    "tol": 1e-07,
+    "verbose": 0,
+    "warm_start": true
+  },
+  "initial_model_sha256": "8aba0d802558a3d3c29f0b3ff457e8157353078b47c0783e82c570c605c79ac6",
+  "protocol_sha256": "c0e679ebccbe6cb4670fcf546487cc4929c1adab9994c4a3b7ef04064fbb1e98",
+  "source_sha256": "11001e06c747ab64965eebd236828a8cb3f893c47a81e90b21f350e8cf4bf5f9"
+}

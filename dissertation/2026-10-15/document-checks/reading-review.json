@@ -1,0 +1,21 @@
+{
+  "status": "reviewed",
+  "docx_sha256": "52bbdf7830836e6219df4062d243c6f9f47a2ffb190f0d472702438b82de45d0",
+  "pdf_sha256": "54b542941688394822cc0e1285558792e332948ae7b9f8995157b26aa1b0fafe",
+  "pdf_pages": 149,
+  "abstract_words": 167,
+  "abstract_fits_one_page": true,
+  "main_body_pages": 104,
+  "body_boundaries": {
+    "Chapter 1\u2014Introduction": 23,
+    "References": 127
+  },
+  "reviewed_pdf_pages": [
+    6,
+    23,
+    110,
+    113,
+    126
+  ],
+  "review": "Read all main-text prose and appendices for sentence structure; reviewed all 40 edits for preserved meaning. Inspected final abstract, introduction, control results and conclusion. All tables, image bytes, paragraph and run formatting, links and unedited text preserved through the sentence pass."
+}

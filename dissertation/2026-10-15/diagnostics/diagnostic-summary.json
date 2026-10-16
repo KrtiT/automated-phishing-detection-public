@@ -1,0 +1,103 @@
+{
+  "experiment": "retrospective-shuffled-label-mechanism-20261015-v1",
+  "completed": 99,
+  "warnings": 0,
+  "iterations_min": 260,
+  "iterations_max": 3458,
+  "all_below_iteration_limit": true,
+  "auc": {
+    "n": 99,
+    "mean": 0.47788912875419737,
+    "sd": 0.16843354865814536,
+    "min": 0.10458346630427078,
+    "q025": 0.20609187867134432,
+    "median": 0.4478917619858543,
+    "q975": 0.771793126001156,
+    "max": 0.94956008406688
+  },
+  "ap": {
+    "n": 99,
+    "mean": 0.5109328199503613,
+    "sd": 0.14264221692900994,
+    "min": 0.2503378401432912,
+    "q025": 0.3049369212438824,
+    "median": 0.47085837283632387,
+    "q975": 0.8007029621198934,
+    "max": 0.9465115542261959
+  },
+  "without_https_auc": {
+    "n": 99,
+    "mean": 0.501540213451319,
+    "sd": 0.10628886127380072,
+    "min": 0.2155122708684159,
+    "q025": 0.2910841079214916,
+    "median": 0.5035086672004605,
+    "q975": 0.6748170160981605,
+    "max": 0.8110768478529592
+  },
+  "randomized_validation_auc": {
+    "n": 99,
+    "mean": 0.5000209842203988,
+    "sd": 0.0032194243664703547,
+    "min": 0.49331395058749633,
+    "q025": 0.49488390696922435,
+    "median": 0.5000162109416473,
+    "q975": 0.5058844131960529,
+    "max": 0.506633411904385
+  },
+  "domain_equal_weighted_auc": {
+    "n": 99,
+    "mean": 0.47630636265628257,
+    "sd": 0.1781866018971397,
+    "min": 0.07696289120237518,
+    "q025": 0.17238670591214536,
+    "median": 0.458229736700977,
+    "q975": 0.7949118686763937,
+    "max": 0.9554174842429815
+  },
+  "at_or_above_original_max_auc": 12,
+  "original_max_auc": 0.696523061938035,
+  "auc_https_coefficient_spearman": -0.825343228200371,
+  "coefficient_sign_groups": {
+    "negative": {
+      "n": 43,
+      "auc": {
+        "n": 43,
+        "mean": 0.6069719062994638,
+        "sd": 0.12731030119104128,
+        "min": 0.3862861572460785,
+        "q025": 0.4177495773840604,
+        "median": 0.5945275106753836,
+        "q975": 0.815010145025648,
+        "max": 0.94956008406688
+      }
+    },
+    "positive": {
+      "n": 55,
+      "auc": {
+        "n": 55,
+        "mean": 0.3732579073531248,
+        "sd": 0.11700181020498063,
+        "min": 0.10458346630427078,
+        "q025": 0.19060240536846465,
+        "median": 0.3677241435837402,
+        "q975": 0.5958862113007808,
+        "max": 0.6326771094219816
+      }
+    },
+    "zero": {
+      "n": 1,
+      "auc": null
+    }
+  },
+  "mean_absolute_auc_departure": 0.14236057737502597,
+  "mean_absolute_auc_departure_without_https": 0.0851199376497208,
+  "convergence": {
+    "n": 5,
+    "warnings": 0,
+    "max_absolute_auc_change": 0.0004063614041531216,
+    "max_iterations": 2759,
+    "max_mean_loss_kkt_residual": 3.4824501739883926e-09
+  },
+  "scope": "Conditional algorithmic sensitivity on one fixed dataset; empirical quantiles, not population confidence intervals; not a leakage p-value."
+}

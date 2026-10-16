@@ -1,0 +1,15 @@
+{
+  "status": "verified",
+  "reviewed_sentence_edits": 40,
+  "docx_sha256": "52bbdf7830836e6219df4062d243c6f9f47a2ffb190f0d472702438b82de45d0",
+  "pdf_sha256": "54b542941688394822cc0e1285558792e332948ae7b9f8995157b26aa1b0fafe",
+  "paragraphs_preserved": 657,
+  "tables_byte_identical_to_pre_pass": 31,
+  "image_parts_byte_identical": 4,
+  "all_other_package_parts_byte_identical": true,
+  "paragraph_and_run_formatting_preserved": true,
+  "all_existing_hyperlinks_preserved": true,
+  "all_numerical_tokens_preserved": true,
+  "no_unlisted_content_or_structure_changes": true,
+  "semantic_review": "All 40 edits reviewed against the preceding sentences for preservation of findings, methods, qualifications and citations."
+}

@@ -1,0 +1,11 @@
+{
+  "status": "exact_inputs_reconstructed",
+  "checks": {
+    "x": "training_features",
+    "z": "validation_features",
+    "y": "training_labels",
+    "v": "validation_labels"
+  },
+  "expected_input_receipt_sha256": "79998d8a6a47eb0ee16240b3a6aa81977af7560c2f92347ac3a2bd2cd2d079c1",
+  "authenticates_original_five_fits": false
+}

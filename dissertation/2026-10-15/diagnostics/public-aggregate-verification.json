@@ -1,0 +1,6 @@
+{
+  "status": "verified",
+  "additional_fits": 99,
+  "strict_continuations": 5,
+  "scope": "Completeness, source/protocol hashes and aggregate arithmetic; no independent validation of private rows."
+}

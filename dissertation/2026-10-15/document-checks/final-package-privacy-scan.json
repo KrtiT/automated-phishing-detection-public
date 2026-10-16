@@ -1,6 +1,6 @@
 {
-  "docx_sha256": "393fabb4894200c968f67c00fed0d533bd1bdf219d1e7713377b2d1a2150221f",
-  "pdf_sha256": "8859901f2f57d4068072cb93276449a1af490051be2006f9b82191eb0ab93879",
+  "docx_sha256": "e744d0256bd70cf07ccde3a8ff2bec742291ae3798fd4255839c3612ec5a3936",
+  "pdf_sha256": "1fe27a329ffd200c91d454406fcac4504a7ec2262587bcbea524019b86a00231",
   "docx": {
     "package_files": [
       "[Content_Types].xml",
@@ -121,7 +121,7 @@
       "keywords": "",
       "creator": "Writer",
       "producer": "LibreOffice 26.8.0.3 (AARCH64)",
-      "creationDate": "D:20261015231757-07'00'",
+      "creationDate": "D:20261015233047-07'00'",
       "modDate": "",
       "trapped": "",
       "encryption": null

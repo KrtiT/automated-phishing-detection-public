@@ -1,7 +1,7 @@
 {
   "status": "reviewed",
-  "docx_sha256": "393fabb4894200c968f67c00fed0d533bd1bdf219d1e7713377b2d1a2150221f",
-  "pdf_sha256": "8859901f2f57d4068072cb93276449a1af490051be2006f9b82191eb0ab93879",
+  "docx_sha256": "e744d0256bd70cf07ccde3a8ff2bec742291ae3798fd4255839c3612ec5a3936",
+  "pdf_sha256": "1fe27a329ffd200c91d454406fcac4504a7ec2262587bcbea524019b86a00231",
   "pdf_pages": 149,
   "main_body_pages": 104,
   "body_start_pdf_page": 23,
@@ -10,17 +10,9 @@
   "abstract_pages": [
     6
   ],
-  "review": "Reviewed all 14 revised paragraphs for natural sentence flow, scientific meaning, preserved numerical results and citation targets. The routing rule is stated plainly within its unchanged-decision scope. Thesis latency wording includes the single-host synthetic structural-only scope. Abstract, conclusion, all tables, methods chronology, equations, references, figure bytes and author details remain exact. Complete render, navigation, citation, link and package checks pass.",
-  "preceding_full_review": "pre-chapter5-reading-review.json",
+  "review": "Reviewed all three conclusion paragraphs and rendered PDF page 126. All numerical values, interpretation boundaries, separate expert-cost measurement and the existing joint-hypothesis sentence are retained. Only three Word text nodes change; all other document XML and package parts are identical. PDF page text changes only on page 126. Conclusion fits the existing page with no changes to formatting or pagination. Complete render, table, navigation, citation, hyperlink and package checks pass.",
+  "preceding_full_review": "pre-conclusion-reading-review.json",
   "visual_review_pdf_pages": [
-    25,
-    115,
-    116,
-    117,
-    118,
-    121,
-    122,
-    123,
     126
   ],
   "confirmed_committee_roles": {
@@ -31,5 +23,9 @@
     "member": "Vijay Raghavan"
   },
   "submission_stage": "upcoming defense",
-  "inaccurate_practitioner_acknowledgement_removed": true
+  "inaccurate_practitioner_acknowledgement_removed": true,
+  "conclusion_words": 189,
+  "conclusion_pdf_pages": [
+    126
+  ]
 }

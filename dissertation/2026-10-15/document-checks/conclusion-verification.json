@@ -1,0 +1,43 @@
+{
+  "status": "verified",
+  "baseline_commit": "67c519104325a65394e6618ab35a03086ef714a2",
+  "baseline_docx_sha256": "393fabb4894200c968f67c00fed0d533bd1bdf219d1e7713377b2d1a2150221f",
+  "baseline_pdf_sha256": "8859901f2f57d4068072cb93276449a1af490051be2006f9b82191eb0ab93879",
+  "docx_sha256": "e744d0256bd70cf07ccde3a8ff2bec742291ae3798fd4255839c3612ec5a3936",
+  "pdf_sha256": "1fe27a329ffd200c91d454406fcac4504a7ec2262587bcbea524019b86a00231",
+  "scope": "Only the three conclusion paragraphs in Section 5.6; all other manuscript content and document properties unchanged.",
+  "paragraphs_edited": 3,
+  "sentence_change_groups": 4,
+  "numeric_results_preserved": true,
+  "formal_outcome_sentence_exactly_preserved": true,
+  "all_31_tables_exact_xml_preserved": true,
+  "abstract_thesis_and_sections_5_1_through_5_5_unchanged": true,
+  "original_hypotheses_and_formal_decisions_unchanged": true,
+  "diagnostic_design_disclosures_preserved_exactly": true,
+  "interpretation_boundaries_and_separate_expert_cost_retained": true,
+  "all_xml_except_three_text_nodes_identical": true,
+  "all_other_docx_package_parts_byte_identical": true,
+  "all_formatting_equations_citations_hyperlinks_and_figures_identical": true,
+  "navigation_cache_changes": 0,
+  "changed_pdf_text_pages": [
+    126
+  ],
+  "all_other_pdf_page_text_identical": true,
+  "layout": {
+    "pdf_pages": 149,
+    "main_body_pages": 104,
+    "body_start_pdf_page": 23,
+    "references_start_pdf_page": 127,
+    "abstract_words": 199,
+    "abstract_pages": [
+      6
+    ],
+    "conclusion_words": 189,
+    "conclusion_pdf_pages": [
+      126
+    ]
+  },
+  "change_log_sha256": "27337c45deb88de6562bf9fcef887eeb88df546eed1ae3e46de6b0b6dc961770",
+  "sentence_log_sha256": "adf87ccd5f265e241316696e1ff26a51cc23909e2df5530c408a528e1a2af966",
+  "render_receipt_sha256": "b48e922bf2f481f6dcd36785c01ea10ab8bd09e9b0dd158df4bd646db1340c1d"
+}

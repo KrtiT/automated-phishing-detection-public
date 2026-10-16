@@ -79,3 +79,9 @@ research-voice revision and the two authorized table changes.
 The [final Chapter 5 and thesis pass](document-checks/CHAPTER5_SENTENCE_CHANGES.md)
 polishes 14 paragraphs, with [preservation checks](document-checks/chapter5-verification.json)
 against the preceding edition. The abstract, conclusion and all tables remain exact.
+
+The subsequent [conclusion pass](document-checks/CONCLUSION_SENTENCE_CHANGES.md)
+revises only Section 5.6. Its [preservation receipt](document-checks/conclusion-verification.json)
+verifies unchanged numbers, formal outcome, interpretation boundaries, all other
+manuscript content and formatting. The conclusion fits its existing page; the
+Word/PDF pair remains 149 pages.

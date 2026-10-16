@@ -1,12 +1,12 @@
 {
   "status": "verified",
-  "checked_at": "2026-10-16T06:19:48.741719+00:00",
+  "checked_at": "2026-10-16T06:32:24.685122+00:00",
   "scope": "Historical publication regression tests, current public diagnostic aggregates, package integrity/privacy, current reading links, preserved research evidence and unchanged software source fingerprint. Full software results are recorded separately in software-checks.json.",
   "commands": [
     {
       "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python -m pytest -q tests/test_dissertation_revision.py tests/test_dissertation_publication.py",
       "exit_code": 0,
-      "stdout": "..................                                                       [100%]\n18 passed in 0.27s\n",
+      "stdout": "..................                                                       [100%]\n18 passed in 0.25s\n",
       "stderr": ""
     },
     {
@@ -25,8 +25,8 @@
   "publication_tests_passed": 18,
   "additional_permutation_fits": 99,
   "strict_continuations": 5,
-  "docx_sha256": "393fabb4894200c968f67c00fed0d533bd1bdf219d1e7713377b2d1a2150221f",
-  "pdf_sha256": "8859901f2f57d4068072cb93276449a1af490051be2006f9b82191eb0ab93879",
+  "docx_sha256": "e744d0256bd70cf07ccde3a8ff2bec742291ae3798fd4255839c3612ec5a3936",
+  "pdf_sha256": "1fe27a329ffd200c91d454406fcac4504a7ec2262587bcbea524019b86a00231",
   "prior_editorial_stage_counts": {
     "sentence_edits": 40,
     "contribution_framing_edits": 43
@@ -40,15 +40,16 @@
   "original_images": 4,
   "pdf_pages": 149,
   "final_abstract_update_receipt_sha256": "e31e3d9122938742efc034e080ddbb347b61acbbf591667127ef78137ad06890",
-  "final_prose_revision_receipt_sha256": "4da4e70e17c8f857759167829834b9d2fc2fcf5c4bb83b4e55aaec2764f3c64d",
+  "final_prose_revision_receipt_sha256": "3f81ae5dbd538bba6a359c3ce8921b6d4103d97124d08bd2a75d0a43769b6bb4",
+  "preceding_chapter5_receipt_sha256": "4da4e70e17c8f857759167829834b9d2fc2fcf5c4bb83b4e55aaec2764f3c64d",
   "preceding_broader_prose_receipt_sha256": "b28fe75f88aa512269e5339838237e4d400c49901a514a18c25fd532bf48fad0",
-  "final_prose_paragraphs_revised": 14,
+  "final_prose_paragraphs_revised": 3,
   "software_source_fingerprint_unchanged": true,
   "software_source_fingerprint_sha256": "e143930218b827088e9980b4da62a6764db975f4e95773e4a57a708759405e02",
-  "historical_publication_regression_scope": "The 18 tests target the October 4 and October 12 packages. Current-edition verification is performed by chapter5-verification, render/link/privacy audits and this package checker; voice-verification documents the preceding broader revision.",
+  "historical_publication_regression_scope": "The 18 tests target the October 4 and October 12 packages. Current-edition verification is performed by conclusion-verification, render/link/privacy audits and this package checker; chapter5-verification and voice-verification document the preceding revisions.",
   "author_requested_acknowledgement_corrections": 0,
-  "local_markdown_links_checked": 76,
-  "text_files_scanned": 281,
+  "local_markdown_links_checked": 83,
+  "text_files_scanned": 291,
   "docx_xml_parts_scanned": 23,
   "flagged_private_paths_or_credentials": 0,
   "unexpected_file_types_or_symlinks": 0,

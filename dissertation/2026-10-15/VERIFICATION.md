@@ -1,9 +1,29 @@
 # Verification of the defense reading edition
 
-The current focused revision contains **149 total pages and 104 main-body pages**.
+The current Word/PDF pair contains **149 total pages and 104 main-body pages**.
+The [conclusion preservation check](document-checks/conclusion-verification.json)
+compares the current files with published commit 67c5191. Only three text nodes
+in Section 5.6 change. All numbers, the formal hypothesis-outcome sentence,
+interpretation boundaries and separate expert-cost measurement are retained.
+Every table, figure, citation, equation, formatting property, navigation cache,
+abstract sentence and other manuscript passage remains unchanged.
+
+[Every changed conclusion sentence](document-checks/CONCLUSION_SENTENCE_CHANGES.md)
+is paired with its previous wording. Only PDF page 126 has different text;
+the conclusion fits its existing page. Complete render, table, navigation,
+citation, link and package checks pass. Earlier receipts retain their original
+hashes; replaced current summaries are preserved as `pre-conclusion-*`.
+
+Current Word SHA-256: `e744d0256bd70cf07ccde3a8ff2bec742291ae3798fd4255839c3612ec5a3936`
+
+Current PDF SHA-256: `1fe27a329ffd200c91d454406fcac4504a7ec2262587bcbea524019b86a00231`
+
+## Preceding Chapter 5 revision
+
+The preceding Chapter 5 revision contains **149 total pages and 104 main-body pages**.
 The 199-word abstract, conclusion, all 31 tables and four figures remain unchanged.
 The [focused revision receipt](document-checks/chapter5-verification.json) compares
-the current files with published commit f3e42b5. It records 14 revised paragraphs
+that edition with published commit f3e42b5. It records 14 revised paragraphs
 in the thesis statement and Sections 5.1–5.2, preserving existing numerical results,
 citations, qualifications and formatting. The thesis now includes the already
 reported 79.68% median paired p95 reduction with its experimental scope.
@@ -14,9 +34,9 @@ and is preserved exactly. The updated Word/PDF pair passes complete text, table,
 figure, navigation, citation, hyperlink and package checks. Earlier receipts retain
 their original hashes; replaced summaries are preserved as `pre-chapter5-*`.
 
-Current Word SHA-256: `393fabb4894200c968f67c00fed0d533bd1bdf219d1e7713377b2d1a2150221f`
+Chapter 5 edition Word SHA-256: `393fabb4894200c968f67c00fed0d533bd1bdf219d1e7713377b2d1a2150221f`
 
-Current PDF SHA-256: `8859901f2f57d4068072cb93276449a1af490051be2006f9b82191eb0ab93879`
+Chapter 5 edition PDF SHA-256: `8859901f2f57d4068072cb93276449a1af490051be2006f9b82191eb0ab93879`
 
 ## Preceding broader revision and retained verification
 

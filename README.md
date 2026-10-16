@@ -76,7 +76,8 @@ It contains **149 total pages**, **104 main-body pages**, **31 tables**, **four 
 The 199-word abstract fits one page. The Word copy remains editable for author review.
 The [sentence change log](dissertation/2026-10-15/document-checks/SENTENCE_CHANGES.md)
 records the broader revision. The [final Chapter 5 and thesis changes](dissertation/2026-10-15/document-checks/CHAPTER5_SENTENCE_CHANGES.md)
-record the focused prose pass against commit f3e42b5.
+record the focused prose pass against commit f3e42b5. The [conclusion sentence pairs](dissertation/2026-10-15/document-checks/CONCLUSION_SENTENCE_CHANGES.md)
+record the final Section 5.6 edit against commit 67c5191.
 
 ## Code, data and verification
 

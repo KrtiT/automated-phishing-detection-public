@@ -1,5 +1,5 @@
 {
-  "docx_sha256": "393fabb4894200c968f67c00fed0d533bd1bdf219d1e7713377b2d1a2150221f",
+  "docx_sha256": "e744d0256bd70cf07ccde3a8ff2bec742291ae3798fd4255839c3612ec5a3936",
   "internal_word_hyperlinks": 308,
   "bookmarks": 131,
   "cross_reference_counts": {
@@ -1912,7 +1912,7 @@
       "reason": "Section 3.2 belongs to the cited paper, not this manuscript."
     }
   ],
-  "pdf_sha256": "8859901f2f57d4068072cb93276449a1af490051be2006f9b82191eb0ab93879",
+  "pdf_sha256": "1fe27a329ffd200c91d454406fcac4504a7ec2262587bcbea524019b86a00231",
   "logical_click_targets_checked": 427,
   "pdf_internal_annotations": 438,
   "pdf_link_checks": [

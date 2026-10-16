@@ -92,3 +92,8 @@ The [final Chapter 5 and thesis pass](dissertation/2026-10-15/document-checks/CH
 and [preservation receipt](dissertation/2026-10-15/document-checks/chapter5-verification.json)
 record 14 focused paragraph revisions. Table 5.2 already includes its insight column;
 all tables, the abstract and the conclusion remain unchanged in this pass.
+
+The [conclusion pass](dissertation/2026-10-15/document-checks/CONCLUSION_SENTENCE_CHANGES.md)
+and [preservation receipt](dissertation/2026-10-15/document-checks/conclusion-verification.json)
+record the subsequent three-paragraph edit to Section 5.6. Only PDF page 126 changes;
+all other manuscript text, tables, numerical values, formatting and pagination remain unchanged.

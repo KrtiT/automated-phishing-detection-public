@@ -1,0 +1,45 @@
+{
+  "status": "verified",
+  "docx_sha256": "056421a8941f5868a488a72634488a1dcf49977a3ff6fc13c3cc98191e4e25fa",
+  "pdf_sha256": "80c0308579148e70b2e9bb238ec827b03ac08ee344cf3227b1a515f1d35ffb5b",
+  "scope": "Research-voice revision across Chapters 1\u20135 and the abstract; exact preservation checks, complete render coverage, citations, links and privacy audit.",
+  "verification_chain": [
+    "pre-abstract-manuscript-verification.json",
+    "three-contribution-verification.json",
+    "abstract-update-verification.json",
+    "posture-verification.json",
+    "voice-verification.json"
+  ],
+  "prior_verified_docx_sha256": "500f5ca98cce81f92ac76a9d4f23db01377e1c05a6d55ac73e2c44f7a5f8f384",
+  "prose_paragraphs_revised": 72,
+  "existing_numeric_results_preserved": true,
+  "abstract_added_values": {
+    "98.6807%": "Structural internal recall, Table 4.2b",
+    "0.7747%": "Structural internal FPR, Table 4.2b"
+  },
+  "formal_decision_meanings_preserved": true,
+  "table_4_14_fail_to_not_met_labels": 14,
+  "table_5_2_added_insight_cells_including_header": 9,
+  "hypotheses_equations_references_images_preserved": true,
+  "methods_chronology_preserved": true,
+  "all_editable_text_double_spaced": true,
+  "spacing_resolution": "Document defaults, based-on paragraph styles, and direct paragraph overrides; only the read-only audit copy is materialized.",
+  "paragraph_and_run_formatting_preserved": true,
+  "all_existing_hyperlink_subtrees_preserved": true,
+  "tables": 31,
+  "figures": 4,
+  "navigation_entries": 127,
+  "pdf_pages": 149,
+  "main_body_pages": 104,
+  "body_start_pdf_page": 23,
+  "references_start_pdf_page": 127,
+  "abstract_words": 199,
+  "abstract_pages": [
+    6
+  ],
+  "abstract_fits_one_page": true,
+  "rendered_nonempty_paragraphs_and_cells": 2127,
+  "figure_prose_intersections": 0,
+  "detached_table_captions": 0,
+  "author_title_date_preserved": "November 5th, 2026"
+}

@@ -1,0 +1,6621 @@
+{
+  "docx_sha256": "056421a8941f5868a488a72634488a1dcf49977a3ff6fc13c3cc98191e4e25fa",
+  "internal_word_hyperlinks": 308,
+  "bookmarks": 131,
+  "cross_reference_counts": {
+    "Chapter": 11,
+    "Section": 75,
+    "Appendix": 23,
+    "Table": 59,
+    "Figure": 4
+  },
+  "cross_references": [
+    {
+      "paragraph": 230,
+      "all_paragraph_index": 230,
+      "label": "Chapter 3",
+      "text": "Chapter 3",
+      "start": 298,
+      "end": 307,
+      "expected_anchor": "heading_23",
+      "actual_anchor": "heading_23",
+      "status": "correct"
+    },
+    {
+      "paragraph": 233,
+      "all_paragraph_index": 233,
+      "label": "Chapter 4",
+      "text": "Chapters 4",
+      "start": 422,
+      "end": 432,
+      "expected_anchor": "heading_45",
+      "actual_anchor": "heading_45",
+      "status": "correct"
+    },
+    {
+      "paragraph": 233,
+      "all_paragraph_index": 233,
+      "label": "Chapter 5",
+      "text": "5",
+      "start": 433,
+      "end": 434,
+      "expected_anchor": "heading_62",
+      "actual_anchor": "heading_62",
+      "status": "correct"
+    },
+    {
+      "paragraph": 237,
+      "all_paragraph_index": 237,
+      "label": "Section 1.4",
+      "text": "Section 1.4",
+      "start": 0,
+      "end": 11,
+      "expected_anchor": "heading_7",
+      "actual_anchor": "heading_7",
+      "status": "correct"
+    },
+    {
+      "paragraph": 237,
+      "all_paragraph_index": 237,
+      "label": "Chapter 4",
+      "text": "Chapter 4",
+      "start": 68,
+      "end": 77,
+      "expected_anchor": "heading_45",
+      "actual_anchor": "heading_45",
+      "status": "correct"
+    },
+    {
+      "paragraph": 237,
+      "all_paragraph_index": 237,
+      "label": "Appendix C",
+      "text": "Appendix C",
+      "start": 150,
+      "end": 160,
+      "expected_anchor": "revision_heading_4018",
+      "actual_anchor": "revision_heading_4018",
+      "status": "correct"
+    },
+    {
+      "paragraph": 239,
+      "all_paragraph_index": 239,
+      "label": "Chapter 5",
+      "text": "Chapter 5",
+      "start": 257,
+      "end": 266,
+      "expected_anchor": "heading_62",
+      "actual_anchor": "heading_62",
+      "status": "correct"
+    },
+    {
+      "paragraph": 255,
+      "all_paragraph_index": 255,
+      "label": "Section 1.4.1",
+      "text": "Sections 1.4.1",
+      "start": 0,
+      "end": 14,
+      "expected_anchor": "heading_8",
+      "actual_anchor": "heading_8",
+      "status": "correct"
+    },
+    {
+      "paragraph": 255,
+      "all_paragraph_index": 255,
+      "label": "Section 1.4.3",
+      "text": "1.4.3",
+      "start": 15,
+      "end": 20,
+      "expected_anchor": "heading_10",
+      "actual_anchor": "heading_10",
+      "status": "correct"
+    },
+    {
+      "paragraph": 255,
+      "all_paragraph_index": 255,
+      "label": "Section 3.8",
+      "text": "Section 3.8",
+      "start": 93,
+      "end": 104,
+      "expected_anchor": "heading_32",
+      "actual_anchor": "heading_32",
+      "status": "correct"
+    },
+    {
+      "paragraph": 255,
+      "all_paragraph_index": 255,
+      "label": "Table 4.3",
+      "text": "Tables 4.3",
+      "start": 156,
+      "end": 166,
+      "expected_anchor": "table_6",
+      "actual_anchor": "table_6",
+      "status": "correct"
+    },
+    {
+      "paragraph": 255,
+      "all_paragraph_index": 255,
+      "label": "Table 4.14",
+      "text": "4.14",
+      "start": 171,
+      "end": 175,
+      "expected_anchor": "table_17",
+      "actual_anchor": "table_17",
+      "status": "correct"
+    },
+    {
+      "paragraph": 255,
+      "all_paragraph_index": 255,
+      "label": "Appendix C",
+      "text": "Appendix C",
+      "start": 258,
+      "end": 268,
+      "expected_anchor": "revision_heading_4018",
+      "actual_anchor": "revision_heading_4018",
+      "status": "correct"
+    },
+    {
+      "paragraph": 257,
+      "all_paragraph_index": 257,
+      "label": "Section 4.8",
+      "text": "Sections 4.8",
+      "start": 512,
+      "end": 524,
+      "expected_anchor": "heading_53",
+      "actual_anchor": "heading_53",
+      "status": "correct"
+    },
+    {
+      "paragraph": 257,
+      "all_paragraph_index": 257,
+      "label": "Section 4.10.1",
+      "text": "4.10.1",
+      "start": 529,
+      "end": 535,
+      "expected_anchor": "revision_heading_4010",
+      "actual_anchor": "revision_heading_4010",
+      "status": "correct"
+    },
+    {
+      "paragraph": 258,
+      "all_paragraph_index": 258,
+      "label": "Section 4.8.1",
+      "text": "Sections 4.8.1",
+      "start": 421,
+      "end": 435,
+      "expected_anchor": "heading_54",
+      "actual_anchor": "heading_54",
+      "status": "correct"
+    },
+    {
+      "paragraph": 258,
+      "all_paragraph_index": 258,
+      "label": "Section 4.10.2",
+      "text": "4.10.2",
+      "start": 440,
+      "end": 446,
+      "expected_anchor": "revision_heading_4012",
+      "actual_anchor": "revision_heading_4012",
+      "status": "correct"
+    },
+    {
+      "paragraph": 261,
+      "all_paragraph_index": 261,
+      "label": "Section 3.4",
+      "text": "Section 3.4",
+      "start": 510,
+      "end": 521,
+      "expected_anchor": "heading_28",
+      "actual_anchor": "heading_28",
+      "status": "correct"
+    },
+    {
+      "paragraph": 264,
+      "all_paragraph_index": 264,
+      "label": "Chapter 2",
+      "text": "Chapter 2",
+      "start": 0,
+      "end": 9,
+      "expected_anchor": "heading_13",
+      "actual_anchor": "heading_13",
+      "status": "correct"
+    },
+    {
+      "paragraph": 264,
+      "all_paragraph_index": 264,
+      "label": "Chapter 3",
+      "text": "Chapter 3",
+      "start": 70,
+      "end": 79,
+      "expected_anchor": "heading_23",
+      "actual_anchor": "heading_23",
+      "status": "correct"
+    },
+    {
+      "paragraph": 264,
+      "all_paragraph_index": 264,
+      "label": "Chapter 4",
+      "text": "Chapter 4",
+      "start": 157,
+      "end": 166,
+      "expected_anchor": "heading_45",
+      "actual_anchor": "heading_45",
+      "status": "correct"
+    },
+    {
+      "paragraph": 264,
+      "all_paragraph_index": 264,
+      "label": "Chapter 5",
+      "text": "Chapter 5",
+      "start": 195,
+      "end": 204,
+      "expected_anchor": "heading_62",
+      "actual_anchor": "heading_62",
+      "status": "correct"
+    },
+    {
+      "paragraph": 267,
+      "all_paragraph_index": 267,
+      "label": "Chapter 3",
+      "text": "Chapter 3",
+      "start": 67,
+      "end": 76,
+      "expected_anchor": "heading_23",
+      "actual_anchor": "heading_23",
+      "status": "correct"
+    },
+    {
+      "paragraph": 277,
+      "all_paragraph_index": 277,
+      "label": "Chapter 3",
+      "text": "Chapter 3",
+      "start": 339,
+      "end": 348,
+      "expected_anchor": "heading_23",
+      "actual_anchor": "heading_23",
+      "status": "correct"
+    },
+    {
+      "paragraph": 283,
+      "all_paragraph_index": 283,
+      "label": "Section 3.8",
+      "text": "Section 3.8",
+      "start": 474,
+      "end": 485,
+      "expected_anchor": "heading_32",
+      "actual_anchor": "heading_32",
+      "status": "correct"
+    },
+    {
+      "paragraph": 295,
+      "all_paragraph_index": 295,
+      "label": "Table 2.1",
+      "text": "Table 2.1",
+      "start": 223,
+      "end": 232,
+      "expected_anchor": "table_1",
+      "actual_anchor": "table_1",
+      "status": "correct"
+    },
+    {
+      "paragraph": 307,
+      "all_paragraph_index": 334,
+      "label": "Section 3.8",
+      "text": "Section 3.8",
+      "start": 192,
+      "end": 203,
+      "expected_anchor": "heading_32",
+      "actual_anchor": "heading_32",
+      "status": "correct"
+    },
+    {
+      "paragraph": 307,
+      "all_paragraph_index": 334,
+      "label": "Section 4.6",
+      "text": "Section 4.6",
+      "start": 452,
+      "end": 463,
+      "expected_anchor": "heading_51",
+      "actual_anchor": "heading_51",
+      "status": "correct"
+    },
+    {
+      "paragraph": 307,
+      "all_paragraph_index": 334,
+      "label": "Appendix C",
+      "text": "Appendix C",
+      "start": 468,
+      "end": 478,
+      "expected_anchor": "revision_heading_4018",
+      "actual_anchor": "revision_heading_4018",
+      "status": "correct"
+    },
+    {
+      "paragraph": 309,
+      "all_paragraph_index": 336,
+      "label": "Figure 3.1",
+      "text": "Figure 3.1",
+      "start": 487,
+      "end": 497,
+      "expected_anchor": "figure_1",
+      "actual_anchor": "figure_1",
+      "status": "correct"
+    },
+    {
+      "paragraph": 309,
+      "all_paragraph_index": 336,
+      "label": "Table 3.1",
+      "text": "Table 3.1",
+      "start": 502,
+      "end": 511,
+      "expected_anchor": "table_2",
+      "actual_anchor": "table_2",
+      "status": "correct"
+    },
+    {
+      "paragraph": 312,
+      "all_paragraph_index": 339,
+      "label": "Section 3.8",
+      "text": "Section 3.8",
+      "start": 143,
+      "end": 154,
+      "expected_anchor": "heading_32",
+      "actual_anchor": "heading_32",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 349,
+      "label": "Table 4.2",
+      "text": "Tables 4.2",
+      "start": 72,
+      "end": 82,
+      "expected_anchor": "table_4_2_summary",
+      "actual_anchor": "table_4_2_summary",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 349,
+      "label": "Table 4.3",
+      "text": "4.3",
+      "start": 83,
+      "end": 86,
+      "expected_anchor": "table_6",
+      "actual_anchor": "table_6",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 352,
+      "label": "Table 4.4",
+      "text": "Tables 4.4",
+      "start": 100,
+      "end": 110,
+      "expected_anchor": "table_7",
+      "actual_anchor": "table_7",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 352,
+      "label": "Table 4.5",
+      "text": "4.5",
+      "start": 111,
+      "end": 114,
+      "expected_anchor": "table_8",
+      "actual_anchor": "table_8",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 355,
+      "label": "Table 4.6",
+      "text": "Tables 4.6",
+      "start": 74,
+      "end": 84,
+      "expected_anchor": "table_9",
+      "actual_anchor": "table_9",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 355,
+      "label": "Table 4.7",
+      "text": "4.7",
+      "start": 85,
+      "end": 88,
+      "expected_anchor": "table_10",
+      "actual_anchor": "table_10",
+      "status": "correct"
+    },
+    {
+      "paragraph": 318,
+      "all_paragraph_index": 363,
+      "label": "Appendix C",
+      "text": "Appendix C",
+      "start": 263,
+      "end": 273,
+      "expected_anchor": "revision_heading_4018",
+      "actual_anchor": "revision_heading_4018",
+      "status": "correct"
+    },
+    {
+      "paragraph": 321,
+      "all_paragraph_index": 366,
+      "label": "Section 4.6",
+      "text": "Section 4.6",
+      "start": 312,
+      "end": 323,
+      "expected_anchor": "heading_51",
+      "actual_anchor": "heading_51",
+      "status": "correct"
+    },
+    {
+      "paragraph": 323,
+      "all_paragraph_index": 368,
+      "label": "Section 4.8.1",
+      "text": "Section 4.8.1",
+      "start": 649,
+      "end": 662,
+      "expected_anchor": "heading_54",
+      "actual_anchor": "heading_54",
+      "status": "correct"
+    },
+    {
+      "paragraph": 324,
+      "all_paragraph_index": 369,
+      "label": "Appendix C",
+      "text": "Appendix C",
+      "start": 215,
+      "end": 225,
+      "expected_anchor": "revision_heading_4018",
+      "actual_anchor": "revision_heading_4018",
+      "status": "correct"
+    },
+    {
+      "paragraph": 328,
+      "all_paragraph_index": 373,
+      "label": "Appendix C",
+      "text": "Appendix C",
+      "start": 322,
+      "end": 332,
+      "expected_anchor": "revision_heading_4018",
+      "actual_anchor": "revision_heading_4018",
+      "status": "correct"
+    },
+    {
+      "paragraph": 336,
+      "all_paragraph_index": 381,
+      "label": "Appendix C",
+      "text": "Appendix C",
+      "start": 420,
+      "end": 430,
+      "expected_anchor": "revision_heading_4018",
+      "actual_anchor": "revision_heading_4018",
+      "status": "correct"
+    },
+    {
+      "paragraph": 337,
+      "all_paragraph_index": 382,
+      "label": "Section 4.6",
+      "text": "Section 4.6",
+      "start": 92,
+      "end": 103,
+      "expected_anchor": "heading_51",
+      "actual_anchor": "heading_51",
+      "status": "correct"
+    },
+    {
+      "paragraph": 337,
+      "all_paragraph_index": 382,
+      "label": "Appendix C",
+      "text": "Appendix C",
+      "start": 108,
+      "end": 118,
+      "expected_anchor": "revision_heading_4018",
+      "actual_anchor": "revision_heading_4018",
+      "status": "correct"
+    },
+    {
+      "paragraph": 338,
+      "all_paragraph_index": 383,
+      "label": "Section 1.4.1",
+      "text": "Section 1.4.1",
+      "start": 360,
+      "end": 373,
+      "expected_anchor": "heading_8",
+      "actual_anchor": "heading_8",
+      "status": "correct"
+    },
+    {
+      "paragraph": 351,
+      "all_paragraph_index": 396,
+      "label": "Section 4.6",
+      "text": "Section 4.6",
+      "start": 294,
+      "end": 305,
+      "expected_anchor": "heading_51",
+      "actual_anchor": "heading_51",
+      "status": "correct"
+    },
+    {
+      "paragraph": 351,
+      "all_paragraph_index": 396,
+      "label": "Appendix C",
+      "text": "Appendix C",
+      "start": 310,
+      "end": 320,
+      "expected_anchor": "revision_heading_4018",
+      "actual_anchor": "revision_heading_4018",
+      "status": "correct"
+    },
+    {
+      "paragraph": 353,
+      "all_paragraph_index": 398,
+      "label": "Section 1.4.2",
+      "text": "Section 1.4.2",
+      "start": 88,
+      "end": 101,
+      "expected_anchor": "heading_9",
+      "actual_anchor": "heading_9",
+      "status": "correct"
+    },
+    {
+      "paragraph": 353,
+      "all_paragraph_index": 398,
+      "label": "Section 3.8",
+      "text": "Section 3.8",
+      "start": 319,
+      "end": 330,
+      "expected_anchor": "heading_32",
+      "actual_anchor": "heading_32",
+      "status": "correct"
+    },
+    {
+      "paragraph": 358,
+      "all_paragraph_index": 403,
+      "label": "Section 1.4.3",
+      "text": "Section 1.4.3",
+      "start": 120,
+      "end": 133,
+      "expected_anchor": "heading_10",
+      "actual_anchor": "heading_10",
+      "status": "correct"
+    },
+    {
+      "paragraph": 358,
+      "all_paragraph_index": 403,
+      "label": "Section 4.6",
+      "text": "Section 4.6",
+      "start": 278,
+      "end": 289,
+      "expected_anchor": "heading_51",
+      "actual_anchor": "heading_51",
+      "status": "correct"
+    },
+    {
+      "paragraph": 358,
+      "all_paragraph_index": 403,
+      "label": "Appendix C",
+      "text": "Appendix C",
+      "start": 294,
+      "end": 304,
+      "expected_anchor": "revision_heading_4018",
+      "actual_anchor": "revision_heading_4018",
+      "status": "correct"
+    },
+    {
+      "paragraph": 360,
+      "all_paragraph_index": 405,
+      "label": "Appendix A",
+      "text": "Appendix A",
+      "start": 63,
+      "end": 73,
+      "expected_anchor": "heading_73",
+      "actual_anchor": "heading_73",
+      "status": "correct"
+    },
+    {
+      "paragraph": 360,
+      "all_paragraph_index": 405,
+      "label": "Appendix C",
+      "text": "Appendix C",
+      "start": 284,
+      "end": 294,
+      "expected_anchor": "revision_heading_4018",
+      "actual_anchor": "revision_heading_4018",
+      "status": "correct"
+    },
+    {
+      "paragraph": 363,
+      "all_paragraph_index": 408,
+      "label": "Section 3.16",
+      "text": "Section 3.16",
+      "start": 624,
+      "end": 636,
+      "expected_anchor": "revision_heading_4005",
+      "actual_anchor": "revision_heading_4005",
+      "status": "correct"
+    },
+    {
+      "paragraph": 373,
+      "all_paragraph_index": 418,
+      "label": "Figure 3.2",
+      "text": "Figure 3.2",
+      "start": 185,
+      "end": 195,
+      "expected_anchor": "figure_2",
+      "actual_anchor": "figure_2",
+      "status": "correct"
+    },
+    {
+      "paragraph": 378,
+      "all_paragraph_index": 423,
+      "label": "Section 3.6",
+      "text": "Section 3.6",
+      "start": 127,
+      "end": 138,
+      "expected_anchor": "heading_30",
+      "actual_anchor": "heading_30",
+      "status": "correct"
+    },
+    {
+      "paragraph": 384,
+      "all_paragraph_index": 429,
+      "label": "Appendix C",
+      "text": "Appendix C",
+      "start": 437,
+      "end": 447,
+      "expected_anchor": "revision_heading_4018",
+      "actual_anchor": "revision_heading_4018",
+      "status": "correct"
+    },
+    {
+      "paragraph": 388,
+      "all_paragraph_index": 433,
+      "label": "Section 3.16.3",
+      "text": "Section 3.16.3",
+      "start": 392,
+      "end": 406,
+      "expected_anchor": "revision_heading_4008",
+      "actual_anchor": "revision_heading_4008",
+      "status": "correct"
+    },
+    {
+      "paragraph": 394,
+      "all_paragraph_index": 439,
+      "label": "Section 4.8.1",
+      "text": "Section 4.8.1",
+      "start": 381,
+      "end": 394,
+      "expected_anchor": "heading_54",
+      "actual_anchor": "heading_54",
+      "status": "correct"
+    },
+    {
+      "paragraph": 395,
+      "all_paragraph_index": 440,
+      "label": "Section 3.8",
+      "text": "Section 3.8",
+      "start": 333,
+      "end": 344,
+      "expected_anchor": "heading_32",
+      "actual_anchor": "heading_32",
+      "status": "correct"
+    },
+    {
+      "paragraph": 405,
+      "all_paragraph_index": 450,
+      "label": "Section 4.1",
+      "text": "Sections 4.1",
+      "start": 99,
+      "end": 111,
+      "expected_anchor": "heading_46",
+      "actual_anchor": "heading_46",
+      "status": "correct"
+    },
+    {
+      "paragraph": 405,
+      "all_paragraph_index": 450,
+      "label": "Section 4.7",
+      "text": "4.7",
+      "start": 112,
+      "end": 115,
+      "expected_anchor": "heading_52",
+      "actual_anchor": "heading_52",
+      "status": "correct"
+    },
+    {
+      "paragraph": 405,
+      "all_paragraph_index": 450,
+      "label": "Section 4.8",
+      "text": "Sections 4.8",
+      "start": 206,
+      "end": 218,
+      "expected_anchor": "heading_53",
+      "actual_anchor": "heading_53",
+      "status": "correct"
+    },
+    {
+      "paragraph": 405,
+      "all_paragraph_index": 450,
+      "label": "Section 4.10",
+      "text": "4.10",
+      "start": 219,
+      "end": 223,
+      "expected_anchor": "revision_heading_4009",
+      "actual_anchor": "revision_heading_4009",
+      "status": "correct"
+    },
+    {
+      "paragraph": 407,
+      "all_paragraph_index": 452,
+      "label": "Section 4.7",
+      "text": "Section 4.7",
+      "start": 147,
+      "end": 158,
+      "expected_anchor": "heading_52",
+      "actual_anchor": "heading_52",
+      "status": "correct"
+    },
+    {
+      "paragraph": 408,
+      "all_paragraph_index": 453,
+      "label": "Section 4.6",
+      "text": "Section 4.6",
+      "start": 110,
+      "end": 121,
+      "expected_anchor": "heading_51",
+      "actual_anchor": "heading_51",
+      "status": "correct"
+    },
+    {
+      "paragraph": 408,
+      "all_paragraph_index": 453,
+      "label": "Appendix C",
+      "text": "Appendix C",
+      "start": 168,
+      "end": 178,
+      "expected_anchor": "revision_heading_4018",
+      "actual_anchor": "revision_heading_4018",
+      "status": "correct"
+    },
+    {
+      "paragraph": 409,
+      "all_paragraph_index": 454,
+      "label": "Section 3.8",
+      "text": "Section 3.8",
+      "start": 41,
+      "end": 52,
+      "expected_anchor": "heading_32",
+      "actual_anchor": "heading_32",
+      "status": "correct"
+    },
+    {
+      "paragraph": 411,
+      "all_paragraph_index": 456,
+      "label": "Table 4.1",
+      "text": "Table 4.1",
+      "start": 617,
+      "end": 626,
+      "expected_anchor": "table_3",
+      "actual_anchor": "table_3",
+      "status": "correct"
+    },
+    {
+      "paragraph": 413,
+      "all_paragraph_index": 488,
+      "label": "Section 4.6",
+      "text": "Section 4.6",
+      "start": 172,
+      "end": 183,
+      "expected_anchor": "heading_51",
+      "actual_anchor": "heading_51",
+      "status": "correct"
+    },
+    {
+      "paragraph": 415,
+      "all_paragraph_index": 490,
+      "label": "Table 4.2",
+      "text": "Table 4.2",
+      "start": 0,
+      "end": 9,
+      "expected_anchor": "table_4_2_summary",
+      "actual_anchor": "table_4_2_summary",
+      "status": "correct"
+    },
+    {
+      "paragraph": 415,
+      "all_paragraph_index": 490,
+      "label": "Table 4.2a",
+      "text": "Table 4.2a",
+      "start": 101,
+      "end": 111,
+      "expected_anchor": "table_4",
+      "actual_anchor": "table_4",
+      "status": "correct"
+    },
+    {
+      "paragraph": 415,
+      "all_paragraph_index": 490,
+      "label": "Table 4.2b",
+      "text": "Table 4.2b",
+      "start": 144,
+      "end": 154,
+      "expected_anchor": "table_5",
+      "actual_anchor": "table_5",
+      "status": "correct"
+    },
+    {
+      "paragraph": 419,
+      "all_paragraph_index": 584,
+      "label": "Table 4.3",
+      "text": "Table 4.3",
+      "start": 141,
+      "end": 150,
+      "expected_anchor": "table_6",
+      "actual_anchor": "table_6",
+      "status": "correct"
+    },
+    {
+      "paragraph": 419,
+      "all_paragraph_index": 584,
+      "label": "Section 4.5",
+      "text": "Section 4.5",
+      "start": 589,
+      "end": 600,
+      "expected_anchor": "heading_50",
+      "actual_anchor": "heading_50",
+      "status": "correct"
+    },
+    {
+      "paragraph": 420,
+      "all_paragraph_index": 585,
+      "label": "Section 3.8",
+      "text": "Section 3.8",
+      "start": 186,
+      "end": 197,
+      "expected_anchor": "heading_32",
+      "actual_anchor": "heading_32",
+      "status": "correct"
+    },
+    {
+      "paragraph": 424,
+      "all_paragraph_index": 624,
+      "label": "Table 4.4",
+      "text": "Table 4.4",
+      "start": 112,
+      "end": 121,
+      "expected_anchor": "table_7",
+      "actual_anchor": "table_7",
+      "status": "correct"
+    },
+    {
+      "paragraph": 428,
+      "all_paragraph_index": 656,
+      "label": "Table 4.5",
+      "text": "Table 4.5",
+      "start": 0,
+      "end": 9,
+      "expected_anchor": "table_8",
+      "actual_anchor": "table_8",
+      "status": "correct"
+    },
+    {
+      "paragraph": 434,
+      "all_paragraph_index": 678,
+      "label": "Table 4.6",
+      "text": "Table 4.6",
+      "start": 499,
+      "end": 508,
+      "expected_anchor": "table_9",
+      "actual_anchor": "table_9",
+      "status": "correct"
+    },
+    {
+      "paragraph": 434,
+      "all_paragraph_index": 678,
+      "label": "Table 4.7",
+      "text": "Table 4.7",
+      "start": 541,
+      "end": 550,
+      "expected_anchor": "table_10",
+      "actual_anchor": "table_10",
+      "status": "correct"
+    },
+    {
+      "paragraph": 443,
+      "all_paragraph_index": 947,
+      "label": "Table 4.8",
+      "text": "Table 4.8",
+      "start": 223,
+      "end": 232,
+      "expected_anchor": "table_11",
+      "actual_anchor": "table_11",
+      "status": "correct"
+    },
+    {
+      "paragraph": 446,
+      "all_paragraph_index": 1020,
+      "label": "Table 4.9",
+      "text": "Table 4.9",
+      "start": 534,
+      "end": 543,
+      "expected_anchor": "table_12",
+      "actual_anchor": "table_12",
+      "status": "correct"
+    },
+    {
+      "paragraph": 448,
+      "all_paragraph_index": 1046,
+      "label": "Table 4.10",
+      "text": "Table 4.10",
+      "start": 558,
+      "end": 568,
+      "expected_anchor": "table_13",
+      "actual_anchor": "table_13",
+      "status": "correct"
+    },
+    {
+      "paragraph": 450,
+      "all_paragraph_index": 1078,
+      "label": "Section 4.10.4",
+      "text": "Section 4.10.4",
+      "start": 113,
+      "end": 127,
+      "expected_anchor": "revision_heading_4016",
+      "actual_anchor": "revision_heading_4016",
+      "status": "correct"
+    },
+    {
+      "paragraph": 450,
+      "all_paragraph_index": 1078,
+      "label": "Table 4.11",
+      "text": "Table 4.11",
+      "start": 295,
+      "end": 305,
+      "expected_anchor": "table_14",
+      "actual_anchor": "table_14",
+      "status": "correct"
+    },
+    {
+      "paragraph": 452,
+      "all_paragraph_index": 1116,
+      "label": "Table 4.12",
+      "text": "Table 4.12",
+      "start": 447,
+      "end": 457,
+      "expected_anchor": "table_15",
+      "actual_anchor": "table_15",
+      "status": "correct"
+    },
+    {
+      "paragraph": 454,
+      "all_paragraph_index": 1153,
+      "label": "Table 4.13",
+      "text": "Table 4.13",
+      "start": 260,
+      "end": 270,
+      "expected_anchor": "table_16",
+      "actual_anchor": "table_16",
+      "status": "correct"
+    },
+    {
+      "paragraph": 458,
+      "all_paragraph_index": 1187,
+      "label": "Appendix C",
+      "text": "Appendix C",
+      "start": 201,
+      "end": 211,
+      "expected_anchor": "revision_heading_4018",
+      "actual_anchor": "revision_heading_4018",
+      "status": "correct"
+    },
+    {
+      "paragraph": 459,
+      "all_paragraph_index": 1188,
+      "label": "Appendix C",
+      "text": "Appendix C",
+      "start": 360,
+      "end": 370,
+      "expected_anchor": "revision_heading_4018",
+      "actual_anchor": "revision_heading_4018",
+      "status": "correct"
+    },
+    {
+      "paragraph": 460,
+      "all_paragraph_index": 1189,
+      "label": "Section 3.12",
+      "text": "Section 3.12",
+      "start": 143,
+      "end": 155,
+      "expected_anchor": "heading_36",
+      "actual_anchor": "heading_36",
+      "status": "correct"
+    },
+    {
+      "paragraph": 460,
+      "all_paragraph_index": 1189,
+      "label": "Appendix C",
+      "text": "Appendix C",
+      "start": 187,
+      "end": 197,
+      "expected_anchor": "revision_heading_4018",
+      "actual_anchor": "revision_heading_4018",
+      "status": "correct"
+    },
+    {
+      "paragraph": 463,
+      "all_paragraph_index": 1192,
+      "label": "Table 4.14",
+      "text": "Table 4.14",
+      "start": 0,
+      "end": 10,
+      "expected_anchor": "table_17",
+      "actual_anchor": "table_17",
+      "status": "correct"
+    },
+    {
+      "paragraph": 463,
+      "all_paragraph_index": 1192,
+      "label": "Table 4.3",
+      "text": "Table 4.3",
+      "start": 242,
+      "end": 251,
+      "expected_anchor": "table_6",
+      "actual_anchor": "table_6",
+      "status": "correct"
+    },
+    {
+      "paragraph": 463,
+      "all_paragraph_index": 1192,
+      "label": "Table 4.2",
+      "text": "Table 4.2",
+      "start": 338,
+      "end": 347,
+      "expected_anchor": "table_4_2_summary",
+      "actual_anchor": "table_4_2_summary",
+      "status": "correct"
+    },
+    {
+      "paragraph": 463,
+      "all_paragraph_index": 1192,
+      "label": "Appendix A",
+      "text": "Appendix A",
+      "start": 468,
+      "end": 478,
+      "expected_anchor": "heading_73",
+      "actual_anchor": "heading_73",
+      "status": "correct"
+    },
+    {
+      "paragraph": 464,
+      "all_paragraph_index": 1193,
+      "label": "Section 3.8",
+      "text": "Section 3.8",
+      "start": 226,
+      "end": 237,
+      "expected_anchor": "heading_32",
+      "actual_anchor": "heading_32",
+      "status": "correct"
+    },
+    {
+      "paragraph": 470,
+      "all_paragraph_index": 1314,
+      "label": "Section 4.10.4",
+      "text": "Section 4.10.4",
+      "start": 316,
+      "end": 330,
+      "expected_anchor": "revision_heading_4016",
+      "actual_anchor": "revision_heading_4016",
+      "status": "correct"
+    },
+    {
+      "paragraph": 470,
+      "all_paragraph_index": 1314,
+      "label": "Section 4.10.1",
+      "text": "Section 4.10.1",
+      "start": 368,
+      "end": 382,
+      "expected_anchor": "revision_heading_4010",
+      "actual_anchor": "revision_heading_4010",
+      "status": "correct"
+    },
+    {
+      "paragraph": 473,
+      "all_paragraph_index": 1317,
+      "label": "Section 4.2",
+      "text": "Section 4.2",
+      "start": 109,
+      "end": 120,
+      "expected_anchor": "heading_47",
+      "actual_anchor": "heading_47",
+      "status": "correct"
+    },
+    {
+      "paragraph": 474,
+      "all_paragraph_index": 1318,
+      "label": "Section 4.10.2",
+      "text": "Section 4.10.2",
+      "start": 585,
+      "end": 599,
+      "expected_anchor": "revision_heading_4012",
+      "actual_anchor": "revision_heading_4012",
+      "status": "correct"
+    },
+    {
+      "paragraph": 477,
+      "all_paragraph_index": 1321,
+      "label": "Table 4.15",
+      "text": "Table 4.15",
+      "start": 0,
+      "end": 10,
+      "expected_anchor": "table_18",
+      "actual_anchor": "table_18",
+      "status": "correct"
+    },
+    {
+      "paragraph": 479,
+      "all_paragraph_index": 1353,
+      "label": "Table 4.16",
+      "text": "Table 4.16",
+      "start": 116,
+      "end": 126,
+      "expected_anchor": "table_19",
+      "actual_anchor": "table_19",
+      "status": "correct"
+    },
+    {
+      "paragraph": 481,
+      "all_paragraph_index": 1385,
+      "label": "Figure 4.1",
+      "text": "Figure 4.1",
+      "start": 136,
+      "end": 146,
+      "expected_anchor": "figure_3",
+      "actual_anchor": "figure_3",
+      "status": "correct"
+    },
+    {
+      "paragraph": 481,
+      "all_paragraph_index": 1385,
+      "label": "Table 4.16",
+      "text": "Table 4.16",
+      "start": 441,
+      "end": 451,
+      "expected_anchor": "table_19",
+      "actual_anchor": "table_19",
+      "status": "correct"
+    },
+    {
+      "paragraph": 481,
+      "all_paragraph_index": 1385,
+      "label": "Figure 4.2",
+      "text": "Figure 4.2",
+      "start": 469,
+      "end": 479,
+      "expected_anchor": "figure_4",
+      "actual_anchor": "figure_4",
+      "status": "correct"
+    },
+    {
+      "paragraph": 487,
+      "all_paragraph_index": 1391,
+      "label": "Table 4.17",
+      "text": "Table 4.17",
+      "start": 206,
+      "end": 216,
+      "expected_anchor": "table_20",
+      "actual_anchor": "table_20",
+      "status": "correct"
+    },
+    {
+      "paragraph": 492,
+      "all_paragraph_index": 1414,
+      "label": "Appendix C",
+      "text": "Appendix C",
+      "start": 291,
+      "end": 301,
+      "expected_anchor": "revision_heading_4018",
+      "actual_anchor": "revision_heading_4018",
+      "status": "correct"
+    },
+    {
+      "paragraph": 496,
+      "all_paragraph_index": 1418,
+      "label": "Table 4.18",
+      "text": "Table 4.18",
+      "start": 69,
+      "end": 79,
+      "expected_anchor": "table_21",
+      "actual_anchor": "table_21",
+      "status": "correct"
+    },
+    {
+      "paragraph": 497,
+      "all_paragraph_index": 1419,
+      "label": "Section 4.9.3",
+      "text": "Section 4.9.3",
+      "start": 447,
+      "end": 460,
+      "expected_anchor": "heading_60",
+      "actual_anchor": "heading_60",
+      "status": "correct"
+    },
+    {
+      "paragraph": 500,
+      "all_paragraph_index": 1477,
+      "label": "Table 4.19",
+      "text": "Table 4.19",
+      "start": 0,
+      "end": 10,
+      "expected_anchor": "table_22",
+      "actual_anchor": "table_22",
+      "status": "correct"
+    },
+    {
+      "paragraph": 500,
+      "all_paragraph_index": 1477,
+      "label": "Appendix B",
+      "text": "Appendix B",
+      "start": 472,
+      "end": 482,
+      "expected_anchor": "heading_74",
+      "actual_anchor": "heading_74",
+      "status": "correct"
+    },
+    {
+      "paragraph": 508,
+      "all_paragraph_index": 1539,
+      "label": "Table 4.20",
+      "text": "Table 4.20",
+      "start": 39,
+      "end": 49,
+      "expected_anchor": "table_23",
+      "actual_anchor": "table_23",
+      "status": "correct"
+    },
+    {
+      "paragraph": 514,
+      "all_paragraph_index": 1563,
+      "label": "Table 4.21",
+      "text": "Table 4.21",
+      "start": 84,
+      "end": 94,
+      "expected_anchor": "revision_table_4011",
+      "actual_anchor": "revision_table_4011",
+      "status": "correct"
+    },
+    {
+      "paragraph": 518,
+      "all_paragraph_index": 1587,
+      "label": "Table 4.22",
+      "text": "Table 4.22",
+      "start": 87,
+      "end": 97,
+      "expected_anchor": "revision_table_4013",
+      "actual_anchor": "revision_table_4013",
+      "status": "correct"
+    },
+    {
+      "paragraph": 525,
+      "all_paragraph_index": 1684,
+      "label": "Section 4.10.2",
+      "text": "Section 4.10.2",
+      "start": 379,
+      "end": 393,
+      "expected_anchor": "revision_heading_4012",
+      "actual_anchor": "revision_heading_4012",
+      "status": "correct"
+    },
+    {
+      "paragraph": 527,
+      "all_paragraph_index": 1686,
+      "label": "Table 4.24",
+      "text": "Table 4.24",
+      "start": 201,
+      "end": 211,
+      "expected_anchor": "revision_table_4017",
+      "actual_anchor": "revision_table_4017",
+      "status": "correct"
+    },
+    {
+      "paragraph": 538,
+      "all_paragraph_index": 1733,
+      "label": "Table 4.14",
+      "text": "Table 4.14",
+      "start": 288,
+      "end": 298,
+      "expected_anchor": "table_17",
+      "actual_anchor": "table_17",
+      "status": "correct"
+    },
+    {
+      "paragraph": 539,
+      "all_paragraph_index": 1734,
+      "label": "Table 4.2",
+      "text": "Tables 4.2",
+      "start": 413,
+      "end": 423,
+      "expected_anchor": "table_4_2_summary",
+      "actual_anchor": "table_4_2_summary",
+      "status": "correct"
+    },
+    {
+      "paragraph": 539,
+      "all_paragraph_index": 1734,
+      "label": "Table 4.3",
+      "text": "4.3",
+      "start": 424,
+      "end": 427,
+      "expected_anchor": "table_6",
+      "actual_anchor": "table_6",
+      "status": "correct"
+    },
+    {
+      "paragraph": 541,
+      "all_paragraph_index": 1736,
+      "label": "Table 4.5",
+      "text": "Table 4.5",
+      "start": 382,
+      "end": 391,
+      "expected_anchor": "table_8",
+      "actual_anchor": "table_8",
+      "status": "correct"
+    },
+    {
+      "paragraph": 542,
+      "all_paragraph_index": 1737,
+      "label": "Table 4.6",
+      "text": "Tables 4.6",
+      "start": 432,
+      "end": 442,
+      "expected_anchor": "table_9",
+      "actual_anchor": "table_9",
+      "status": "correct"
+    },
+    {
+      "paragraph": 542,
+      "all_paragraph_index": 1737,
+      "label": "Table 4.7",
+      "text": "4.7",
+      "start": 443,
+      "end": 446,
+      "expected_anchor": "table_10",
+      "actual_anchor": "table_10",
+      "status": "correct"
+    },
+    {
+      "paragraph": 542,
+      "all_paragraph_index": 1737,
+      "label": "Table 4.14",
+      "text": "4.14",
+      "start": 451,
+      "end": 455,
+      "expected_anchor": "table_17",
+      "actual_anchor": "table_17",
+      "status": "correct"
+    },
+    {
+      "paragraph": 545,
+      "all_paragraph_index": 1740,
+      "label": "Section 4.8.1",
+      "text": "Sections 4.8.1",
+      "start": 465,
+      "end": 479,
+      "expected_anchor": "heading_54",
+      "actual_anchor": "heading_54",
+      "status": "correct"
+    },
+    {
+      "paragraph": 545,
+      "all_paragraph_index": 1740,
+      "label": "Section 4.10.2",
+      "text": "4.10.2",
+      "start": 484,
+      "end": 490,
+      "expected_anchor": "revision_heading_4012",
+      "actual_anchor": "revision_heading_4012",
+      "status": "correct"
+    },
+    {
+      "paragraph": 546,
+      "all_paragraph_index": 1741,
+      "label": "Table 4.21",
+      "text": "Table 4.21",
+      "start": 0,
+      "end": 10,
+      "expected_anchor": "revision_table_4011",
+      "actual_anchor": "revision_table_4011",
+      "status": "correct"
+    },
+    {
+      "paragraph": 546,
+      "all_paragraph_index": 1741,
+      "label": "Table 4.16",
+      "text": "Tables 4.16",
+      "start": 54,
+      "end": 65,
+      "expected_anchor": "table_19",
+      "actual_anchor": "table_19",
+      "status": "correct"
+    },
+    {
+      "paragraph": 546,
+      "all_paragraph_index": 1741,
+      "label": "Table 4.17",
+      "text": "4.17",
+      "start": 66,
+      "end": 70,
+      "expected_anchor": "table_20",
+      "actual_anchor": "table_20",
+      "status": "correct"
+    },
+    {
+      "paragraph": 547,
+      "all_paragraph_index": 1742,
+      "label": "Table 4.18",
+      "text": "Tables 4.18",
+      "start": 512,
+      "end": 523,
+      "expected_anchor": "table_21",
+      "actual_anchor": "table_21",
+      "status": "correct"
+    },
+    {
+      "paragraph": 547,
+      "all_paragraph_index": 1742,
+      "label": "Table 4.19",
+      "text": "4.19",
+      "start": 524,
+      "end": 528,
+      "expected_anchor": "table_22",
+      "actual_anchor": "table_22",
+      "status": "correct"
+    },
+    {
+      "paragraph": 547,
+      "all_paragraph_index": 1742,
+      "label": "Table 4.23",
+      "text": "Table 4.23",
+      "start": 531,
+      "end": 541,
+      "expected_anchor": "revision_table_4015",
+      "actual_anchor": "revision_table_4015",
+      "status": "correct"
+    },
+    {
+      "paragraph": 551,
+      "all_paragraph_index": 1746,
+      "label": "Table 5.1",
+      "text": "Table 5.1",
+      "start": 0,
+      "end": 9,
+      "expected_anchor": "table_24",
+      "actual_anchor": "table_24",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1752,
+      "label": "Table 4.2",
+      "text": "Tables 4.2",
+      "start": 86,
+      "end": 96,
+      "expected_anchor": "table_4_2_summary",
+      "actual_anchor": "table_4_2_summary",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1752,
+      "label": "Table 4.3",
+      "text": "4.3",
+      "start": 97,
+      "end": 100,
+      "expected_anchor": "table_6",
+      "actual_anchor": "table_6",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1755,
+      "label": "Section 4.8.1",
+      "text": "Sections 4.8.1",
+      "start": 168,
+      "end": 182,
+      "expected_anchor": "heading_54",
+      "actual_anchor": "heading_54",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1755,
+      "label": "Section 4.10.2",
+      "text": "4.10.2",
+      "start": 184,
+      "end": 190,
+      "expected_anchor": "revision_heading_4012",
+      "actual_anchor": "revision_heading_4012",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1758,
+      "label": "Table 4.5",
+      "text": "Table 4.5",
+      "start": 138,
+      "end": 147,
+      "expected_anchor": "table_8",
+      "actual_anchor": "table_8",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1761,
+      "label": "Section 4.8.3",
+      "text": "Sections 4.8.3",
+      "start": 177,
+      "end": 191,
+      "expected_anchor": "heading_56",
+      "actual_anchor": "heading_56",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1761,
+      "label": "Section 4.10.1",
+      "text": "4.10.1",
+      "start": 193,
+      "end": 199,
+      "expected_anchor": "revision_heading_4010",
+      "actual_anchor": "revision_heading_4010",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1764,
+      "label": "Table 4.22",
+      "text": "Table 4.22",
+      "start": 150,
+      "end": 160,
+      "expected_anchor": "revision_table_4013",
+      "actual_anchor": "revision_table_4013",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1767,
+      "label": "Section 4.9",
+      "text": "Sections 4.9",
+      "start": 165,
+      "end": 177,
+      "expected_anchor": "heading_57",
+      "actual_anchor": "heading_57",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1767,
+      "label": "Section 4.10.3",
+      "text": "4.10.3",
+      "start": 179,
+      "end": 185,
+      "expected_anchor": "revision_heading_4014",
+      "actual_anchor": "revision_heading_4014",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1770,
+      "label": "Section 4.10.4",
+      "text": "Section 4.10.4",
+      "start": 189,
+      "end": 203,
+      "expected_anchor": "revision_heading_4016",
+      "actual_anchor": "revision_heading_4016",
+      "status": "correct"
+    },
+    {
+      "paragraph": 554,
+      "all_paragraph_index": 1773,
+      "label": "Appendix A",
+      "text": "Appendix A",
+      "start": 0,
+      "end": 10,
+      "expected_anchor": "heading_73",
+      "actual_anchor": "heading_73",
+      "status": "correct"
+    },
+    {
+      "paragraph": 554,
+      "all_paragraph_index": 1773,
+      "label": "Appendix C",
+      "text": "Appendix C",
+      "start": 174,
+      "end": 184,
+      "expected_anchor": "revision_heading_4018",
+      "actual_anchor": "revision_heading_4018",
+      "status": "correct"
+    },
+    {
+      "paragraph": 557,
+      "all_paragraph_index": 1776,
+      "label": "Table 5.2",
+      "text": "Table 5.2",
+      "start": 0,
+      "end": 9,
+      "expected_anchor": "table_25",
+      "actual_anchor": "table_25",
+      "status": "correct"
+    },
+    {
+      "paragraph": 565,
+      "all_paragraph_index": 1820,
+      "label": "Appendix C",
+      "text": "Appendix C",
+      "start": 499,
+      "end": 509,
+      "expected_anchor": "revision_heading_4018",
+      "actual_anchor": "revision_heading_4018",
+      "status": "correct"
+    },
+    {
+      "paragraph": 639,
+      "all_paragraph_index": 1894,
+      "label": "Table A.1",
+      "text": "Table A.1",
+      "start": 117,
+      "end": 126,
+      "expected_anchor": "table_26",
+      "actual_anchor": "table_26",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1900,
+      "label": "Section 1.4",
+      "text": "Sections 1.4",
+      "start": 0,
+      "end": 12,
+      "expected_anchor": "heading_7",
+      "actual_anchor": "heading_7",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1900,
+      "label": "Section 1.5",
+      "text": "1.5",
+      "start": 13,
+      "end": 16,
+      "expected_anchor": "heading_11",
+      "actual_anchor": "heading_11",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1903,
+      "label": "Section 3.6",
+      "text": "Sections 3.6",
+      "start": 0,
+      "end": 12,
+      "expected_anchor": "heading_30",
+      "actual_anchor": "heading_30",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1903,
+      "label": "Section 3.8",
+      "text": "3.8",
+      "start": 13,
+      "end": 16,
+      "expected_anchor": "heading_32",
+      "actual_anchor": "heading_32",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1903,
+      "label": "Section 4.2",
+      "text": "4.2",
+      "start": 18,
+      "end": 21,
+      "expected_anchor": "heading_47",
+      "actual_anchor": "heading_47",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1903,
+      "label": "Section 5.1",
+      "text": "5.1",
+      "start": 23,
+      "end": 26,
+      "expected_anchor": "heading_63",
+      "actual_anchor": "heading_63",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1906,
+      "label": "Section 3.9",
+      "text": "Sections 3.9",
+      "start": 0,
+      "end": 12,
+      "expected_anchor": "heading_33",
+      "actual_anchor": "heading_33",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1906,
+      "label": "Section 3.11",
+      "text": "3.11",
+      "start": 13,
+      "end": 17,
+      "expected_anchor": "heading_35",
+      "actual_anchor": "heading_35",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1906,
+      "label": "Section 4.3",
+      "text": "4.3",
+      "start": 19,
+      "end": 22,
+      "expected_anchor": "heading_48",
+      "actual_anchor": "heading_48",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1906,
+      "label": "Section 5.1",
+      "text": "5.1",
+      "start": 24,
+      "end": 27,
+      "expected_anchor": "heading_63",
+      "actual_anchor": "heading_63",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1909,
+      "label": "Section 3.12",
+      "text": "Sections 3.12",
+      "start": 0,
+      "end": 13,
+      "expected_anchor": "heading_36",
+      "actual_anchor": "heading_36",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1909,
+      "label": "Section 4.4",
+      "text": "4.4",
+      "start": 15,
+      "end": 18,
+      "expected_anchor": "heading_49",
+      "actual_anchor": "heading_49",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1909,
+      "label": "Section 5.1",
+      "text": "5.1",
+      "start": 20,
+      "end": 23,
+      "expected_anchor": "heading_63",
+      "actual_anchor": "heading_63",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1912,
+      "label": "Section 4.7",
+      "text": "Section 4.7",
+      "start": 0,
+      "end": 11,
+      "expected_anchor": "heading_52",
+      "actual_anchor": "heading_52",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1915,
+      "label": "Section 4.5",
+      "text": "Section 4.5",
+      "start": 0,
+      "end": 11,
+      "expected_anchor": "heading_50",
+      "actual_anchor": "heading_50",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1918,
+      "label": "Section 4.5",
+      "text": "Sections 4.5",
+      "start": 0,
+      "end": 12,
+      "expected_anchor": "heading_50",
+      "actual_anchor": "heading_50",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1918,
+      "label": "Section 5.4",
+      "text": "5.4",
+      "start": 14,
+      "end": 17,
+      "expected_anchor": "heading_69",
+      "actual_anchor": "heading_69",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1921,
+      "label": "Section 3.13",
+      "text": "Sections 3.13",
+      "start": 0,
+      "end": 13,
+      "expected_anchor": "heading_37",
+      "actual_anchor": "heading_37",
+      "status": "correct"
+    },
+    {
+      "paragraph": null,
+      "all_paragraph_index": 1921,
+      "label": "Section 4.6",
+      "text": "4.6",
+      "start": 15,
+      "end": 18,
+      "expected_anchor": "heading_51",
+      "actual_anchor": "heading_51",
+      "status": "correct"
+    },
+    {
+      "paragraph": 645,
+      "all_paragraph_index": 1927,
+      "label": "Table B.1",
+      "text": "Table B.1",
+      "start": 0,
+      "end": 9,
+      "expected_anchor": "table_27",
+      "actual_anchor": "table_27",
+      "status": "correct"
+    },
+    {
+      "paragraph": 655,
+      "all_paragraph_index": 2261,
+      "label": "Section 3.8",
+      "text": "Section 3.8",
+      "start": 163,
+      "end": 174,
+      "expected_anchor": "heading_32",
+      "actual_anchor": "heading_32",
+      "status": "correct"
+    }
+  ],
+  "unlinked": [],
+  "wrong_targets": [],
+  "external_source_locator_exclusions": [
+    {
+      "paragraph": 284,
+      "text": "Jitkrittum et al. (2023, Section 3.2)",
+      "reason": "Section 3.2 belongs to the cited paper, not this manuscript."
+    }
+  ],
+  "pdf_sha256": "80c0308579148e70b2e9bb238ec827b03ac08ee344cf3227b1a515f1d35ffb5b",
+  "logical_click_targets_checked": 427,
+  "pdf_internal_annotations": 438,
+  "pdf_link_checks": [
+    {
+      "label": "Dedication",
+      "anchor": "dedication",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        4
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "iv",
+      "anchor": "dedication",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        4
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Acknowledgements",
+      "anchor": "acknowledgements",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        5
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "v",
+      "anchor": "acknowledgements",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        5
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Abstract of Praxis",
+      "anchor": "abstract",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        6
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "vi",
+      "anchor": "abstract",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        6
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "List of Figures",
+      "anchor": "list_figures",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        13
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "xiii",
+      "anchor": "list_figures",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        13
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "List of Tables",
+      "anchor": "list_tables",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        14
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "xiv",
+      "anchor": "list_tables",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        14
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "List of Symbols",
+      "anchor": "symbols",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        17
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "xvii",
+      "anchor": "symbols",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        17
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "List of Acronyms",
+      "anchor": "acronyms",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        18
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "xviii",
+      "anchor": "acronyms",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        18
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Glossary of Terms",
+      "anchor": "glossary",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        21
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "xxi",
+      "anchor": "glossary",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        21
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Chapter 1\u2014Introduction",
+      "anchor": "heading_1",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        23
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "1",
+      "anchor": "heading_1",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        23
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "1.1 Background",
+      "anchor": "heading_2",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        23
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "1",
+      "anchor": "heading_2",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        23
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "1.2 Problem Statement",
+      "anchor": "heading_3",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        23
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "1",
+      "anchor": "heading_3",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        23
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "1.3 Purpose of the Study",
+      "anchor": "heading_4",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        24
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "2",
+      "anchor": "heading_4",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        24
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "1.3.1 Thesis Statement",
+      "anchor": "heading_5",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        25
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3",
+      "anchor": "heading_5",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        25
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "1.3.2 Research Objectives",
+      "anchor": "heading_6",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        25
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3",
+      "anchor": "heading_6",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        25
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "1.4 Research Questions and Hypotheses",
+      "anchor": "heading_7",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        25
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3",
+      "anchor": "heading_7",
+      "source_pages": [
+        7
+      ],
+      "destination_pages": [
+        25
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "1.4.1 RQ1 and H1",
+      "anchor": "heading_8",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        26
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4",
+      "anchor": "heading_8",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        26
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "1.4.2 RQ2 and H2",
+      "anchor": "heading_9",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        26
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4",
+      "anchor": "heading_9",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        26
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "1.4.3 RQ3 and H3",
+      "anchor": "heading_10",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        27
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "5",
+      "anchor": "heading_10",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        27
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "1.5 Engineering Contributions",
+      "anchor": "heading_11",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        28
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "6",
+      "anchor": "heading_11",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        28
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "1.6 Scope, Delimitations, and Limitations",
+      "anchor": "heading_12",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        29
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "7",
+      "anchor": "heading_12",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        29
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Chapter 2\u2014Review of the Literature",
+      "anchor": "heading_13",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        31
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "9",
+      "anchor": "heading_13",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        31
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "2.1 Raw-URL Phishing Detection",
+      "anchor": "heading_14",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        31
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "9",
+      "anchor": "heading_14",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        31
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "2.2 Structural and Character Representations",
+      "anchor": "heading_15",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        33
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "11",
+      "anchor": "heading_15",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        33
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "2.3 Domain Leakage and Source Shift",
+      "anchor": "heading_16",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        34
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "12",
+      "anchor": "heading_16",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        34
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "2.4 Calibration at Low False-Positive Rates",
+      "anchor": "heading_17",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        35
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "13",
+      "anchor": "heading_17",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        35
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "2.5 Selective Cascades",
+      "anchor": "heading_18",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        36
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "14",
+      "anchor": "heading_18",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        36
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "2.6 Distribution Monitoring and Routing",
+      "anchor": "heading_19",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        37
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "15",
+      "anchor": "heading_19",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        37
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "2.7 Gap Addressed by the Study",
+      "anchor": "heading_20",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        38
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "16",
+      "anchor": "heading_20",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        38
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "2.8 Evaluation-Guided Engineering Iteration",
+      "anchor": "heading_21",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        40
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "18",
+      "anchor": "heading_21",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        40
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "2.9 Operational Measurement and Evidence Units",
+      "anchor": "heading_22",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        41
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "19",
+      "anchor": "heading_22",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        41
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Chapter 3\u2014Methodology",
+      "anchor": "heading_23",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        42
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "20",
+      "anchor": "heading_23",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        42
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3.1 Research Design",
+      "anchor": "heading_24",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        42
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "20",
+      "anchor": "heading_24",
+      "source_pages": [
+        8
+      ],
+      "destination_pages": [
+        42
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3.1.1 Architecture and Information Flow",
+      "anchor": "heading_25",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        42
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "20",
+      "anchor": "heading_25",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        42
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3.2 Outcome-Label Contract",
+      "anchor": "heading_26",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        44
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "22",
+      "anchor": "heading_26",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        44
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3.3 Development Source and Preservation",
+      "anchor": "heading_27",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        45
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "23",
+      "anchor": "heading_27",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        45
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3.4 Canonicalization and Quarantine",
+      "anchor": "heading_28",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        45
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "23",
+      "anchor": "heading_28",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        45
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3.5 Registrable-Domain Allocation",
+      "anchor": "heading_29",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        46
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "24",
+      "anchor": "heading_29",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        46
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3.6 Detection Models",
+      "anchor": "heading_30",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        47
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "25",
+      "anchor": "heading_30",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        47
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3.7 Threshold and Cascade Calibration",
+      "anchor": "heading_31",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        49
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "27",
+      "anchor": "heading_31",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        49
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3.8 RQ1 Analysis",
+      "anchor": "heading_32",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        49
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "27",
+      "anchor": "heading_32",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        49
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3.9 GMM Monitoring and Future-Only Routing",
+      "anchor": "heading_33",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        52
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "30",
+      "anchor": "heading_33",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        52
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3.10 External Evaluation Freeze",
+      "anchor": "heading_34",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        53
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "31",
+      "anchor": "heading_34",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        53
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3.11 RQ2 Analysis",
+      "anchor": "heading_35",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        54
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "32",
+      "anchor": "heading_35",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        54
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3.12 RQ3 Operational Replay",
+      "anchor": "heading_36",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        54
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "32",
+      "anchor": "heading_36",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        54
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3.13 Reproducibility and Integrity Controls",
+      "anchor": "heading_37",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        55
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "33",
+      "anchor": "heading_37",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        55
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3.14 Ethical and Safety Considerations",
+      "anchor": "heading_38",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        57
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "35",
+      "anchor": "heading_38",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        57
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3.15 Representation and Service Evaluation",
+      "anchor": "heading_39",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        57
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "35",
+      "anchor": "heading_39",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        57
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3.15.1 Comparison Objectives and Scope",
+      "anchor": "heading_40",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        57
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "35",
+      "anchor": "heading_40",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        57
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3.15.2 Additional Benchmark and Eligibility",
+      "anchor": "heading_41",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        58
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "36",
+      "anchor": "heading_41",
+      "source_pages": [
+        9
+      ],
+      "destination_pages": [
+        58
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3.15.3 Transport-Neutral Structural Representation",
+      "anchor": "heading_42",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        59
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "37",
+      "anchor": "heading_42",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        59
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3.15.4 Detection Estimands and Uncertainty",
+      "anchor": "heading_43",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        60
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "38",
+      "anchor": "heading_43",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        60
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3.15.5 Service Comparison and Its Boundary",
+      "anchor": "heading_44",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        61
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "39",
+      "anchor": "heading_44",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        61
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3.16 Diagnostic and Routing Comparisons",
+      "anchor": "revision_heading_4005",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        62
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "40",
+      "anchor": "revision_heading_4005",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        62
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3.16.1 Frozen-model Intervention and Domain-balanced Sampling",
+      "anchor": "revision_heading_4006",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        62
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "40",
+      "anchor": "revision_heading_4006",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        62
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3.16.2 Routing Comparisons and Paired Inference",
+      "anchor": "revision_heading_4007",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        63
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "41",
+      "anchor": "revision_heading_4007",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        63
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3.16.3 Actual Detector Work and Audited Controls",
+      "anchor": "revision_heading_4008",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        64
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "42",
+      "anchor": "revision_heading_4008",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        64
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Chapter 4\u2014Results",
+      "anchor": "heading_45",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        67
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "45",
+      "anchor": "heading_45",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        67
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.1 Completed Evaluation and Populations",
+      "anchor": "heading_46",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        67
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "45",
+      "anchor": "heading_46",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        67
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.2 RQ1: Representation Value and Generalization",
+      "anchor": "heading_47",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        69
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "47",
+      "anchor": "heading_47",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        69
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.3 RQ2: Monitoring and Future-Only Routing",
+      "anchor": "heading_48",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        73
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "51",
+      "anchor": "heading_48",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        73
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.4 RQ3: Real-HTTP Cost and Inline Viability",
+      "anchor": "heading_49",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        75
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "53",
+      "anchor": "heading_49",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        75
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.5 Secondary Analyses and Interpretation",
+      "anchor": "heading_50",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        81
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "59",
+      "anchor": "heading_50",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        81
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.6 Evaluation Provenance and Information Exposure",
+      "anchor": "heading_51",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        89
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "67",
+      "anchor": "heading_51",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        89
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.7 Complete Hypothesis Adjudication",
+      "anchor": "heading_52",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        90
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "68",
+      "anchor": "heading_52",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        90
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.8 Diagnostic Investigation and Detection Comparison",
+      "anchor": "heading_53",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        93
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "71",
+      "anchor": "heading_53",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        93
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.8.1 From Aggregate Behavior to Testable Mechanisms",
+      "anchor": "heading_54",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        93
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "71",
+      "anchor": "heading_54",
+      "source_pages": [
+        10
+      ],
+      "destination_pages": [
+        93
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.8.2 Population Flow and Operating-Point Comparison",
+      "anchor": "heading_55",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        95
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "73",
+      "anchor": "heading_55",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        95
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.8.3 Representation Invariance and Decision",
+      "anchor": "heading_56",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        100
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "78",
+      "anchor": "heading_56",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        100
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.9 Controlled Service Comparison: Completed Evaluation",
+      "anchor": "heading_57",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        101
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "79",
+      "anchor": "heading_57",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        101
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.9.1 Workload Scope and Complete Accounting",
+      "anchor": "heading_58",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        101
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "79",
+      "anchor": "heading_58",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        101
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.9.2 Paired Tail-Latency Effect",
+      "anchor": "heading_59",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        101
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "79",
+      "anchor": "heading_59",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        101
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.9.3 Controls, Throughput, Errors and Response Semantics",
+      "anchor": "heading_60",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        102
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "80",
+      "anchor": "heading_60",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        102
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.9.4 Requirement S and Engineering Interpretation",
+      "anchor": "heading_61",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        105
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "83",
+      "anchor": "heading_61",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        105
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.10 Mechanism Tests: Representation, Routing and Cost",
+      "anchor": "revision_heading_4009",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        105
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "83",
+      "anchor": "revision_heading_4009",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        105
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.10.1 Frozen-model Scheme Intervention",
+      "anchor": "revision_heading_4010",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        106
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "84",
+      "anchor": "revision_heading_4010",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        106
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.10.2 Expanded Domain-disjoint Routing Evaluation",
+      "anchor": "revision_heading_4012",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        107
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "85",
+      "anchor": "revision_heading_4012",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        107
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.10.3 Measured Detector Computation",
+      "anchor": "revision_heading_4014",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        109
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "87",
+      "anchor": "revision_heading_4014",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        109
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.10.4 Shuffled-label Controls and Ranking Mechanism",
+      "anchor": "revision_heading_4016",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        110
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "88",
+      "anchor": "revision_heading_4016",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        110
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Chapter 5\u2014Discussion and Conclusions",
+      "anchor": "heading_62",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        115
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "93",
+      "anchor": "heading_62",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        115
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "5.1 Direct Answers to the Research Questions",
+      "anchor": "heading_63",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        115
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "93",
+      "anchor": "heading_63",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        115
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "5.2 Engineering Findings and Contribution",
+      "anchor": "heading_64",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        116
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "94",
+      "anchor": "heading_64",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        116
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "5.2.1 Findings and Their Engineering Use",
+      "anchor": "heading_65",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        118
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "96",
+      "anchor": "heading_65",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        118
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "5.2.2 Validity and Reuse of the Evidence",
+      "anchor": "heading_66",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        120
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "98",
+      "anchor": "heading_66",
+      "source_pages": [
+        11
+      ],
+      "destination_pages": [
+        120
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "5.2.3 Relationship to the Original Hypotheses",
+      "anchor": "heading_67",
+      "source_pages": [
+        12
+      ],
+      "destination_pages": [
+        121
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "99",
+      "anchor": "heading_67",
+      "source_pages": [
+        12
+      ],
+      "destination_pages": [
+        121
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "5.3 Implications for Practice",
+      "anchor": "heading_68",
+      "source_pages": [
+        12
+      ],
+      "destination_pages": [
+        123
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "101",
+      "anchor": "heading_68",
+      "source_pages": [
+        12
+      ],
+      "destination_pages": [
+        123
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "5.4 Limitations and Threats to Interpretation",
+      "anchor": "heading_69",
+      "source_pages": [
+        12
+      ],
+      "destination_pages": [
+        124
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "102",
+      "anchor": "heading_69",
+      "source_pages": [
+        12
+      ],
+      "destination_pages": [
+        124
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "5.5 Future Research, Separate from This Study",
+      "anchor": "heading_70",
+      "source_pages": [
+        12
+      ],
+      "destination_pages": [
+        126
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "104",
+      "anchor": "heading_70",
+      "source_pages": [
+        12
+      ],
+      "destination_pages": [
+        126
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "5.6 Conclusion",
+      "anchor": "heading_71",
+      "source_pages": [
+        12
+      ],
+      "destination_pages": [
+        126
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "104",
+      "anchor": "heading_71",
+      "source_pages": [
+        12
+      ],
+      "destination_pages": [
+        126
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "References",
+      "anchor": "heading_72",
+      "source_pages": [
+        12
+      ],
+      "destination_pages": [
+        127
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "105",
+      "anchor": "heading_72",
+      "source_pages": [
+        12
+      ],
+      "destination_pages": [
+        127
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Appendix A\u2014Evidence and Reproduction Map",
+      "anchor": "heading_73",
+      "source_pages": [
+        12
+      ],
+      "destination_pages": [
+        138
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "116",
+      "anchor": "heading_73",
+      "source_pages": [
+        12
+      ],
+      "destination_pages": [
+        138
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Appendix B\u2014Complete Service Comparison Evidence",
+      "anchor": "heading_74",
+      "source_pages": [
+        12
+      ],
+      "destination_pages": [
+        141
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "119",
+      "anchor": "heading_74",
+      "source_pages": [
+        12
+      ],
+      "destination_pages": [
+        141
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Appendix C\u2014Methodological Chronology and Execution Record",
+      "anchor": "revision_heading_4018",
+      "source_pages": [
+        12
+      ],
+      "destination_pages": [
+        147
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "125",
+      "anchor": "revision_heading_4018",
+      "source_pages": [
+        12
+      ],
+      "destination_pages": [
+        147
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Figure 3.1. Frozen inference, future-only routing and separate evaluation boundaries.",
+      "anchor": "figure_1",
+      "source_pages": [
+        13
+      ],
+      "destination_pages": [
+        43
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "21",
+      "anchor": "figure_1",
+      "source_pages": [
+        13
+      ],
+      "destination_pages": [
+        43
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Figure 3.2. Source and partition roles in the bounded detection comparison.",
+      "anchor": "figure_2",
+      "source_pages": [
+        13
+      ],
+      "destination_pages": [
+        59
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "37",
+      "anchor": "figure_2",
+      "source_pages": [
+        13
+      ],
+      "destination_pages": [
+        59
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Figure 4.1. Candidate-minus-comparator recall difference at frozen thresholds; 97.5% domain-cluster interval.",
+      "anchor": "figure_3",
+      "source_pages": [
+        13
+      ],
+      "destination_pages": [
+        98
+      ],
+      "annotation_count": 2
+    },
+    {
+      "label": "76",
+      "anchor": "figure_3",
+      "source_pages": [
+        13
+      ],
+      "destination_pages": [
+        98
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Figure 4.2. Fixed-bin calibration and bin populations on the admitted benchmark.",
+      "anchor": "figure_4",
+      "source_pages": [
+        13
+      ],
+      "destination_pages": [
+        99
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "77",
+      "anchor": "figure_4",
+      "source_pages": [
+        13
+      ],
+      "destination_pages": [
+        99
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 2.1. Closest prior work and the boundary of the present contribution.",
+      "anchor": "table_1",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        38
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "16",
+      "anchor": "table_1",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        38
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 3.1. Reading map from technical component to experiment and evidence.",
+      "anchor": "table_2",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        44
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "22",
+      "anchor": "table_2",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        44
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.1. Retained external source, tier and outcome composition.",
+      "anchor": "table_3",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        68
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "46",
+      "anchor": "table_3",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        68
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.2a. Confusion counts; P and N are the declared stratum denominators.",
+      "anchor": "table_4",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        70
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "48",
+      "anchor": "table_4",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        70
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.2b. Observed rates and historical row-wise binomial upper bounds.",
+      "anchor": "table_5",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        71
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "49",
+      "anchor": "table_5",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        71
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.3. All six primary paired recall contrasts after the uncertainty correction.",
+      "anchor": "table_6",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        72
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "50",
+      "anchor": "table_6",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        72
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.4. Training-only GMM model-selection record.",
+      "anchor": "table_7",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        74
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "52",
+      "anchor": "table_7",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        74
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.5. Frozen GMM and descriptive comparator monitors.",
+      "anchor": "table_8",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        75
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "53",
+      "anchor": "table_8",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        75
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.6. All 25 operational groups.",
+      "anchor": "table_9",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        76
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "54",
+      "anchor": "table_9",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        76
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.7. Five-run throughput and post-phase drain ranges.",
+      "anchor": "table_10",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        79
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "57",
+      "anchor": "table_10",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        79
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.8. Selected full-metric summaries.",
+      "anchor": "table_11",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        82
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "60",
+      "anchor": "table_11",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        82
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.9. Additional positive tiers and label-free controls at frozen primary thresholds.",
+      "anchor": "table_12",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        84
+      ],
+      "annotation_count": 2
+    },
+    {
+      "label": "62",
+      "anchor": "table_12",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        84
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.10. Every accepted permutation comparator; no seed selection.",
+      "anchor": "table_13",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        85
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "63",
+      "anchor": "table_13",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        85
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.11. Transformer seed/runtime sensitivity at each accepted secondary operating point.",
+      "anchor": "table_14",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        86
+      ],
+      "annotation_count": 2
+    },
+    {
+      "label": "64",
+      "anchor": "table_14",
+      "source_pages": [
+        14
+      ],
+      "destination_pages": [
+        86
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.12. Positive-only paired McNemar tables and four-slot Holm adjustment.",
+      "anchor": "table_15",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        87
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "65",
+      "anchor": "table_15",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        87
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.13. Accepted label-free development probe accounting.",
+      "anchor": "table_16",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        88
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "66",
+      "anchor": "table_16",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        88
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.14. All 22 primary hypothesis checks with unchanged numerical requirements and corrected paired inference.",
+      "anchor": "table_17",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        91
+      ],
+      "annotation_count": 2
+    },
+    {
+      "label": "69",
+      "anchor": "table_17",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        91
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.15. Additional benchmark admission; reason incidences are overlapping.",
+      "anchor": "table_18",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        96
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "74",
+      "anchor": "table_18",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        96
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.16. Additional benchmark detection results; P=4,651 and N=3,971.",
+      "anchor": "table_19",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        97
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "75",
+      "anchor": "table_19",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        97
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.17. Scheme-neutral representation D: requirements and decisions.",
+      "anchor": "table_20",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        100
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "78",
+      "anchor": "table_20",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        100
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.18. All ten structural-detector concurrency-64 pairs; success-only p95 in milliseconds.",
+      "anchor": "table_21",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        102
+      ],
+      "annotation_count": 2
+    },
+    {
+      "label": "80",
+      "anchor": "table_21",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        102
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.19. Complete pooled service groups; success p50/p95/p99 in milliseconds and attempted throughput in requests per second.",
+      "anchor": "table_22",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        103
+      ],
+      "annotation_count": 2
+    },
+    {
+      "label": "81",
+      "anchor": "table_22",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        103
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.20. Prespecified S requirements and verified decisions.",
+      "anchor": "table_23",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        105
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "83",
+      "anchor": "table_23",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        105
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.21. Frozen structural-model scheme intervention.",
+      "anchor": "revision_table_4011",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        106
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "84",
+      "anchor": "revision_table_4011",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        106
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.22. R cohort decisions and logical expert selections.",
+      "anchor": "revision_table_4013",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        108
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "86",
+      "anchor": "revision_table_4013",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        108
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.23. Actual detector computation on C's fixed 1,000-string workload.",
+      "anchor": "revision_table_4015",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        110
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "88",
+      "anchor": "revision_table_4015",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        110
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.24. All five audited shuffled-label fits.",
+      "anchor": "revision_table_4017",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        111
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "89",
+      "anchor": "revision_table_4017",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        111
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 5.1. Measured engineering findings, supporting evidence and decision implications.",
+      "anchor": "table_24",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        118
+      ],
+      "annotation_count": 2
+    },
+    {
+      "label": "96",
+      "anchor": "table_24",
+      "source_pages": [
+        15
+      ],
+      "destination_pages": [
+        118
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 5.2. Decisions for the complete gateway, component comparisons and diagnostic analyses.",
+      "anchor": "table_25",
+      "source_pages": [
+        16
+      ],
+      "destination_pages": [
+        122
+      ],
+      "annotation_count": 2
+    },
+    {
+      "label": "100",
+      "anchor": "table_25",
+      "source_pages": [
+        16
+      ],
+      "destination_pages": [
+        122
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table A.1. Research questions, complete evidence products and reading order.",
+      "anchor": "table_26",
+      "source_pages": [
+        16
+      ],
+      "destination_pages": [
+        138
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "116",
+      "anchor": "table_26",
+      "source_pages": [
+        16
+      ],
+      "destination_pages": [
+        138
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table B.1. Complete 80-arm schedule; success-only p95 in milliseconds, attempted throughput in requests/s and terminal error counts.",
+      "anchor": "table_27",
+      "source_pages": [
+        16
+      ],
+      "destination_pages": [
+        141
+      ],
+      "annotation_count": 2
+    },
+    {
+      "label": "119",
+      "anchor": "table_27",
+      "source_pages": [
+        16
+      ],
+      "destination_pages": [
+        141
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Chapter 3",
+      "anchor": "heading_23",
+      "source_pages": [
+        24
+      ],
+      "destination_pages": [
+        42
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Chapters 4",
+      "anchor": "heading_45",
+      "source_pages": [
+        24
+      ],
+      "destination_pages": [
+        67
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "5",
+      "anchor": "heading_62",
+      "source_pages": [
+        24
+      ],
+      "destination_pages": [
+        115
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 1.4",
+      "anchor": "heading_7",
+      "source_pages": [
+        25
+      ],
+      "destination_pages": [
+        25
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Chapter 4",
+      "anchor": "heading_45",
+      "source_pages": [
+        25
+      ],
+      "destination_pages": [
+        67
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Appendix C",
+      "anchor": "revision_heading_4018",
+      "source_pages": [
+        25
+      ],
+      "destination_pages": [
+        147
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Chapter 5",
+      "anchor": "heading_62",
+      "source_pages": [
+        25
+      ],
+      "destination_pages": [
+        115
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Sections 1.4.1",
+      "anchor": "heading_8",
+      "source_pages": [
+        28
+      ],
+      "destination_pages": [
+        26
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "1.4.3",
+      "anchor": "heading_10",
+      "source_pages": [
+        28
+      ],
+      "destination_pages": [
+        27
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 3.8",
+      "anchor": "heading_32",
+      "source_pages": [
+        28
+      ],
+      "destination_pages": [
+        49
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Tables 4.3",
+      "anchor": "table_6",
+      "source_pages": [
+        28
+      ],
+      "destination_pages": [
+        72
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.14",
+      "anchor": "table_17",
+      "source_pages": [
+        28
+      ],
+      "destination_pages": [
+        91
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Appendix C",
+      "anchor": "revision_heading_4018",
+      "source_pages": [
+        28
+      ],
+      "destination_pages": [
+        147
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Sections 4.8",
+      "anchor": "heading_53",
+      "source_pages": [
+        28
+      ],
+      "destination_pages": [
+        93
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.10.1",
+      "anchor": "revision_heading_4010",
+      "source_pages": [
+        28
+      ],
+      "destination_pages": [
+        106
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Sections 4.8.1",
+      "anchor": "heading_54",
+      "source_pages": [
+        28
+      ],
+      "destination_pages": [
+        93
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.10.2",
+      "anchor": "revision_heading_4012",
+      "source_pages": [
+        28
+      ],
+      "destination_pages": [
+        107
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 3.4",
+      "anchor": "heading_28",
+      "source_pages": [
+        29
+      ],
+      "destination_pages": [
+        45
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Chapter 2",
+      "anchor": "heading_13",
+      "source_pages": [
+        30
+      ],
+      "destination_pages": [
+        31
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Chapter 3",
+      "anchor": "heading_23",
+      "source_pages": [
+        30
+      ],
+      "destination_pages": [
+        42
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Chapter 4",
+      "anchor": "heading_45",
+      "source_pages": [
+        30
+      ],
+      "destination_pages": [
+        67
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Chapter 5",
+      "anchor": "heading_62",
+      "source_pages": [
+        30
+      ],
+      "destination_pages": [
+        115
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Chapter 3",
+      "anchor": "heading_23",
+      "source_pages": [
+        31
+      ],
+      "destination_pages": [
+        42
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Chapter 3",
+      "anchor": "heading_23",
+      "source_pages": [
+        33
+      ],
+      "destination_pages": [
+        42
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 3.8",
+      "anchor": "heading_32",
+      "source_pages": [
+        35
+      ],
+      "destination_pages": [
+        49
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 2.1",
+      "anchor": "table_1",
+      "source_pages": [
+        38
+      ],
+      "destination_pages": [
+        38
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 3.8",
+      "anchor": "heading_32",
+      "source_pages": [
+        42
+      ],
+      "destination_pages": [
+        49
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 4.6",
+      "anchor": "heading_51",
+      "source_pages": [
+        42
+      ],
+      "destination_pages": [
+        89
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Appendix C",
+      "anchor": "revision_heading_4018",
+      "source_pages": [
+        42
+      ],
+      "destination_pages": [
+        147
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Figure 3.1",
+      "anchor": "figure_1",
+      "source_pages": [
+        42
+      ],
+      "destination_pages": [
+        43
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 3.1",
+      "anchor": "table_2",
+      "source_pages": [
+        42
+      ],
+      "destination_pages": [
+        44
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 3.8",
+      "anchor": "heading_32",
+      "source_pages": [
+        43
+      ],
+      "destination_pages": [
+        49
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Tables 4.2",
+      "anchor": "table_4_2_summary",
+      "source_pages": [
+        44
+      ],
+      "destination_pages": [
+        70
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.3",
+      "anchor": "table_6",
+      "source_pages": [
+        44
+      ],
+      "destination_pages": [
+        72
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Tables 4.4",
+      "anchor": "table_7",
+      "source_pages": [
+        44
+      ],
+      "destination_pages": [
+        74
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.5",
+      "anchor": "table_8",
+      "source_pages": [
+        44
+      ],
+      "destination_pages": [
+        75
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Tables 4.6",
+      "anchor": "table_9",
+      "source_pages": [
+        44
+      ],
+      "destination_pages": [
+        76
+      ],
+      "annotation_count": 2
+    },
+    {
+      "label": "4.7",
+      "anchor": "table_10",
+      "source_pages": [
+        44
+      ],
+      "destination_pages": [
+        79
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Appendix C",
+      "anchor": "revision_heading_4018",
+      "source_pages": [
+        45
+      ],
+      "destination_pages": [
+        147
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 4.6",
+      "anchor": "heading_51",
+      "source_pages": [
+        46
+      ],
+      "destination_pages": [
+        89
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 4.8.1",
+      "anchor": "heading_54",
+      "source_pages": [
+        46
+      ],
+      "destination_pages": [
+        93
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Appendix C",
+      "anchor": "revision_heading_4018",
+      "source_pages": [
+        46
+      ],
+      "destination_pages": [
+        147
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Appendix C",
+      "anchor": "revision_heading_4018",
+      "source_pages": [
+        47
+      ],
+      "destination_pages": [
+        147
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Appendix C",
+      "anchor": "revision_heading_4018",
+      "source_pages": [
+        49
+      ],
+      "destination_pages": [
+        147
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 4.6",
+      "anchor": "heading_51",
+      "source_pages": [
+        50
+      ],
+      "destination_pages": [
+        89
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Appendix C",
+      "anchor": "revision_heading_4018",
+      "source_pages": [
+        50
+      ],
+      "destination_pages": [
+        147
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 1.4.1",
+      "anchor": "heading_8",
+      "source_pages": [
+        50
+      ],
+      "destination_pages": [
+        26
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 4.6",
+      "anchor": "heading_51",
+      "source_pages": [
+        54
+      ],
+      "destination_pages": [
+        89
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Appendix C",
+      "anchor": "revision_heading_4018",
+      "source_pages": [
+        54
+      ],
+      "destination_pages": [
+        147
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 1.4.2",
+      "anchor": "heading_9",
+      "source_pages": [
+        54
+      ],
+      "destination_pages": [
+        26
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 3.8",
+      "anchor": "heading_32",
+      "source_pages": [
+        54
+      ],
+      "destination_pages": [
+        49
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 1.4.3",
+      "anchor": "heading_10",
+      "source_pages": [
+        55
+      ],
+      "destination_pages": [
+        27
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 4.6",
+      "anchor": "heading_51",
+      "source_pages": [
+        55
+      ],
+      "destination_pages": [
+        89
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Appendix C",
+      "anchor": "revision_heading_4018",
+      "source_pages": [
+        55
+      ],
+      "destination_pages": [
+        147
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Appendix A",
+      "anchor": "heading_73",
+      "source_pages": [
+        55
+      ],
+      "destination_pages": [
+        138
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Appendix C",
+      "anchor": "revision_heading_4018",
+      "source_pages": [
+        56
+      ],
+      "destination_pages": [
+        147
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 3.16",
+      "anchor": "revision_heading_4005",
+      "source_pages": [
+        57
+      ],
+      "destination_pages": [
+        62
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Figure 3.2",
+      "anchor": "figure_2",
+      "source_pages": [
+        58
+      ],
+      "destination_pages": [
+        59
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 3.6",
+      "anchor": "heading_30",
+      "source_pages": [
+        60
+      ],
+      "destination_pages": [
+        47
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Appendix C",
+      "anchor": "revision_heading_4018",
+      "source_pages": [
+        61
+      ],
+      "destination_pages": [
+        147
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 3.16.3",
+      "anchor": "revision_heading_4008",
+      "source_pages": [
+        62
+      ],
+      "destination_pages": [
+        64
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 4.8.1",
+      "anchor": "heading_54",
+      "source_pages": [
+        63
+      ],
+      "destination_pages": [
+        93
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 3.8",
+      "anchor": "heading_32",
+      "source_pages": [
+        64
+      ],
+      "destination_pages": [
+        49
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Sections 4.1",
+      "anchor": "heading_46",
+      "source_pages": [
+        67
+      ],
+      "destination_pages": [
+        67
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.7",
+      "anchor": "heading_52",
+      "source_pages": [
+        67
+      ],
+      "destination_pages": [
+        90
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Sections 4.8",
+      "anchor": "heading_53",
+      "source_pages": [
+        67
+      ],
+      "destination_pages": [
+        93
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.10",
+      "anchor": "revision_heading_4009",
+      "source_pages": [
+        67
+      ],
+      "destination_pages": [
+        105
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 4.7",
+      "anchor": "heading_52",
+      "source_pages": [
+        67
+      ],
+      "destination_pages": [
+        90
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 4.6",
+      "anchor": "heading_51",
+      "source_pages": [
+        67
+      ],
+      "destination_pages": [
+        89
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Appendix C",
+      "anchor": "revision_heading_4018",
+      "source_pages": [
+        67
+      ],
+      "destination_pages": [
+        147
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 3.8",
+      "anchor": "heading_32",
+      "source_pages": [
+        67
+      ],
+      "destination_pages": [
+        49
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.1",
+      "anchor": "table_3",
+      "source_pages": [
+        68
+      ],
+      "destination_pages": [
+        68
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 4.6",
+      "anchor": "heading_51",
+      "source_pages": [
+        69
+      ],
+      "destination_pages": [
+        89
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.2",
+      "anchor": "table_4_2_summary",
+      "source_pages": [
+        69
+      ],
+      "destination_pages": [
+        70
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.2a",
+      "anchor": "table_4",
+      "source_pages": [
+        69
+      ],
+      "destination_pages": [
+        70
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.2b",
+      "anchor": "table_5",
+      "source_pages": [
+        69
+      ],
+      "destination_pages": [
+        71
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.2",
+      "anchor": "table_4_2_summary",
+      "source_pages": [
+        70
+      ],
+      "destination_pages": [
+        70
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.3",
+      "anchor": "table_6",
+      "source_pages": [
+        71
+      ],
+      "destination_pages": [
+        72
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 4.5",
+      "anchor": "heading_50",
+      "source_pages": [
+        71
+      ],
+      "destination_pages": [
+        81
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 3.8",
+      "anchor": "heading_32",
+      "source_pages": [
+        72
+      ],
+      "destination_pages": [
+        49
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.4",
+      "anchor": "table_7",
+      "source_pages": [
+        73
+      ],
+      "destination_pages": [
+        74
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.5",
+      "anchor": "table_8",
+      "source_pages": [
+        75
+      ],
+      "destination_pages": [
+        75
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.6",
+      "anchor": "table_9",
+      "source_pages": [
+        76
+      ],
+      "destination_pages": [
+        76
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.7",
+      "anchor": "table_10",
+      "source_pages": [
+        76
+      ],
+      "destination_pages": [
+        79
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.8",
+      "anchor": "table_11",
+      "source_pages": [
+        82
+      ],
+      "destination_pages": [
+        82
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.9",
+      "anchor": "table_12",
+      "source_pages": [
+        84
+      ],
+      "destination_pages": [
+        84
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.10",
+      "anchor": "table_13",
+      "source_pages": [
+        84
+      ],
+      "destination_pages": [
+        85
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 4.10.4",
+      "anchor": "revision_heading_4016",
+      "source_pages": [
+        85
+      ],
+      "destination_pages": [
+        110
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.11",
+      "anchor": "table_14",
+      "source_pages": [
+        85
+      ],
+      "destination_pages": [
+        86
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.12",
+      "anchor": "table_15",
+      "source_pages": [
+        86
+      ],
+      "destination_pages": [
+        87
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.13",
+      "anchor": "table_16",
+      "source_pages": [
+        87
+      ],
+      "destination_pages": [
+        88
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Appendix C",
+      "anchor": "revision_heading_4018",
+      "source_pages": [
+        89
+      ],
+      "destination_pages": [
+        147
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Appendix C",
+      "anchor": "revision_heading_4018",
+      "source_pages": [
+        89
+      ],
+      "destination_pages": [
+        147
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 3.12",
+      "anchor": "heading_36",
+      "source_pages": [
+        89
+      ],
+      "destination_pages": [
+        54
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Appendix C",
+      "anchor": "revision_heading_4018",
+      "source_pages": [
+        89
+      ],
+      "destination_pages": [
+        147
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.14",
+      "anchor": "table_17",
+      "source_pages": [
+        90
+      ],
+      "destination_pages": [
+        91
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.3",
+      "anchor": "table_6",
+      "source_pages": [
+        90
+      ],
+      "destination_pages": [
+        72
+      ],
+      "annotation_count": 2
+    },
+    {
+      "label": "Table 4.2",
+      "anchor": "table_4_2_summary",
+      "source_pages": [
+        90
+      ],
+      "destination_pages": [
+        70
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Appendix A",
+      "anchor": "heading_73",
+      "source_pages": [
+        90
+      ],
+      "destination_pages": [
+        138
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 3.8",
+      "anchor": "heading_32",
+      "source_pages": [
+        90
+      ],
+      "destination_pages": [
+        49
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 4.10.4",
+      "anchor": "revision_heading_4016",
+      "source_pages": [
+        93
+      ],
+      "destination_pages": [
+        110
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 4.10.1",
+      "anchor": "revision_heading_4010",
+      "source_pages": [
+        93
+      ],
+      "destination_pages": [
+        106
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 4.2",
+      "anchor": "heading_47",
+      "source_pages": [
+        94
+      ],
+      "destination_pages": [
+        69
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 4.10.2",
+      "anchor": "revision_heading_4012",
+      "source_pages": [
+        94
+      ],
+      "destination_pages": [
+        107
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.15",
+      "anchor": "table_18",
+      "source_pages": [
+        95
+      ],
+      "destination_pages": [
+        96
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.16",
+      "anchor": "table_19",
+      "source_pages": [
+        96
+      ],
+      "destination_pages": [
+        97
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Figure 4.1",
+      "anchor": "figure_3",
+      "source_pages": [
+        97
+      ],
+      "destination_pages": [
+        98
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.16",
+      "anchor": "table_19",
+      "source_pages": [
+        97
+      ],
+      "destination_pages": [
+        97
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Figure 4.2",
+      "anchor": "figure_4",
+      "source_pages": [
+        97
+      ],
+      "destination_pages": [
+        99
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.17",
+      "anchor": "table_20",
+      "source_pages": [
+        100
+      ],
+      "destination_pages": [
+        100
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Appendix C",
+      "anchor": "revision_heading_4018",
+      "source_pages": [
+        101
+      ],
+      "destination_pages": [
+        147
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.18",
+      "anchor": "table_21",
+      "source_pages": [
+        101
+      ],
+      "destination_pages": [
+        102
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 4.9.3",
+      "anchor": "heading_60",
+      "source_pages": [
+        102
+      ],
+      "destination_pages": [
+        102
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.19",
+      "anchor": "table_22",
+      "source_pages": [
+        102
+      ],
+      "destination_pages": [
+        103
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Appendix B",
+      "anchor": "heading_74",
+      "source_pages": [
+        103
+      ],
+      "destination_pages": [
+        141
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.20",
+      "anchor": "table_23",
+      "source_pages": [
+        105
+      ],
+      "destination_pages": [
+        105
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.21",
+      "anchor": "revision_table_4011",
+      "source_pages": [
+        106
+      ],
+      "destination_pages": [
+        106
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.22",
+      "anchor": "revision_table_4013",
+      "source_pages": [
+        107
+      ],
+      "destination_pages": [
+        108
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 4.10.2",
+      "anchor": "revision_heading_4012",
+      "source_pages": [
+        110
+      ],
+      "destination_pages": [
+        107
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.24",
+      "anchor": "revision_table_4017",
+      "source_pages": [
+        111
+      ],
+      "destination_pages": [
+        111
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.14",
+      "anchor": "table_17",
+      "source_pages": [
+        115
+      ],
+      "destination_pages": [
+        91
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Tables 4.2",
+      "anchor": "table_4_2_summary",
+      "source_pages": [
+        115
+      ],
+      "destination_pages": [
+        70
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.3",
+      "anchor": "table_6",
+      "source_pages": [
+        115
+      ],
+      "destination_pages": [
+        72
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.5",
+      "anchor": "table_8",
+      "source_pages": [
+        116
+      ],
+      "destination_pages": [
+        75
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Tables 4.6",
+      "anchor": "table_9",
+      "source_pages": [
+        116
+      ],
+      "destination_pages": [
+        76
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.7",
+      "anchor": "table_10",
+      "source_pages": [
+        116
+      ],
+      "destination_pages": [
+        79
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.14",
+      "anchor": "table_17",
+      "source_pages": [
+        116
+      ],
+      "destination_pages": [
+        91
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Sections 4.8.1",
+      "anchor": "heading_54",
+      "source_pages": [
+        116
+      ],
+      "destination_pages": [
+        93
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.10.2",
+      "anchor": "revision_heading_4012",
+      "source_pages": [
+        116
+      ],
+      "destination_pages": [
+        107
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.21",
+      "anchor": "revision_table_4011",
+      "source_pages": [
+        117
+      ],
+      "destination_pages": [
+        106
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Tables 4.16",
+      "anchor": "table_19",
+      "source_pages": [
+        117
+      ],
+      "destination_pages": [
+        97
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.17",
+      "anchor": "table_20",
+      "source_pages": [
+        117
+      ],
+      "destination_pages": [
+        100
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Tables 4.18",
+      "anchor": "table_21",
+      "source_pages": [
+        117
+      ],
+      "destination_pages": [
+        102
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.19",
+      "anchor": "table_22",
+      "source_pages": [
+        117
+      ],
+      "destination_pages": [
+        103
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.23",
+      "anchor": "revision_table_4015",
+      "source_pages": [
+        117
+      ],
+      "destination_pages": [
+        110
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 5.1",
+      "anchor": "table_24",
+      "source_pages": [
+        118
+      ],
+      "destination_pages": [
+        118
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Tables 4.2",
+      "anchor": "table_4_2_summary",
+      "source_pages": [
+        118
+      ],
+      "destination_pages": [
+        70
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.3",
+      "anchor": "table_6",
+      "source_pages": [
+        118
+      ],
+      "destination_pages": [
+        72
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Sections 4.8.1",
+      "anchor": "heading_54",
+      "source_pages": [
+        118
+      ],
+      "destination_pages": [
+        93
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.10.2",
+      "anchor": "revision_heading_4012",
+      "source_pages": [
+        118
+      ],
+      "destination_pages": [
+        107
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.5",
+      "anchor": "table_8",
+      "source_pages": [
+        119
+      ],
+      "destination_pages": [
+        75
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Sections 4.8.3",
+      "anchor": "heading_56",
+      "source_pages": [
+        119
+      ],
+      "destination_pages": [
+        100
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.10.1",
+      "anchor": "revision_heading_4010",
+      "source_pages": [
+        119
+      ],
+      "destination_pages": [
+        106
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 4.22",
+      "anchor": "revision_table_4013",
+      "source_pages": [
+        119
+      ],
+      "destination_pages": [
+        108
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Sections 4.9",
+      "anchor": "heading_57",
+      "source_pages": [
+        120
+      ],
+      "destination_pages": [
+        101
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.10.3",
+      "anchor": "revision_heading_4014",
+      "source_pages": [
+        120
+      ],
+      "destination_pages": [
+        109
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 4.10.4",
+      "anchor": "revision_heading_4016",
+      "source_pages": [
+        120
+      ],
+      "destination_pages": [
+        110
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Appendix A",
+      "anchor": "heading_73",
+      "source_pages": [
+        120
+      ],
+      "destination_pages": [
+        138
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Appendix C",
+      "anchor": "revision_heading_4018",
+      "source_pages": [
+        120
+      ],
+      "destination_pages": [
+        147
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table 5.2",
+      "anchor": "table_25",
+      "source_pages": [
+        121
+      ],
+      "destination_pages": [
+        122
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Appendix C",
+      "anchor": "revision_heading_4018",
+      "source_pages": [
+        125
+      ],
+      "destination_pages": [
+        147
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table A.1",
+      "anchor": "table_26",
+      "source_pages": [
+        138
+      ],
+      "destination_pages": [
+        138
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Sections 1.4",
+      "anchor": "heading_7",
+      "source_pages": [
+        138
+      ],
+      "destination_pages": [
+        25
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "1.5",
+      "anchor": "heading_11",
+      "source_pages": [
+        138
+      ],
+      "destination_pages": [
+        28
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Sections 3.6",
+      "anchor": "heading_30",
+      "source_pages": [
+        138
+      ],
+      "destination_pages": [
+        47
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3.8",
+      "anchor": "heading_32",
+      "source_pages": [
+        138
+      ],
+      "destination_pages": [
+        49
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.2",
+      "anchor": "heading_47",
+      "source_pages": [
+        138
+      ],
+      "destination_pages": [
+        69
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "5.1",
+      "anchor": "heading_63",
+      "source_pages": [
+        138
+      ],
+      "destination_pages": [
+        115
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Sections 3.9",
+      "anchor": "heading_33",
+      "source_pages": [
+        138
+      ],
+      "destination_pages": [
+        52
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "3.11",
+      "anchor": "heading_35",
+      "source_pages": [
+        138
+      ],
+      "destination_pages": [
+        54
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.3",
+      "anchor": "heading_48",
+      "source_pages": [
+        138
+      ],
+      "destination_pages": [
+        73
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "5.1",
+      "anchor": "heading_63",
+      "source_pages": [
+        138
+      ],
+      "destination_pages": [
+        115
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Sections 3.12",
+      "anchor": "heading_36",
+      "source_pages": [
+        139
+      ],
+      "destination_pages": [
+        54
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.4",
+      "anchor": "heading_49",
+      "source_pages": [
+        139
+      ],
+      "destination_pages": [
+        75
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "5.1",
+      "anchor": "heading_63",
+      "source_pages": [
+        139
+      ],
+      "destination_pages": [
+        115
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 4.7",
+      "anchor": "heading_52",
+      "source_pages": [
+        139
+      ],
+      "destination_pages": [
+        90
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 4.5",
+      "anchor": "heading_50",
+      "source_pages": [
+        139
+      ],
+      "destination_pages": [
+        81
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Sections 4.5",
+      "anchor": "heading_50",
+      "source_pages": [
+        139
+      ],
+      "destination_pages": [
+        81
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "5.4",
+      "anchor": "heading_69",
+      "source_pages": [
+        139
+      ],
+      "destination_pages": [
+        124
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Sections 3.13",
+      "anchor": "heading_37",
+      "source_pages": [
+        139
+      ],
+      "destination_pages": [
+        55
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "4.6",
+      "anchor": "heading_51",
+      "source_pages": [
+        139
+      ],
+      "destination_pages": [
+        89
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Table B.1",
+      "anchor": "table_27",
+      "source_pages": [
+        141
+      ],
+      "destination_pages": [
+        141
+      ],
+      "annotation_count": 1
+    },
+    {
+      "label": "Section 3.8",
+      "anchor": "heading_32",
+      "source_pages": [
+        148
+      ],
+      "destination_pages": [
+        49
+      ],
+      "annotation_count": 1
+    }
+  ],
+  "pdf_link_errors": [],
+  "unmatched_pdf_annotations": [],
+  "status": "verified",
+  "word_serialization_handling": "Read-only normalization resolves the body-level Table 4.2 bookmark to its immediately following caption, recognizes its HYPERLINK self-link field, and joins split PAGEREF instruction/result runs; paragraph text/order is asserted unchanged."
+}

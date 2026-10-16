@@ -1,17 +1,18 @@
 {
   "status": "verified",
-  "docx_sha256": "056421a8941f5868a488a72634488a1dcf49977a3ff6fc13c3cc98191e4e25fa",
-  "pdf_sha256": "80c0308579148e70b2e9bb238ec827b03ac08ee344cf3227b1a515f1d35ffb5b",
-  "scope": "Research-voice revision across Chapters 1\u20135 and the abstract; exact preservation checks, complete render coverage, citations, links and privacy audit.",
+  "docx_sha256": "393fabb4894200c968f67c00fed0d533bd1bdf219d1e7713377b2d1a2150221f",
+  "pdf_sha256": "8859901f2f57d4068072cb93276449a1af490051be2006f9b82191eb0ab93879",
+  "scope": "Focused prose revision of the thesis statement and Sections 5.1\u20135.2, extending the verified research-voice edition.",
   "verification_chain": [
     "pre-abstract-manuscript-verification.json",
     "three-contribution-verification.json",
     "abstract-update-verification.json",
     "posture-verification.json",
-    "voice-verification.json"
+    "voice-verification.json",
+    "chapter5-verification.json"
   ],
-  "prior_verified_docx_sha256": "500f5ca98cce81f92ac76a9d4f23db01377e1c05a6d55ac73e2c44f7a5f8f384",
-  "prose_paragraphs_revised": 72,
+  "prior_verified_docx_sha256": "056421a8941f5868a488a72634488a1dcf49977a3ff6fc13c3cc98191e4e25fa",
+  "prose_paragraphs_revised": 14,
   "existing_numeric_results_preserved": true,
   "abstract_added_values": {
     "98.6807%": "Structural internal recall, Table 4.2b",
@@ -41,5 +42,11 @@
   "rendered_nonempty_paragraphs_and_cells": 2127,
   "figure_prose_intersections": 0,
   "detached_table_captions": 0,
-  "author_title_date_preserved": "November 5th, 2026"
+  "author_title_date_preserved": "November 5th, 2026",
+  "prior_broader_revision_paragraphs": 72,
+  "thesis_added_existing_value": {
+    "79.68%": "Existing median paired p95 reduction in the single-host synthetic structural-only HTTP comparison, Table 4.18."
+  },
+  "all_tables_exactly_preserved_in_this_pass": true,
+  "abstract_and_conclusion_exactly_preserved_in_this_pass": true
 }

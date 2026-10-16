@@ -75,7 +75,8 @@ It contains **149 total pages**, **104 main-body pages**, **31 tables**, **four 
 150-page total ceiling and exceeds the approximately 80-page body recommendation.
 The 199-word abstract fits one page. The Word copy remains editable for author review.
 The [sentence change log](dissertation/2026-10-15/document-checks/SENTENCE_CHANGES.md)
-records the latest edits against the preceding published edition.
+records the broader revision. The [final Chapter 5 and thesis changes](dissertation/2026-10-15/document-checks/CHAPTER5_SENTENCE_CHANGES.md)
+record the focused prose pass against commit f3e42b5.
 
 ## Code, data and verification
 

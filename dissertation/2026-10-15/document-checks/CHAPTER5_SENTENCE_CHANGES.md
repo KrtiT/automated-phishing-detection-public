@@ -1,0 +1,221 @@
+# Final Chapter 5 and thesis sentence changes
+
+Compared with published commit f3e42b5. Every changed sentence is recorded below; splits and joins are grouped. The abstract, conclusion, all tables and all other prose are preserved. Table 5.2 already includes “What it revealed” and remains unchanged.
+
+## 1. 1.3.1 Thesis Statement — paragraph 236
+
+**Before 1:**
+
+> CyberSentinel demonstrates how to evaluate a URL gateway as a connected system: measure the information its features supply, the corrections its expert can make and the cost of execution.
+> The experiments reveal a benchmark-format dependency, derive an exact routing constraint and verify a client-path improvement.
+> These findings guide representation, expert and service design.
+
+**After 1:**
+
+> CyberSentinel shows how to judge a URL gateway as a connected system: by the signals behind its predictions, the corrections its expert can make and the time spent serving each request.
+> Its experiments uncover a URL-format convention in the benchmark, derive an exact limit on routing between unchanged decisions and verify a 79.68% reduction in median paired p95 latency in the single-host synthetic structural-only service.
+> Together, these findings turn measured model and service behavior into specific decisions about representation, expert selection and implementation.
+
+## 2. 5.1 Direct Answers to the Research Questions — paragraph 538
+
+**Before 1:**
+
+> CyberSentinel answers Research Questions 1–3 (RQ1–RQ3) through an implemented gateway and controlled experiments.
+> The structural model supplies a substantial internal recall gain; subsequent comparisons investigate its dependencies, available expert corrections and service improvements.
+> Table 4.14 gives the hypothesis decisions.
+> The answers below develop their implications for design.
+
+**After 1:**
+
+> CyberSentinel answers Research Questions 1–3 (RQ1–RQ3) by connecting the gateway's design choices to measured outcomes.
+> The structural model delivers a substantial internal recall gain, and controlled comparisons examine the signals behind its decisions, the corrections available from an expert and the costs that can be reduced in the service.
+> Table 4.14 records the formal hypothesis decisions; the discussion below explains what these measurements contribute to gateway design.
+
+## 3. 5.1 Direct Answers to the Research Questions — paragraph 539
+
+**Before 1:**
+
+> Validation labels also follow a format convention whose share of the gain is unquantified.
+> External certified FPR is 90.5487%, versus 9.4513% for length-only; the cascade adds no recall or expert calls (Tables 4.2–4.3).
+> This finding motivates checking the signals behind a feature gain and measuring specificity on the intended source.
+
+**After 1:**
+
+> Validation labels also follow a URL-format convention, although the experiments do not quantify how much of the gain comes from that association.
+> On external certified negatives, FPR is 90.5487%, versus 9.4513% for length-only, while the cascade adds no recall or expert calls (Tables 4.2–4.3).
+> A feature gain is therefore most informative when its underlying signals and specificity are also tested on the intended source.
+
+## 4. 5.1 Direct Answers to the Research Questions — paragraph 540
+
+**Before 1:**
+
+> The interventions make that test concrete.
+> Scheme spelling changes frozen-model decisions.
+> A separate refit removes scheme sensitivity while reducing true and false positives; its combined fitting and calibration changes require their own labeled evaluation.
+> Paired outputs establish which errors an expert can correct.
+> Shared errors survive every selection between those unchanged decisions.
+
+**After 1:**
+
+> The controlled interventions show how to make that assessment.
+> Changing scheme spelling changes frozen-model decisions, while a separate refit removes scheme sensitivity and reduces both true and false positives.
+> Because the refit changes fitting and calibration together, its detection behavior requires its own labeled evaluation.
+> Comparing both models on the same inputs then reveals which errors the expert can correct: if both misclassify a URL, choosing between their existing decisions leaves that error in place.
+
+## 5. 5.1 Direct Answers to the Research Questions — paragraph 541
+
+**Before 1:**
+
+> The GMM recognizes 115/132 external windows (87.12%), exceeding its 80% target.
+> Its audit alerts are 28/252 windows (11.11%) against 5%, so sensitivity and false alerts must be assessed together.
+> Ordered, stateful replay sends 8,253/8,701 requests (94.8512%) to the expert.
+> The policy retains 69/69 gold detections and adds 218 certified false positives (Table 4.5).
+> Recognizing a change in inputs does not tell a gateway which response will help.
+> Following alerts into paired decisions supplies that test.
+
+**After 1:**
+
+> The GMM recognizes 115/132 external windows (87.12%), exceeding its 80% target, with 28/252 audit alerts (11.11%) against a 5% limit.
+> Sensitivity and false alerts together describe the monitor's behavior; paired decisions show what its response contributes.
+> Ordered, stateful replay sends 8,253/8,701 requests (94.8512%) to the expert, retaining 69/69 gold detections and adding 218 certified false positives (Table 4.5).
+> This comparison gives monitoring a concrete design test: follow an alert through the routing decision and check whether the selected expert improves the outcome.
+
+## 6. 5.1 Direct Answers to the Research Questions — paragraph 542
+
+**Before 1:**
+
+> The fixed cascade meets the invocation and primary request-error limits.
+> Pooled p95 is 364.30 ms against a 200 ms budget, and external false-alert safeguards are exceeded.
+> The original 69-pair recall sample gives a corrected lower bound of −6.1533 percentage points under independent labeled-pair assumptions.
+> That bound leaves the −2-point noninferiority margin unresolved; it does not establish inferiority (Tables 4.6–4.7 and 4.14).
+> Measuring these quantities separately reveals where to intervene: detector computation and request handling need distinct experiments, alongside detection quality.
+
+**After 1:**
+
+> The fixed cascade meets the invocation and primary request-error limits, while pooled p95 is 364.30 ms against a 200 ms budget and external false-alert safeguards are exceeded.
+> The original 69-pair recall sample gives a corrected lower bound of −6.1533 percentage points under independent labeled-pair assumptions, leaving the −2-point noninferiority margin unresolved without demonstrating inferiority (Tables 4.6–4.7 and 4.14).
+> These measurements make detector computation, request handling and detection quality distinct engineering targets, with a separate test for each.
+
+## 7. 5.1 Direct Answers to the Research Questions — paragraph 543
+
+**Before 1:**
+
+> Worker-owned clients improve the synthetic structural-only service; separate scoring tests quantify transformer cost.
+> These experiments connect a proposed change to a measurable consequence.
+> Representation stability is tested with labeled detection, expert selection with corrections, and monitoring with the decisions its alerts change.
+
+**After 1:**
+
+> The client comparison turns that distinction into an improvement: worker-owned clients speed up the synthetic structural-only service, while separate scoring tests quantify transformer cost.
+> Across these experiments, the same principle guides evaluation: assess representation stability together with labeled detection, select experts by the errors they correct, and judge monitoring by the decisions its alerts change.
+
+## 8. 5.2 Engineering Findings and Contribution — paragraph 545
+
+**Before 1:**
+
+> The benchmark investigation gives URL researchers a concrete check.
+> All 20,209 validation negatives use HTTPS, versus 46.6362% of positives; the negative HTTPS indicator reaches AUC 0.7668.
+> The fixed-weight external intervention also changes decisions.
+> These findings justify checking format conventions before interpreting a gain as transferable detection, without quantifying the HTTPS-attributable fraction.
+> Paired errors establish available expert corrections (Sections 4.8.1 and 4.10.2).
+
+**After 1:**
+
+> The benchmark investigation gives URL researchers a simple check to add to evaluation: inspect whether formatting conventions track class labels.
+> All 20,209 validation negatives use HTTPS, versus 46.6362% of positives, and the negative HTTPS indicator reaches AUC 0.7668.
+> The fixed-weight external intervention also changes decisions, supporting a check of format dependence before interpreting a gain as transferable detection.
+> These tests do not quantify the HTTPS-attributable fraction of the gain.
+> Paired error analysis then identifies the corrections available from an expert (Sections 4.8.1 and 4.10.2).
+
+## 9. 5.2 Engineering Findings and Contribution — paragraph 546
+
+**Before 1:**
+
+> Table 4.21 tests spelling changes with weights fixed.
+> Tables 4.16–4.17 verify exact scheme invariance after refitting and quantify detection changes.
+> Different cohorts and fitting procedures prevent attributing the refit's effect to normalization alone.
+> Together, the internal association and external intervention support a practical benchmark check; collection-source causality remains unresolved.
+
+**After 1:**
+
+> The two interventions answer complementary questions: Table 4.21 tests spelling changes with weights fixed, whereas Tables 4.16–4.17 verify exact scheme invariance after refitting and measure the accompanying detection changes.
+> Because the cohorts and fitting procedures differ, the refit's effect cannot be attributed to normalization alone.
+> The internal association and external intervention therefore support a practical benchmark check while leaving the role of collection source as a separate causal question.
+
+## 10. 5.2 Engineering Findings and Contribution — paragraph 547
+
+**Before 1:**
+
+> Routing provides an exact design constraint: 2,261 shared false positives among 2,497 certified negatives impose a 90.5487% floor on unchanged-decision selection.
+> Escalation adds 218 false positives without another gold detection.
+> On the separate cohort, one expert repair is available, but wider gates select none and add 18 false positives.
+
+**After 1:**
+
+> The study's clearest routing result is also its simplest: when both models make the same mistake, choosing between their unchanged decisions cannot correct it.
+> Here, 2,261 shared false positives among 2,497 certified negatives set an exact 90.5487% false-positive floor.
+> Escalation adds 218 false positives without another gold detection; on the separate cohort, one expert repair is available, but wider gates select none and add 18 false positives.
+
+**Before 2:**
+
+> Service tests identify a client-path improvement with matching comparable predictions despite changed admission order (Tables 4.18–4.19).
+> Table 4.23 measures expert cost separately.
+
+**After 2:**
+
+> Service tests show a client-path improvement with matching comparable predictions despite changed admission order (Tables 4.18–4.19); Table 4.23 measures expert cost separately.
+
+## 11. 5.2 Engineering Findings and Contribution — paragraph 549
+
+**Before 1:**
+
+> Specificity and selected corrections therefore determine the practical value of the preserved recall.
+> Reused observations provide neither independent replication nor guaranteed campaign independence.
+
+**After 1:**
+
+> The practical value of that preserved recall therefore depends on specificity and the corrections actually selected.
+> Because the comparisons reuse observations, they do not provide independent replications or guarantee independence across campaigns.
+
+## 12. 5.2.2 Validity and Reuse of the Evidence — paragraph 554
+
+**Before 1:**
+
+> Appendix A connects inputs, fitted states, outcomes and diagnostics.
+> Input audits, reconstructed scores, permutations and convergence checks support the ranking explanation.
+> Appendix C records information exposure and execution history.
+> This record makes the analyzed fits reproducible; historical-fit authentication and independent replication remain separate requirements.
+
+**After 1:**
+
+> Appendix A links inputs, fitted states, outcomes and diagnostics so that audits, reconstructed scores, permutations and convergence checks can support the ranking explanation.
+> Appendix C records information exposure and execution history, preserving reproducibility while keeping historical-fit authentication and independent replication distinct.
+
+## 13. 5.2.2 Validity and Reuse of the Evidence — paragraph 555
+
+**Before 1:**
+
+> The shuffled-label investigation explains a puzzling control result.
+> Small residual coefficients can rank format-associated labels well despite nearly constant probabilities.
+> Input audits check the fitted data, term removal measures one contribution, randomization reproduces the spread, and stricter optimization preserves it.
+> Inspecting coefficients and score ordering alongside mean probability provides a practical test of such controls.
+
+**After 1:**
+
+> The shuffled-label investigation shows how small residual coefficients rank format-associated labels despite nearly constant probabilities.
+> Input audits check the data, term removal measures one contribution, and randomization and stricter optimization confirm persistent ranking variation.
+> Coefficients, score ordering and mean probability together make these controls interpretable.
+
+## 14. 5.2.3 Relationship to the Original Hypotheses — paragraph 557
+
+**Before 1:**
+
+> Table 5.2 connects component findings, complete gateway decisions and engineering insight.
+> The internal feature gain, routing bound, scheme invariance and client-path improvement each answer a design question.
+> Joint H1–H3 decisions determine system-level qualification.
+> The contribution is a measured basis for redesign: what to change, why it matters and how to test its consequences.
+
+**After 1:**
+
+> Table 5.2 pairs each formal decision with its engineering insight.
+> Alongside the joint H1–H3 criteria, the internal feature gain, exact routing bound, scheme invariance and client-path improvement tell the next designer what to change, why it matters and how to test the result.

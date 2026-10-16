@@ -1,7 +1,7 @@
 {
   "status": "verified",
-  "docx_sha256": "056421a8941f5868a488a72634488a1dcf49977a3ff6fc13c3cc98191e4e25fa",
-  "pdf_sha256": "80c0308579148e70b2e9bb238ec827b03ac08ee344cf3227b1a515f1d35ffb5b",
+  "docx_sha256": "393fabb4894200c968f67c00fed0d533bd1bdf219d1e7713377b2d1a2150221f",
+  "pdf_sha256": "8859901f2f57d4068072cb93276449a1af490051be2006f9b82191eb0ab93879",
   "word_external_hyperlinks": 63,
   "unique_active_targets": 63,
   "pdf_uri_annotations": 68,

@@ -72,6 +72,10 @@ All numerical results and formal decisions are preserved. The full local softwar
 suite records 13,313 passed tests, two skipped and zero failures in the
 [software receipt](document-checks/software-checks.json).
 
-The [current revision receipt](document-checks/voice-verification.json) and
+The [broader revision receipt](document-checks/voice-verification.json) and
 [every sentence change](document-checks/SENTENCE_CHANGES.md) document the 72-paragraph
 research-voice revision and the two authorized table changes.
+
+The [final Chapter 5 and thesis pass](document-checks/CHAPTER5_SENTENCE_CHANGES.md)
+polishes 14 paragraphs, with [preservation checks](document-checks/chapter5-verification.json)
+against the preceding edition. The abstract, conclusion and all tables remain exact.

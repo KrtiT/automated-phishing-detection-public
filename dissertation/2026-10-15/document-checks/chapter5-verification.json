@@ -1,0 +1,49 @@
+{
+  "status": "verified",
+  "baseline_commit": "f3e42b5444709c3450567dd4b4be91dd33047fe7",
+  "baseline_docx_sha256": "056421a8941f5868a488a72634488a1dcf49977a3ff6fc13c3cc98191e4e25fa",
+  "baseline_pdf_sha256": "80c0308579148e70b2e9bb238ec827b03ac08ee344cf3227b1a515f1d35ffb5b",
+  "docx_sha256": "393fabb4894200c968f67c00fed0d533bd1bdf219d1e7713377b2d1a2150221f",
+  "pdf_sha256": "8859901f2f57d4068072cb93276449a1af490051be2006f9b82191eb0ab93879",
+  "paragraphs_edited": 14,
+  "sentence_change_groups": 15,
+  "scope": "Thesis statement and Sections 5.1–5.2 only; natural sentence flow and concrete design implications.",
+  "numeric_results_preserved": true,
+  "added_thesis_value": {
+    "79.68%": "Existing median paired p95 reduction in the single-host synthetic structural-only HTTP comparison, Table 4.18."
+  },
+  "all_31_tables_exact_xml_preserved": true,
+  "table_5_2_insight_column_already_present_and_unchanged": true,
+  "abstract_and_conclusion_exactly_preserved": true,
+  "original_hypotheses_and_formal_decisions_unchanged": true,
+  "diagnostic_design_disclosures_preserved_exactly": true,
+  "references_equations_figures_acknowledgements_and_title_details_preserved": true,
+  "substantive_qualifications_preserved_in_reviewed_rewrites": true,
+  "paragraph_and_run_formatting_hyperlink_subtrees_preserved": true,
+  "all_other_document_nodes_and_package_parts_identical": true,
+  "navigation_cache_changes": [
+    {
+      "bookmark": "heading_66",
+      "before": "98",
+      "after": "99"
+    },
+    {
+      "bookmark": "table_24",
+      "before": "96",
+      "after": "97"
+    }
+  ],
+  "layout": {
+    "pdf_pages": 149,
+    "main_body_pages": 104,
+    "body_start_pdf_page": 23,
+    "references_start_pdf_page": 127,
+    "abstract_words": 199,
+    "abstract_pages": [
+      6
+    ]
+  },
+  "change_log_sha256": "714273a4b75d322d7c2b8faed54a9edec34d591b40b6d9dd7d4d4f1231078b40",
+  "sentence_log_sha256": "217fe6c7f7158bf5645dc6a46dd33e32a0f910dbe3c9e8a39846b36fbaea2c12",
+  "render_receipt_sha256": "b48e922bf2f481f6dcd36785c01ea10ab8bd09e9b0dd158df4bd646db1340c1d"
+}

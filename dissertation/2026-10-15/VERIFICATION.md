@@ -1,6 +1,29 @@
 # Verification of the defense reading edition
 
-The current Word/PDF pair contains **149 total pages and 104 main-body pages**,
+The current focused revision contains **149 total pages and 104 main-body pages**.
+The 199-word abstract, conclusion, all 31 tables and four figures remain unchanged.
+The [focused revision receipt](document-checks/chapter5-verification.json) compares
+the current files with published commit f3e42b5. It records 14 revised paragraphs
+in the thesis statement and Sections 5.1–5.2, preserving existing numerical results,
+citations, qualifications and formatting. The thesis now includes the already
+reported 79.68% median paired p95 reduction with its experimental scope.
+
+[Every sentence changed in this final pass](document-checks/CHAPTER5_SENTENCE_CHANGES.md)
+is paired with its earlier wording. Table 5.2 already contained “What it revealed”
+and is preserved exactly. The updated Word/PDF pair passes complete text, table,
+figure, navigation, citation, hyperlink and package checks. Earlier receipts retain
+their original hashes; replaced summaries are preserved as `pre-chapter5-*`.
+
+Current Word SHA-256: `393fabb4894200c968f67c00fed0d533bd1bdf219d1e7713377b2d1a2150221f`
+
+Current PDF SHA-256: `8859901f2f57d4068072cb93276449a1af490051be2006f9b82191eb0ab93879`
+
+## Preceding broader revision and retained verification
+
+The following describes the preceding research-voice edition. Its checks remain
+part of the verification chain; the current files are identified above.
+
+The preceding Word/PDF pair contains **149 total pages and 104 main-body pages**,
 31 tables, four original figures and 127 checked navigation entries. The
 **199-word abstract fits one page**. Times New Roman, double spacing, margins,
 paragraph styles and existing run formatting are preserved. The document is within
@@ -44,7 +67,7 @@ Word SHA-256: `056421a8941f5868a488a72634488a1dcf49977a3ff6fc13c3cc98191e4e25fa`
 
 PDF SHA-256: `80c0308579148e70b2e9bb238ec827b03ac08ee344cf3227b1a515f1d35ffb5b`
 
-The [current summary](document-checks/manuscript-verification.json) identifies these
+The [preceding summary](document-checks/pre-chapter5-manuscript-verification.json) identifies those
 artifacts. The [preceding prose receipt](document-checks/posture-verification.json),
 [abstract/export receipt](document-checks/abstract-update-verification.json) and
 [earlier RQ synthesis](document-checks/three-contribution-verification.json) retain

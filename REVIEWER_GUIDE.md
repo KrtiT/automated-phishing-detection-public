@@ -86,4 +86,9 @@ the author. University approval and acceptance are separate from repository chec
 
 The [sentence change log](dissertation/2026-10-15/document-checks/SENTENCE_CHANGES.md)
 and [revision receipt](dissertation/2026-10-15/document-checks/voice-verification.json)
-record the current editorial changes and content-preservation checks.
+record the preceding broader editorial revision and its content-preservation checks.
+
+The [final Chapter 5 and thesis pass](dissertation/2026-10-15/document-checks/CHAPTER5_SENTENCE_CHANGES.md)
+and [preservation receipt](dissertation/2026-10-15/document-checks/chapter5-verification.json)
+record 14 focused paragraph revisions. Table 5.2 already includes its insight column;
+all tables, the abstract and the conclusion remain unchanged in this pass.
